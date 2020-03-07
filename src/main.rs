@@ -22,21 +22,39 @@ fn main() {
 //        println!("{}", x);
 //    }
 
-    solution(3321);
-
+    let total = solution(320);
+    println!("total:{}",total);
 }
 
-fn solution(n : usize) -> i32{
+fn solution(n : usize) -> usize{
     let bits = n.to_string().len();
+    println!("bits:{}",bits);
     if bits >= 3{
         let numbers = generate_array(bits);
 //        let mut last_result = BTreeSet::<String>::new();
-//        let mut temp_result = BTreeSet::<String>::new();
+        let mut last_result = BTreeSet::<String>::new();
+        let mut temp_result = Vec::<Vec<char>>::new();
         for number in numbers {
-            println!("{}", number);
+            println!("------{}------", number);
+            let bytes = number.as_bytes();
+            //let mut chars = bytes.to_ascii_lowercase();
 
+            perm(&mut bytes.iter().map(|x| (*x as char)).collect(),0,number.len(),&mut temp_result);
 
+            for result in &temp_result{
+                //println!("{:?}",result);
+                let num : String = result.iter().collect();
+                let num_usize = num.parse::<usize>().unwrap();
+                if  num_usize <= n{
+                    println!("{:?}",num_usize);
+                    last_result.insert(num);
+                }
+            }
+
+            temp_result.clear();
         }
+
+        return last_result.len();
     }
     return 0;
 }
