@@ -1,52 +1,24 @@
 use std::collections::BTreeSet;
 
 fn main() {
-    println!("Hello, world!");
-
-    let mut test_char_array = vec!['1', '2'];
-
-    let flag = is_swap(&test_char_array,0,1);
-    println!("is_swap :{}",flag);
-    swap(&mut test_char_array,0,1);
-    println!("{:?}",test_char_array);
-    //let result = Vec::<String>::new();
-
-    let mut result = Vec::<Vec<char>>::new();
-    perm(&mut test_char_array,0,2,&mut result);
-    println!("{:?}",result);
-
-    generate_array(9);
-
-//    let mut iter = numbers.iter();
-//    while let Some(x) = iter.next(){
-//        println!("{}", x);
-//    }
-
     let total = solution(320);
     println!("total:{}",total);
 }
 
 fn solution(n : usize) -> usize{
     let bits = n.to_string().len();
-    println!("bits:{}",bits);
     if bits >= 3{
         let numbers = generate_array(bits);
-//        let mut last_result = BTreeSet::<String>::new();
         let mut last_result = BTreeSet::<String>::new();
         let mut temp_result = Vec::<Vec<char>>::new();
         for number in numbers {
-            println!("------{}------", number);
             let bytes = number.as_bytes();
-            //let mut chars = bytes.to_ascii_lowercase();
-
             perm(&mut bytes.iter().map(|x| (*x as char)).collect(),0,number.len(),&mut temp_result);
 
             for result in &temp_result{
-                //println!("{:?}",result);
                 let num : String = result.iter().collect();
                 let num_usize = num.parse::<usize>().unwrap();
                 if  num_usize <= n{
-                    println!("{:?}",num_usize);
                     last_result.insert(num);
                 }
             }
