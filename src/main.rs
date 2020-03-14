@@ -1,10 +1,20 @@
+#![allow(unused)]
+
 use std::collections::BTreeSet;
 
 fn main() {
-    let total = solution(320);
-    println!("total:{}",total);
+    //let total = solution(320);
+    //println!("total:{}",total);
+
+    let numbers = vec![2, 7, 11, 15];
+    let target = 9;
+    let result = two_sum(numbers,target);
+
+    println!("{:?}",result);
 }
 
+/// 50.神奇数字在哪里(https://developer.aliyun.com/coding/50)
+///
 fn solution(n : usize) -> usize{
     let bits = n.to_string().len();
     if bits >= 3{
@@ -114,4 +124,30 @@ fn swap( array :  &mut Vec<char>, k : usize,i :usize){
     let temp = array[k];
     array[k] = array[i];
     array[i] = temp;
+}
+
+use std::collections::HashMap;
+/// 力扣--167. 两数之和 II - 输入有序数组（https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/）
+pub fn two_sum(numbers: Vec<i32>, target: i32) -> Vec<i32> {
+    let mut result = Vec::<i32>::with_capacity(2);
+    let mut numbers_index = HashMap::new();
+
+    let mut index = 1;
+    for number in &numbers{
+        numbers_index.insert(number,index);
+        index +=1;
+    }
+
+    index = 1;
+    for number in &numbers{
+        let sub = target - number;
+        if let Some(num) = numbers_index.get(&sub){
+            result.push(index);
+            result.push(*num);
+            break;
+        }
+        index+=1;
+    }
+
+    result
 }
