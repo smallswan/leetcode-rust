@@ -8,9 +8,20 @@ fn main() {
 
     let numbers = vec![2, 7, 11, 15];
     let target = 18;
-    let result = two_sum(numbers, target);
+//    let result = two_sum(numbers, target);
 
-    println!("{:?}", result);
+//    println!("{:?}", result);
+
+    let mut nums = vec![3,2,2,3];
+    let val = 3;
+
+    let len = remove_element(&mut nums,val);
+
+    println!("len:{}",len);
+
+    let nums = vec![1,1,0,1,1,1,1,0,1,1,1];
+    let len = find_max_consecutive_ones(nums);
+    println!("len:{}",len);
 }
 
 /// 50.神奇数字在哪里(https://developer.aliyun.com/coding/50)
@@ -152,4 +163,38 @@ pub fn two_sum(numbers: Vec<i32>, target: i32) -> Vec<i32> {
     }
 
     result
+}
+
+///  力扣-- 27. 移除元素（https://leetcode-cn.com/problems/remove-element/）
+pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
+    let mut k = 0;
+    for i in 0..nums.len(){
+        if nums[i] != val{
+            nums[k] = nums[i];
+            k+=1;
+        }
+    }
+    k as i32
+}
+
+///力扣 --485. 最大连续1的个数（https://leetcode-cn.com/problems/max-consecutive-ones/）
+pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
+    let mut max = 0;
+    let mut max_temp = 0;
+    for num in nums {
+        if num == 0{
+            if max_temp > max{
+                max = max_temp;
+            }
+            max_temp = 0;
+        }else{
+            max_temp+=1;
+        }
+    }
+
+    if max_temp > max{
+        return max_temp;
+    }else{
+        return max;
+    }
 }
