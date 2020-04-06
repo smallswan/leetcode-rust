@@ -69,6 +69,11 @@ fn unit_test() {
     println!("index:{}", pivot_index(vec![1, 7, 3, 6, 5, 6]));
 
     println!("{}", dominant_index(vec![2]));
+
+    let s = 7;
+    let nums = vec![1,2,3,4,3,7,2,2];
+    let min_len = min_sub_array_len(s,nums);
+    println!("min_len:{}",min_len);
 }
 
 /// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum
@@ -485,4 +490,41 @@ pub fn dominant_index(nums: Vec<i32>) -> i32 {
         return idx as i32;
     }
     -1
+}
+///  力扣（209. 长度最小的子数组） https://leetcode-cn.com/problems/minimum-size-subarray-sum/
+pub fn min_sub_array_len(s: i32, nums: Vec<i32>) -> i32 {
+    let mut k = 0;
+    let mut i = 0usize;
+    let mut j = 0usize;
+    let len = nums.len();
+    let mut sum = 0;
+    if len >= 1{
+        sum = nums[0];
+    }
+
+    while i <= j && j < len {
+        // 当 sum>=s 时，i++
+        if sum >= s{
+            if k == 0{
+                k = j - i + 1;
+            }else{
+                let temp = j - i + 1;
+                if temp < k{
+                    k = temp;
+                }
+            }
+            sum -= nums[i];
+            i +=1;
+        }else{
+            // 当 sum<s 时，j++
+            j +=1;
+            if j < len{
+                sum += nums[j];
+            }else{
+                break;
+            }
+        }
+    }
+
+    k as i32
 }
