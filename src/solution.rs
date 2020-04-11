@@ -71,11 +71,13 @@ fn unit_test() {
     println!("{}", dominant_index(vec![2]));
 
     let s = 7;
-    let nums = vec![1,2,3,4,3,7,2,2];
-    let min_len = min_sub_array_len(s,nums);
-    println!("min_len:{}",min_len);
+    let nums = vec![1, 2, 3, 4, 3, 7, 2, 2];
+    let min_len = min_sub_array_len(s, nums);
+    println!("min_len:{}", min_len);
 
-
+    let s = String::from("LEETCODEISHIRING");
+    let zz = convert(s, 4);
+    println!("{}", zz)
 }
 
 /// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum
@@ -500,29 +502,29 @@ pub fn min_sub_array_len(s: i32, nums: Vec<i32>) -> i32 {
     let mut j = 0usize;
     let len = nums.len();
     let mut sum = 0;
-    if len >= 1{
+    if len >= 1 {
         sum = nums[0];
     }
 
     while i <= j && j < len {
         // 当 sum>=s 时，i++
-        if sum >= s{
-            if k == 0{
+        if sum >= s {
+            if k == 0 {
                 k = j - i + 1;
-            }else{
+            } else {
                 let temp = j - i + 1;
-                if temp < k{
+                if temp < k {
                     k = temp;
                 }
             }
             sum -= nums[i];
-            i +=1;
-        }else{
+            i += 1;
+        } else {
             // 当 sum<s 时，j++
-            j +=1;
-            if j < len{
+            j += 1;
+            if j < len {
                 sum += nums[j];
-            }else{
+            } else {
                 break;
             }
         }
@@ -533,33 +535,33 @@ pub fn min_sub_array_len(s: i32, nums: Vec<i32>) -> i32 {
 
 /// 力扣（6. Z 字形变换） https://leetcode-cn.com/problems/zigzag-conversion/
 pub fn convert(s: String, num_rows: i32) -> String {
-    if num_rows == 1{
-       return s;
+    if num_rows == 1 {
+        return s;
     }
 
-    let mut result_vec = vec![vec![];num_rows as usize];
+    let mut result_vec = vec![vec![]; num_rows as usize];
     let mut row = 0usize;
     let mut direct_down = true;
-    for ch in s.chars(){
-        if row == 0{
+    for ch in s.chars() {
+        if row == 0 {
             direct_down = true;
-        }else if row == (num_rows - 1) as usize{
+        } else if row == (num_rows - 1) as usize {
             direct_down = false;
         }
 
-        if let Some(row_vec) = result_vec.get_mut(row){
+        if let Some(row_vec) = result_vec.get_mut(row) {
             row_vec.push(ch);
         }
 
         if direct_down {
-            row +=1;
-        }else{
-            row -=1;
+            row += 1;
+        } else {
+            row -= 1;
         }
     }
 
     let mut result_str_vec = Vec::<char>::new();
-    for row_vec in result_vec{
+    for row_vec in result_vec {
         result_str_vec.extend_from_slice(&row_vec);
     }
 
