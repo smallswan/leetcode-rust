@@ -74,6 +74,8 @@ fn unit_test() {
     let nums = vec![1,2,3,4,3,7,2,2];
     let min_len = min_sub_array_len(s,nums);
     println!("min_len:{}",min_len);
+
+
 }
 
 /// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum
@@ -527,4 +529,39 @@ pub fn min_sub_array_len(s: i32, nums: Vec<i32>) -> i32 {
     }
 
     k as i32
+}
+
+/// 力扣（6. Z 字形变换） https://leetcode-cn.com/problems/zigzag-conversion/
+pub fn convert(s: String, num_rows: i32) -> String {
+    if num_rows == 1{
+       return s;
+    }
+
+    let mut result_vec = vec![vec![];num_rows as usize];
+    let mut row = 0usize;
+    let mut direct_down = true;
+    for ch in s.chars(){
+        if row == 0{
+            direct_down = true;
+        }else if row == (num_rows - 1) as usize{
+            direct_down = false;
+        }
+
+        if let Some(row_vec) = result_vec.get_mut(row){
+            row_vec.push(ch);
+        }
+
+        if direct_down {
+            row +=1;
+        }else{
+            row -=1;
+        }
+    }
+
+    let mut result_str_vec = Vec::<char>::new();
+    for row_vec in result_vec{
+        result_str_vec.extend_from_slice(&row_vec);
+    }
+
+    result_str_vec.iter().collect()
 }
