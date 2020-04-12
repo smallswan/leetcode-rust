@@ -42,6 +42,9 @@ fn unit_test() {
     println!("{}", add_binary(a, b));
 
     println!("{:?}", generate(10));
+
+    println!("{:?}",get_row(3));
+
     let numbers = vec![2, 7, 11, 15];
     let target = 18;
     let result = two_sum2(numbers, target);
@@ -367,6 +370,34 @@ pub fn generate(num_rows: i32) -> Vec<Vec<i32>> {
         }
     }
     result
+}
+
+/// 力扣（119. 杨辉三角 II） https://leetcode-cn.com/problems/pascals-triangle-ii/
+pub fn get_row(row_index: i32) -> Vec<i32> {
+    let rows = (row_index + 1) as usize;
+    let mut result = Vec::<Vec<i32>>::with_capacity(rows);
+
+    for row in 1..=rows {
+        if row <= 2 {
+            let r = vec![1; row];
+            result.push(r);
+        } else {
+            if let Some(last_row) = result.last() {
+                let mut r = vec![1; row];
+                for i in 1..row - 1 {
+                    r[i] = last_row[i - 1] + last_row[i];
+                }
+                result.push(r);
+            }
+        }
+    }
+
+    let mut result_vec = vec![];
+    if let Some(last_row) = result.last(){
+        result_vec = last_row.to_vec();
+    }
+
+    result_vec
 }
 
 /// 力扣（167. 两数之和 II - 输入有序数组）https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
