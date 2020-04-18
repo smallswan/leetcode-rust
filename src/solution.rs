@@ -80,7 +80,13 @@ fn unit_test() {
 
     let s = String::from("LEETCODEISHIRING");
     let zz = convert(s, 4);
-    println!("{}", zz)
+    println!("{}", zz);
+
+
+    let mut rotate_vec = vec![1,2,3,4,5,6];
+    rotate(&mut rotate_vec,2);
+
+    println!("{:?}",rotate_vec);
 }
 
 /// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum
@@ -96,6 +102,41 @@ pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
         nums_map.insert(num, j);
     }
     vec![]
+}
+
+/// 力扣（6. Z 字形变换） https://leetcode-cn.com/problems/zigzag-conversion/
+pub fn convert(s: String, num_rows: i32) -> String {
+    if num_rows == 1 {
+        return s;
+    }
+
+    let mut result_vec = vec![vec![]; num_rows as usize];
+    let mut row = 0usize;
+    let mut direct_down = true;
+    for ch in s.chars() {
+        if row == 0 {
+            direct_down = true;
+        } else if row == (num_rows - 1) as usize {
+            direct_down = false;
+        }
+
+        if let Some(row_vec) = result_vec.get_mut(row) {
+            row_vec.push(ch);
+        }
+
+        if direct_down {
+            row += 1;
+        } else {
+            row -= 1;
+        }
+    }
+
+    let mut result_str_vec = Vec::<char>::new();
+    for row_vec in result_vec {
+        result_str_vec.extend_from_slice(&row_vec);
+    }
+
+    result_str_vec.iter().collect()
 }
 
 /// 力扣（14. 最长公共前缀） https://leetcode-cn.com/problems/longest-common-prefix/
@@ -416,6 +457,66 @@ pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
     result
 }
 
+/// 力扣（189. 旋转数组） https://leetcode-cn.com/problems/rotate-array/
+pub fn rotate(nums: &mut Vec<i32>, k: i32) {
+    let len = nums.len();
+    if len <= 1{
+        return;
+    }
+    let offset = (k as usize) % len;
+    if offset == 0{
+        return;
+    }
+    // 总共需要移动len次
+    let mut temp_vec = vec![0;len];
+    let mut i = len - offset;
+    for j in 0..len{
+        temp_vec[j] = nums[i%len];
+        i+=1;
+    }
+
+    nums.copy_from_slice(&temp_vec);
+}
+
+///  力扣（209. 长度最小的子数组） https://leetcode-cn.com/problems/minimum-size-subarray-sum/
+pub fn min_sub_array_len(s: i32, nums: Vec<i32>) -> i32 {
+    let mut k = 0;
+    let mut i = 0usize;
+    let mut j = 0usize;
+    let len = nums.len();
+    let mut sum = 0;
+    if len >= 1 {
+        sum = nums[0];
+    }
+
+    while i <= j && j < len {
+        // 当 sum>=s 时，i++
+        if sum >= s {
+            if k == 0 {
+                k = j - i + 1;
+            } else {
+                let temp = j - i + 1;
+                if temp < k {
+                    k = temp;
+                }
+            }
+            sum -= nums[i];
+            i += 1;
+        } else {
+            // 当 sum<s 时，j++
+            j += 1;
+            if j < len {
+                sum += nums[j];
+            } else {
+                break;
+            }
+        }
+    }
+
+    k as i32
+}
+
+
 /// 力扣（344. 反转字符串） https://leetcode-cn.com/problems/reverse-string/
 pub fn reverse_string(s: &mut Vec<char>) {
     let len = s.len();
@@ -518,75 +619,6 @@ pub fn dominant_index(nums: Vec<i32>) -> i32 {
     }
     -1
 }
-///  力扣（209. 长度最小的子数组） https://leetcode-cn.com/problems/minimum-size-subarray-sum/
-pub fn min_sub_array_len(s: i32, nums: Vec<i32>) -> i32 {
-    let mut k = 0;
-    let mut i = 0usize;
-    let mut j = 0usize;
-    let len = nums.len();
-    let mut sum = 0;
-    if len >= 1 {
-        sum = nums[0];
-    }
 
-    while i <= j && j < len {
-        // 当 sum>=s 时，i++
-        if sum >= s {
-            if k == 0 {
-                k = j - i + 1;
-            } else {
-                let temp = j - i + 1;
-                if temp < k {
-                    k = temp;
-                }
-            }
-            sum -= nums[i];
-            i += 1;
-        } else {
-            // 当 sum<s 时，j++
-            j += 1;
-            if j < len {
-                sum += nums[j];
-            } else {
-                break;
-            }
-        }
-    }
 
-    k as i32
-}
 
-/// 力扣（6. Z 字形变换） https://leetcode-cn.com/problems/zigzag-conversion/
-pub fn convert(s: String, num_rows: i32) -> String {
-    if num_rows == 1 {
-        return s;
-    }
-
-    let mut result_vec = vec![vec![]; num_rows as usize];
-    let mut row = 0usize;
-    let mut direct_down = true;
-    for ch in s.chars() {
-        if row == 0 {
-            direct_down = true;
-        } else if row == (num_rows - 1) as usize {
-            direct_down = false;
-        }
-
-        if let Some(row_vec) = result_vec.get_mut(row) {
-            row_vec.push(ch);
-        }
-
-        if direct_down {
-            row += 1;
-        } else {
-            row -= 1;
-        }
-    }
-
-    let mut result_str_vec = Vec::<char>::new();
-    for row_vec in result_vec {
-        result_str_vec.extend_from_slice(&row_vec);
-    }
-
-    result_str_vec.iter().collect()
-}
