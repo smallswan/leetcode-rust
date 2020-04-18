@@ -82,11 +82,10 @@ fn unit_test() {
     let zz = convert(s, 4);
     println!("{}", zz);
 
+    let mut rotate_vec = vec![1, 2];
+    rotate(&mut rotate_vec, 1);
 
-    let mut rotate_vec = vec![1,2,3,4,5,6];
-    rotate(&mut rotate_vec,2);
-
-    println!("{:?}",rotate_vec);
+    println!("{:?}", rotate_vec);
 }
 
 /// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum
@@ -460,22 +459,24 @@ pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
 /// 力扣（189. 旋转数组） https://leetcode-cn.com/problems/rotate-array/
 pub fn rotate(nums: &mut Vec<i32>, k: i32) {
     let len = nums.len();
-    if len <= 1{
+    if len <= 1 {
         return;
     }
     let offset = (k as usize) % len;
-    if offset == 0{
+    if offset == 0 {
         return;
     }
-    // 总共需要移动len次
-    let mut temp_vec = vec![0;len];
-    let mut i = len - offset;
-    for j in 0..len{
-        temp_vec[j] = nums[i%len];
-        i+=1;
+
+    //三次翻转
+    nums.reverse();
+
+    for i in 0..offset / 2 {
+        nums.swap(i, offset - i - 1);
     }
 
-    nums.copy_from_slice(&temp_vec);
+    for j in 0..(len - offset) / 2 {
+        nums.swap(j + offset, len - j - 1);
+    }
 }
 
 ///  力扣（209. 长度最小的子数组） https://leetcode-cn.com/problems/minimum-size-subarray-sum/
@@ -515,7 +516,6 @@ pub fn min_sub_array_len(s: i32, nums: Vec<i32>) -> i32 {
 
     k as i32
 }
-
 
 /// 力扣（344. 反转字符串） https://leetcode-cn.com/problems/reverse-string/
 pub fn reverse_string(s: &mut Vec<char>) {
@@ -619,6 +619,3 @@ pub fn dominant_index(nums: Vec<i32>) -> i32 {
     }
     -1
 }
-
-
-
