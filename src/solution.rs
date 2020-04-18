@@ -86,6 +86,9 @@ fn unit_test() {
     rotate(&mut rotate_vec, 1);
 
     println!("{:?}", rotate_vec);
+
+    let roman_numbers = String::from("MCMXCIV");
+    println!("roman_to_int()={}",roman_to_int(roman_numbers));
 }
 
 /// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum
@@ -137,6 +140,83 @@ pub fn convert(s: String, num_rows: i32) -> String {
 
     result_str_vec.iter().collect()
 }
+
+/// 力扣（13. 罗马数字转整数） https://leetcode-cn.com/problems/roman-to-integer/
+pub fn roman_to_int(s: String) -> i32 {
+    let mut sum = 0;
+    let chars_vec:Vec<char> = s.chars().collect();
+
+    let chars = s.char_indices();
+    let len = s.len();
+
+    let mut split_idx = 0;
+    for (idx, ch)in chars{
+        if idx != 0 && idx == split_idx{
+            continue;
+        }
+        let num = match ch {
+            'I' => if idx + 1 < len{
+                let next_char = chars_vec[idx + 1];
+                if next_char == 'V'{
+                    split_idx = idx + 1;
+                    4
+                }else if next_char == 'X'{
+                    split_idx = idx + 1;
+                    9
+                }else{
+                    split_idx = idx;
+                    1
+                }
+            }else{
+                split_idx = idx;
+                1
+            } ,
+            'V' =>5,
+            'X' => if idx + 1 < len{
+                let next_char = chars_vec[idx + 1];
+                if next_char == 'L'{
+                    split_idx = idx + 1;
+                    40
+                }else if next_char == 'C'{
+                    split_idx = idx + 1;
+                    90
+                }else{
+                    split_idx = idx;
+                    10
+                }
+            }else{
+                split_idx = idx;
+                10
+            }
+
+            ,
+            'L' =>50,
+            'C'=>if idx + 1 < len{
+                let next_char = chars_vec[idx + 1];
+                if next_char == 'D'{
+                    split_idx = idx + 1;
+                    400
+                }else if next_char == 'M'{
+                    split_idx = idx + 1;
+                    900
+                }else{
+                    split_idx = idx;
+                    100
+                }
+            }else{
+                split_idx = idx;
+                100
+            },
+            'D'=>500,
+            'M'=>1000,
+            _ => panic!("No valid character")
+        };
+        sum += num;
+    }
+
+    sum
+}
+
 
 /// 力扣（14. 最长公共前缀） https://leetcode-cn.com/problems/longest-common-prefix/
 pub fn longest_common_prefix(strs: Vec<String>) -> String {
