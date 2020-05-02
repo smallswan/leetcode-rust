@@ -143,11 +143,63 @@ pub fn convert(s: String, num_rows: i32) -> String {
 
 /// 力扣（13. 罗马数字转整数） https://leetcode-cn.com/problems/roman-to-integer/
 pub fn roman_to_int(s: String) -> i32 {
+    let len = s.len();
     let mut sum = 0;
+
+    let mut map = HashMap::<&str,i32>::new();
+    map.insert("I", 1);
+    map.insert("V", 5);
+    map.insert("X", 10);
+    map.insert("L", 50);
+    map.insert("C", 100);
+    map.insert("D", 500);
+    map.insert("M", 1000);
+    map.insert("IV",4);
+    map.insert("IX",9);
+    map.insert("XL",40);
+    map.insert("XC",90);
+    map.insert("CD",400);
+    map.insert("CM",900);
+
+    let mut i = 1;
+
+    while i < len {
+        match  s.get(i -1..=i){
+            Some(x) => {
+                println!("x:{}",x);
+                match  map.get(x){
+                    Some(value) =>{
+                        println!("value:{}",value);
+                        sum += value;
+                    } ,
+                    None => ()
+                };
+                ()
+            },
+            None => (),
+        }
+
+        i+=1;
+    }
+
+    while let Some(x) = s.get(i -1..=i){
+        println!("x:{}",x);
+
+        if let Some(v) = map.get(x){
+            sum += v;
+        }
+        if i < len{
+            i+=1;
+        }else{
+            break;
+        }
+    }
+
+
     let chars_vec:Vec<char> = s.chars().collect();
 
     let chars = s.char_indices();
-    let len = s.len();
+
 
     let mut split_idx = 0;
     for (idx, ch)in chars{
