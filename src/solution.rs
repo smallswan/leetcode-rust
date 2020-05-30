@@ -35,7 +35,7 @@ fn unit_test() {
     println!("{:?}", matrix);
     //    println!("{:?}",find_diagonal_order(matrix));
 
-    println!("{:?}", spiral_order(matrix));
+    println!("spiral_order: {:?}", spiral_order(matrix));
 
     let a = String::from("0");
     let b = String::from("0");
@@ -48,7 +48,7 @@ fn unit_test() {
     let numbers = vec![2, 7, 11, 15];
     let target = 18;
     let result = two_sum2(numbers, target);
-    println!("{:?}", result);
+    println!("two_sum2 : {:?}", result);
 
     let mut chars = Vec::<char>::new();
     chars.push('a');
@@ -57,6 +57,7 @@ fn unit_test() {
     chars.push('d');
     //    chars.push('e');
     reverse_string(&mut chars);
+    println!("reverse_string:{:?}", chars);
 
     let nums = vec![1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1];
     let len = find_max_consecutive_ones(nums);
@@ -65,8 +66,8 @@ fn unit_test() {
     let mut nums = Vec::<i32>::new();
     nums.push(1);
     nums.push(4);
-    //nums.push(3);
-    //nums.push(2);
+    nums.push(3);
+    nums.push(2);
     println!("sum:{}", array_pair_sum(nums));
 
     println!("index:{}", pivot_index(vec![1, 7, 3, 6, 5, 6]));
@@ -88,7 +89,7 @@ fn unit_test() {
     println!("{:?}", rotate_vec);
 
     let roman_numbers = String::from("MCMXCIV");
-    println!("roman_to_int()={}",roman_to_int(roman_numbers));
+    println!("roman_to_int()={}", roman_to_int(roman_numbers));
 }
 
 /// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum
@@ -146,7 +147,7 @@ pub fn roman_to_int(s: String) -> i32 {
     let len = s.len();
     let mut sum = 0;
 
-    let mut map = HashMap::<&str,i32>::new();
+    let mut map = HashMap::<&str, i32>::new();
     map.insert("I", 1);
     map.insert("V", 5);
     map.insert("X", 10);
@@ -154,121 +155,115 @@ pub fn roman_to_int(s: String) -> i32 {
     map.insert("C", 100);
     map.insert("D", 500);
     map.insert("M", 1000);
-    map.insert("IV",4);
-    map.insert("IX",9);
-    map.insert("XL",40);
-    map.insert("XC",90);
-    map.insert("CD",400);
-    map.insert("CM",900);
+    map.insert("IV", 4);
+    map.insert("IX", 9);
+    map.insert("XL", 40);
+    map.insert("XC", 90);
+    map.insert("CD", 400);
+    map.insert("CM", 900);
 
     let mut i = 1;
 
     while i < len {
-        match  s.get(i -1..=i){
-            Some(x) => {
-                println!("x:{}",x);
-                match  map.get(x){
-                    Some(value) =>{
-                        println!("value:{}",value);
-                        sum += value;
-                    } ,
-                    None => ()
-                };
-                ()
-            },
-            None => (),
+        if let Some(x) = s.get(i - 1..=i) {
+            println!("x:{}", x);
+            if let Some(value) = map.get(x) {
+                println!("value:{}", value);
+                sum += value;
+            }
         }
-
-        i+=1;
+        i += 1;
     }
 
-    while let Some(x) = s.get(i -1..=i){
-        println!("x:{}",x);
+    while let Some(x) = s.get(i - 1..=i) {
+        println!("x:{}", x);
 
-        if let Some(v) = map.get(x){
+        if let Some(v) = map.get(x) {
             sum += v;
         }
-        if i < len{
-            i+=1;
-        }else{
+        if i < len {
+            i += 1;
+        } else {
             break;
         }
     }
 
-
-    let chars_vec:Vec<char> = s.chars().collect();
+    let chars_vec: Vec<char> = s.chars().collect();
 
     let chars = s.char_indices();
 
-
     let mut split_idx = 0;
-    for (idx, ch)in chars{
-        if idx != 0 && idx == split_idx{
+    for (idx, ch) in chars {
+        if idx != 0 && idx == split_idx {
             continue;
         }
         let num = match ch {
-            'I' => if idx + 1 < len{
-                let next_char = chars_vec[idx + 1];
-                if next_char == 'V'{
-                    split_idx = idx + 1;
-                    4
-                }else if next_char == 'X'{
-                    split_idx = idx + 1;
-                    9
-                }else{
+            'I' => {
+                if idx + 1 < len {
+                    let next_char = chars_vec[idx + 1];
+                    if next_char == 'V' {
+                        split_idx = idx + 1;
+                        4
+                    } else if next_char == 'X' {
+                        split_idx = idx + 1;
+                        9
+                    } else {
+                        split_idx = idx;
+                        1
+                    }
+                } else {
                     split_idx = idx;
                     1
                 }
-            }else{
-                split_idx = idx;
-                1
-            } ,
-            'V' =>5,
-            'X' => if idx + 1 < len{
-                let next_char = chars_vec[idx + 1];
-                if next_char == 'L'{
-                    split_idx = idx + 1;
-                    40
-                }else if next_char == 'C'{
-                    split_idx = idx + 1;
-                    90
-                }else{
+            }
+            'V' => 5,
+            'X' => {
+                if idx + 1 < len {
+                    let next_char = chars_vec[idx + 1];
+                    if next_char == 'L' {
+                        split_idx = idx + 1;
+                        40
+                    } else if next_char == 'C' {
+                        split_idx = idx + 1;
+                        90
+                    } else {
+                        split_idx = idx;
+                        10
+                    }
+                } else {
                     split_idx = idx;
                     10
                 }
-            }else{
-                split_idx = idx;
-                10
             }
 
-            ,
-            'L' =>50,
-            'C'=>if idx + 1 < len{
-                let next_char = chars_vec[idx + 1];
-                if next_char == 'D'{
-                    split_idx = idx + 1;
-                    400
-                }else if next_char == 'M'{
-                    split_idx = idx + 1;
-                    900
-                }else{
+            'L' => 50,
+            'C' => {
+                if idx + 1 < len {
+                    let next_char = chars_vec[idx + 1];
+                    if next_char == 'D' {
+                        split_idx = idx + 1;
+                        400
+                    } else if next_char == 'M' {
+                        split_idx = idx + 1;
+                        900
+                    } else {
+                        split_idx = idx;
+                        100
+                    }
+                } else {
                     split_idx = idx;
                     100
                 }
-            }else{
-                split_idx = idx;
-                100
-            },
-            'D'=>500,
-            'M'=>1000,
-            _ => panic!("No valid character")
+            }
+            'D' => 500,
+            'M' => 1000,
+            _ => panic!("No valid character"),
         };
         sum += num;
     }
 
     sum
 }
-
 
 /// 力扣（14. 最长公共前缀） https://leetcode-cn.com/problems/longest-common-prefix/
 pub fn longest_common_prefix(strs: Vec<String>) -> String {
@@ -398,44 +393,44 @@ pub fn plus_one(digits: Vec<i32>) -> Vec<i32> {
 
 /// 力扣（54. 螺旋矩阵） https://leetcode-cn.com/problems/spiral-matrix/
 pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
-    let m = matrix.len();
-    if m == 0 {
+    let len = matrix.len();
+    if len == 0 {
         return vec![];
     }
-    let n = matrix[0].len();
+    let row_len = matrix[0].len();
 
-    let mut result = Vec::<i32>::with_capacity(m * n);
+    let mut result = Vec::<i32>::with_capacity(len * row_len);
 
-    let mut i = 0;
-    let mut j = 0;
-    let mut x = m - 1; //i的最大值
-    let mut y = n - 1; //j的最大值
-    let mut s = 0; //i的最小值
-    let mut t = 0; //j的最小值
+    let mut row = 0;
+    let mut col = 0;
+    let mut x = len - 1; //i的最大值
+    let mut y = row_len - 1; //j的最大值
+    let mut row_s = 0; //i的最小值
+    let mut col_t = 0; //j的最小值
     let mut direct = 0;
 
     let mut push_times = 1;
     result.push(matrix[0][0]);
 
-    while push_times < m * n {
+    while push_times < len * row_len {
         match direct % 4 {
             0 => {
                 //右
-                if j < y {
-                    j += 1;
-                    result.push(matrix[i][j]);
+                if col < y {
+                    col += 1;
+                    result.push(matrix[row][col]);
                     push_times += 1;
                     continue;
                 } else {
-                    s += 1;
+                    row_s += 1;
                     direct += 1;
                 }
             }
             1 => {
                 //下
-                if i < x {
-                    i += 1;
-                    result.push(matrix[i][j]);
+                if row < x {
+                    row += 1;
+                    result.push(matrix[row][col]);
                     push_times += 1;
                     continue;
                 } else {
@@ -445,9 +440,9 @@ pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
             }
             2 => {
                 //左
-                if j > t {
-                    j -= 1;
-                    result.push(matrix[i][j]);
+                if col > col_t {
+                    col -= 1;
+                    result.push(matrix[row][col]);
                     push_times += 1;
                     continue;
                 } else {
@@ -457,13 +452,13 @@ pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
             }
             3 => {
                 //上
-                if i > s {
-                    i -= 1;
-                    result.push(matrix[i][j]);
+                if row > row_s {
+                    row -= 1;
+                    result.push(matrix[row][col]);
                     push_times += 1;
                     continue;
                 } else {
-                    t += 1;
+                    col_t += 1;
                     direct += 1;
                 }
             }
@@ -502,7 +497,7 @@ pub fn add_binary(a: String, b: String) -> String {
             t = false;
         }
 
-        if s == false && t == false {
+        if !s && !t {
             break;
         }
 
@@ -518,8 +513,7 @@ pub fn add_binary(a: String, b: String) -> String {
         result.push('1');
     }
     //字符串翻转
-    let result = result.chars().rev().collect();
-    result
+    result.chars().rev().collect()
 }
 
 /// 力扣（118. 杨辉三角） https://leetcode-cn.com/problems/pascals-triangle/
@@ -531,14 +525,12 @@ pub fn generate(num_rows: i32) -> Vec<Vec<i32>> {
         if row <= 2 {
             let r = vec![1; row];
             result.push(r);
-        } else {
-            if let Some(last_row) = result.last() {
-                let mut r = vec![1; row];
-                for i in 1..row - 1 {
-                    r[i] = last_row[i - 1] + last_row[i];
-                }
-                result.push(r);
+        } else if let Some(last_row) = result.last() {
+            let mut r = vec![1; row];
+            for i in 1..row - 1 {
+                r[i] = last_row[i - 1] + last_row[i];
             }
+            result.push(r);
         }
     }
     result
@@ -560,9 +552,11 @@ pub fn get_row(row_index: i32) -> Vec<i32> {
             }
         }
 
-        return result_vec;
+        result_vec
     }
 }
+
+use std::cmp::Ordering;
 
 /// 力扣（167. 两数之和 II - 输入有序数组）https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
 pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
@@ -572,17 +566,32 @@ pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
     let mut index2 = numbers.len() - 1;
     while index2 >= 1 {
         let sum = numbers[index1] + numbers[index2];
-        if sum < target {
-            index1 += 1;
-            continue;
-        } else if sum > target {
-            index2 -= 1;
-            continue;
-        } else {
-            result.push((index1 + 1) as i32);
-            result.push((index2 + 1) as i32);
-            break;
+        match sum.cmp(&target) {
+            Ordering::Less => {
+                index1 += 1;
+                continue;
+            }
+            Ordering::Greater => {
+                index2 -= 1;
+                continue;
+            }
+            Ordering::Equal => {
+                result.push((index1 + 1) as i32);
+                result.push((index2 + 1) as i32);
+                break;
+            }
         }
+        // if sum < target {
+        //     index1 += 1;
+        //     continue;
+        // } else if sum > target {
+        //     index2 -= 1;
+        //     continue;
+        // } else {
+        //     result.push((index1 + 1) as i32);
+        //     result.push((index2 + 1) as i32);
+        //     break;
+        // }
     }
 
     result
@@ -617,10 +626,7 @@ pub fn min_sub_array_len(s: i32, nums: Vec<i32>) -> i32 {
     let mut i = 0usize;
     let mut j = 0usize;
     let len = nums.len();
-    let mut sum = 0;
-    if len >= 1 {
-        sum = nums[0];
-    }
+    let mut sum = if len >= 1 { nums[0] } else { 0 };
 
     while i <= j && j < len {
         // 当 sum>=s 时，i++
@@ -656,9 +662,10 @@ pub fn reverse_string(s: &mut Vec<char>) {
         let mut i = 0;
         let half = len / 2;
         while i < half {
-            let x = s[i];
-            s[i] = s[len - i - 1];
-            s[len - i - 1] = x;
+            // let x = s[i];
+            // s[i] = s[len - i - 1];
+            // s[len - i - 1] = x;
+            s.swap(i, len - i - 1);
             i += 1;
         }
     }
@@ -680,9 +687,9 @@ pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
     }
 
     if max_temp > max {
-        return max_temp;
+        max_temp
     } else {
-        return max;
+        max
     }
 }
 
@@ -694,8 +701,11 @@ pub fn array_pair_sum(nums: Vec<i32>) -> i32 {
     }
 
     let mut nums_sort = Vec::<i32>::with_capacity(len);
-    for i in 0..len {
-        nums_sort.push(nums[i]);
+    // for i in 0..len {
+    //     nums_sort.push(nums[i]);
+    // }
+    for num in nums.iter().take(len) {
+        nums_sort.push(*num);
     }
     nums_sort.sort();
 
