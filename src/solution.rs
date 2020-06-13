@@ -92,6 +92,12 @@ fn unit_test() {
     println!("roman_to_int()={}", roman_to_int(roman_numbers));
 }
 
+#[test]
+fn simple() {
+    let count = climb_stairs(20);
+    println!("count:{}", count);
+}
+
 /// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum
 pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
     let mut nums_map = HashMap::<i32, i32>::new();
@@ -514,6 +520,28 @@ pub fn add_binary(a: String, b: String) -> String {
     }
     //字符串翻转
     result.chars().rev().collect()
+}
+
+use std::cell::RefCell;
+use std::rc::Rc;
+/// 力扣（70. 爬楼梯） https://leetcode-cn.com/problems/climbing-stairs/
+pub fn climb_stairs(n: i32) -> i32 {
+    let memo_vec = Rc::new(RefCell::new(vec![0; (n + 1) as usize]));
+    climb_stairs_memo(n, memo_vec)
+}
+
+pub fn climb_stairs_memo(n: i32, memo: Rc<RefCell<Vec<i32>>>) -> i32 {
+    if n == 1 {
+        memo.borrow_mut()[n as usize] = 1;
+    } else if n == 2 {
+        memo.borrow_mut()[n as usize] = 2;
+    } else {
+        let step1 = climb_stairs_memo(n - 1, Rc::clone(&memo));
+        let step2 = climb_stairs_memo(n - 2, Rc::clone(&memo));
+        memo.borrow_mut()[n as usize] = step1 + step2;
+    }
+
+    memo.borrow_mut()[n as usize]
 }
 
 /// 力扣（118. 杨辉三角） https://leetcode-cn.com/problems/pascals-triangle/
