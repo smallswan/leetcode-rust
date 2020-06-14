@@ -94,7 +94,7 @@ fn unit_test() {
 
 #[test]
 fn simple() {
-    let count = climb_stairs(20);
+    let count = climb_stairs(30);
     println!("count:{}", count);
 }
 
@@ -526,8 +526,20 @@ use std::cell::RefCell;
 use std::rc::Rc;
 /// 力扣（70. 爬楼梯） https://leetcode-cn.com/problems/climbing-stairs/
 pub fn climb_stairs(n: i32) -> i32 {
-    let memo_vec = Rc::new(RefCell::new(vec![0; (n + 1) as usize]));
-    climb_stairs_memo(n, memo_vec)
+    if n == 1 {
+        return 1;
+    } else if n == 2 {
+        return 2;
+    }
+
+    let mut dp = vec![0; (n + 1) as usize];
+    dp[1] = 1;
+    dp[2] = 2;
+    for i in 3..=n as usize {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+
+    dp[n as usize]
 }
 
 pub fn climb_stairs_memo(n: i32, memo: Rc<RefCell<Vec<i32>>>) -> i32 {
