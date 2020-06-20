@@ -96,6 +96,11 @@ fn unit_test() {
 fn simple() {
     let count = climb_stairs(30);
     println!("count:{}", count);
+
+    let new_x = reverse(132);
+    println!("new_x:{}",new_x);
+    let new_x = reverse(-1999999999);
+    println!("new_x:{}",new_x);
 }
 
 /// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum
@@ -146,6 +151,39 @@ pub fn convert(s: String, num_rows: i32) -> String {
     }
 
     result_str_vec.iter().collect()
+}
+
+/// 力扣（7. 整数反转） ， https://leetcode-cn.com/problems/reverse-integer/
+pub fn reverse(x: i32) -> i32 {
+    let x_str = x.to_string();
+    let mut x_bytes = x_str.as_bytes();
+    if x_bytes[0] != 45 {
+        let mut dst = vec![0u8;x_bytes.len()];
+        dst.clone_from_slice(x_bytes);
+        dst.reverse();
+
+        let new_x_str = String::from_utf8(dst).unwrap();
+
+        let new_x = new_x_str.parse::<i32>();
+        if new_x.is_ok(){
+            return new_x.unwrap();
+        }else{
+            return 0;
+        }
+    }else{
+        let mut dst = vec![0u8;x_bytes.len()-1];
+        dst.clone_from_slice(&x_bytes[1..]);
+        dst.reverse();
+
+        let new_x_str = String::from_utf8(dst).unwrap();
+
+        let new_x = new_x_str.parse::<i32>();
+        if new_x.is_ok(){
+            return 0 - new_x.unwrap();
+        }else{
+            return 0;
+        }
+    }
 }
 
 /// 力扣（13. 罗马数字转整数） https://leetcode-cn.com/problems/roman-to-integer/
