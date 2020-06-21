@@ -98,46 +98,44 @@ fn simple() {
     println!("count:{}", count);
 
     let new_x = reverse(132);
-    println!("new_x:{}",new_x);
+    println!("new_x:{}", new_x);
     let new_x = reverse(-1999999999);
-    println!("new_x:{}",new_x);
+    println!("new_x:{}", new_x);
 
-
-    let sorted_nums = vec![1,3,5,6];
+    let sorted_nums = vec![1, 3, 5, 6];
     let target = 4;
-    let idx = search_insert(sorted_nums,target);
-    println!("idx:{}",idx);
+    let idx = search_insert(sorted_nums, target);
+    println!("idx:{}", idx);
 
-
-    let intervals: Vec<Vec<i32>> = vec![vec![1,3],vec![2,6],vec![8,10],vec![15,18]];
+    let intervals: Vec<Vec<i32>> = vec![vec![1, 3], vec![2, 6], vec![8, 10], vec![15, 18]];
     let merge_intervals = merge(intervals);
-    println!("{:?}",merge_intervals);
+    println!("{:?}", merge_intervals);
 
     // let res = longest_palindrome(String::from("banana"));
     // println!("longest_palindrome res:{}",res);
 
-    let heights  = vec![1,2,3,4,5];
+    let heights = vec![1, 2, 4, 5, 3,3];
     let move_person = height_checker(heights);
-    println!("height_checker move_person:{}",move_person);
+    println!("height_checker move_person:{}", move_person);
 }
 ///
 pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
     let len = nums.len();
     let mut idx = 0;
     while idx < len {
-        if target ==  nums[idx] || target < nums[idx]{
+        if target == nums[idx] || target < nums[idx] {
             return idx as i32;
         }
-        
-        if target > nums[idx]{
-            if idx != len - 1{
-                if target < nums[idx+1]{
+
+        if target > nums[idx] {
+            if idx != len - 1 {
+                if target < nums[idx + 1] {
                     return (idx + 1) as i32;
-                }else{
+                } else {
                     idx += 1;
                     continue;
                 }
-            }else{
+            } else {
                 return len as i32;
             }
         }
@@ -149,65 +147,67 @@ pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
 
 ///
 pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
-    if intervals.len() == 1{
+    if intervals.len() == 1 {
         return intervals;
     }
-    let mut merge_vec = vec![vec![];intervals.len()];
+    let mut merge_vec = vec![vec![]; intervals.len()];
     merge_vec.clone_from_slice(&intervals);
-    
+
     merge_vec
 }
 
 ///
 pub fn longest_palindrome(s: String) -> String {
-//    let s_chars = s.chars();
+    //    let s_chars = s.chars();
     let s_bytes = s.as_bytes();
-    let mut res_bytes = vec!['#' as u8;2 * s_bytes.len() + 1];
+    let mut res_bytes = vec!['#' as u8; 2 * s_bytes.len() + 1];
 
     let mut index = 0;
     let mut i = 0;
-    while i != res_bytes.len(){
-        if i&1 != 0{
+    while i != res_bytes.len() {
+        if i & 1 != 0 {
             index += 1;
-            res_bytes[i] =  s_bytes[index -1];
+            res_bytes[i] = s_bytes[index - 1];
         }
-        i+=1;
+        i += 1;
     }
-//    let new_s = String::from_utf8(res_bytes).unwrap();
+    //    let new_s = String::from_utf8(res_bytes).unwrap();
 
-    let mut rl = vec![0;2 * s_bytes.len() + 1];
+    let mut rl = vec![0; 2 * s_bytes.len() + 1];
 
-    println!("rl:{:?}",rl);
+    println!("rl:{:?}", rl);
     let mut max_right = 0;
     let mut pos = 0;
     let mut max_len = 0;
 
-    for j in 0..res_bytes.len(){
-        if j < max_right{
-            rl[j] = if rl[2*pos-j] < max_right - j{
-                rl[2*pos-j]
-            }else{
+    for j in 0..res_bytes.len() {
+        if j < max_right {
+            rl[j] = if rl[2 * pos - j] < max_right - j {
+                rl[2 * pos - j]
+            } else {
                 max_right - j
             }
-        }else{
+        } else {
             rl[j] = 1;
         }
-        println!("j:{},rl[j]:{}",j,rl[j]);
-        while (j - rl[j]) > 0 && (j + rl[j]) < res_bytes.len() && res_bytes[j - rl[j]] ==  res_bytes[j + rl[j]]{
-
+        println!("j:{},rl[j]:{}", j, rl[j]);
+        while (j - rl[j]) > 0
+            && (j + rl[j]) < res_bytes.len()
+            && res_bytes[j - rl[j]] == res_bytes[j + rl[j]]
+        {
             rl[j] += 1;
         }
 
-        if rl[j] + j - 1 > max_right{
+        if rl[j] + j - 1 > max_right {
             max_right = rl[j] + j - 1;
             pos = j;
         }
-        if max_len < rl[j]{
+        if max_len < rl[j] {
             max_len = rl[j];
         }
     }
 
-    println!("max_len:{}",max_len);
+    println!("max_len:{}", max_len);
 
     let new_s = String::from_utf8(res_bytes).unwrap();
     new_s
@@ -215,22 +215,27 @@ pub fn longest_palindrome(s: String) -> String {
 
 /// 力扣（1051. 高度检查器），https://leetcode-cn.com/problems/height-checker/
 pub fn height_checker(heights: Vec<i32>) -> i32 {
-        let len = heights.len();
-        if len <= 1{
-            return 0;
-        }
-        let mut target_heights = vec![0;len];
-        target_heights.clone_from_slice(&heights);
-        target_heights.sort();
+    let len = heights.len();
+    if len <= 1 {
+        return 0;
+    }
+    let mut arr = vec![0; 101];
+    for height in &heights {
+        arr[*height as usize] += 1;
+    }
 
-        let mut move_person = 0;
-        for i in 0..len{
-            if target_heights[i] != heights[i]{
-                move_person += 1;
+    let mut count = 0;
+    let mut j = 0;
+    for i in 1..101 {
+        while arr[i] > 0 {
+            if heights[j] != (i as i32) {
+                count += 1;
             }
+            j += 1;
+            arr[i] -= 1;
         }
-
-        move_person
+    }
+    count
 }
 
 /// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum
@@ -283,24 +288,24 @@ pub fn convert(s: String, num_rows: i32) -> String {
     result_str_vec.iter().collect()
 }
 
-use std::i32::{MIN,MAX};
+use std::i32::{MAX, MIN};
 /// 力扣（7. 整数反转） ， https://leetcode-cn.com/problems/reverse-integer/
 pub fn reverse(x: i32) -> i32 {
     //MIN:-2147483648,MAX:2147483647
-    println!("MIN:{},MAX:{}",MIN,MAX);
+    println!("MIN:{},MAX:{}", MIN, MAX);
     let mut ret = 0;
     let mut y = x;
-    while y != 0{
+    while y != 0 {
         let pop = y % 10;
         y = y / 10;
-        if ret > MAX /10 || (ret == MAX /10  && pop > 7){
-            return 0;
-        } 
-
-        if ret < MIN /10 || (ret == MIN /10  && pop < -8){
+        if ret > MAX / 10 || (ret == MAX / 10 && pop > 7) {
             return 0;
         }
-        ret = ret * 10 + pop; 
+
+        if ret < MIN / 10 || (ret == MIN / 10 && pop < -8) {
+            return 0;
+        }
+        ret = ret * 10 + pop;
     }
     ret
 }
