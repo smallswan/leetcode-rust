@@ -114,7 +114,7 @@ fn simple() {
     // let res = longest_palindrome(String::from("banana"));
     // println!("longest_palindrome res:{}",res);
 
-    let heights = vec![1, 2, 4, 5, 3,3];
+    let heights = vec![1, 2, 4, 5, 3, 3];
     let move_person = height_checker(heights);
     println!("height_checker move_person:{}", move_person);
 }

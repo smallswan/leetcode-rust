@@ -1,7 +1,9 @@
 #![allow(unused)]
 mod dp;
+mod medium;
 mod solution;
 mod spring2020;
+
 fn main() {
     println!("LeetCode problems that I've solved in Rust");
 
