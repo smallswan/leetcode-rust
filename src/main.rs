@@ -2,6 +2,7 @@
 mod dp;
 mod medium;
 mod solution;
+mod solution1000;
 mod spring2020;
 
 fn main() {

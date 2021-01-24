@@ -290,6 +290,7 @@ pub fn convert(s: String, num_rows: i32) -> String {
 
 use std::i32::{MAX, MIN};
 /// 力扣（7. 整数反转） ， https://leetcode-cn.com/problems/reverse-integer/
+/// 关键是防止转换后的数据溢出（overflow）
 pub fn reverse(x: i32) -> i32 {
     //MIN:-2147483648,MAX:2147483647
     println!("MIN:{},MAX:{}", MIN, MAX);
@@ -308,6 +309,20 @@ pub fn reverse(x: i32) -> i32 {
         ret = ret * 10 + pop;
     }
     ret
+}
+
+/// 参考： 吴翱翔 https://zhuanlan.zhihu.com/p/340649000
+pub fn reverse2(x: i32) -> i32 {
+    || -> Option<i32> {
+        let mut ret = 0i32;
+        let mut y = x;
+        while y.abs() != 0 {
+            ret = ret.checked_mul(10)?.checked_add(y % 10)?;
+            y /= 10;
+        }
+        Some(ret)
+    }()
+    .unwrap_or(0)
 }
 
 /// 力扣（13. 罗马数字转整数） https://leetcode-cn.com/problems/roman-to-integer/
