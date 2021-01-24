@@ -17,4 +17,12 @@ fn main() {
 
     let max = dp::number_tower(tower);
     println!("number_tower max = {:?}", max);
+
+    let ip = String::from("192.168.2.251");
+    let nums: Vec<&str> = ip.split(".").collect();
+
+    println!("{:?}", nums);
+    for num in nums {
+        println!("{} len is {}", num, num.len());
+    }
 }

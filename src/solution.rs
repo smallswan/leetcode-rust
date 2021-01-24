@@ -118,7 +118,7 @@ fn simple() {
     let move_person = height_checker(heights);
     println!("height_checker move_person:{}", move_person);
 
-    let ip = String::from("2001:0db8:85a3:0:0:8A2E:0370:7334:");
+    let ip = String::from("2001:0db8:85a3:0:0:8A2E:0370:7334");
 
     let ret = valid_ip_address2(ip);
     println!("{}", ret);
@@ -923,10 +923,12 @@ pub fn valid_ip_address(ip: String) -> String {
 pub fn valid_ip_address2(ip: String) -> String {
     if ip.chars().filter(|ch| *ch == '.').count() == 3 {
         //println!("valid_ipv4_address..");
-        return valid_ipv4_address(ip);
+        // return valid_ipv4_address(ip);
+        return valid_ipv4_address_v2(ip);
     } else if ip.chars().filter(|ch| *ch == ':').count() == 7 {
         //println!("valid_ipv6_address..");
-        return valid_ipv6_address(ip);
+        // return valid_ipv6_address(ip);
+        return valid_ipv6_address_v2(ip);
     } else {
         return String::from("Neither");
     }
@@ -960,6 +962,46 @@ fn valid_ipv4_address(ip: String) -> String {
     "IPv4".to_string()
 }
 
+fn valid_ipv4_address_v2(ip: String) -> String {
+    // let array: Vec<Vec<char>> = ip.split('.').map(|x| x.chars().collect()).collect();
+    let array: Vec<&str> = ip.split(".").collect();
+    for item in array {
+        let len = item.len();
+        //Validate integer in range (0, 255):
+        //1. length of chunk is between 1 and 3
+        if len == 0 || len > 3 {
+            return String::from("Neither");
+        }
+        //2. no extra leading zeros
+        let mut chars = item.chars().peekable();
+        // let first_char = chars.peek();
+
+        if let Some(first) = chars.peek() {
+            if *first == '0' && len > 1 {
+                return String::from("Neither");
+            }
+
+            if !(*first).is_digit(10) {
+                return String::from("Neither");
+            }
+        }
+        //3. only digits are allowed
+
+        for ch in chars {
+            if !(ch).is_digit(10) {
+                return String::from("Neither");
+            }
+        }
+        //4. less than 255
+        // let num_str: String = array[i].iter().collect();
+        let num = item.parse::<u16>().unwrap();
+        if num > 255 {
+            return String::from("Neither");
+        }
+    }
+    "IPv4".to_string()
+}
+
 fn valid_ipv6_address(ip: String) -> String {
     let array: Vec<Vec<char>> = ip.split(':').map(|x| x.chars().collect()).collect();
     for i in 0..array.len() {
@@ -970,6 +1012,24 @@ fn valid_ipv6_address(ip: String) -> String {
         //2.
         for ch in num {
             if !(*ch).is_digit(16) {
+                return String::from("Neither");
+            }
+        }
+    }
+    String::from("IPv6")
+}
+
+fn valid_ipv6_address_v2(ip: String) -> String {
+    // let array: Vec<Vec<char>> = ip.split(':').map(|x| x.chars().collect()).collect();
+    let array: Vec<&str> = ip.split(":").collect();
+    for item in array {
+        let len = item.len();
+        if len == 0 || len > 4 {
+            return String::from("Neither");
+        }
+        //2.
+        for ch in item.chars() {
+            if !(ch).is_digit(16) {
                 return String::from("Neither");
             }
         }
