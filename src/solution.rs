@@ -117,6 +117,11 @@ fn simple() {
     let heights = vec![1, 2, 4, 5, 3, 3];
     let move_person = height_checker(heights);
     println!("height_checker move_person:{}", move_person);
+
+    let ip = String::from("2001:0db8:85a3:0:0:8A2E:0370:7334:");
+
+    let ret = valid_ip_address2(ip);
+    println!("{}", ret);
 }
 ///
 pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
@@ -886,6 +891,90 @@ pub fn reverse_string(s: &mut Vec<char>) {
             i += 1;
         }
     }
+}
+
+/// 力扣（468. 验证IP地址）  https://leetcode-cn.com/problems/validate-ip-address/
+use std::net::IpAddr;
+pub fn valid_ip_address(ip: String) -> String {
+    match ip.parse::<IpAddr>() {
+        Ok(IpAddr::V4(x)) => {
+            let array: Vec<Vec<char>> = ip.split('.').map(|x| x.chars().collect()).collect();
+            for i in 0..array.len() {
+                if (array[i][0] == '0' && array[i].len() > 1) {
+                    return String::from("Neither");
+                }
+            }
+            String::from("IPv4")
+        }
+        Ok(IpAddr::V6(_)) => {
+            let array: Vec<Vec<char>> = ip.split(':').map(|x| x.chars().collect()).collect();
+            for i in 0..array.len() {
+                if array[i].len() == 0 {
+                    return String::from("Neither");
+                }
+            }
+            String::from("IPv6")
+        }
+        _ => String::from("Neither"),
+    }
+}
+
+/// 使用分治法解 力扣（468. 验证IP地址）  https://leetcode-cn.com/problems/validate-ip-address/
+pub fn valid_ip_address2(ip: String) -> String {
+    if ip.chars().filter(|ch| *ch == '.').count() == 3 {
+        //println!("valid_ipv4_address..");
+        return valid_ipv4_address(ip);
+    } else if ip.chars().filter(|ch| *ch == ':').count() == 7 {
+        //println!("valid_ipv6_address..");
+        return valid_ipv6_address(ip);
+    } else {
+        return String::from("Neither");
+    }
+}
+
+fn valid_ipv4_address(ip: String) -> String {
+    let array: Vec<Vec<char>> = ip.split('.').map(|x| x.chars().collect()).collect();
+    for i in 0..array.len() {
+        //Validate integer in range (0, 255):
+        //1. length of chunk is between 1 and 3
+        if array[i].len() == 0 || array[i].len() > 3 {
+            return String::from("Neither");
+        }
+        //2. no extra leading zeros
+        if (array[i][0] == '0' && array[i].len() > 1) {
+            return String::from("Neither");
+        }
+        //3. only digits are allowed
+        for ch in &array[i] {
+            if !(*ch).is_digit(10) {
+                return String::from("Neither");
+            }
+        }
+        //4. less than 255
+        let num_str: String = array[i].iter().collect();
+        let num = num_str.parse::<u16>().unwrap();
+        if num > 255 {
+            return String::from("Neither");
+        }
+    }
+    "IPv4".to_string()
+}
+
+fn valid_ipv6_address(ip: String) -> String {
+    let array: Vec<Vec<char>> = ip.split(':').map(|x| x.chars().collect()).collect();
+    for i in 0..array.len() {
+        let num = &array[i];
+        if num.len() == 0 || num.len() > 4 {
+            return String::from("Neither");
+        }
+        //2.
+        for ch in num {
+            if !(*ch).is_digit(16) {
+                return String::from("Neither");
+            }
+        }
+    }
+    String::from("IPv6")
 }
 
 ///力扣（485. 最大连续1的个数）https://leetcode-cn.com/problems/max-consecutive-ones/
