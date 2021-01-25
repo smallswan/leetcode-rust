@@ -778,6 +778,16 @@ pub fn get_row(row_index: i32) -> Vec<i32> {
     }
 }
 
+/// 力扣（136. 只出现一次的数字） https://leetcode-cn.com/problems/single-number/
+pub fn single_number(nums: Vec<i32>) -> i32 {
+    let len = nums.len();
+    let mut single_number = nums[0];
+    for i in 1..len {
+        single_number ^= nums[i];
+    }
+    single_number
+}
+
 use std::cmp::Ordering;
 
 /// 力扣（167. 两数之和 II - 输入有序数组）https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/

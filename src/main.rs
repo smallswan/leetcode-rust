@@ -5,6 +5,10 @@ mod solution;
 mod solution1000;
 mod spring2020;
 
+extern "C" {
+    fn rand() -> i32;
+}
+
 fn main() {
     println!("LeetCode problems that I've solved in Rust");
 
@@ -25,4 +29,8 @@ fn main() {
     for num in nums {
         println!("{} len is {}", num, num.len());
     }
+
+    let rand = unsafe { rand() };
+
+    println!("{}", rand);
 }
