@@ -1127,3 +1127,12 @@ pub fn dominant_index(nums: Vec<i32>) -> i32 {
     }
     -1
 }
+
+/// 力扣（977. 有序数组的平方）https://leetcode-cn.com/problems/squares-of-a-sorted-array/
+pub fn sorted_squares(nums: Vec<i32>) -> Vec<i32> {
+    let mut v: Vec<i32> = nums.iter().map(|x| x * x).collect();
+    if nums[0] < 0{
+       v.sort();
+    }
+    v
+}
