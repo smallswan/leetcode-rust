@@ -1172,6 +1172,7 @@ pub fn sorted_squares_v2(nums: Vec<i32>) -> Vec<i32> {
             break;
         }
     }
+    println!("negtive:{}",negtive);
 
     //2. 定义两个指针，分别定为两个数组（nums[0..negtive],[negtive..len]）的下标。
     let mut i = negtive;
@@ -1188,13 +1189,13 @@ pub fn sorted_squares_v2(nums: Vec<i32>) -> Vec<i32> {
         }else if j == len {
             v[index] = nums[i] * nums[i];
             temp_i -= 1;
-            if temp_i >=1 {
+            if temp_i >=0 {
                i = temp_i as usize;
             }
         } else if nums[i] * nums[i] < nums[j] * nums[j] {
             v[index] = nums[i] * nums[i];
             temp_i -= 1;
-            if temp_i >=1 {
+            if temp_i >=0 {
                i = temp_i as usize;
             }
             
