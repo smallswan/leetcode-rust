@@ -33,4 +33,15 @@ fn main() {
     let rand = unsafe { rand() };
 
     println!("{}", rand);
+
+    let sorted_vec_v2 = vec![-3, -2, 0, 1, 4, 5];
+    let sorted_squares_vec_v2 = solution::sorted_squares_v2(sorted_vec_v2);
+    assert_eq!(sorted_squares_vec_v2, vec![0, 1, 4, 9, 16, 25]);
+
+    let sorted_vec_all_postive = vec![0, 1, 4, 5, 8];
+
+    assert_eq!(
+        solution::sorted_squares_v2(sorted_vec_all_postive),
+        vec![0, 1, 16, 25, 64]
+    );
 }
