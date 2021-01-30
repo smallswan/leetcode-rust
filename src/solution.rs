@@ -122,6 +122,12 @@ fn simple() {
 
     let ret = valid_ip_address2(ip);
     println!("{}", ret);
+    let sorted_vec = vec![-3,-2,0,1,4,5];
+    let sorted_squares_vec = sorted_squares(sorted_vec); 
+    assert_eq!(sorted_squares_vec,vec![0,1,4,9,16,25]);
+    let sorted_vec_v2 = vec![-3,-2,0,1,4,5];
+    let sorted_squares_vec_v2 = sorted_squares_v2(sorted_vec_v2); 
+    assert_eq!(sorted_squares_vec_v2,vec![0,1,4,9,16,25]);
 }
 ///
 pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
@@ -1136,4 +1142,78 @@ pub fn dominant_index(nums: Vec<i32>) -> i32 {
         return idx as i32;
     }
     -1
+}
+
+/// 力扣（977. 有序数组的平方）https://leetcode-cn.com/problems/squares-of-a-sorted-array/
+pub fn sorted_squares(nums: Vec<i32>) -> Vec<i32> {
+    let mut v: Vec<i32> = nums.iter().map(|x| x * x).collect();
+    if nums[0] < 0 {
+        v.sort();
+    }
+    v
+}
+
+/// 归并排序解法
+pub fn sorted_squares_v2(nums: Vec<i32>) -> Vec<i32> {
+    let len = nums.len();
+    if nums[0] >=0 {
+       let mut v = Vec::<i32>::with_capacity(len);
+       for i in 0..len{
+           v.push(nums[i]*nums[i]);
+       }
+       return v;
+    }
+
+    if nums[len-1] <= 0 {
+       let mut v = Vec::<i32>::with_capacity(len);
+       for i in 0..len{
+           v.push(nums[i]*nums[i]);
+       }
+       v.reverse();
+       return v;
+    }
+    //将数组划分成两组，负数组和非负数组，然后使用归并排序得到排序结果。
+    //1. 确定最后个非负数的位置negtive。
+    let mut negtive = 0;
+    for i in 0..len {
+        if nums[i] < 0 {
+            negtive = i;
+        } else {
+            break;
+        }
+    }
+    println!("negtive:{}",negtive);
+
+    //2. 定义两个指针，分别定为两个数组（nums[0..negtive],[negtive..len]）的下标。
+    let mut i = negtive;
+    let mut j = negtive + 1;
+    let mut temp_i = i as i32;
+
+    //3. 根据归并算法得到排序结果。
+    let mut index = 0;
+    let mut v = vec![0i32; len];
+    while i >= 0 || j < len {
+        if temp_i < 0{
+            v[index] = nums[j] * nums[j];
+            j+=1;
+        }else if j == len {
+            v[index] = nums[i] * nums[i];
+            temp_i -= 1;
+            if temp_i >=0 {
+               i = temp_i as usize;
+            }
+        } else if nums[i] * nums[i] < nums[j] * nums[j] {
+            v[index] = nums[i] * nums[i];
+            temp_i -= 1;
+            if temp_i >=0 {
+               i = temp_i as usize;
+            }
+            
+        } else {
+            v[index] = nums[j] * nums[j];
+            j += 1;
+        }
+        index += 1;
+    }
+    v
 }
