@@ -1,6 +1,7 @@
 #![allow(unused)]
 mod dp;
 mod medium;
+mod simple;
 mod solution;
 mod solution1000;
 mod spring2020;
@@ -34,14 +35,16 @@ fn main() {
 
     println!("{}", rand);
 
-    let sorted_vec_v2 = vec![-3, -2, 0, 1, 4, 5];
-    let sorted_squares_vec_v2 = solution::sorted_squares_v2(sorted_vec_v2);
-    assert_eq!(sorted_squares_vec_v2, vec![0, 1, 4, 9, 16, 25]);
+    // let sorted_vec_v2 = vec![-3, -2, 0, 1, 4, 5];
+    // let sorted_squares_vec_v2 = solution::sorted_squares_v2(sorted_vec_v2);
+    // assert_eq!(sorted_squares_vec_v2, vec![0, 1, 4, 9, 16, 25]);
 
-    let sorted_vec_all_postive = vec![0, 1, 4, 5, 8];
+    // let sorted_vec_all_postive = vec![0, 1, 4, 5, 8];
 
-    assert_eq!(
-        solution::sorted_squares_v2(sorted_vec_all_postive),
-        vec![0, 1, 16, 25, 64]
-    );
+    // assert_eq!(
+    //     solution::sorted_squares_v2(sorted_vec_all_postive),
+    //     vec![0, 1, 16, 25, 64]
+    // );
+
+    solution::sorted_squares_v2(vec![-10000, -9999, -7, -5, 0, 0, 10000]);
 }
