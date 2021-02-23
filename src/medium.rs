@@ -107,7 +107,7 @@ pub fn longest_palindrome(s: String) -> String {
 
 enum State {
     Init,
-    ExpectNumber,// 已经碰到了+或者-，下一个字符必须是数字
+    ExpectNumber, // 已经碰到了+或者-，下一个字符必须是数字
     Number(i32),
 }
 

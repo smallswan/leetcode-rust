@@ -171,8 +171,10 @@ pub fn is_palindrome(x: i32) -> bool {
     true
 }
 
+/// 力扣（9. 回文数） https://leetcode-cn.com/problems/palindrome-number/
 /// 反转一半的数字
 pub fn is_palindrome_v2(x: i32) -> bool {
+    // 负数以及以0结尾但不是0的数字都不是回文数
     if x < 0 || (x % 10 == 0 && x != 0) {
         return false;
     }
@@ -205,6 +207,7 @@ pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
     }
 }
 
+/// 力扣（88. 合并两个有序数组）
 /// 双指针/从后往前
 pub fn merge_v2(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
     let mut p1 = m - 1;
