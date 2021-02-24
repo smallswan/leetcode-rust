@@ -322,6 +322,7 @@ pub fn reverse(x: i32) -> i32 {
     ret
 }
 
+/// 力扣（7. 整数反转） 
 /// 参考： 吴翱翔 https://zhuanlan.zhihu.com/p/340649000
 pub fn reverse2(x: i32) -> i32 {
     || -> Option<i32> {
@@ -819,17 +820,6 @@ pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
                 break;
             }
         }
-        // if sum < target {
-        //     index1 += 1;
-        //     continue;
-        // } else if sum > target {
-        //     index2 -= 1;
-        //     continue;
-        // } else {
-        //     result.push((index1 + 1) as i32);
-        //     result.push((index2 + 1) as i32);
-        //     break;
-        // }
     }
 
     result
@@ -900,9 +890,6 @@ pub fn reverse_string(s: &mut Vec<char>) {
         let mut i = 0;
         let half = len / 2;
         while i < half {
-            // let x = s[i];
-            // s[i] = s[len - i - 1];
-            // s[len - i - 1] = x;
             s.swap(i, len - i - 1);
             i += 1;
         }
@@ -935,7 +922,8 @@ pub fn valid_ip_address(ip: String) -> String {
     }
 }
 
-/// 使用分治法解 力扣（468. 验证IP地址）  https://leetcode-cn.com/problems/validate-ip-address/
+/// 力扣（468. 验证IP地址）  https://leetcode-cn.com/problems/validate-ip-address/
+/// 使用分治法解
 pub fn valid_ip_address2(ip: String) -> String {
     if ip.chars().filter(|ch| *ch == '.').count() == 3 {
         //println!("valid_ipv4_address..");
