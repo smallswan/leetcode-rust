@@ -78,9 +78,6 @@ pub fn find_median_sorted_arrays(nums1: Vec<i32>, nums2: Vec<i32>) -> f64 {
         j += 1;
     }
 
-    // println!("{:?}", merge_vec);
-
-    //
     let t1 = (len1 + len2) % 2;
     if t1 == 1 {
         return merge_vec[(len1 + len2) / 2] as f64;
@@ -132,6 +129,8 @@ fn kth_elem(nums1: &Vec<i32>, nums2: &Vec<i32>, k: usize) -> f64 {
         }
     }
 }
+
+/// 力扣（4. 寻找两个正序数组的中位数）
 /// 二分查找
 pub fn find_median_sorted_arrays_v2(nums1: Vec<i32>, nums2: Vec<i32>) -> f64 {
     let len1 = nums1.len();
@@ -223,8 +222,6 @@ pub fn merge_v2(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
         }
         p -= 1;
     }
-
-    // println!("merge_v2 p2: {:?}",p2);
 
     for idx in 0..(p2 + 1) as usize {
         nums1[idx] = nums2[idx];

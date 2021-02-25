@@ -129,6 +129,7 @@ fn simple() {
     let sorted_squares_vec_v2 = sorted_squares_v2(sorted_vec_v2);
     assert_eq!(sorted_squares_vec_v2, vec![0, 1, 4, 9, 16, 25]);
 }
+
 ///
 pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
     let len = nums.len();
@@ -322,7 +323,7 @@ pub fn reverse(x: i32) -> i32 {
     ret
 }
 
-/// 力扣（7. 整数反转） 
+/// 力扣（7. 整数反转）
 /// 参考： 吴翱翔 https://zhuanlan.zhihu.com/p/340649000
 pub fn reverse2(x: i32) -> i32 {
     || -> Option<i32> {
@@ -746,6 +747,7 @@ pub fn climb_stairs_memo(n: i32, memo: Rc<RefCell<Vec<i32>>>) -> i32 {
 }
 
 /// 力扣（118. 杨辉三角） https://leetcode-cn.com/problems/pascals-triangle/
+/// 动态规划算法：由上一行的数据推导出下一行的数据
 pub fn generate(num_rows: i32) -> Vec<Vec<i32>> {
     let rows = num_rows as usize;
     let mut result = Vec::<Vec<i32>>::with_capacity(rows);
@@ -786,6 +788,7 @@ pub fn get_row(row_index: i32) -> Vec<i32> {
 }
 
 /// 力扣（136. 只出现一次的数字） https://leetcode-cn.com/problems/single-number/
+/// 使用异或运算的规律
 pub fn single_number(nums: Vec<i32>) -> i32 {
     let len = nums.len();
     let mut single_number = nums[0];
@@ -897,6 +900,7 @@ pub fn reverse_string(s: &mut Vec<char>) {
 }
 
 /// 力扣（468. 验证IP地址）  https://leetcode-cn.com/problems/validate-ip-address/
+/// 使用标准库中的方法
 use std::net::IpAddr;
 pub fn valid_ip_address(ip: String) -> String {
     match ip.parse::<IpAddr>() {
