@@ -111,13 +111,6 @@ fn simple() {
     let merge_intervals = merge(intervals);
     println!("{:?}", merge_intervals);
 
-    // let res = longest_palindrome(String::from("banana"));
-    // println!("longest_palindrome res:{}",res);
-
-    let heights = vec![1, 2, 4, 5, 3, 3];
-    let move_person = height_checker(heights);
-    println!("height_checker move_person:{}", move_person);
-
     let ip = String::from("2001:0db8:85a3:0:0:8A2E:0370:7334");
 
     let ret = valid_ip_address2(ip);
@@ -165,88 +158,6 @@ pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     merge_vec.clone_from_slice(&intervals);
 
     merge_vec
-}
-
-///
-pub fn longest_palindrome(s: String) -> String {
-    //    let s_chars = s.chars();
-    let s_bytes = s.as_bytes();
-    let mut res_bytes = vec!['#' as u8; 2 * s_bytes.len() + 1];
-
-    let mut index = 0;
-    let mut i = 0;
-    while i != res_bytes.len() {
-        if i & 1 != 0 {
-            index += 1;
-            res_bytes[i] = s_bytes[index - 1];
-        }
-        i += 1;
-    }
-    //    let new_s = String::from_utf8(res_bytes).unwrap();
-
-    let mut rl = vec![0; 2 * s_bytes.len() + 1];
-
-    println!("rl:{:?}", rl);
-    let mut max_right = 0;
-    let mut pos = 0;
-    let mut max_len = 0;
-
-    for j in 0..res_bytes.len() {
-        if j < max_right {
-            rl[j] = if rl[2 * pos - j] < max_right - j {
-                rl[2 * pos - j]
-            } else {
-                max_right - j
-            }
-        } else {
-            rl[j] = 1;
-        }
-        println!("j:{},rl[j]:{}", j, rl[j]);
-        while (j - rl[j]) > 0
-            && (j + rl[j]) < res_bytes.len()
-            && res_bytes[j - rl[j]] == res_bytes[j + rl[j]]
-        {
-            rl[j] += 1;
-        }
-
-        if rl[j] + j - 1 > max_right {
-            max_right = rl[j] + j - 1;
-            pos = j;
-        }
-        if max_len < rl[j] {
-            max_len = rl[j];
-        }
-    }
-
-    println!("max_len:{}", max_len);
-
-    let new_s = String::from_utf8(res_bytes).unwrap();
-    new_s
-}
-
-/// 力扣（1051. 高度检查器），https://leetcode-cn.com/problems/height-checker/
-pub fn height_checker(heights: Vec<i32>) -> i32 {
-    let len = heights.len();
-    if len <= 1 {
-        return 0;
-    }
-    let mut arr = vec![0; 101];
-    for height in &heights {
-        arr[*height as usize] += 1;
-    }
-
-    let mut count = 0;
-    let mut j = 0;
-    for i in 1..101 {
-        while arr[i] > 0 {
-            if heights[j] != (i as i32) {
-                count += 1;
-            }
-            j += 1;
-            arr[i] -= 1;
-        }
-    }
-    count
 }
 
 /// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum

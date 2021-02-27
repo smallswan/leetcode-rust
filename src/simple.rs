@@ -228,6 +228,31 @@ pub fn merge_v2(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
     }
 }
 
+/// 力扣（1051. 高度检查器），https://leetcode-cn.com/problems/height-checker/
+pub fn height_checker(heights: Vec<i32>) -> i32 {
+    let len = heights.len();
+    if len <= 1 {
+        return 0;
+    }
+    let mut arr = vec![0; 101];
+    for height in &heights {
+        arr[*height as usize] += 1;
+    }
+
+    let mut count = 0;
+    let mut j = 0;
+    for i in 1..101 {
+        while arr[i] > 0 {
+            if heights[j] != (i as i32) {
+                count += 1;
+            }
+            j += 1;
+            arr[i] -= 1;
+        }
+    }
+    count
+}
+
 #[test]
 fn simple_test() {
     println!("{}", is_palindrome(121));
@@ -265,4 +290,11 @@ fn simple_test() {
     let mut nums4: Vec<i32> = vec![2, 5, 6];
     merge_v2(&mut nums3, 3, &mut nums4, 3);
     println!("{:?}", nums3);
+
+    // let res = longest_palindrome(String::from("banana"));
+    // println!("longest_palindrome res:{}",res);
+
+    let heights = vec![1, 2, 4, 5, 3, 3];
+    let move_person = height_checker(heights);
+    println!("height_checker move_person:{}", move_person);
 }

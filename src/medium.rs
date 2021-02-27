@@ -105,9 +105,66 @@ pub fn longest_palindrome(s: String) -> String {
         .to_string();
 }
 
+/// 力扣（5. 最长回文子串）
+pub fn longest_palindrome_v2(s: String) -> String {
+    //    let s_chars = s.chars();
+    let s_bytes = s.as_bytes();
+    let mut res_bytes = vec!['#' as u8; 2 * s_bytes.len() + 1];
+
+    let mut index = 0;
+    let mut i = 0;
+    while i != res_bytes.len() {
+        if i & 1 != 0 {
+            index += 1;
+            res_bytes[i] = s_bytes[index - 1];
+        }
+        i += 1;
+    }
+    //    let new_s = String::from_utf8(res_bytes).unwrap();
+
+    let mut rl = vec![0; 2 * s_bytes.len() + 1];
+
+    println!("rl:{:?}", rl);
+    let mut max_right = 0;
+    let mut pos = 0;
+    let mut max_len = 0;
+
+    for j in 0..res_bytes.len() {
+        if j < max_right {
+            rl[j] = if rl[2 * pos - j] < max_right - j {
+                rl[2 * pos - j]
+            } else {
+                max_right - j
+            }
+        } else {
+            rl[j] = 1;
+        }
+        println!("j:{},rl[j]:{}", j, rl[j]);
+        while (j - rl[j]) > 0
+            && (j + rl[j]) < res_bytes.len()
+            && res_bytes[j - rl[j]] == res_bytes[j + rl[j]]
+        {
+            rl[j] += 1;
+        }
+
+        if rl[j] + j - 1 > max_right {
+            max_right = rl[j] + j - 1;
+            pos = j;
+        }
+        if max_len < rl[j] {
+            max_len = rl[j];
+        }
+    }
+
+    println!("max_len:{}", max_len);
+
+    let new_s = String::from_utf8(res_bytes).unwrap();
+    new_s
+}
+
 enum State {
     Init,
-    ExpectNumber,// 已经碰到了+或者-，下一个字符必须是数字
+    ExpectNumber, // 已经碰到了+或者-，下一个字符必须是数字
     Number(i32),
 }
 
@@ -255,4 +312,7 @@ fn medium() {
     println!("{}", my_atoi("4193 with words".to_string()));
     println!("{}", my_atoi("words and 987".to_string()));
     println!("{}", my_atoi("-91283472332".to_string()));
+
+    println!("{}", longest_palindrome("babad".to_string()));
+    // Fixed println!("{}",longest_palindrome_v2("babad".to_string()));
 }
