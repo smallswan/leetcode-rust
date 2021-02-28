@@ -162,6 +162,41 @@ pub fn longest_palindrome_v2(s: String) -> String {
     new_s
 }
 
+/// 力扣（6. Z 字形变换） https://leetcode-cn.com/problems/zigzag-conversion/
+pub fn convert(s: String, num_rows: i32) -> String {
+    if num_rows == 1 {
+        return s;
+    }
+
+    let mut result_vec = vec![vec![]; num_rows as usize];
+    let mut row = 0usize;
+    let mut direct_down = true;
+    for ch in s.chars() {
+        if row == 0 {
+            direct_down = true;
+        } else if row == (num_rows - 1) as usize {
+            direct_down = false;
+        }
+
+        if let Some(row_vec) = result_vec.get_mut(row) {
+            row_vec.push(ch);
+        }
+
+        if direct_down {
+            row += 1;
+        } else {
+            row -= 1;
+        }
+    }
+
+    let mut result_str_vec = Vec::<char>::new();
+    for row_vec in result_vec {
+        result_str_vec.extend_from_slice(&row_vec);
+    }
+
+    result_str_vec.iter().collect()
+}
+
 enum State {
     Init,
     ExpectNumber, // 已经碰到了+或者-，下一个字符必须是数字
@@ -220,6 +255,143 @@ pub fn my_atoi(s: String) -> i32 {
     }
 }
 
+/// 力扣（54. 螺旋矩阵） https://leetcode-cn.com/problems/spiral-matrix/
+pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
+    let len = matrix.len();
+    if len == 0 {
+        return vec![];
+    }
+    let row_len = matrix[0].len();
+
+    let mut result = Vec::<i32>::with_capacity(len * row_len);
+
+    let mut row = 0;
+    let mut col = 0;
+    let mut x = len - 1; //i的最大值
+    let mut y = row_len - 1; //j的最大值
+    let mut row_s = 0; //i的最小值
+    let mut col_t = 0; //j的最小值
+    let mut direct = 0;
+
+    let mut push_times = 1;
+    result.push(matrix[0][0]);
+
+    while push_times < len * row_len {
+        match direct % 4 {
+            0 => {
+                //右
+                if col < y {
+                    col += 1;
+                    result.push(matrix[row][col]);
+                    push_times += 1;
+                    continue;
+                } else {
+                    row_s += 1;
+                    direct += 1;
+                }
+            }
+            1 => {
+                //下
+                if row < x {
+                    row += 1;
+                    result.push(matrix[row][col]);
+                    push_times += 1;
+                    continue;
+                } else {
+                    y -= 1;
+                    direct += 1;
+                }
+            }
+            2 => {
+                //左
+                if col > col_t {
+                    col -= 1;
+                    result.push(matrix[row][col]);
+                    push_times += 1;
+                    continue;
+                } else {
+                    x -= 1;
+                    direct += 1;
+                }
+            }
+            3 => {
+                //上
+                if row > row_s {
+                    row -= 1;
+                    result.push(matrix[row][col]);
+                    push_times += 1;
+                    continue;
+                } else {
+                    col_t += 1;
+                    direct += 1;
+                }
+            }
+            _ => {
+                println!("不可能发生这种情况");
+            }
+        }
+    }
+    result
+}
+
+/// 力扣（189. 旋转数组） https://leetcode-cn.com/problems/rotate-array/
+pub fn rotate(nums: &mut Vec<i32>, k: i32) {
+    let len = nums.len();
+    if len <= 1 {
+        return;
+    }
+    let offset = (k as usize) % len;
+    if offset == 0 {
+        return;
+    }
+
+    //三次翻转
+    nums.reverse();
+
+    for i in 0..offset / 2 {
+        nums.swap(i, offset - i - 1);
+    }
+
+    for j in 0..(len - offset) / 2 {
+        nums.swap(j + offset, len - j - 1);
+    }
+}
+
+///  力扣（209. 长度最小的子数组） https://leetcode-cn.com/problems/minimum-size-subarray-sum/
+pub fn min_sub_array_len(s: i32, nums: Vec<i32>) -> i32 {
+    let mut k = 0;
+    let mut i = 0usize;
+    let mut j = 0usize;
+    let len = nums.len();
+    let mut sum = if len >= 1 { nums[0] } else { 0 };
+
+    while i <= j && j < len {
+        // 当 sum>=s 时，i++
+        if sum >= s {
+            if k == 0 {
+                k = j - i + 1;
+            } else {
+                let temp = j - i + 1;
+                if temp < k {
+                    k = temp;
+                }
+            }
+            sum -= nums[i];
+            i += 1;
+        } else {
+            // 当 sum<s 时，j++
+            j += 1;
+            if j < len {
+                sum += nums[j];
+            } else {
+                break;
+            }
+        }
+    }
+
+    k as i32
+}
+
 /// 力扣（210. 课程表II），https://leetcode-cn.com/problems/course-schedule-ii/
 pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
     use std::collections::VecDeque;
@@ -273,9 +445,183 @@ pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
     }
 }
 
+/// 力扣（468. 验证IP地址）  https://leetcode-cn.com/problems/validate-ip-address/
+/// 使用标准库中的方法
+use std::net::IpAddr;
+pub fn valid_ip_address(ip: String) -> String {
+    match ip.parse::<IpAddr>() {
+        Ok(IpAddr::V4(x)) => {
+            let array: Vec<Vec<char>> = ip.split('.').map(|x| x.chars().collect()).collect();
+            for i in 0..array.len() {
+                if (array[i][0] == '0' && array[i].len() > 1) {
+                    return String::from("Neither");
+                }
+            }
+            String::from("IPv4")
+        }
+        Ok(IpAddr::V6(_)) => {
+            let array: Vec<Vec<char>> = ip.split(':').map(|x| x.chars().collect()).collect();
+            for i in 0..array.len() {
+                if array[i].len() == 0 {
+                    return String::from("Neither");
+                }
+            }
+            String::from("IPv6")
+        }
+        _ => String::from("Neither"),
+    }
+}
+
+/// 力扣（468. 验证IP地址）  https://leetcode-cn.com/problems/validate-ip-address/
+/// 使用分治法解
+pub fn valid_ip_address2(ip: String) -> String {
+    if ip.chars().filter(|ch| *ch == '.').count() == 3 {
+        //println!("valid_ipv4_address..");
+        // return valid_ipv4_address(ip);
+        return valid_ipv4_address_v2(ip);
+    } else if ip.chars().filter(|ch| *ch == ':').count() == 7 {
+        //println!("valid_ipv6_address..");
+        // return valid_ipv6_address(ip);
+        return valid_ipv6_address_v2(ip);
+    } else {
+        return String::from("Neither");
+    }
+}
+
+fn valid_ipv4_address(ip: String) -> String {
+    let array: Vec<Vec<char>> = ip.split('.').map(|x| x.chars().collect()).collect();
+    for i in 0..array.len() {
+        //Validate integer in range (0, 255):
+        //1. length of chunk is between 1 and 3
+        if array[i].len() == 0 || array[i].len() > 3 {
+            return String::from("Neither");
+        }
+        //2. no extra leading zeros
+        if (array[i][0] == '0' && array[i].len() > 1) {
+            return String::from("Neither");
+        }
+        //3. only digits are allowed
+        for ch in &array[i] {
+            if !(*ch).is_digit(10) {
+                return String::from("Neither");
+            }
+        }
+        //4. less than 255
+        let num_str: String = array[i].iter().collect();
+        let num = num_str.parse::<u16>().unwrap();
+        if num > 255 {
+            return String::from("Neither");
+        }
+    }
+    "IPv4".to_string()
+}
+
+fn valid_ipv4_address_v2(ip: String) -> String {
+    // let array: Vec<Vec<char>> = ip.split('.').map(|x| x.chars().collect()).collect();
+    let array: Vec<&str> = ip.split(".").collect();
+    for item in array {
+        let len = item.len();
+        //Validate integer in range (0, 255):
+        //1. length of chunk is between 1 and 3
+        if len == 0 || len > 3 {
+            return String::from("Neither");
+        }
+        //2. no extra leading zeros
+        let mut chars = item.chars().peekable();
+        // let first_char = chars.peek();
+
+        if let Some(first) = chars.peek() {
+            if *first == '0' && len > 1 {
+                return String::from("Neither");
+            }
+
+            if !(*first).is_digit(10) {
+                return String::from("Neither");
+            }
+        }
+        //3. only digits are allowed
+
+        for ch in chars {
+            if !(ch).is_digit(10) {
+                return String::from("Neither");
+            }
+        }
+        //4. less than 255
+        // let num_str: String = array[i].iter().collect();
+        let num = item.parse::<u16>().unwrap();
+        if num > 255 {
+            return String::from("Neither");
+        }
+    }
+    "IPv4".to_string()
+}
+
+fn valid_ipv6_address(ip: String) -> String {
+    let array: Vec<Vec<char>> = ip.split(':').map(|x| x.chars().collect()).collect();
+    for i in 0..array.len() {
+        let num = &array[i];
+        if num.len() == 0 || num.len() > 4 {
+            return String::from("Neither");
+        }
+        //2.
+        for ch in num {
+            if !(*ch).is_digit(16) {
+                return String::from("Neither");
+            }
+        }
+    }
+    String::from("IPv6")
+}
+
+fn valid_ipv6_address_v2(ip: String) -> String {
+    // let array: Vec<Vec<char>> = ip.split(':').map(|x| x.chars().collect()).collect();
+    let array: Vec<&str> = ip.split(":").collect();
+    for item in array {
+        let len = item.len();
+        if len == 0 || len > 4 {
+            return String::from("Neither");
+        }
+        //2.
+        for ch in item.chars() {
+            if !(ch).is_digit(16) {
+                return String::from("Neither");
+            }
+        }
+    }
+    String::from("IPv6")
+}
+
 #[test]
 fn medium() {
     use super::*;
+    let s = String::from("LEETCODEISHIRING");
+    let zz = convert(s, 4);
+    println!("{}", zz);
+
+    let mut matrix = Vec::<Vec<i32>>::new();
+    matrix.push(vec![1, 2, 3, 4]);
+    matrix.push(vec![5, 6, 7, 8]);
+    matrix.push(vec![9, 10, 11, 12]);
+
+    println!("{:?}", matrix);
+    //    println!("{:?}",find_diagonal_order(matrix));
+
+    println!("spiral_order: {:?}", spiral_order(matrix));
+
+    let s = 7;
+    let nums = vec![1, 2, 3, 4, 3, 7, 2, 2];
+    let min_len = min_sub_array_len(s, nums);
+    println!("min_len:{}", min_len);
+
+    let mut rotate_vec = vec![1, 2];
+    rotate(&mut rotate_vec, 1);
+
+    println!("{:?}", rotate_vec);
+
+    let ip = String::from("2001:0db8:85a3:0:0:8A2E:0370:7334");
+
+    let ret = valid_ip_address2(ip);
+    println!("{}", ret);
 
     let mut prerequisites = Vec::<Vec<i32>>::new();
     prerequisites.push(vec![1, 0]);

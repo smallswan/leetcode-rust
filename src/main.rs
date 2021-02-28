@@ -1,9 +1,10 @@
 #![allow(unused)]
 mod dp;
+mod hard;
 mod medium;
 mod simple;
+
 mod solution;
-mod solution1000;
 mod spring2020;
 
 extern "C" {
@@ -45,6 +46,4 @@ fn main() {
     //     solution::sorted_squares_v2(sorted_vec_all_postive),
     //     vec![0, 1, 16, 25, 64]
     // );
-
-    solution::sorted_squares_v2(vec![-10000, -9999, -7, -5, 0, 0, 10000]);
 }
