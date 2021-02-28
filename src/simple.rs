@@ -456,6 +456,47 @@ pub fn add_binary(a: String, b: String) -> String {
     result.chars().rev().collect()
 }
 
+/// 力扣（69. x 的平方根） https://leetcode-cn.com/problems/sqrtx/
+/// 二分查找，注意相乘溢出
+pub fn my_sqrt(x: i32) -> i32 {
+    let mut left = 0;
+    let mut right = x;
+    let mut ans = -1;
+    while left <= right {
+        let mid = left + (right - left) / 2;
+        if (mid as i64) * (mid as i64) <= x as i64 {
+            ans = mid;
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    ans
+}
+
+/// 力扣（69. x 的平方根）
+/// 换底公式（自然数e为底）
+pub fn my_sqrt_v2(x: i32) -> i32 {
+    if x == 0 {
+        return 0;
+    }
+
+    // x1/2=(elnx)1/2=e21​lnx
+    //java int ans = (int) Math.exp(0.5 * Math.log(x));
+    let x = x as f64;
+
+    //exp(self) = e^(self)
+    //ln(self) = self's  natural logarithm
+    let ans = (0.5 * (x).ln()).exp();
+    let squar = (ans + 1f64) * (ans + 1f64);
+
+    if squar <= x {
+        return (ans as i32) + 1;
+    } else {
+        return ans as i32;
+    }
+}
+
 use std::cell::RefCell;
 use std::rc::Rc;
 /// 力扣（70. 爬楼梯） https://leetcode-cn.com/problems/climbing-stairs/
@@ -941,4 +982,14 @@ fn simple_test() {
     let heights = vec![1, 2, 4, 5, 3, 3];
     let move_person = height_checker(heights);
     println!("height_checker move_person:{}", move_person);
+
+    assert_eq!(my_sqrt(4), 2);
+    assert_eq!(my_sqrt(8), 2);
+}
+
+#[test]
+fn no_pass() {
+    println!("{}", my_sqrt(2147395599));
+    println!("{}", my_sqrt_v2(2147395599));
+    println!("{}", my_sqrt_v2(256));
 }
