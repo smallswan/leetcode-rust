@@ -135,6 +135,7 @@ pub fn is_palindrome_v2(x: i32) -> bool {
 }
 
 /// 力扣（13. 罗马数字转整数） https://leetcode-cn.com/problems/roman-to-integer/
+/// 以下解法不正确
 pub fn roman_to_int(s: String) -> i32 {
     let len = s.len();
     let mut sum = 0;
@@ -252,6 +253,113 @@ pub fn roman_to_int(s: String) -> i32 {
             _ => panic!("No valid character"),
         };
         sum += num;
+    }
+
+    sum
+}
+
+/// 力扣（13. 罗马数字转整数）
+pub fn roman_to_int_v2(s: String) -> i32 {
+    use std::collections::HashMap;
+    let roman = vec![
+        ('I', 1),
+        ('V', 5),
+        ('X', 10),
+        ('L', 50),
+        ('C', 100),
+        ('D', 500),
+        ('M', 1000),
+    ];
+    let map: HashMap<_, _> = roman.into_iter().collect();
+    let mut ret = 0;
+    let mut it = s.chars().peekable();
+    while let Some(c) = it.next() {
+        let v = map.get(&c).unwrap();
+        match it.peek() {
+            Some(n) if v < map.get(n).unwrap() => ret -= v,
+            _ => ret += v,
+        }
+    }
+    ret
+}
+
+/// 力扣（13. 罗马数字转整数）
+pub fn roman_to_int_v3(s: String) -> i32 {
+    let mut sum = 0;
+    let chars_vec: Vec<char> = s.chars().collect();
+
+    let chars = s.char_indices();
+    let len = s.len();
+
+    let mut split_idx = 0;
+    for (idx, ch) in chars {
+        if idx != 0 && idx == split_idx {
+            continue;
+        }
+        let num = match ch {
+            'I' => {
+                if idx + 1 < len {
+                    let next_char = chars_vec[idx + 1];
+                    if next_char == 'V' {
+                        split_idx = idx + 1;
+                        4
+                    } else if next_char == 'X' {
+                        split_idx = idx + 1;
+                        9
+                    } else {
+                        split_idx = idx;
+                        1
+                    }
+                } else {
+                    split_idx = idx;
+                    1
+                }
+            }
+            'V' => 5,
+            'X' => {
+                if idx + 1 < len {
+                    let next_char = chars_vec[idx + 1];
+                    if next_char == 'L' {
+                        split_idx = idx + 1;
+                        40
+                    } else if next_char == 'C' {
+                        split_idx = idx + 1;
+                        90
+                    } else {
+                        split_idx = idx;
+                        10
+                    }
+                } else {
+                    split_idx = idx;
+                    10
+                }
+            }
+
+            'L' => 50,
+            'C' => {
+                if idx + 1 < len {
+                    let next_char = chars_vec[idx + 1];
+                    if next_char == 'D' {
+                        split_idx = idx + 1;
+                        400
+                    } else if next_char == 'M' {
+                        split_idx = idx + 1;
+                        900
+                    } else {
+                        split_idx = idx;
+                        100
+                    }
+                } else {
+                    split_idx = idx;
+                    100
+                }
+            }
+            'D' => 500,
+            'M' => 1000,
+            _ => panic!("No valid character"),
+        };
+        sum += num;
+        // println!("num:{},sum:{}",num,sum);
     }
 
     sum
@@ -835,6 +943,11 @@ fn simple_test() {
 
     let roman_numbers = String::from("MCMXCIV");
     println!("roman_to_int()={}", roman_to_int(roman_numbers));
+    let roman_numbers_v2 = String::from("MCMXCIV");
+    println!("roman_to_int_v2()={}", roman_to_int_v2(roman_numbers_v2));
+
+    let roman_numbers_v3 = String::from("MCMXCIV");
+    println!("roman_to_int_v3()={}", roman_to_int_v3(roman_numbers_v3));
 
     let sorted_nums = vec![1, 3, 5, 6];
     let target = 4;
