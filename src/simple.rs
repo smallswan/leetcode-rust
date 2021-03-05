@@ -605,6 +605,33 @@ pub fn my_sqrt_v2(x: i32) -> i32 {
     }
 }
 
+/// 力扣（69. x 的平方根）
+///
+pub fn my_sqrt_v3(x: i32) -> i32 {
+    let y = x as f64;
+    y.sqrt().floor() as i32
+}
+
+/// 力扣（69. x 的平方根）
+/// 牛顿迭代法
+pub fn my_sqrt_v4(x: i32) -> i32 {
+    if x == 0 {
+        return 0i32;
+    }
+
+    let c = x as f64;
+    let mut x0 = c;
+    loop {
+        let xi = 0.5 * (x0 + c / x0);
+        if (x0 - xi) < 1e-7 {
+            break;
+        }
+        x0 = xi;
+    }
+
+    x0 as i32
+}
+
 use std::cell::RefCell;
 use std::rc::Rc;
 /// 力扣（70. 爬楼梯） https://leetcode-cn.com/problems/climbing-stairs/
@@ -1106,5 +1133,7 @@ fn no_pass() {
     println!("{}", my_sqrt_v2(2147395599));
     println!("{}", my_sqrt_v2(256));
     let num = 2147395599f64;
-    println!("{}",num.sqrt().floor());
+    println!("{}", num.sqrt().floor());
+    println!("{}", my_sqrt_v3(2147395599));
+    println!("{}", my_sqrt_v4(2147395599));
 }
