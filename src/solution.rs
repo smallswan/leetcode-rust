@@ -1,7 +1,10 @@
 use std::collections::HashMap;
 
 #[test]
-fn unit_test() {}
+fn unit_test() {
+    let num = 123_456f64;
+    println!("sqrt(x)={}", num.sqrt().floor());
+}
 
 #[test]
 fn simple() {
