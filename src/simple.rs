@@ -992,4 +992,6 @@ fn no_pass() {
     println!("{}", my_sqrt(2147395599));
     println!("{}", my_sqrt_v2(2147395599));
     println!("{}", my_sqrt_v2(256));
+    let num = 2147395599f64;
+    println!("{}",num.sqrt().floor());
 }
