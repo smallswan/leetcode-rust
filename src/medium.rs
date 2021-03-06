@@ -255,6 +255,72 @@ pub fn my_atoi(s: String) -> i32 {
     }
 }
 
+/// 力扣（11. 盛最多水的容器） https://leetcode-cn.com/problems/container-with-most-water/
+pub fn max_area(height: Vec<i32>) -> i32 {
+    use std::cmp::max;
+    let mut max_area = 0;
+    let mut left = 0;
+    let mut right = height.len() - 1;
+    while left < right {
+        if height[left] < height[right] {
+            let area = height[left] * ((right - left) as i32);
+            max_area = max(max_area, area);
+            left += 1;
+        } else {
+            let area = height[right] * ((right - left) as i32);
+            max_area = max(max_area, area);
+            right -= 1;
+        }
+    }
+
+    max_area
+}
+
+/// 力扣（11. 盛最多水的容器）
+pub fn max_area_v2(height: Vec<i32>) -> i32 {
+    use std::cmp::{max, min};
+    let mut max_area = 0;
+    let mut left = 0;
+    let mut right = height.len() - 1;
+    while left < right {
+        let area = min(height[left], height[right]) * ((right - left) as i32);
+        max_area = max(max_area, area);
+
+        if height[left] <= height[right] {
+            left += 1;
+        } else {
+            right -= 1;
+        }
+    }
+
+    max_area
+}
+
+/// 力扣（11. 盛最多水的容器）
+pub fn max_area_v3(height: Vec<i32>) -> i32 {
+    use std::cmp::{max, min};
+    let mut max_area = 0;
+    let mut left = 0;
+    let mut right = height.len() - 1;
+    let mut min_height = 0;
+    while left < right {
+        let current_min_height = min(height[left], height[right]);
+        if current_min_height > min_height {
+            let area = current_min_height * ((right - left) as i32);
+            max_area = max(max_area, area);
+            min_height = current_min_height;
+        }
+
+        if height[left] <= height[right] {
+            left += 1;
+        } else {
+            right -= 1;
+        }
+    }
+
+    max_area
+}
+
 /// 力扣（54. 螺旋矩阵） https://leetcode-cn.com/problems/spiral-matrix/
 pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
     let len = matrix.len();
@@ -661,4 +727,10 @@ fn medium() {
 
     println!("{}", longest_palindrome("babad".to_string()));
     // Fixed println!("{}",longest_palindrome_v2("babad".to_string()));
+
+    let heights = vec![1, 8, 6, 2, 5, 4, 8, 3, 7];
+    println!("max area : {}", max_area(heights));
+
+    let heights = vec![4, 3, 2, 1, 4];
+    println!("max area : {}", max_area(heights));
 }

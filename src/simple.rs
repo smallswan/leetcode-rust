@@ -614,6 +614,7 @@ pub fn my_sqrt_v3(x: i32) -> i32 {
 
 /// 力扣（69. x 的平方根）
 /// 牛顿迭代法
+/// 我们用 C表示待求出平方根的那个整数。显然，C 的平方根就是函数: y = f(x) = x^2 - C
 pub fn my_sqrt_v4(x: i32) -> i32 {
     if x == 0 {
         return 0i32;
@@ -622,8 +623,10 @@ pub fn my_sqrt_v4(x: i32) -> i32 {
     let c = x as f64;
     let mut x0 = c;
     loop {
+        // 迭代方程
         let xi = 0.5 * (x0 + c / x0);
-        if (x0 - xi) < 1e-7 {
+        // 1e-7即0.0000001
+        if (x0 - xi).abs() < 1e-7 {
             break;
         }
         x0 = xi;
@@ -1136,4 +1139,6 @@ fn no_pass() {
     println!("{}", num.sqrt().floor());
     println!("{}", my_sqrt_v3(2147395599));
     println!("{}", my_sqrt_v4(2147395599));
+
+    println!("{} is very small", 1e-7);
 }
