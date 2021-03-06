@@ -104,6 +104,159 @@ fn kth_elem(nums1: &Vec<i32>, nums2: &Vec<i32>, k: usize) -> f64 {
         }
     }
 }
+#[derive(Debug)]
+enum Pattern {
+    Char(char), // just char, or dot
+    Wild(char), // char *
+    Fill,       // 只是占位
+}
+
+/// 力扣（10. 正则表达式匹配）  https://leetcode-cn.com/problems/regular-expression-matching/
+pub fn is_match(s: String, p: String) -> bool {
+    // 将pattern拆成一个数组，*和前面的一个字符一组，其它字符单独一组
+    // 从后往前拆
+    let mut patterns: Vec<Pattern> = Vec::new();
+    {
+        let mut p: Vec<char> = p.chars().collect();
+        while let Some(c) = p.pop() {
+            match c {
+                '*' => {
+                    patterns.insert(0, Pattern::Wild(p.pop().unwrap()));
+                }
+                _ => {
+                    patterns.insert(0, Pattern::Char(c));
+                }
+            }
+        }
+        patterns.insert(0, Pattern::Fill);
+    }
+
+    //println!("{:?}", &patterns);
+
+    let mut s: Vec<char> = s.chars().collect();
+    s.insert(0, '0');
+
+    let mut matrix: Vec<Vec<bool>> = vec![vec![false; s.len()]; patterns.len()];
+    matrix[0][0] = true;
+
+    for i in 1..patterns.len() {
+        match patterns[i] {
+            Pattern::Char(c) => {
+                for j in 1..s.len() {
+                    if (s[j] == c || c == '.') && matrix[i - 1][j - 1] {
+                        matrix[i][j] = true;
+                    }
+                }
+            }
+            Pattern::Wild(c) => {
+                for j in 0..s.len() {
+                    if matrix[i - 1][j] {
+                        matrix[i][j] = true;
+                    }
+                }
+
+                for j in 1..s.len() {
+                    if matrix[i][j - 1] {
+                        if c == '.' || c == s[j] {
+                            matrix[i][j] = true;
+                        }
+                    }
+                }
+            }
+            _ => {
+                println!("{}", "error".to_string());
+            }
+        }
+    }
+    //print(&matrix);
+
+    matrix[patterns.len() - 1][s.len() - 1]
+}
+
+/// 力扣（10. 正则表达式匹配）  
+/// 动态规划
+pub fn is_match_v2(s: String, p: String) -> bool {
+    let chars: Vec<char> = p.chars().collect();
+    let m = s.len();
+    let n = p.len();
+    let mut f = Vec::<Vec<bool>>::with_capacity(m + 1);
+    for i in 0..=m {
+        f.push(vec![false; n + 1]);
+    }
+    f[0][0] = true;
+
+    for i in 0..=m {
+        for j in 1..=n {
+            if chars[j - 1] == '*' {
+                f[i][j] = f[i][j - 2];
+                if matches(&s, &p, i, j - 1) {
+                    f[i][j] = f[i][j] || f[i - 1][j];
+                }
+            } else {
+                if matches(&s, &p, i, j) {
+                    f[i][j] = f[i - 1][j - 1];
+                }
+            }
+        }
+    }
+
+    f[m][n]
+}
+
+fn matches(s: &str, p: &str, i: usize, j: usize) -> bool {
+    if i == 0 {
+        return false;
+    }
+    let p_chars: Vec<char> = p.chars().collect();
+    if p_chars[j - 1] == '.' {
+        return true;
+    }
+
+    let s_chars: Vec<char> = s.chars().collect();
+    s_chars[i - 1] == p_chars[j - 1]
+}
+
+/// 力扣（10. 正则表达式匹配）  
+/// 动态规划
+pub fn is_match_v3(s: String, p: String) -> bool {
+    let chars: Vec<char> = p.chars().collect();
+    let m = s.len();
+    let n = p.len();
+    let mut f = Vec::<Vec<bool>>::with_capacity(m + 1);
+    for i in 0..=m {
+        f.push(vec![false; n + 1]);
+    }
+    f[0][0] = true;
+
+    let s_chars: Vec<char> = s.chars().collect();
+    for i in 0..=m {
+        for j in 1..=n {
+            if chars[j - 1] == '*' {
+                f[i][j] = f[i][j - 2];
+                if matches_v2(&s_chars, &chars, i, j - 1) {
+                    f[i][j] = f[i][j] || f[i - 1][j];
+                }
+            } else {
+                if matches_v2(&s_chars, &chars, i, j) {
+                    f[i][j] = f[i - 1][j - 1];
+                }
+            }
+        }
+    }
+
+    f[m][n]
+}
+
+fn matches_v2(s_chars: &Vec<char>, p_chars: &Vec<char>, i: usize, j: usize) -> bool {
+    if i == 0 {
+        return false;
+    }
+
+    if p_chars[j - 1] == '.' {
+        return true;
+    }
+    s_chars[i - 1] == p_chars[j - 1]
+}
 
 #[test]
 fn hard() {
@@ -116,4 +269,28 @@ fn hard() {
     let mut nums4: Vec<i32> = vec![2];
     let median_num = find_median_sorted_arrays_v2(nums3, nums4);
     println!("median_num v2:{}", median_num);
+
+    println!(
+        "{}",
+        is_match("mississippi".to_string(), "mis*is*p*.".to_string())
+    );
+    println!("{}", is_match("aab".to_string(), "c*a*b".to_string()));
+    println!("{}", is_match("ab".to_string(), ".*".to_string()));
+    println!("{}", is_match("a".to_string(), "ab*a".to_string()));
+
+    println!(
+        "{}",
+        is_match_v2("mississippi".to_string(), "mis*is*p*.".to_string())
+    );
+    println!("{}", is_match_v2("aab".to_string(), "c*a*b".to_string()));
+    println!("{}", is_match_v2("ab".to_string(), ".*".to_string()));
+    println!("{}", is_match_v2("a".to_string(), "ab*a".to_string()));
+
+    println!(
+        "{}",
+        is_match_v3("mississippi".to_string(), "mis*is*p*.".to_string())
+    );
+    println!("{}", is_match_v3("aab".to_string(), "c*a*b".to_string()));
+    println!("{}", is_match_v3("ab".to_string(), ".*".to_string()));
+    println!("{}", is_match_v3("a".to_string(), "ab*a".to_string()));
 }
