@@ -21,3 +21,5 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 ```
 2. 每个解决方案能够解决特定的问题，在解决具体问题的过程中，可能要综合运用多种解决方案。
 
+3. 注意边界值
+- 数字是否溢出（overflow）

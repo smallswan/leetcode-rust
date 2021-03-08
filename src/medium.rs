@@ -321,6 +321,152 @@ pub fn max_area_v3(height: Vec<i32>) -> i32 {
     max_area
 }
 
+/// 力扣（12. 整数转罗马数字）  https://leetcode-cn.com/problems/integer-to-roman/
+/// 贪心算法
+pub fn int_to_roman(num: i32) -> String {
+    let arr = vec![
+        (1, "I"),
+        (4, "IV"),
+        (5, "V"),
+        (9, "IX"),
+        (10, "X"),
+        (40, "XL"),
+        (50, "L"),
+        (90, "XC"),
+        (100, "C"),
+        (400, "CD"),
+        (500, "D"),
+        (900, "CM"),
+        (1000, "M"),
+    ];
+
+    fn find(n: i32, arr: &Vec<(i32, &'static str)>) -> (i32, &'static str) {
+        for (value, s) in arr.iter().rev() {
+            if n >= *value {
+                return (*value, *s);
+            }
+        }
+        unreachable!()
+    }
+
+    // 上次用除法，这次用减法
+    let mut ret = "".to_string();
+    let mut num = num;
+    while num > 0 {
+        let (v, s) = find(num, &arr);
+        ret.push_str(s);
+        num -= v;
+    }
+
+    ret
+}
+
+/// 力扣（12. 整数转罗马数字）
+pub fn int_to_roman_v2(num: i32) -> String {
+    let arr = vec![
+        (1000, "M"),
+        (900, "CM"),
+        (500, "D"),
+        (400, "CD"),
+        (100, "C"),
+        (90, "XC"),
+        (50, "L"),
+        (40, "XL"),
+        (10, "X"),
+        (9, "IX"),
+        (5, "V"),
+        (4, "IV"),
+        (1, "I"),
+    ];
+
+    fn find(n: i32, arr: &Vec<(i32, &'static str)>) -> (i32, &'static str) {
+        for (value, s) in arr {
+            if n >= *value {
+                return (*value, *s);
+            }
+        }
+        unreachable!()
+    }
+
+    // 上次用除法，这次用减法
+    let mut ret = "".to_string();
+    let mut num = num;
+    while num > 0 {
+        let (v, s) = find(num, &arr);
+        ret.push_str(s);
+        num -= v;
+    }
+
+    ret
+}
+
+/// 力扣（50. Pow(x, n)） https://leetcode-cn.com/problems/powx-n/
+pub fn my_pow(x: f64, n: i32) -> f64 {
+    x.powi(n)
+}
+
+/// 力扣（50. Pow(x, n)）
+/// 方法一：快速幂 + 递归
+pub fn my_pow_v2(x: f64, n: i32) -> f64 {
+    if n >= 0 {
+        quick_mul(x, n)
+    } else {
+        1.0 / quick_mul(x, -n)
+    }
+}
+
+fn quick_mul(x: f64, n: i32) -> f64 {
+    if n == 0 {
+        return 1.0;
+    }
+
+    let y = quick_mul(x, n / 2);
+    if n % 2 == 0 {
+        return y * y;
+    } else {
+        return y * y * x;
+    }
+}
+
+fn quick_mul_v2(x: f64, n: i32) -> f64 {
+    let mut ans = 1.0f64;
+    let mut x_contribute = x;
+    let mut n_mut = n;
+    while n_mut > 0 {
+        if n_mut % 2 == 1 {
+            ans *= x_contribute;
+        }
+        x_contribute *= x_contribute;
+        n_mut /= 2;
+    }
+    ans
+}
+
+/// 力扣（50. Pow(x, n)）
+/// 方法二：快速幂 + 迭代 (该方法容易造成溢出不可取)
+pub fn my_pow_v3(x: f64, n: i32) -> f64 {
+    if n >= 0 {
+        quick_mul_v2(x, n)
+    } else {
+        1.0f64 / quick_mul_v2(x, -n)
+    }
+}
+
+/// 力扣（50. Pow(x, n)）
+pub fn my_pow_v4(x: f64, n: i32) -> f64 {
+    let mut x = if n > 0 { x } else { 1f64 / x };
+    let mut n = n;
+    let mut r = 1f64;
+    while n != 0 {
+        if n & 1 == 1 {
+            r *= x;
+        }
+        x *= x;
+        n /= 2;
+    }
+    r
+}
+
 /// 力扣（54. 螺旋矩阵） https://leetcode-cn.com/problems/spiral-matrix/
 pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
     let len = matrix.len();
@@ -733,4 +879,20 @@ fn medium() {
 
     let heights = vec![4, 3, 2, 1, 4];
     println!("max area : {}", max_area(heights));
+
+    println!("{} to roman {}", 3999, int_to_roman(3999));
+    println!("{} to roman {}", 3999, int_to_roman_v2(3999));
+
+    println!("{}", my_pow(2.10000, 3));
+
+    println!("{}", my_pow_v2(2.00000, -4));
+    println!("{}", my_pow_v2(2.00000, 10));
+
+    println!("i32 max :{},min :{}", std::i32::MAX, std::i32::MIN);
+    // println!("{}",my_pow_v3(2.00000,-2147483648));
+    // println!("{}",my_pow_v3(2.00000,-2147483647));
+
+    println!("{}", my_pow_v4(2.00000, -2147483648));
+    println!("{}", my_pow_v4(2.00000, -2147483647));
+    println!("{}", my_pow_v4(2.00000, 2147483647));
 }
