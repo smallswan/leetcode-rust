@@ -493,6 +493,28 @@ pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
     idx as i32
 }
 
+/// 力扣（38. 外观数列） https://leetcode-cn.com/problems/count-and-say/
+pub fn count_and_say(n: i32) -> String {
+    let mut s = "1".to_string();
+    for _ in 0..n - 1 {
+        let mut ret = "".to_string();
+        let mut count = 0;
+        let mut it = s.chars().peekable(); // use peekable to check next char
+        while let Some(c) = it.next() {
+            match it.peek() {
+                Some(next) if next == &c => count += 1,
+                _ => {
+                    ret.push_str(&(count + 1).to_string());
+                    ret.push(c);
+                    count = 0;
+                }
+            }
+        }
+        s = ret;
+    }
+    s
+}
+
 /// 力扣（66. 加一） https://leetcode-cn.com/problems/plus-one/
 pub fn plus_one(digits: Vec<i32>) -> Vec<i32> {
     // 以下算法参考了：https://leetcode-cn.com/problems/plus-one/solution/java-shu-xue-jie-ti-by-yhhzw/
@@ -1132,6 +1154,9 @@ fn simple_test() {
 
 #[test]
 fn no_pass() {
+    let s = count_and_say(6);
+    println!("{}",s);
+
     println!("{}", my_sqrt(2147395599));
     println!("{}", my_sqrt_v2(2147395599));
     println!("{}", my_sqrt_v2(256));
