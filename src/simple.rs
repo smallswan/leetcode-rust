@@ -401,6 +401,50 @@ pub fn longest_common_prefix(strs: Vec<String>) -> String {
     prefix.to_owned()
 }
 
+/// 力扣（20. 有效的括号）https://leetcode-cn.com/problems/valid-parentheses/
+fn is_valid(s: String) -> bool {
+    let len = s.len();
+    if len == 0 {
+        return false;
+    }
+    let chars: Vec<char> = s.chars().collect();
+    //使用 Vec模拟Stack
+    let mut stack = Vec::<char>::with_capacity(len);
+
+    for char in chars {
+        if char == ')' || char == '}' || char == ']' {
+            let prev_ch = stack.pop();
+            match prev_ch {
+                Some(ch) => {
+                    let m = is_match_brackets(ch, char);
+                    if !m {
+                        return false;
+                    }
+                }
+                None => {
+                    return false;
+                }
+            };
+        } else {
+            stack.push(char);
+        }
+    }
+
+    stack.is_empty()
+}
+
+/// 判断括号是否匹配
+fn is_match_brackets(left: char, right: char) -> bool {
+    let is_match = match left {
+        '(' => right == ')',
+        '{' => right == '}',
+        '[' => right == ']',
+        _ => false,
+    };
+
+    is_match
+}
+
 ///  力扣（27. 移除元素）https://leetcode-cn.com/problems/remove-element/
 pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
     let mut k = 0;
@@ -1029,6 +1073,9 @@ fn simple_test() {
     let result = two_sum(nums, 9);
     println!("{:?}", result);
 
+    let valid_string = String::from("(){{}");
+    println!("is valid : {}", is_valid(valid_string));
+
     let new_x = reverse(132);
     println!("new_x:{}", new_x);
     let new_x = reverse(-1999999999);
@@ -1155,7 +1202,7 @@ fn simple_test() {
 #[test]
 fn no_pass() {
     let s = count_and_say(6);
-    println!("{}",s);
+    println!("{}", s);
 
     println!("{}", my_sqrt(2147395599));
     println!("{}", my_sqrt_v2(2147395599));
