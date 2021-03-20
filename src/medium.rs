@@ -657,6 +657,40 @@ pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
     }
 }
 
+/// 力扣（150. 逆波兰表达式求值） https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/
+pub fn eval_rpn(tokens: Vec<String>) -> i32 {
+    let len = (tokens.len() + 1) / 2;
+    let mut stack = vec![0; len];
+    let mut index = -1;
+    for token in &tokens {
+        match (token.as_str()) {
+            "+" => {
+                index -= 1;
+                stack[index as usize] += stack[(index + 1) as usize];
+            }
+            "-" => {
+                index -= 1;
+                stack[index as usize] -= stack[(index + 1) as usize];
+            }
+            "*" => {
+                index -= 1;
+                stack[index as usize] *= stack[(index + 1) as usize];
+            }
+            "/" => {
+                index -= 1;
+                stack[index as usize] /= stack[(index + 1) as usize];
+            }
+
+            _ => {
+                index += 1;
+                stack[index as usize] = token.parse::<i32>().unwrap();
+            }
+        };
+    }
+
+    stack[index as usize]
+}
+
 /// 力扣（468. 验证IP地址）  https://leetcode-cn.com/problems/validate-ip-address/
 /// 使用标准库中的方法
 use std::net::IpAddr;
@@ -895,4 +929,29 @@ fn medium() {
     println!("{}", my_pow_v4(2.00000, -2147483648));
     println!("{}", my_pow_v4(2.00000, -2147483647));
     println!("{}", my_pow_v4(2.00000, 2147483647));
+
+    // let tokens = vec![
+    //     "2".to_string(),
+    //     "1".to_string(),
+    //     "+".to_string(),
+    //     "3".to_string(),
+    //     "*".to_string(),
+    // ];
+    let tokens = vec![
+        "10".to_string(),
+        "6".to_string(),
+        "9".to_string(),
+        "3".to_string(),
+        "+".to_string(),
+        "-11".to_string(),
+        "*".to_string(),
+        "/".to_string(),
+        "*".to_string(),
+        "17".to_string(),
+        "+".to_string(),
+        "5".to_string(),
+        "+".to_string(),
+    ];
+
+    println!("rpn {}", eval_rpn(tokens));
 }
