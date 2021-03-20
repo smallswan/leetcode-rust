@@ -445,6 +445,61 @@ fn is_match_brackets(left: char, right: char) -> bool {
     is_match
 }
 
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub struct ListNode {
+    pub val: i32,
+    pub next: Option<Box<ListNode>>,
+}
+
+impl ListNode {
+    #[inline]
+    fn new(val: i32) -> Self {
+        ListNode { val, next: None }
+    }
+}
+
+/// 力扣（21. 合并两个有序链表) https://leetcode-cn.com/problems/merge-two-sorted-lists/
+pub fn merge_two_lists(
+    l1: Option<Box<ListNode>>,
+    l2: Option<Box<ListNode>>,
+) -> Option<Box<ListNode>> {
+    match (l1, l2) {
+        (Some(v1), None) => Some(v1),
+        (None, Some(v2)) => Some(v2),
+        (Some(mut v1), Some(mut v2)) => {
+            if v1.val < v2.val {
+                let n = v1.next.take();
+                v1.next = self::merge_two_lists(n, Some(v2));
+                Some(v1)
+            } else {
+                let n = v2.next.take();
+                v2.next = self::merge_two_lists(Some(v1), n);
+                Some(v2)
+            }
+        }
+        _ => None,
+    }
+}
+
+fn vec_to_list(v: &Vec<i32>) -> Option<Box<ListNode>> {
+    let mut head = None;
+    for i in v.iter().rev() {
+        let mut node = ListNode::new(*i);
+        node.next = head;
+        head = Some(Box::new(node));
+    }
+    head
+}
+
+fn display(l: Option<Box<ListNode>>) {
+    let mut head = &l;
+    while head.is_some() {
+        print!("{}, ", head.as_ref().unwrap().val);
+        head = &(head.as_ref().unwrap().next);
+    }
+    println!("");
+}
+
 ///  力扣（27. 移除元素）https://leetcode-cn.com/problems/remove-element/
 pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
     let mut k = 0;
@@ -1075,6 +1130,18 @@ fn simple_test() {
 
     let valid_string = String::from("(){{}");
     println!("is valid : {}", is_valid(valid_string));
+
+    let l = merge_two_lists(
+        vec_to_list(&vec![1, 3, 5, 7, 9]),
+        vec_to_list(&vec![2, 4, 6, 8, 10]),
+    );
+    display(l);
+
+    let l = merge_two_lists(
+        vec_to_list(&vec![1, 2, 4]),
+        vec_to_list(&vec![1, 3, 4, 5, 6]),
+    );
+    display(l);
 
     let new_x = reverse(132);
     println!("new_x:{}", new_x);
