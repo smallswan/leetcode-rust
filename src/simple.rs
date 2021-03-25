@@ -1,6 +1,9 @@
 //！ 简单难度
 
-use std::collections::HashMap;
+use std::{
+    collections::HashMap,
+    ops::{BitAndAssign, BitOr},
+};
 
 /// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum
 pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
@@ -914,6 +917,23 @@ pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
     result
 }
 
+/// 力扣（191. 位1的个数) https://leetcode-cn.com/problems/number-of-1-bits/
+/// SWAR算法“计算汉明重量” https://baike.baidu.com/item/%E6%B1%89%E6%98%8E%E9%87%8D%E9%87%8F
+pub fn hammingWeight(n: u32) -> i32 {
+    let mut i = n as i32;
+    let const1 = 0x55555555;
+    let const2 = 0x33333333;
+    let const3 = 0x0F0F0F0F;
+    let const4 = 0x01010101;
+
+    i = (i & const1) + ((i >> 1) & const1);
+    i = (i & const2) + ((i >> 2) & const2);
+    i = (i & const3) + ((i >> 4) & const3);
+    i = i * const4 >> 24;
+
+    i
+}
+
 /// 力扣（344. 反转字符串） https://leetcode-cn.com/problems/reverse-string/
 pub fn reverse_string(s: &mut Vec<char>) {
     let len = s.len();
@@ -1280,4 +1300,6 @@ fn no_pass() {
     println!("{}", my_sqrt_v4(2147395599));
 
     println!("{} is very small", 1e-7);
+
+    println!("bits of one {}", hammingWeight(15));
 }
