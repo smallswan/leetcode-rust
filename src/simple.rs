@@ -1,6 +1,7 @@
 //！ 简单难度
 
 use std::{
+    borrow::Borrow,
     collections::HashMap,
     ops::{BitAndAssign, BitOr},
 };
@@ -835,6 +836,29 @@ pub fn merge_v2(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
     }
 }
 
+#[derive(Debug, PartialEq, Eq)]
+pub struct TreeNode {
+    pub val: i32,
+    pub left: Option<Rc<RefCell<TreeNode>>>,
+    pub right: Option<Rc<RefCell<TreeNode>>>,
+}
+
+impl TreeNode {
+    #[inline]
+    pub fn new(val: i32) -> Self {
+        TreeNode {
+            val,
+            left: None,
+            right: None,
+        }
+    }
+}
+
+/// 力扣（101. 对称二叉树)  https://leetcode-cn.com/problems/symmetric-tree/
+pub fn is_symmetric(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
+    false
+}
+
 /// 力扣（118. 杨辉三角） https://leetcode-cn.com/problems/pascals-triangle/
 /// 动态规划算法：由上一行的数据推导出下一行的数据
 pub fn generate(num_rows: i32) -> Vec<Vec<i32>> {
@@ -932,6 +956,21 @@ pub fn hammingWeight(n: u32) -> i32 {
     i = i * const4 >> 24;
 
     i
+}
+
+const MASK1: u32 = 0x55555555;
+const MASK2: u32 = 0x33333333;
+const MASK3: u32 = 0x0F0F0F0F;
+const MASK4: u32 = 0x01010101;
+/// /// 力扣（191. 位1的个数)
+pub fn hamming_weight(n: u32) -> i32 {
+    let mut i = n;
+    i = (i & MASK1) + ((i >> 1) & MASK1);
+    i = (i & MASK2) + ((i >> 2) & MASK2);
+    i = (i & MASK3) + ((i >> 4) & MASK3);
+    i = i * MASK4 >> 24;
+
+    i as i32
 }
 
 /// 力扣（344. 反转字符串） https://leetcode-cn.com/problems/reverse-string/
@@ -1036,6 +1075,37 @@ pub fn dominant_index(nums: Vec<i32>) -> i32 {
         return idx as i32;
     }
     -1
+}
+
+/// 力扣（867. 转置矩阵) https://leetcode-cn.com/problems/transpose-matrix/
+pub fn transpose(matrix: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+    let mut transposed = Vec::<Vec<i32>>::new();
+
+    let m = matrix.len();
+    let n = matrix[0].len();
+    for i in 0..n {
+        transposed.push(vec![0; m]);
+    }
+
+    for i in 0..m {
+        for j in 0..n {
+            transposed[j][i] = matrix[i][j];
+        }
+    }
+    transposed
+}
+/// 力扣（867. 转置矩阵)
+pub fn transpose_v2(matrix: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+    let (m, n) = (matrix.len(), matrix[0].len());
+    let mut transposed = Vec::with_capacity(n);
+    for j in 0..n {
+        let mut row = Vec::with_capacity(m);
+        for i in 0..m {
+            row.push(matrix[i][j]);
+        }
+        transposed.push(row);
+    }
+    transposed
 }
 
 /// 力扣（977. 有序数组的平方）https://leetcode-cn.com/problems/squares-of-a-sorted-array/
@@ -1301,5 +1371,21 @@ fn no_pass() {
 
     println!("{} is very small", 1e-7);
 
-    println!("bits of one {}", hammingWeight(15));
+    assert_eq!(hammingWeight(15), hamming_weight(15));
+
+    let mut matrix = Vec::<Vec<i32>>::new();
+    matrix.push(vec![1, 2, 3]);
+    matrix.push(vec![4, 5, 6]);
+    // matrix.push(vec![7, 8, 9]);
+
+    let new_matrix = transpose(matrix);
+    println!("{:?}", new_matrix);
+
+    let mut matrix2 = Vec::<Vec<i32>>::new();
+    matrix2.push(vec![1, 2, 3]);
+    matrix2.push(vec![4, 5, 6]);
+    // matrix.push(vec![7, 8, 9]);
+
+    let new_matrix2 = transpose_v2(matrix2);
+    println!("{:?}", new_matrix2);
 }
