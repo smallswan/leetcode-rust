@@ -962,7 +962,7 @@ const MASK1: u32 = 0x55555555;
 const MASK2: u32 = 0x33333333;
 const MASK3: u32 = 0x0F0F0F0F;
 const MASK4: u32 = 0x01010101;
-/// /// 力扣（191. 位1的个数)
+/// 力扣（191. 位1的个数)
 pub fn hamming_weight(n: u32) -> i32 {
     let mut i = n;
     i = (i & MASK1) + ((i >> 1) & MASK1);
@@ -971,6 +971,44 @@ pub fn hamming_weight(n: u32) -> i32 {
     i = i * MASK4 >> 24;
 
     i as i32
+}
+
+/// 力扣（191. 位1的个数)
+pub fn hamming_weight_v2(n: u32) -> i32 {
+    format!("{:b}", n).chars().filter(|c| *c == '1').count() as i32
+}
+
+/// 力扣（231. 2的幂） https://leetcode-cn.com/problems/power-of-two/
+pub fn is_power_of_two(n: i32) -> bool {
+    if n <= 0 {
+        return false;
+    }
+    if n == 1 {
+        return true;
+    }
+
+    let mut m = n;
+    loop {
+        if m % 2 == 0 {
+            m /= 2;
+            if m <= 1 {
+                break;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    true
+}
+
+/// 力扣（231. 2的幂）
+pub fn is_power_of_two_v2(n: i32) -> bool {
+    if n == 0 {
+        return false;
+    }
+
+    n & (n - 1) == 0
 }
 
 /// 力扣（344. 反转字符串） https://leetcode-cn.com/problems/reverse-string/
@@ -1388,4 +1426,9 @@ fn no_pass() {
 
     let new_matrix2 = transpose_v2(matrix2);
     println!("{:?}", new_matrix2);
+
+    let nums = vec![1, 16, 218];
+    for num in nums {
+        assert_eq!(is_power_of_two(num), is_power_of_two_v2(num));
+    }
 }
