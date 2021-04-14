@@ -1011,6 +1011,21 @@ pub fn is_power_of_two_v2(n: i32) -> bool {
     n & (n - 1) == 0
 }
 
+/// 力扣（283. 移动零） https://leetcode-cn.com/problems/move-zeroes/
+pub fn move_zeroes(nums: &mut Vec<i32>) {
+    let mut slow_index = 0;
+    let len = nums.len();
+    for fast_index in 0..len {
+        if nums[fast_index] != 0 {
+            nums[slow_index] = nums[fast_index];
+            slow_index += 1;
+        }
+    }
+    for i in slow_index..len {
+        nums[i] = 0;
+    }
+}
+
 /// 力扣（344. 反转字符串） https://leetcode-cn.com/problems/reverse-string/
 pub fn reverse_string(s: &mut Vec<char>) {
     let len = s.len();
@@ -1431,4 +1446,8 @@ fn no_pass() {
     for num in nums {
         assert_eq!(is_power_of_two(num), is_power_of_two_v2(num));
     }
+
+    let mut nums = vec![0, 1, 0, 3, 0, 12, 14];
+    move_zeroes(&mut nums);
+    println!("{:?}", nums);
 }
