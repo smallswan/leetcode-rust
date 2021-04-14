@@ -1026,6 +1026,20 @@ pub fn move_zeroes(nums: &mut Vec<i32>) {
     }
 }
 
+/// 力扣（283. 移动零） https://leetcode-cn.com/problems/move-zeroes/
+pub fn move_zeroes_v2(nums: &mut Vec<i32>) {
+    let mut slow_index = 0;
+    let mut fast_index = 0;
+    let len = nums.len();
+    while fast_index < len {
+        if nums[fast_index] != 0 {
+            nums.swap(slow_index, fast_index);
+            slow_index += 1;
+        }
+        fast_index += 1;
+    }
+}
+
 /// 力扣（344. 反转字符串） https://leetcode-cn.com/problems/reverse-string/
 pub fn reverse_string(s: &mut Vec<char>) {
     let len = s.len();
@@ -1450,4 +1464,8 @@ fn no_pass() {
     let mut nums = vec![0, 1, 0, 3, 0, 12, 14];
     move_zeroes(&mut nums);
     println!("{:?}", nums);
+
+    let mut nums2 = vec![0, 1, 0, 3, 0, 12, 14];
+    move_zeroes_v2(&mut nums2);
+    println!("{:?}", nums2);
 }
