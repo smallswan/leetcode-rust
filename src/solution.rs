@@ -23,3 +23,37 @@ pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
 
     merge_vec
 }
+
+use std::io;
+///
+/// 将16进制数字字符串&str转为10进制数字输出
+#[test]
+fn hua_wei_test() {
+    loop {
+        let mut line = String::new();
+        io::stdin()
+            .read_line(&mut line)
+            .expect("Failed to read line");
+        let mut digtis = "";
+        if line.trim().is_empty() {
+            break;
+        }
+
+        if line.as_str().starts_with("0x") || line.as_str().starts_with("0X") {
+            digtis = &line[2..];
+        } else {
+            digtis = line.as_str();
+        }
+
+        // 为了防止数字较大这里使用i128类型
+        match i128::from_str_radix(digtis.trim(), 16) {
+            Ok(num) => {
+                println!("{}", num);
+            }
+            Err(e) => {
+                println!("can't convert str : {}", e);
+                break;
+            }
+        }
+    }
+}
