@@ -2,6 +2,7 @@
 
 use std::{
     borrow::Borrow,
+    cmp::max,
     collections::HashMap,
     ops::{BitAndAssign, BitOr},
 };
@@ -594,6 +595,19 @@ pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
     }
 
     idx as i32
+}
+
+/// 力扣（53. 最大子序和） https://leetcode-cn.com/problems/maximum-subarray/
+/// 动态规划转移方程： f(i)=max{f(i−1)+nums[i],nums[i]}  
+///  f(i) 代表以第 i 个数结尾的「连续子数组的最大和」
+pub fn max_sub_array(nums: Vec<i32>) -> i32 {
+    let mut prev = 0;
+    let mut max_ans = nums[0];
+    for x in nums {
+        prev = max(prev + x, x);
+        max_ans = max(max_ans, prev);
+    }
+    max_ans
 }
 
 /// 力扣（38. 外观数列） https://leetcode-cn.com/problems/count-and-say/
@@ -1468,4 +1482,8 @@ fn no_pass() {
     let mut nums2 = vec![0, 1, 0, 3, 0, 12, 14];
     move_zeroes_v2(&mut nums2);
     println!("{:?}", nums2);
+
+    let nums3 = vec![-2, 1, -3, 4, -1, 2, 1, -5, 4];
+    let max_ans = max_sub_array(nums3);
+    println!("{:?}", max_ans);
 }
