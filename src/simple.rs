@@ -1067,6 +1067,38 @@ pub fn reverse_string(s: &mut Vec<char>) {
     }
 }
 
+/// 力扣（461. 汉明距离） https://leetcode-cn.com/problems/hamming-distance/
+pub fn hamming_distance(x: i32, y: i32) -> i32 {
+    let z = x ^ y;
+    z.count_ones() as i32
+}
+
+/// 力扣（461. 汉明距离）
+/// 这里采用右移位，每个位置都会被移动到最右边。移位后检查最右位的位是否为 1 即可。检查最右位是否为 1，可以使用取模运算（i % 2）或者 AND 操作（i & 1），这两个操作都会屏蔽最右位以外的其他位。
+pub fn hamming_distance_v2(x: i32, y: i32) -> i32 {
+    let mut xor = x ^ y;
+    let mut distance = 0;
+    while xor != 0 {
+        if xor % 2 == 1 {
+            distance += 1;
+        }
+        xor = xor >> 1;
+    }
+    distance
+}
+
+/// 力扣（461. 汉明距离）
+/// 布赖恩·克尼根算法
+pub fn hamming_distance_v3(x: i32, y: i32) -> i32 {
+    let mut xor = x ^ y;
+    let mut distance = 0;
+    while xor != 0 {
+        distance += 1;
+        xor = xor & (xor - 1);
+    }
+    distance
+}
+
 ///力扣（485. 最大连续1的个数）https://leetcode-cn.com/problems/max-consecutive-ones/
 pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
     let mut max = 0;
@@ -1486,4 +1518,13 @@ fn no_pass() {
     let nums3 = vec![-2, 1, -3, 4, -1, 2, 1, -5, 4];
     let max_ans = max_sub_array(nums3);
     println!("{:?}", max_ans);
+
+    let ones = hamming_distance(1, 4);
+    println!("{:?}", ones);
+
+    let distance = hamming_distance_v2(4, 255);
+    println!("distance:{:?}", distance);
+
+    let distance = hamming_distance_v3(4, 65535);
+    println!("distance:{:?}", distance);
 }
