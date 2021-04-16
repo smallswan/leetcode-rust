@@ -955,9 +955,53 @@ pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
     result
 }
 
+/// 力扣（169. 多数元素） https://leetcode-cn.com/problems/majority-element/
+/// Boyer-Moore 投票算法
+pub fn majority_element(nums: Vec<i32>) -> i32 {
+    let mut count = 0;
+    let mut candidate = nums[0];
+    for num in nums {
+        if count == 0 {
+            candidate = num;
+        }
+        if num == candidate {
+            count += 1;
+        } else {
+            count -= 1;
+        }
+    }
+
+    candidate
+}
+
+/// 力扣（169. 多数元素）
+/// 哈希表
+pub fn majority_element_v2(nums: Vec<i32>) -> i32 {
+    let mut counts_map: HashMap<i32, usize> = HashMap::new();
+    for num in nums {
+        if !counts_map.contains_key(&num) {
+            counts_map.insert(num, 1);
+        } else {
+            if let Some(value) = counts_map.get_mut(&num) {
+                *value += 1;
+            };
+        }
+    }
+
+    let mut major_entry: (i32, usize) = (0, 0);
+    for (key, val) in counts_map.iter() {
+        if *val > major_entry.1 {
+            major_entry.0 = *key;
+            major_entry.1 = *val;
+            // major_entry = (*key,*val);
+        }
+    }
+    return major_entry.0;
+}
+
 /// 力扣（191. 位1的个数) https://leetcode-cn.com/problems/number-of-1-bits/
 /// SWAR算法“计算汉明重量” https://baike.baidu.com/item/%E6%B1%89%E6%98%8E%E9%87%8D%E9%87%8F
-pub fn hammingWeight(n: u32) -> i32 {
+pub fn hamming_weight_v1(n: u32) -> i32 {
     let mut i = n as i32;
     let const1 = 0x55555555;
     let const2 = 0x33333333;
@@ -1484,7 +1528,7 @@ fn no_pass() {
 
     println!("{} is very small", 1e-7);
 
-    assert_eq!(hammingWeight(15), hamming_weight(15));
+    assert_eq!(hamming_weight(15), hamming_weight(15));
 
     let mut matrix = Vec::<Vec<i32>>::new();
     matrix.push(vec![1, 2, 3]);
@@ -1527,4 +1571,12 @@ fn no_pass() {
 
     let distance = hamming_distance_v3(4, 65535);
     println!("distance:{:?}", distance);
+
+    let nums = vec![2, 2, 1, 1, 1, 2, 2];
+    let major = majority_element(nums);
+    println!("major:{:?}", major);
+
+    let nums2 = vec![6, 5, 5];
+    let major2 = majority_element_v2(nums2);
+    println!("major2:{:?}", major2);
 }
