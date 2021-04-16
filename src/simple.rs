@@ -959,7 +959,7 @@ pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
 /// Boyer-Moore 投票算法
 pub fn majority_element(nums: Vec<i32>) -> i32 {
     let mut count = 0;
-    let mut candidate = nums[0];
+    let mut candidate = 0;
     for num in nums {
         if count == 0 {
             candidate = num;
@@ -979,13 +979,19 @@ pub fn majority_element(nums: Vec<i32>) -> i32 {
 pub fn majority_element_v2(nums: Vec<i32>) -> i32 {
     let mut counts_map: HashMap<i32, usize> = HashMap::new();
     for num in nums {
-        if !counts_map.contains_key(&num) {
-            counts_map.insert(num, 1);
-        } else {
-            if let Some(value) = counts_map.get_mut(&num) {
-                *value += 1;
-            };
-        }
+        // if !counts_map.contains_key(&num) {
+        //     counts_map.insert(num, 1);
+        // } else {
+        //     if let Some(value) = counts_map.get_mut(&num) {
+        //         *value += 1;
+        //     };
+        // }
+        match counts_map.get_mut(&num) {
+            Some(value) => *value += 1,
+            None => {
+                counts_map.insert(num, 1);
+            }
+        };
     }
 
     let mut major_entry: (i32, usize) = (0, 0);
