@@ -977,7 +977,7 @@ pub fn majority_element(nums: Vec<i32>) -> i32 {
 /// 力扣（169. 多数元素）
 /// 哈希表
 pub fn majority_element_v2(nums: Vec<i32>) -> i32 {
-    let mut counts_map: HashMap<i32, usize> = HashMap::new();
+    let mut counts_map: HashMap<i32, usize> = HashMap::with_capacity(nums.len() / 2 + 1);
     for num in nums {
         // if !counts_map.contains_key(&num) {
         //     counts_map.insert(num, 1);
@@ -987,7 +987,9 @@ pub fn majority_element_v2(nums: Vec<i32>) -> i32 {
         //     };
         // }
         match counts_map.get_mut(&num) {
-            Some(value) => *value += 1,
+            Some(value) => {
+                *value += 1;
+            }
             None => {
                 counts_map.insert(num, 1);
             }

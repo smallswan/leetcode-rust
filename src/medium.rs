@@ -571,6 +571,40 @@ pub fn set_zeroes(matrix: &mut Vec<Vec<i32>>) {
     }
 }
 
+/// 力扣（150. 逆波兰表达式求值） https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/
+pub fn eval_rpn(tokens: Vec<String>) -> i32 {
+    let len = (tokens.len() + 1) / 2;
+    let mut stack = vec![0; len];
+    let mut index = -1;
+    for token in &tokens {
+        match (token.as_str()) {
+            "+" => {
+                index -= 1;
+                stack[index as usize] += stack[(index + 1) as usize];
+            }
+            "-" => {
+                index -= 1;
+                stack[index as usize] -= stack[(index + 1) as usize];
+            }
+            "*" => {
+                index -= 1;
+                stack[index as usize] *= stack[(index + 1) as usize];
+            }
+            "/" => {
+                index -= 1;
+                stack[index as usize] /= stack[(index + 1) as usize];
+            }
+
+            _ => {
+                index += 1;
+                stack[index as usize] = token.parse::<i32>().unwrap();
+            }
+        };
+    }
+
+    stack[index as usize]
+}
+
 /// 力扣（189. 旋转数组） https://leetcode-cn.com/problems/rotate-array/
 pub fn rotate(nums: &mut Vec<i32>, k: i32) {
     let len = nums.len();
@@ -682,38 +716,55 @@ pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
     }
 }
 
-/// 力扣（150. 逆波兰表达式求值） https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/
-pub fn eval_rpn(tokens: Vec<String>) -> i32 {
-    let len = (tokens.len() + 1) / 2;
-    let mut stack = vec![0; len];
-    let mut index = -1;
-    for token in &tokens {
-        match (token.as_str()) {
-            "+" => {
-                index -= 1;
-                stack[index as usize] += stack[(index + 1) as usize];
-            }
-            "-" => {
-                index -= 1;
-                stack[index as usize] -= stack[(index + 1) as usize];
-            }
-            "*" => {
-                index -= 1;
-                stack[index as usize] *= stack[(index + 1) as usize];
-            }
-            "/" => {
-                index -= 1;
-                stack[index as usize] /= stack[(index + 1) as usize];
-            }
+/// 力扣（229. 求众数 II） https://leetcode-cn.com/problems/majority-element-ii/
+pub fn majority_element(nums: Vec<i32>) -> Vec<i32> {
+    let mut count1 = 0;
+    let mut candidate1 = nums[0];
+    let mut count2 = 0;
+    let mut candidate2 = nums[0];
 
-            _ => {
-                index += 1;
-                stack[index as usize] = token.parse::<i32>().unwrap();
+    // 摩尔投票法，分为两个阶段：配对阶段和计数阶段
+    // 配对阶段（找出两个候选人）
+    for num in &nums {
+        if *num == candidate1 {
+            count1 += 1;
+        } else if *num == candidate2 {
+            count2 += 1;
+        } else {
+            if count1 == 0 {
+                candidate1 = *num;
+                count1 = 1;
+            } else if count2 == 0 {
+                candidate2 = *num;
+                count2 = 1;
+            } else {
+                count1 -= 1;
+                count2 -= 1;
             }
-        };
+        }
     }
 
-    stack[index as usize]
+    // 计数阶段（重新计票为检查候选人是否符合条件）
+    let mut count1 = 0;
+    let mut count2 = 0;
+    for num in &nums {
+        if *num == candidate1 {
+            count1 += 1;
+        } else if *num == candidate2 {
+            count2 += 1;
+        }
+    }
+
+    let mut result = vec![];
+    let condition = nums.len() / 3;
+    if count1 > condition {
+        result.push(candidate1);
+    }
+    if count2 > condition {
+        result.push(candidate2);
+    }
+
+    result
 }
 
 /// 力扣（468. 验证IP地址）  https://leetcode-cn.com/problems/validate-ip-address/
@@ -979,4 +1030,8 @@ fn medium() {
     ];
 
     println!("rpn {}", eval_rpn(tokens));
+
+    let nums = vec![3, 2];
+    let result = majority_element(nums);
+    println!("majority_element: {:?}", result);
 }
