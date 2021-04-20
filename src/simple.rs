@@ -1077,6 +1077,20 @@ pub fn is_power_of_two_v2(n: i32) -> bool {
     n & (n - 1) == 0
 }
 
+/// 力扣（263. 丑数）   https://leetcode-cn.com/problems/ugly-number/
+pub fn is_ugly(num: i32) -> bool {
+    if num <= 0 {
+        return false;
+    }
+    let mut num = num;
+    for x in [2, 3, 5].iter() {
+        while num > 1 && num % x == 0 {
+            num /= x;
+        }
+    }
+    num == 1
+}
+
 /// 力扣（283. 移动零） https://leetcode-cn.com/problems/move-zeroes/
 pub fn move_zeroes(nums: &mut Vec<i32>) {
     let mut slow_index = 0;
@@ -1587,4 +1601,9 @@ fn no_pass() {
     let nums2 = vec![6, 5, 5];
     let major2 = majority_element_v2(nums2);
     println!("major2:{:?}", major2);
+
+    let nums3 = vec![-12, 6, 10, 11, 12, 13, 15];
+    for num in nums3 {
+        println!("{} is ugly : {}", num, is_ugly(num));
+    }
 }
