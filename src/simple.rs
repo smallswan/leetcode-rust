@@ -1,5 +1,6 @@
 //！ 简单难度
 
+use core::num;
 use std::{
     borrow::Borrow,
     cmp::max,
@@ -1072,6 +1073,49 @@ pub fn hamming_weight_v2(n: u32) -> i32 {
     format!("{:b}", n).chars().filter(|c| *c == '1').count() as i32
 }
 
+/// 计算数字number各个位上的数字的平方和
+fn get_next(number: i32) -> i32 {
+    let mut total_sum = 0;
+    let mut num = number;
+    while num > 0 {
+        let d = num % 10;
+        num /= 10;
+        total_sum += d * d;
+    }
+    total_sum
+}
+
+// 计算数字number各个位上的数字的平方和
+fn bit_square_sum(number: i32) -> i32 {
+    let total_sum = number.to_string().chars().fold(0, |acc, x| {
+        let y = (x as i32) - 48;
+        acc + y * y
+    });
+    total_sum
+}
+use std::collections::HashSet;
+// const cycle_number:HashSet<i32> = [4, 16, 37,58,89,145,42,20].iter().cloned().collect();
+/// 力扣（202. 快乐数) https://leetcode-cn.com/problems/happy-number/
+pub fn is_happy(n: i32) -> bool {
+    let mut cycle_number = HashSet::new();
+    cycle_number.insert(4);
+    cycle_number.insert(16);
+    cycle_number.insert(37);
+    cycle_number.insert(58);
+    cycle_number.insert(89);
+    cycle_number.insert(145);
+    cycle_number.insert(42);
+    cycle_number.insert(20);
+
+    let mut num = n;
+    while num != 1 && !cycle_number.contains(&num) {
+        num = get_next(num);
+        // num = bit_square_sum(num);
+    }
+
+    num == 1
+}
+
 /// 力扣（231. 2的幂） https://leetcode-cn.com/problems/power-of-two/
 pub fn is_power_of_two(n: i32) -> bool {
     if n <= 0 {
@@ -1634,4 +1678,9 @@ fn no_pass() {
     for num in nums3 {
         println!("{} is ugly : {}", num, is_ugly(num));
     }
+
+    let rand_num = rand::random::<u16>() as i32;
+    println!("{} is happy : {}", rand_num, is_happy(rand_num));
+
+    println!("bit_square_sum : {}", bit_square_sum(123456));
 }
