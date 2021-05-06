@@ -1007,6 +1007,34 @@ pub fn majority_element_v2(nums: Vec<i32>) -> i32 {
     return major_entry.0;
 }
 
+/// 力扣（172. 阶乘后的零） https://leetcode-cn.com/problems/factorial-trailing-zeroes/
+pub fn trailing_zeroes(n: i32) -> i32 {
+    let mut count_fives = 0;
+    let mut steps: Vec<i32> = (5..=n).into_iter().filter(|x| *x % 5 == 0).collect();
+    // println!("{:?}",steps);
+    for step in steps {
+        let mut remaining = step;
+        while remaining % 5 == 0 {
+            count_fives += 1;
+            remaining /= 5;
+        }
+    }
+
+    count_fives
+}
+
+/// 力扣（172. 阶乘后的零）
+/// f(n) = n/5^1 + n/5^2 + n/5^3 + n/5^m (n < 5^m)
+pub fn trailing_zeroes_v2(n: i32) -> i32 {
+    let mut count_fives = 0;
+    let mut remaining = n;
+    while remaining > 0 {
+        remaining /= 5;
+        count_fives += remaining;
+    }
+    count_fives
+}
+
 /// 力扣（191. 位1的个数) https://leetcode-cn.com/problems/number-of-1-bits/
 /// SWAR算法“计算汉明重量” https://baike.baidu.com/item/%E6%B1%89%E6%98%8E%E9%87%8D%E9%87%8F
 pub fn hamming_weight_v1(n: u32) -> i32 {
