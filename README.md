@@ -46,3 +46,6 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 ### 问题：寻找众数
 - [Boyer-Moore算法](https://baike.baidu.com/item/Boyer-%20Moore%E7%AE%97%E6%B3%95/16548374?fr=aladdin )
 - [Boyer-Moore 投票算法](https://zhuanlan.zhihu.com/p/85474828 )
+
+### 问题：如何检测一个链表是否有环（循环节）
+[弗洛伊德的兔子与乌龟(Floyd's Tortoise and Hare algorithm)](https://zhuanlan.zhihu.com/p/105269431 )，快慢指针法、龟兔赛跑法

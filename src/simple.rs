@@ -1116,6 +1116,20 @@ pub fn is_happy(n: i32) -> bool {
     num == 1
 }
 
+/// 力扣（202. 快乐数)
+/// 快慢指针法、龟兔赛跑法
+pub fn is_happy_v2(n: i32) -> bool {
+    let mut slow_runner = n;
+    let mut fast_runner = get_next(n);
+    while fast_runner != 1 && slow_runner != fast_runner {
+        slow_runner = get_next(slow_runner);
+        fast_runner = get_next(fast_runner);
+        fast_runner = get_next(fast_runner);
+    }
+
+    fast_runner == 1
+}
+
 /// 力扣（231. 2的幂） https://leetcode-cn.com/problems/power-of-two/
 pub fn is_power_of_two(n: i32) -> bool {
     if n <= 0 {
@@ -1681,6 +1695,7 @@ fn no_pass() {
 
     let rand_num = rand::random::<u16>() as i32;
     println!("{} is happy : {}", rand_num, is_happy(rand_num));
+    println!("{} is happy : {}", rand_num, is_happy_v2(rand_num));
 
     println!("bit_square_sum : {}", bit_square_sum(123456));
 }
