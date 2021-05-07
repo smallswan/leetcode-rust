@@ -1162,8 +1162,13 @@ pub fn is_power_of_two_v2(n: i32) -> bool {
 
     n & (n - 1) == 0
 }
-
+/// 力扣（258. 各位相加） https://leetcode-cn.com/problems/add-digits/
+pub fn add_digits(num: i32) -> i32 {
+    (num - 1) % 9 + 1
+}
 /// 力扣（263. 丑数）   https://leetcode-cn.com/problems/ugly-number/
+/// 丑数 就是只包含质因数 2、3 和/或 5 的正整数。
+/// 1 通常被视为丑数。
 pub fn is_ugly(num: i32) -> bool {
     if num <= 0 {
         return false;
