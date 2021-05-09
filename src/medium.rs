@@ -716,6 +716,18 @@ pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
     }
 }
 
+/// 力扣（215. 数组中的第K个最大元素） https://leetcode-cn.com/problems/kth-largest-element-in-an-array/
+pub fn find_kth_largest(nums: Vec<i32>, k: i32) -> i32 {
+    let mut heap = BinaryHeap::new();
+    for num in nums {
+        heap.push(num);
+    }
+    for _ in 1..k {
+        heap.pop();
+    }
+    heap.pop().unwrap()
+}
+
 /// 力扣（229. 求众数 II） https://leetcode-cn.com/problems/majority-element-ii/
 pub fn majority_element(nums: Vec<i32>) -> Vec<i32> {
     let mut count1 = 0;
@@ -1092,4 +1104,12 @@ fn medium() {
 
     println!("nth_ugly_number    {}", nth_ugly_number(1690));
     println!("nth_ugly_number_v2 {}", nth_ugly_number_v2(1690));
+
+    let nums = vec![3, 2, 3, 1, 2, 4, 5, 5, 6];
+    let kth_largest = find_kth_largest(nums, 4);
+    println!("kth_largest    {}", kth_largest);
+
+    let nums = vec![3, 2, 1, 5, 6, 4];
+    let kth_largest = find_kth_largest(nums, 6);
+    println!("kth_largest    {}", kth_largest);
 }
