@@ -1708,4 +1708,6 @@ fn no_pass() {
     println!("{} is happy : {}", rand_num, is_happy_v2(rand_num));
 
     println!("bit_square_sum : {}", bit_square_sum(123456));
+
+    println!("is_power_of_three : {}",is_power_of_three(81*3));
 }
