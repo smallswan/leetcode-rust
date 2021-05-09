@@ -767,6 +767,61 @@ pub fn majority_element(nums: Vec<i32>) -> Vec<i32> {
     result
 }
 
+use std::cmp::Reverse;
+use std::collections::{BinaryHeap, HashSet};
+/// 力扣（264. 丑数 II） https://leetcode-cn.com/problems/ugly-number-ii/
+/// 方法一：最小堆
+pub fn nth_ugly_number(n: i32) -> i32 {
+    let factors = vec![2, 3, 5];
+    let mut seen = HashSet::new();
+    let mut heap = BinaryHeap::new();
+    seen.insert(Reverse(1i64));
+    heap.push(Reverse(1i64));
+    let mut ugly = 0;
+    for _ in 0..n {
+        if let Some(Reverse(curr)) = heap.pop() {
+            ugly = curr;
+            for factor in &factors {
+                let next: i64 = curr * (*factor);
+                if seen.insert(Reverse(next)) {
+                    heap.push(Reverse(next));
+                }
+            }
+        };
+    }
+    ugly as i32
+}
+
+use std::cmp::min;
+/// 力扣（264. 丑数 II）
+/// 方法二：动态规划
+pub fn nth_ugly_number_v2(n: i32) -> i32 {
+    let n = n as usize;
+    let mut dp = vec![0; n + 1];
+    dp[1] = 1;
+    let mut p2 = 1;
+    let mut p3 = 1;
+    let mut p5 = 1;
+
+    for i in 2..=n {
+        let num2 = dp[p2] * 2;
+        let num3 = dp[p3] * 3;
+        let num5 = dp[p5] * 5;
+        dp[i] = min(min(num2, num3), num5);
+        if dp[i] == num2 {
+            p2 += 1;
+        }
+        if dp[i] == num3 {
+            p3 += 1;
+        }
+        if dp[i] == num5 {
+            p5 += 1;
+        }
+    }
+
+    dp[n]
+}
+
 /// 力扣（468. 验证IP地址）  https://leetcode-cn.com/problems/validate-ip-address/
 /// 使用标准库中的方法
 use std::net::IpAddr;
@@ -1034,4 +1089,7 @@ fn medium() {
     let nums = vec![3, 2];
     let result = majority_element(nums);
     println!("majority_element: {:?}", result);
+
+    println!("nth_ugly_number    {}", nth_ugly_number(1690));
+    println!("nth_ugly_number_v2 {}", nth_ugly_number_v2(1690));
 }
