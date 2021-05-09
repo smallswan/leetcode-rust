@@ -1211,6 +1211,11 @@ pub fn move_zeroes_v2(nums: &mut Vec<i32>) {
     }
 }
 
+/// 力扣（326. 3的幂) https://leetcode-cn.com/problems/power-of-three/
+pub fn is_power_of_three(n: i32) -> bool {
+    return n > 0 && 1162261467 % n == 0;
+}
+
 /// 力扣（344. 反转字符串） https://leetcode-cn.com/problems/reverse-string/
 pub fn reverse_string(s: &mut Vec<char>) {
     let len = s.len();

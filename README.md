@@ -51,7 +51,7 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 - [欧几里德算法(辗转相除法)](https://baike.baidu.com/item/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95/1647675?fromtitle=%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%B7%E7%AE%97%E6%B3%95&fromid=9002848 )
 
 - [Stein算法](https://baike.baidu.com/item/Stein%E7%AE%97%E6%B3%95/7874057 )
-## 问题：汉明距离
+### 问题：汉明距离
 [汉明距离](https://baike.baidu.com/item/%E6%B1%89%E6%98%8E%E8%B7%9D%E7%A6%BB/475174?fr=aladdin#4 )  
 [布赖恩·克尼根算法](https://www.e-learn.cn/topic/3779838 )
 
