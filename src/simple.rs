@@ -1096,6 +1096,7 @@ fn bit_square_sum(number: i32) -> i32 {
 use std::collections::HashSet;
 // const cycle_number:HashSet<i32> = [4, 16, 37,58,89,145,42,20].iter().cloned().collect();
 /// 力扣（202. 快乐数) https://leetcode-cn.com/problems/happy-number/
+/// 不是快乐数的数称为不快乐数（unhappy number），所有不快乐数的数位平方和计算，最後都会进入 4 → 16 → 37 → 58 → 89 → 145 → 42 → 20 → 4 的循环中。
 pub fn is_happy(n: i32) -> bool {
     let mut cycle_number = HashSet::new();
     cycle_number.insert(4);
@@ -1128,6 +1129,57 @@ pub fn is_happy_v2(n: i32) -> bool {
     }
 
     fast_runner == 1
+}
+
+fn is_prime(x: i32) -> bool {
+    let mut i = 2;
+    while i * i <= x {
+        if x % i == 0 {
+            return false;
+        }
+        i += 1;
+    }
+    true
+}
+
+/// 力扣（204. 计数质数) https://leetcode-cn.com/problems/count-primes/
+pub fn count_primes(n: i32) -> i32 {
+    let mut ans = 0;
+    let mut i = 2;
+    while i < n {
+        if is_prime(i) {
+            ans += 1;
+        }
+        i += 1;
+    }
+    ans
+}
+
+/// 力扣（204. 计数质数)
+/// 方法二：厄拉多塞筛法（埃氏筛）
+pub fn count_primes_v2(n: i32) -> i32 {
+    let n = n as usize;
+    let mut primes = vec![1; n];
+    let mut ans = 0;
+    let mut i = 2 as usize;
+
+    while i < n {
+        if primes[i] == 1 {
+            ans += 1;
+        }
+        if let Some(squar) = i.checked_mul(i) {
+            if squar < n {
+                let mut j = squar;
+                while j < n {
+                    primes[j] = 0;
+                    j += i;
+                }
+            }
+        }
+
+        i += 1;
+    }
+    ans
 }
 
 /// 力扣（231. 2的幂） https://leetcode-cn.com/problems/power-of-two/
@@ -1214,6 +1266,33 @@ pub fn move_zeroes_v2(nums: &mut Vec<i32>) {
 /// 力扣（326. 3的幂) https://leetcode-cn.com/problems/power-of-three/
 pub fn is_power_of_three(n: i32) -> bool {
     return n > 0 && 1162261467 % n == 0;
+}
+
+/// 力扣（326. 3的幂)
+pub fn is_power_of_three_v2(n: i32) -> bool {
+    if n < 1 {
+        return false;
+    }
+    let mut n = n;
+    while n % 3 == 0 {
+        n /= 3;
+    }
+    n == 1
+}
+
+/// 力扣（326. 3的幂)
+pub fn is_power_of_three_v3(n: i32) -> bool {
+    if n <= 0 {
+        return false;
+    }
+    let mut n = n;
+    while n > 1 {
+        if n % 3 != 0 {
+            return false;
+        }
+        n /= 3;
+    }
+    true
 }
 
 /// 力扣（344. 反转字符串） https://leetcode-cn.com/problems/reverse-string/
@@ -1709,5 +1788,11 @@ fn no_pass() {
 
     println!("bit_square_sum : {}", bit_square_sum(123456));
 
-    println!("is_power_of_three : {}",is_power_of_three(81*3));
+    println!("is_power_of_three : {}", is_power_of_three(81 * 3));
+
+    let ans = count_primes(10000);
+    println!("count_primes {}", ans);
+
+    let ans = count_primes_v2(10000);
+    println!("count_primes {}", ans);
 }
