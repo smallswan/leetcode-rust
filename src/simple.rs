@@ -1386,6 +1386,50 @@ pub fn array_pair_sum(nums: Vec<i32>) -> i32 {
     sum
 }
 
+/// 力扣（704. 二分查找) https://leetcode-cn.com/problems/binary-search/
+pub fn search(nums: Vec<i32>, target: i32) -> i32 {
+    let len = nums.len();
+    let mut left = 0;
+    let mut right = len - 1;
+    let mut pivot;
+    while left <= right {
+        pivot = left + (right - left) / 2;
+        // 注意usize的范围和nums的下标范围
+        if nums[pivot] == target {
+            return pivot as i32;
+        }
+        if target < nums[pivot] {
+            if pivot == 0 {
+                break;
+            }
+            right = pivot - 1;
+        } else {
+            if pivot == len - 1 {
+                break;
+            }
+            left = pivot + 1;
+        }
+    }
+    -1
+}
+
+/// 力扣（704. 二分查找)
+pub fn search_v2(nums: Vec<i32>, target: i32) -> i32 {
+    let mut left = 0 as i32;
+    let mut right = (nums.len() - 1) as i32;
+    while right >= left {
+        let mid = (left + right) as usize / 2;
+        if nums[mid] == target {
+            return mid as i32;
+        } else if nums[mid] > target {
+            right = mid as i32 - 1;
+        } else {
+            left = mid as i32 + 1;
+        }
+    }
+    -1
+}
+
 /// 力扣（724. 寻找数组的中心索引） https://leetcode-cn.com/problems/find-pivot-index/
 pub fn pivot_index(nums: Vec<i32>) -> i32 {
     let mut sum = 0;
@@ -1795,4 +1839,13 @@ fn no_pass() {
 
     let ans = count_primes_v2(10000);
     println!("count_primes {}", ans);
+
+    let nums = vec![5];
+    let target = 9;
+    let idx = search(nums, -5);
+    println!("targt's index is {}", idx);
+
+    let nums = vec![5];
+    let idx = search_v2(nums, -5);
+    println!("targt's index is {}", idx);
 }

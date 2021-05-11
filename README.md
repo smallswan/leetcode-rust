@@ -11,7 +11,7 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 
 ```
 问题  
-  |--分类：
+  |--分类：排序、查找、
   |--特点：前置条件、
   
 解决方案  
@@ -19,7 +19,7 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
           |--编程语言  
           |--设计模式：状态模式
           |--数据结构：数组、向量、双端队列、哈希集合、哈希表、二叉堆、、  
-          |--算法：排序算法、查询算法、动态规划、分治算法、递归算法  		  
+          |--算法：排序算法、查询算法（二分查找）、动态规划、分治算法、递归算法  		  
    |--数学方面
           |--概念：质数、合数、快乐数、不快乐数、丑数
           |--公式： 
@@ -36,6 +36,8 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 
 3. 注意边界值
 - 数字是否溢出（overflow）
+（1）注意各种数字类型（uszie,i32,i64等）的范围，特别是rust用作下标的usize类型。
+（2）相乘、幂运算等运算容易溢出。
 
 ## 代码阅读
 - 代码按照困难程度（简单 simple,中等 medium，困难 hard）将代码写在对应的.rs文件中；

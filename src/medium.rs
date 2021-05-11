@@ -106,6 +106,7 @@ pub fn longest_palindrome(s: String) -> String {
 }
 
 /// 力扣（5. 最长回文子串）
+/// 代码不正确
 pub fn longest_palindrome_v2(s: String) -> String {
     //    let s_chars = s.chars();
     let s_bytes = s.as_bytes();
