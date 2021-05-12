@@ -598,6 +598,24 @@ pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
     idx as i32
 }
 
+/// 力扣（35. 搜索插入位置）
+/// 二分查找
+pub fn search_insert_v2(nums: Vec<i32>, target: i32) -> i32 {
+    let mut left = 0;
+    let mut right = (nums.len() - 1) as i32;
+    while left <= right {
+        let middle = (left + (right - left) / 2) as usize;
+        if nums[middle] > target {
+            right = (middle as i32) - 1;
+        } else if nums[middle] < target {
+            left = (middle + 1) as i32;
+        } else {
+            return middle as i32;
+        }
+    }
+    (right + 1) as i32
+}
+
 /// 力扣（53. 最大子序和） https://leetcode-cn.com/problems/maximum-subarray/
 /// 动态规划转移方程： f(i)=max{f(i−1)+nums[i],nums[i]}  
 ///  f(i) 代表以第 i 个数结尾的「连续子数组的最大和」
@@ -1388,6 +1406,7 @@ pub fn array_pair_sum(nums: Vec<i32>) -> i32 {
 
 /// 力扣（704. 二分查找) https://leetcode-cn.com/problems/binary-search/
 pub fn search(nums: Vec<i32>, target: i32) -> i32 {
+    // target在[left,right]中查找
     let len = nums.len();
     let mut left = 0;
     let mut right = len - 1;
@@ -1425,6 +1444,24 @@ pub fn search_v2(nums: Vec<i32>, target: i32) -> i32 {
             right = mid as i32 - 1;
         } else {
             left = mid as i32 + 1;
+        }
+    }
+    -1
+}
+
+/// 力扣（704. 二分查找)
+pub fn search_v3(nums: Vec<i32>, target: i32) -> i32 {
+    // target在[left,right)中查找
+    let mut left = 0;
+    let mut right = nums.len();
+    while left < right {
+        let mid = left + (right - left) / 2;
+        if nums[mid] == target {
+            return mid as i32;
+        } else if nums[mid] > target {
+            right = mid;
+        } else {
+            left = mid + 1;
         }
     }
     -1
@@ -1647,6 +1684,9 @@ fn simple_test() {
     let sorted_nums = vec![1, 3, 5, 6];
     let target = 4;
     let idx = search_insert(sorted_nums, target);
+    println!("idx:{}", idx);
+
+    let idx = search_insert_v2(vec![1, 3, 5, 6], 7);
     println!("idx:{}", idx);
 
     let mut nums = vec![3, 2, 2, 3];
