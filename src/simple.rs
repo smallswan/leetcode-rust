@@ -1326,6 +1326,33 @@ pub fn reverse_string(s: &mut Vec<char>) {
     }
 }
 
+/// 力扣（367. 有效的完全平方数) https://leetcode-cn.com/problems/valid-perfect-square/
+pub fn is_perfect_square(num: i32) -> bool {
+    if num == 1 {
+        return true;
+    }
+    let mut left = 2;
+    let mut right = num / 2;
+    while left <= right {
+        let x = left + (right - left) / 2;
+        if let Some(guess_square) = x.checked_mul(x) {
+            if guess_square == num {
+                return true;
+            }
+
+            if guess_square > num {
+                right = x - 1;
+            } else {
+                left = x + 1;
+            }
+        } else {
+            // 过大
+            right = x - 1;
+        }
+    }
+    false
+}
+
 /// 力扣（461. 汉明距离） https://leetcode-cn.com/problems/hamming-distance/
 pub fn hamming_distance(x: i32, y: i32) -> i32 {
     let z = x ^ y;
