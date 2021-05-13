@@ -1434,16 +1434,17 @@ pub fn search(nums: Vec<i32>, target: i32) -> i32 {
 
 /// 力扣（704. 二分查找)
 pub fn search_v2(nums: Vec<i32>, target: i32) -> i32 {
+    // target在[left,right]中查找
     let mut left = 0 as i32;
     let mut right = (nums.len() - 1) as i32;
-    while right >= left {
-        let mid = (left + right) as usize / 2;
-        if nums[mid] == target {
-            return mid as i32;
-        } else if nums[mid] > target {
-            right = mid as i32 - 1;
+    while left <= right {
+        let middle = (left + right) as usize / 2;
+        if nums[middle] > target {
+            right = middle as i32 - 1;
+        } else if nums[middle] < target {
+            left = middle as i32 + 1;
         } else {
-            left = mid as i32 + 1;
+            return middle as i32;
         }
     }
     -1
@@ -1451,17 +1452,17 @@ pub fn search_v2(nums: Vec<i32>, target: i32) -> i32 {
 
 /// 力扣（704. 二分查找)
 pub fn search_v3(nums: Vec<i32>, target: i32) -> i32 {
-    // target在[left,right)中查找
+    // target在[left,right)中查找，由于rust下标usize的限制，推荐使用这种方式
     let mut left = 0;
     let mut right = nums.len();
     while left < right {
-        let mid = left + (right - left) / 2;
-        if nums[mid] == target {
-            return mid as i32;
-        } else if nums[mid] > target {
-            right = mid;
+        let middle = left + (right - left) / 2;
+        if nums[middle] > target {
+            right = middle;
+        } else if nums[middle] < target {
+            left = middle + 1;
         } else {
-            left = mid + 1;
+            return middle as i32;
         }
     }
     -1
@@ -1880,12 +1881,12 @@ fn no_pass() {
     let ans = count_primes_v2(10000);
     println!("count_primes {}", ans);
 
-    let nums = vec![5];
+    let nums = vec![-1, 0, 3, 5, 9, 12];
     let target = 9;
-    let idx = search(nums, -5);
+    let idx = search(nums, target);
     println!("targt's index is {}", idx);
 
-    let nums = vec![5];
-    let idx = search_v2(nums, -5);
+    let nums = vec![1, 0, 3, 5, 9, 12];
+    let idx = search_v2(nums, 2);
     println!("targt's index is {}", idx);
 }

@@ -401,6 +401,49 @@ pub fn int_to_roman_v2(num: i32) -> String {
     ret
 }
 
+/// 力扣（34. 在排序数组中查找元素的第一个和最后一个位置) https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+/// 先用二分查找算法找到target的下标，然后向左右两边继续查找
+pub fn search_range(nums: Vec<i32>, target: i32) -> Vec<i32> {
+    let mut range = vec![-1, -1];
+    let mut left = 0;
+    let mut right = nums.len();
+    while left < right {
+        let mut middle = (left + right) / 2;
+        if nums[middle] > target {
+            right = middle;
+        } else if nums[middle] < target {
+            left = middle + 1;
+        } else {
+            // 找到target的第一个位置后则向左右两边拓展查找
+            range[0] = middle as i32;
+            range[1] = middle as i32;
+            let mut l = middle;
+            let mut r = middle;
+            while r < right - 1 {
+                if nums[r + 1] == target {
+                    r += 1;
+                } else {
+                    break;
+                }
+            }
+
+            while l > 0 {
+                if nums[l - 1] == target {
+                    l -= 1;
+                } else {
+                    break;
+                }
+            }
+
+            range[0] = l as i32;
+            range[1] = r as i32;
+            break;
+        }
+    }
+
+    range
+}
+
 /// 力扣（50. Pow(x, n)） https://leetcode-cn.com/problems/powx-n/
 pub fn my_pow(x: f64, n: i32) -> f64 {
     x.powi(n)
@@ -1113,4 +1156,8 @@ fn medium() {
     let nums = vec![3, 2, 1, 5, 6, 4];
     let kth_largest = find_kth_largest(nums, 6);
     println!("kth_largest    {}", kth_largest);
+
+    let nums = vec![8, 8, 8, 8, 8, 8];
+    let range = search_range(nums, 7);
+    println!("range {:?}", range);
 }
