@@ -4,6 +4,7 @@ mod hard;
 mod medium;
 mod simple;
 
+mod lcof;
 mod solution;
 mod spring2020;
 
