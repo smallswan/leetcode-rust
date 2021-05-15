@@ -506,6 +506,47 @@ fn display(l: Option<Box<ListNode>>) {
     println!("");
 }
 
+/// 力扣（26. 删除有序数组中的重复项) https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
+pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
+    let len = nums.len();
+    if len <= 1 {
+        return len as i32;
+    }
+    let mut slow_index = 0;
+    let mut fast_index = 1;
+    while fast_index < len {
+        if nums[slow_index] == nums[fast_index] {
+            fast_index += 1;
+        } else {
+            nums[slow_index + 1] = nums[fast_index];
+            slow_index += 1;
+            fast_index += 1;
+        }
+    }
+
+    (slow_index + 1) as i32
+}
+
+/// 力扣（26. 删除有序数组中的重复项)
+pub fn remove_duplicates_v2(nums: &mut Vec<i32>) -> i32 {
+    let len = nums.len();
+    if len == 0 {
+        return 0;
+    }
+    let mut slow_index = 1;
+    let mut fast_index = 1;
+    while fast_index < len {
+        if nums[fast_index] != nums[fast_index - 1] {
+            nums[slow_index] = nums[fast_index];
+            slow_index += 1;
+        }
+
+        fast_index += 1;
+    }
+
+    slow_index as i32
+}
+
 ///  力扣（27. 移除元素）https://leetcode-cn.com/problems/remove-element/
 pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
     let mut k = 0;
@@ -1645,6 +1686,34 @@ pub fn sorted_squares_v2(nums: Vec<i32>) -> Vec<i32> {
     v
 }
 
+/// 力扣（977. 有序数组的平方）
+/// 方法三：双指针
+pub fn sorted_squares_v3(nums: Vec<i32>) -> Vec<i32> {
+    let len = nums.len();
+    if len == 1 {
+        return vec![nums[0] * nums[0]];
+    }
+    let mut ans = vec![0; len];
+    let mut i = 0;
+    let mut j = len - 1;
+    let mut pos = j as i32;
+    while i <= j {
+        let square1 = nums[i] * nums[i];
+        let square2 = nums[j] * nums[j];
+        // 为了防止j自减溢出，当前后平方相同时把优先把square1写入ans
+        if square1 >= square2 {
+            ans[pos as usize] = square1;
+            i += 1;
+        } else {
+            ans[pos as usize] = square2;
+            j -= 1;
+        }
+        pos -= 1;
+    }
+
+    ans
+}
+
 /// 力扣（1051. 高度检查器），https://leetcode-cn.com/problems/height-checker/
 pub fn height_checker(heights: Vec<i32>) -> i32 {
     let len = heights.len();
@@ -1781,9 +1850,14 @@ fn simple_test() {
     let sorted_vec = vec![-3, -2, 0, 1, 4, 5];
     let sorted_squares_vec = sorted_squares(sorted_vec);
     assert_eq!(sorted_squares_vec, vec![0, 1, 4, 9, 16, 25]);
+
     let sorted_vec_v2 = vec![-3, -2, 0, 1, 4, 5];
     let sorted_squares_vec_v2 = sorted_squares_v2(sorted_vec_v2);
     assert_eq!(sorted_squares_vec_v2, vec![0, 1, 4, 9, 16, 25]);
+
+    let sorted_vec_v3 = vec![-3, 3, 4];
+    let sorted_squares_vec_v3 = sorted_squares_v3(sorted_vec_v3);
+    assert_eq!(sorted_squares_vec_v3, vec![9, 9, 16]);
 
     println!("{}", is_palindrome(121));
     println!("{}", is_palindrome(-121));
@@ -1916,4 +1990,12 @@ fn no_pass() {
     let nums = vec![1, 0, 3, 5, 9, 12];
     let idx = search_v2(nums, 2);
     println!("targt's index is {}", idx);
+
+    let mut nums = vec![1, 3, 3, 3, 5, 5, 9, 9, 9, 9];
+    let new_len = remove_duplicates(&mut nums);
+    println!("new_len is {}", new_len);
+
+    let mut nums = vec![1, 3, 3, 3, 5, 5, 9, 9, 9, 9];
+    let new_len = remove_duplicates_v2(&mut nums);
+    println!("new_len is {}", new_len);
 }

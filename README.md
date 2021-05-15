@@ -19,7 +19,7 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
           |--编程语言  
           |--设计模式：状态模式
           |--数据结构：数组、向量、双端队列、哈希集合、哈希表、二叉堆、、  
-          |--算法：排序算法、查询算法（二分查找）、动态规划、分治算法、递归算法  		  
+          |--算法：排序算法（归并排序）、查询算法（二分查找）、动态规划、分治算法、递归算法  		  
    |--数学方面
           |--概念：质数、合数、快乐数、不快乐数、丑数
           |--公式： 
@@ -34,10 +34,19 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 在解决具体问题的过程中，可能要综合运用多种解决方案。
 
 
-3. 注意边界值
+3. 注意事项
+- 定义辅助函数需要在主函数及“impl Solution {” 前定义
+- 递归函数的写法
 - 数字是否溢出（overflow）
 （1）注意各种数字类型（uszie,i32,i64等）的范围，特别是rust用作下标的usize类型。
 （2）相乘、幂运算等运算容易溢出。
+
+4. 刷题攻略
+## 刷题攻略	
+[大一计算机学生如何高效刷力扣？](https://www.zhihu.com/question/392882083/answer/1860538172 )	
+对于刷题，我们都是想用最短的时间把经典题目都做一篇，这样效率才是最高的！
+[leetcode-master](https://github.com/youngyangyang04/leetcode-master )
+
 
 ## 代码阅读
 - 代码按照困难程度（简单 simple,中等 medium，困难 hard）将代码写在对应的.rs文件中；
