@@ -1581,6 +1581,74 @@ pub fn dominant_index(nums: Vec<i32>) -> i32 {
     -1
 }
 
+fn build(s: String) -> String {
+    let mut chars_vec = Vec::new();
+    for ch in s.chars() {
+        if ch != '#' {
+            chars_vec.push(ch);
+        } else if !chars_vec.is_empty() {
+            chars_vec.pop();
+        }
+    }
+    chars_vec.into_iter().collect()
+}
+/// 力扣（844. 比较含退格的字符串)  https://leetcode-cn.com/problems/backspace-string-compare/
+/// 方法一：重构字符串
+pub fn backspace_compare(s: String, t: String) -> bool {
+    build(s) == (build(t))
+}
+
+/// 力扣（844. 比较含退格的字符串)
+/// 方法二：双指针
+pub fn backspace_compare_v2(s: String, t: String) -> bool {
+    let mut i = s.len() as i32 - 1;
+    let mut j = t.len() as i32 - 1;
+    let mut skip_s = 0;
+    let mut skip_t = 0;
+    let s_chars: Vec<char> = s.chars().into_iter().collect();
+    let t_chars: Vec<char> = t.chars().into_iter().collect();
+
+    while i >= 0 || j >= 0 {
+        while i >= 0 {
+            if s_chars[i as usize] == '#' {
+                skip_s += 1;
+                i -= 1;
+            } else if skip_s > 0 {
+                skip_s -= 1;
+                i -= 1;
+            } else {
+                break;
+            }
+        }
+
+        while j >= 0 {
+            if t_chars[j as usize] == '#' {
+                skip_t += 1;
+                j -= 1;
+            } else if skip_t > 0 {
+                skip_t -= 1;
+                j -= 1;
+            } else {
+                break;
+            }
+        }
+
+        if i >= 0 && j >= 0 {
+            if s_chars[i as usize] != t_chars[j as usize] {
+                return false;
+            }
+        } else {
+            if i >= 0 || j >= 0 {
+                return false;
+            }
+        }
+
+        i -= 1;
+        j -= 1;
+    }
+    true
+}
+
 /// 力扣（867. 转置矩阵) https://leetcode-cn.com/problems/transpose-matrix/
 pub fn transpose(matrix: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     let mut transposed = Vec::<Vec<i32>>::new();
@@ -1998,4 +2066,9 @@ fn no_pass() {
     let mut nums = vec![1, 3, 3, 3, 5, 5, 9, 9, 9, 9];
     let new_len = remove_duplicates_v2(&mut nums);
     println!("new_len is {}", new_len);
+
+    let s = String::from("ab#c");
+    let t = String::from("ad#c");
+    let eq = backspace_compare(s, t);
+    println!("s equals t ? : {}", eq);
 }
