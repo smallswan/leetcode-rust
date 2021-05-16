@@ -707,6 +707,30 @@ pub fn min_sub_array_len(s: i32, nums: Vec<i32>) -> i32 {
     k as i32
 }
 
+/// 力扣（209. 长度最小的子数组)
+/// 滑动窗口
+pub fn min_sub_array_len_v2(target: i32, nums: Vec<i32>) -> i32 {
+    let mut result = i32::MAX;
+    let mut sum = 0;
+    let mut i = 0;
+    let mut sub_length = 0;
+    let len = nums.len();
+    for j in 0..len {
+        sum += nums[j];
+        while sum >= target {
+            sub_length = (j - i + 1);
+            result = min(result, sub_length as i32);
+            sum -= nums[i];
+            i += 1;
+        }
+    }
+    if result == i32::MAX {
+        0
+    } else {
+        result
+    }
+}
+
 /// 力扣（210. 课程表II），https://leetcode-cn.com/problems/course-schedule-ii/
 pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
     use std::collections::VecDeque;
@@ -1044,6 +1068,12 @@ fn medium() {
     let s = 7;
     let nums = vec![1, 2, 3, 4, 3, 7, 2, 2];
     let min_len = min_sub_array_len(s, nums);
+    println!("min_len:{}", min_len);
+
+    let target = 7;
+    let nums = vec![1, 2, 3, 4, 3, 7, 2, 2];
+
+    let min_len = min_sub_array_len_v2(target, nums);
     println!("min_len:{}", min_len);
 
     let mut rotate_vec = vec![1, 2];
