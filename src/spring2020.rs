@@ -65,6 +65,26 @@ fn search_recurse(
     false
 }
 
+/// 力扣（LCP 11. 期望个数统计） https://leetcode-cn.com/problems/qi-wang-ge-shu-tong-ji/
+pub fn expect_number(scores: Vec<i32>) -> i32 {
+    let mut mut_scores = scores.clone();
+    mut_scores.sort();
+    mut_scores.dedup();
+    //println!("{:?}", mut_scores);
+    mut_scores.len() as i32
+}
+
+
+pub fn expect_number_v2(scores: Vec<i32>) -> i32 {
+    let mut unique_scores = HashSet::new(); 
+    for score in scores{
+        unique_scores.insert(score);
+    }
+    
+    unique_scores.len() as i32
+}
+
+
 #[test]
 fn min_count_test() {
     let coins: Vec<i32> = vec![4, 2, 1];
@@ -88,4 +108,8 @@ fn min_count_test() {
     let r = num_ways(n, relation, k);
 
     println!("r:{}", r);
+
+
+    let scores = vec![1,1,2];
+    expect_number(scores);
 }
