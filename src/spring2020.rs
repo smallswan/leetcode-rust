@@ -74,16 +74,14 @@ pub fn expect_number(scores: Vec<i32>) -> i32 {
     mut_scores.len() as i32
 }
 
-
 pub fn expect_number_v2(scores: Vec<i32>) -> i32 {
-    let mut unique_scores = HashSet::new(); 
-    for score in scores{
+    let mut unique_scores = HashSet::new();
+    for score in scores {
         unique_scores.insert(score);
     }
-    
+
     unique_scores.len() as i32
 }
-
 
 #[test]
 fn min_count_test() {
@@ -109,7 +107,6 @@ fn min_count_test() {
 
     println!("r:{}", r);
 
-
-    let scores = vec![1,1,2];
+    let scores = vec![1, 1, 2];
     expect_number(scores);
 }

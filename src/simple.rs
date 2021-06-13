@@ -8,6 +8,23 @@ use std::{
     ops::{BitAndAssign, BitOr},
 };
 
+use rand;
+
+lazy_static! {
+    static ref VERSIONS: Vec<bool> = {
+        let len: usize = 100;
+        let mut versions = vec![false; len];
+        let mut version = rand::random::<usize>() % len;
+        while version >= len {
+            version = rand::random::<usize>();
+        }
+        for index in version..len {
+            versions[index] = true;
+        }
+        versions
+    };
+}
+
 /// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum
 pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
     let mut nums_map = HashMap::<i32, i32>::new();
@@ -1293,6 +1310,36 @@ pub fn is_ugly(num: i32) -> bool {
     num == 1
 }
 
+fn bad_version(n: usize, version: usize) -> Vec<bool> {
+    let mut versions = vec![false; n];
+    for index in version..n {
+        versions[index - 1] = true;
+    }
+    versions
+}
+
+fn is_bad_version(version: i32) -> bool {
+    // let mut versions = vec![false;100];
+    VERSIONS[version as usize]
+}
+/// 力扣（278. 第一个错误的版本）  https://leetcode-cn.com/problems/first-bad-version/
+// The API isBadVersion is defined for you.
+// isBadVersion(versions:i32)-> bool;
+// to call it use self.isBadVersion(versions)
+pub fn first_bad_version(n: i32) -> i32 {
+    let mut left = 1;
+    let mut right = n;
+    while left < right {
+        let middle = left + (right - left) / 2;
+        if is_bad_version(middle) {
+            right = middle;
+        } else {
+            left = middle + 1;
+        }
+    }
+    left
+}
+
 /// 力扣（283. 移动零） https://leetcode-cn.com/problems/move-zeroes/
 pub fn move_zeroes(nums: &mut Vec<i32>) {
     let mut slow_index = 0;
@@ -2071,4 +2118,16 @@ fn no_pass() {
     let t = String::from("ad#c");
     let eq = backspace_compare(s, t);
     println!("s equals t ? : {}", eq);
+
+    let mut version0 = 0;
+    for version in 0..100 {
+        if (VERSIONS[version]) {
+            println!("version0:{}", version);
+            version0 = version;
+            break;
+        }
+    }
+    let version = first_bad_version(100);
+    println!("version1: {}", version);
+    assert_eq!(version0 as i32, version);
 }

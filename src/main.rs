@@ -8,6 +8,9 @@ mod lcof;
 mod solution;
 mod spring2020;
 
+#[macro_use]
+extern crate lazy_static;
+
 extern "C" {
     fn rand() -> i32;
 }
