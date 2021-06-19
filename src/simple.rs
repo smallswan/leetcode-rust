@@ -971,6 +971,48 @@ pub fn generate(num_rows: i32) -> Vec<Vec<i32>> {
     result
 }
 
+/// 力扣（121. 买卖股票的最佳时机）  https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/
+/// 暴力解法，容易超时
+pub fn max_profit(prices: Vec<i32>) -> i32 {
+    let len = prices.len();
+    if len <= 1 {
+        return 0;
+    }
+    let mut buy_day = 0;
+    let mut sale_day = 1;
+    let mut max_profit = 0;
+    while buy_day < len - 1 {
+        while sale_day < len {
+            let profit = prices[sale_day] - prices[buy_day];
+            if profit > 0 {
+                max_profit = max(max_profit, profit);
+            }
+            sale_day += 1;
+        }
+        buy_day += 1;
+        sale_day = buy_day + 1;
+    }
+
+    max_profit
+}
+
+/// 力扣（121. 买卖股票的最佳时机）
+/// 最低价格、最大利润
+pub fn max_profit_v2(prices: Vec<i32>) -> i32 {
+    let len = prices.len();
+    let mut min_prince = i32::MAX;
+    let mut max_profit = 0;
+    for day in 0..len {
+        if prices[day] < min_prince {
+            min_prince = prices[day];
+        } else if prices[day] - min_prince > max_profit {
+            max_profit = prices[day] - min_prince;
+        }
+    }
+
+    max_profit
+}
+
 /// 力扣（119. 杨辉三角 II） https://leetcode-cn.com/problems/pascals-triangle-ii/
 pub fn get_row(row_index: i32) -> Vec<i32> {
     let rows = (row_index + 1) as usize;
@@ -2130,4 +2172,10 @@ fn no_pass() {
     let version = first_bad_version(100);
     println!("version1: {}", version);
     assert_eq!(version0 as i32, version);
+
+    let prices = vec![7, 1, 5, 3, 6, 4];
+    let profit = max_profit(prices);
+    println!("profit0:{}", profit);
+    let profit1 = max_profit_v2(vec![7, 1, 5, 3, 6, 4]);
+    println!("profit1:{}", profit1);
 }
