@@ -401,6 +401,42 @@ pub fn int_to_roman_v2(num: i32) -> String {
     ret
 }
 
+use std::collections::HashMap;
+/// 力扣（17. 电话号码的字母组合） https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
+pub fn letter_combinations(digits: String) -> Vec<String> {
+    let len = digits.len();
+    if len == 0 {
+        return vec![];
+    }
+    let mut nums_map = HashMap::<String, String>::new();
+    nums_map.insert(String::from("2"), String::from("abc"));
+    nums_map.insert(String::from("3"), String::from("def"));
+    nums_map.insert(String::from("4"), String::from("ghi"));
+    nums_map.insert(String::from("5"), String::from("jkl"));
+    nums_map.insert(String::from("6"), String::from("mno"));
+    nums_map.insert(String::from("7"), String::from("pqrs"));
+    nums_map.insert(String::from("8"), String::from("tuv"));
+    nums_map.insert(String::from("9"), String::from("wxyz"));
+
+    if len == 1 {
+        match nums_map.get(&digits) {
+            Some(value) => {
+                return value
+                    .chars()
+                    .map(|ch| format!("{}", ch))
+                    .collect::<Vec<String>>();
+            }
+            None => {
+                panic!("digits is invalid.");
+            }
+        }
+    } else {
+        //TODO
+    }
+
+    return vec![];
+}
+
 /// 力扣（34. 在排序数组中查找元素的第一个和最后一个位置) https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
 /// 先用二分查找算法找到target的下标，然后向左右两边继续查找
 pub fn search_range(nums: Vec<i32>, target: i32) -> Vec<i32> {
@@ -1190,4 +1226,8 @@ fn medium() {
     let nums = vec![8, 8, 8, 8, 8, 8];
     let range = search_range(nums, 7);
     println!("range {:?}", range);
+
+    let digits = String::from("2");
+    let combination = letter_combinations(digits);
+    println!("combination: {:?}", combination);
 }
