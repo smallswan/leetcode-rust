@@ -402,39 +402,63 @@ pub fn int_to_roman_v2(num: i32) -> String {
 }
 
 use std::collections::HashMap;
-/// 力扣（17. 电话号码的字母组合） https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
-pub fn letter_combinations(digits: String) -> Vec<String> {
-    let len = digits.len();
-    if len == 0 {
-        return vec![];
-    }
-    let mut nums_map = HashMap::<String, String>::new();
-    nums_map.insert(String::from("2"), String::from("abc"));
-    nums_map.insert(String::from("3"), String::from("def"));
-    nums_map.insert(String::from("4"), String::from("ghi"));
-    nums_map.insert(String::from("5"), String::from("jkl"));
-    nums_map.insert(String::from("6"), String::from("mno"));
-    nums_map.insert(String::from("7"), String::from("pqrs"));
-    nums_map.insert(String::from("8"), String::from("tuv"));
-    nums_map.insert(String::from("9"), String::from("wxyz"));
+fn backtrace(
+    combinations: &mut Vec<String>,
+    nums_map: &HashMap<char, Vec<char>>,
+    digits: &Vec<char>,
+    index: usize,
+    combination: &mut Vec<char>,
+) {
+    if index == digits.len() {
+        let abc = combination.iter().collect();
+        combinations.push(abc);
+    } else {
+        let digit = digits[index];
 
-    if len == 1 {
-        match nums_map.get(&digits) {
-            Some(value) => {
-                return value
-                    .chars()
-                    .map(|ch| format!("{}", ch))
-                    .collect::<Vec<String>>();
+        match nums_map.get(&digit) {
+            Some(letters) => {
+                let len = letters.len();
+                for i in 0..len {
+                    combination.push(letters[i]);
+                    backtrace(combinations, nums_map, digits, index + 1, combination);
+                    combination.remove(index);
+                }
             }
             None => {
                 panic!("digits is invalid.");
             }
         }
-    } else {
-        //TODO
     }
+}
+/// 力扣（17. 电话号码的字母组合） https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
+/// 回溯法（递归+深度优先）
+pub fn letter_combinations(digits: String) -> Vec<String> {
+    let mut combinations = vec![];
+    let len = digits.len();
+    if len == 0 {
+        return combinations;
+    }
+    let mut char_map = HashMap::<char, Vec<char>>::new();
 
-    return vec![];
+    char_map.insert('2', vec!['a', 'b', 'c']);
+    char_map.insert('3', vec!['d', 'e', 'f']);
+    char_map.insert('4', vec!['g', 'h', 'i']);
+    char_map.insert('5', vec!['j', 'k', 'l']);
+    char_map.insert('6', vec!['m', 'n', 'o']);
+    char_map.insert('7', vec!['p', 'q', 'r', 's']);
+    char_map.insert('8', vec!['t', 'u', 'v']);
+    char_map.insert('9', vec!['w', 'x', 'y', 'z']);
+
+    let digits_chars = digits.chars().collect::<Vec<char>>();
+    let mut combination = vec![];
+    backtrace(
+        &mut combinations,
+        &char_map,
+        &digits_chars,
+        0,
+        &mut combination,
+    );
+    return combinations;
 }
 
 /// 力扣（34. 在排序数组中查找元素的第一个和最后一个位置) https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
@@ -1227,7 +1251,7 @@ fn medium() {
     let range = search_range(nums, 7);
     println!("range {:?}", range);
 
-    let digits = String::from("2");
+    let digits = String::from("234");
     let combination = letter_combinations(digits);
     println!("combination: {:?}", combination);
 }
