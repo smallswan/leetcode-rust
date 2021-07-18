@@ -504,6 +504,42 @@ pub fn search_range(nums: Vec<i32>, target: i32) -> Vec<i32> {
     range
 }
 
+/// 力扣（49. 字母异位词分组） https://leetcode-cn.com/problems/group-anagrams/
+pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
+    let mut result: Vec<Vec<String>> = vec![];
+    use std::collections::HashMap;
+    let mut anagrams_map = HashMap::<String, Vec<String>>::new();
+    for str in strs {
+        let sign = {
+            if str == "".to_string() {
+                "".to_string()
+            } else {
+                let mut chars: Vec<char> = str.chars().collect();
+                chars.sort();
+                chars.iter().collect()
+            }
+        };
+        match anagrams_map.get_mut(&sign) {
+            Some(anagrams) => {
+                anagrams.push(str);
+            }
+            None => {
+                anagrams_map.insert(sign, vec![str]);
+            }
+        }
+    }
+
+    for value in anagrams_map.values() {
+        let mut anagrams = Vec::with_capacity(value.len());
+        for v in value {
+            anagrams.push(v.to_owned());
+        }
+        result.push(anagrams);
+    }
+
+    result
+}
+
 /// 力扣（50. Pow(x, n)） https://leetcode-cn.com/problems/powx-n/
 pub fn my_pow(x: f64, n: i32) -> f64 {
     x.powi(n)
@@ -1254,4 +1290,18 @@ fn medium() {
     let digits = String::from("234");
     let combination = letter_combinations(digits);
     println!("combination: {:?}", combination);
+}
+
+#[test]
+fn medium2() {
+    let strs = vec![
+        "eat".to_string(),
+        "tea".to_string(),
+        "tan".to_string(),
+        "ate".to_string(),
+        "nat".to_string(),
+        "bat".to_string(),
+    ];
+    let anagrams = group_anagrams(strs);
+    println!("anagrams: {:?}", anagrams);
 }

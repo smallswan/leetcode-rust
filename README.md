@@ -19,7 +19,7 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
           |--编程语言  
           |--设计模式：状态模式
           |--数据结构：数组、向量、双端队列、哈希集合、哈希表、二叉堆、、  
-          |--算法：排序算法（归并排序）、查询算法（二分查找）、动态规划、分治算法、递归算法  		  
+          |--算法：排序算法（归并排序）、查询算法（二分查找）、动态规划、分治算法、递归算法、回溯法  		  
    |--数学方面
           |--概念：质数、合数、快乐数、不快乐数、丑数
           |--公式： 
@@ -73,3 +73,7 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 
 ### 问题：如何检测一个链表是否有环（循环节）
 [弗洛伊德的兔子与乌龟(Floyd's Tortoise and Hare algorithm)](https://zhuanlan.zhihu.com/p/105269431 )，快慢指针法、龟兔赛跑法
+
+### 问题：电话号码的字母组合
+[17. 电话号码的字母组合](https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/)
+[回溯法](https://baike.baidu.com/item/%E5%9B%9E%E6%BA%AF%E6%B3%95/86074?fr=aladdin)
