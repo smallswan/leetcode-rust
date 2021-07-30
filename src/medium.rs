@@ -77,11 +77,11 @@ fn longest_of(i: usize, s: &[u8]) -> (usize, usize) {
         ret2 = (f, t);
     }
 
-    return if ret2.1 - ret2.0 > ret1.1 - ret1.0 {
+    if ret2.1 - ret2.0 > ret1.1 - ret1.0 {
         ret2
     } else {
         ret1
-    };
+    }
 }
 
 /// 力扣（5. 最长回文子串） https://leetcode-cn.com/problems/longest-palindromic-substring/solution/zui-chang-hui-wen-zi-chuan-by-leetcode-solution/
@@ -159,8 +159,7 @@ pub fn longest_palindrome_v2(s: String) -> String {
 
     println!("max_len:{}", max_len);
 
-    let new_s = String::from_utf8(res_bytes).unwrap();
-    new_s
+    String::from_utf8(res_bytes).unwrap()
 }
 
 /// 力扣（6. Z 字形变换） https://leetcode-cn.com/problems/zigzag-conversion/
@@ -251,8 +250,8 @@ pub fn my_atoi(s: String) -> i32 {
     }
 
     match state {
-        State::Number(n) => return neg * n,
-        _ => return 0,
+        State::Number(n) =>  neg * n,
+        _ =>  0,
     }
 }
 
@@ -458,7 +457,7 @@ pub fn letter_combinations(digits: String) -> Vec<String> {
         0,
         &mut combination,
     );
-    return combinations;
+    combinations
 }
 
 /// 力扣（34. 在排序数组中查找元素的第一个和最后一个位置) https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
@@ -562,9 +561,9 @@ fn quick_mul(x: f64, n: i32) -> f64 {
 
     let y = quick_mul(x, n / 2);
     if n % 2 == 0 {
-        return y * y;
+        y * y
     } else {
-        return y * y * x;
+        y * y * x
     }
 }
 
@@ -874,9 +873,9 @@ pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
     }
 
     if index != u_num_courses {
-        return vec![];
+        vec![]
     } else {
-        return result;
+        result
     }
 }
 
@@ -1031,13 +1030,13 @@ pub fn valid_ip_address2(ip: String) -> String {
     if ip.chars().filter(|ch| *ch == '.').count() == 3 {
         //println!("valid_ipv4_address..");
         // return valid_ipv4_address(ip);
-        return valid_ipv4_address_v2(ip);
+        valid_ipv4_address_v2(ip)
     } else if ip.chars().filter(|ch| *ch == ':').count() == 7 {
         //println!("valid_ipv6_address..");
         // return valid_ipv6_address(ip);
-        return valid_ipv6_address_v2(ip);
+        valid_ipv6_address_v2(ip)
     } else {
-        return String::from("Neither");
+        String::from("Neither")
     }
 }
 

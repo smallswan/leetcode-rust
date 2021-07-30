@@ -8,8 +8,6 @@ use std::{
     ops::{BitAndAssign, BitOr},
 };
 
-use rand;
-
 lazy_static! {
     static ref VERSIONS: Vec<bool> = {
         let len: usize = 100;
@@ -154,7 +152,7 @@ pub fn is_palindrome_v2(x: i32) -> bool {
         reverted_num = reverted_num * 10 + y % 10;
         y /= 10;
     }
-    return y == reverted_num || y == reverted_num / 10;
+    y == reverted_num || y == reverted_num / 10
 }
 
 /// 力扣（13. 罗马数字转整数） https://leetcode-cn.com/problems/roman-to-integer/
@@ -520,7 +518,7 @@ fn display(l: Option<Box<ListNode>>) {
         print!("{}, ", head.as_ref().unwrap().val);
         head = &(head.as_ref().unwrap().next);
     }
-    println!("");
+    println!();
 }
 
 /// 力扣（26. 删除有序数组中的重复项) https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
@@ -815,9 +813,9 @@ pub fn my_sqrt_v2(x: i32) -> i32 {
     let squar = (ans + 1f64) * (ans + 1f64);
 
     if squar <= x {
-        return (ans as i32) + 1;
+        (ans as i32) + 1
     } else {
-        return ans as i32;
+        ans as i32
     }
 }
 
@@ -1123,7 +1121,7 @@ pub fn majority_element_v2(nums: Vec<i32>) -> i32 {
             // major_entry = (*key,*val);
         }
     }
-    return major_entry.0;
+    major_entry.0
 }
 
 /// 力扣（172. 阶乘后的零） https://leetcode-cn.com/problems/factorial-trailing-zeroes/
@@ -1413,7 +1411,7 @@ pub fn move_zeroes_v2(nums: &mut Vec<i32>) {
 
 /// 力扣（326. 3的幂) https://leetcode-cn.com/problems/power-of-three/
 pub fn is_power_of_three(n: i32) -> bool {
-    return n > 0 && 1162261467 % n == 0;
+    n > 0 && 1162261467 % n == 0
 }
 
 /// 力扣（326. 3的幂)
@@ -1884,13 +1882,13 @@ pub fn height_checker(heights: Vec<i32>) -> i32 {
 
     let mut count = 0;
     let mut j = 0;
-    for i in 1..101 {
-        while arr[i] > 0 {
+    for (i, item) in arr.iter_mut().enumerate().take(101).skip(1) {
+        while *item > 0 {
             if heights[j] != (i as i32) {
                 count += 1;
             }
             j += 1;
-            arr[i] -= 1;
+            *item -= 1;
         }
     }
     count
@@ -2066,7 +2064,7 @@ fn no_pass() {
     println!("{}", my_sqrt_v3(2147395599));
     println!("{}", my_sqrt_v4(2147395599));
 
-    println!("{} is very small", 1e-7);
+    println!("1e-7 is very small");
 
     assert_eq!(hamming_weight(15), hamming_weight(15));
 

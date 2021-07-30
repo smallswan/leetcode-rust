@@ -54,9 +54,9 @@ pub fn find_median_sorted_arrays_v2(nums1: Vec<i32>, nums2: Vec<i32>) -> f64 {
     } else {
         let medium_idx1 = total_len / 2 - 1;
         let medium_idx2 = total_len / 2;
-        return (kth_elem(&nums1, &nums2, medium_idx1 + 1)
+        (kth_elem(&nums1, &nums2, medium_idx1 + 1)
             + kth_elem(&nums1, &nums2, medium_idx2 + 1))
-            / 2.0;
+            / 2.0
     }
 }
 
@@ -156,11 +156,9 @@ pub fn is_match(s: String, p: String) -> bool {
                 }
 
                 for j in 1..s.len() {
-                    if matrix[i][j - 1] {
-                        if c == '.' || c == s[j] {
+                    if matrix[i][j - 1] && (c == '.' || c == s[j]) {
                             matrix[i][j] = true;
                         }
-                    }
                 }
             }
             _ => {
@@ -236,10 +234,8 @@ pub fn is_match_v3(s: String, p: String) -> bool {
                 if matches_v2(&s_chars, &chars, i, j - 1) {
                     f[i][j] = f[i][j] || f[i - 1][j];
                 }
-            } else {
-                if matches_v2(&s_chars, &chars, i, j) {
+            } else if matches_v2(&s_chars, &chars, i, j) {
                     f[i][j] = f[i - 1][j - 1];
-                }
             }
         }
     }

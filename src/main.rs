@@ -29,7 +29,7 @@ fn main() {
     println!("number_tower max = {:?}", max);
 
     let ip = String::from("192.168.2.251");
-    let nums: Vec<&str> = ip.split(".").collect();
+    let nums: Vec<&str> = ip.split('.').collect();
 
     println!("{:?}", nums);
     for num in nums {
