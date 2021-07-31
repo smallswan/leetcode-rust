@@ -110,7 +110,7 @@ pub fn longest_palindrome(s: String) -> String {
 pub fn longest_palindrome_v2(s: String) -> String {
     //    let s_chars = s.chars();
     let s_bytes = s.as_bytes();
-    let mut res_bytes = vec!['#' as u8; 2 * s_bytes.len() + 1];
+    let mut res_bytes = vec![b'#'; 2 * s_bytes.len() + 1];
 
     let mut index = 0;
     let mut i = 0;
@@ -250,8 +250,8 @@ pub fn my_atoi(s: String) -> i32 {
     }
 
     match state {
-        State::Number(n) =>  neg * n,
-        _ =>  0,
+        State::Number(n) => neg * n,
+        _ => 0,
     }
 }
 
@@ -340,7 +340,7 @@ pub fn int_to_roman(num: i32) -> String {
         (1000, "M"),
     ];
 
-    fn find(n: i32, arr: &Vec<(i32, &'static str)>) -> (i32, &'static str) {
+    fn find(n: i32, arr: &[(i32, &'static str)]) -> (i32, &'static str) {
         for (value, s) in arr.iter().rev() {
             if n >= *value {
                 return (*value, *s);
@@ -404,7 +404,7 @@ use std::collections::HashMap;
 fn backtrace(
     combinations: &mut Vec<String>,
     nums_map: &HashMap<char, Vec<char>>,
-    digits: &Vec<char>,
+    digits: &[char],
     index: usize,
     combination: &mut Vec<char>,
 ) {
@@ -416,9 +416,9 @@ fn backtrace(
 
         match nums_map.get(&digit) {
             Some(letters) => {
-                let len = letters.len();
-                for i in 0..len {
-                    combination.push(letters[i]);
+                //let len = letters.len();
+                for &letter in letters {
+                    combination.push(letter);
                     backtrace(combinations, nums_map, digits, index + 1, combination);
                     combination.remove(index);
                 }
@@ -463,40 +463,45 @@ pub fn letter_combinations(digits: String) -> Vec<String> {
 /// 力扣（34. 在排序数组中查找元素的第一个和最后一个位置) https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
 /// 先用二分查找算法找到target的下标，然后向左右两边继续查找
 pub fn search_range(nums: Vec<i32>, target: i32) -> Vec<i32> {
+    use std::cmp::Ordering;
     let mut range = vec![-1, -1];
     let mut left = 0;
     let mut right = nums.len();
     while left < right {
         let mut middle = (left + right) / 2;
-        if nums[middle] > target {
-            right = middle;
-        } else if nums[middle] < target {
-            left = middle + 1;
-        } else {
-            // 找到target的第一个位置后则向左右两边拓展查找
-            range[0] = middle as i32;
-            range[1] = middle as i32;
-            let mut l = middle;
-            let mut r = middle;
-            while r < right - 1 {
-                if nums[r + 1] == target {
-                    r += 1;
-                } else {
-                    break;
-                }
+        match nums[middle].cmp(&target) {
+            Ordering::Greater => {
+                right = middle;
             }
-
-            while l > 0 {
-                if nums[l - 1] == target {
-                    l -= 1;
-                } else {
-                    break;
-                }
+            Ordering::Less => {
+                left = middle + 1;
             }
+            Ordering::Equal => {
+                // 找到target的第一个位置后则向左右两边拓展查找
+                range[0] = middle as i32;
+                range[1] = middle as i32;
+                let mut l = middle;
+                let mut r = middle;
+                while r < right - 1 {
+                    if nums[r + 1] == target {
+                        r += 1;
+                    } else {
+                        break;
+                    }
+                }
 
-            range[0] = l as i32;
-            range[1] = r as i32;
-            break;
+                while l > 0 {
+                    if nums[l - 1] == target {
+                        l -= 1;
+                    } else {
+                        break;
+                    }
+                }
+
+                range[0] = l as i32;
+                range[1] = r as i32;
+                break;
+            }
         }
     }
 
@@ -510,11 +515,11 @@ pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
     let mut anagrams_map = HashMap::<String, Vec<String>>::new();
     for str in strs {
         let sign = {
-            if str == "".to_string() {
+            if str == "" {
                 "".to_string()
             } else {
                 let mut chars: Vec<char> = str.chars().collect();
-                chars.sort();
+                chars.sort_unstable();
                 chars.iter().collect()
             }
         };
@@ -693,17 +698,17 @@ pub fn set_zeroes(matrix: &mut Vec<Vec<i32>>) {
     let mut col = vec![false; n];
 
     for i in 0..m {
-        for j in 0..n {
+        for (j, item) in col.iter_mut().enumerate().take(n) {
             if matrix[i][j] == 0 {
                 row[i] = true;
-                col[j] = true;
+                *item = true;
             }
         }
     }
 
     for i in 0..m {
-        for j in 0..n {
-            if row[i] || col[j] {
+        for (j, &item) in col.iter().enumerate().take(n) {
+            if row[i] || item {
                 matrix[i][j] = 0;
             }
         }
@@ -850,8 +855,8 @@ pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
 
     let mut queue = VecDeque::<i32>::new();
     // 将所有入度为 0 的节点放入队列中
-    for course in 0..u_num_courses {
-        if indeg[course] == 0 {
+    for (course, item) in indeg.iter().enumerate().take(u_num_courses) {
+        if *item == 0 {
             queue.push_back(course as i32);
         }
     }
@@ -905,17 +910,15 @@ pub fn majority_element(nums: Vec<i32>) -> Vec<i32> {
             count1 += 1;
         } else if *num == candidate2 {
             count2 += 1;
+        } else if count1 == 0 {
+            candidate1 = *num;
+            count1 = 1;
+        } else if count2 == 0 {
+            candidate2 = *num;
+            count2 = 1;
         } else {
-            if count1 == 0 {
-                candidate1 = *num;
-                count1 = 1;
-            } else if count2 == 0 {
-                candidate2 = *num;
-                count2 = 1;
-            } else {
-                count1 -= 1;
-                count2 -= 1;
-            }
+            count1 -= 1;
+            count2 -= 1;
         }
     }
 
@@ -1004,8 +1007,8 @@ pub fn valid_ip_address(ip: String) -> String {
     match ip.parse::<IpAddr>() {
         Ok(IpAddr::V4(x)) => {
             let array: Vec<Vec<char>> = ip.split('.').map(|x| x.chars().collect()).collect();
-            for i in 0..array.len() {
-                if (array[i][0] == '0' && array[i].len() > 1) {
+            for item in &array {
+                if (item[0] == '0' && item.len() > 1) {
                     return String::from("Neither");
                 }
             }
@@ -1013,8 +1016,8 @@ pub fn valid_ip_address(ip: String) -> String {
         }
         Ok(IpAddr::V6(_)) => {
             let array: Vec<Vec<char>> = ip.split(':').map(|x| x.chars().collect()).collect();
-            for i in 0..array.len() {
-                if array[i].len() == 0 {
+            for item in array {
+                if item.is_empty() {
                     return String::from("Neither");
                 }
             }
@@ -1042,24 +1045,24 @@ pub fn valid_ip_address2(ip: String) -> String {
 
 fn valid_ipv4_address(ip: String) -> String {
     let array: Vec<Vec<char>> = ip.split('.').map(|x| x.chars().collect()).collect();
-    for i in 0..array.len() {
+    for item in array {
         //Validate integer in range (0, 255):
         //1. length of chunk is between 1 and 3
-        if array[i].len() == 0 || array[i].len() > 3 {
+        if item.is_empty() || item.len() > 3 {
             return String::from("Neither");
         }
         //2. no extra leading zeros
-        if (array[i][0] == '0' && array[i].len() > 1) {
+        if (item[0] == '0' && item.len() > 1) {
             return String::from("Neither");
         }
         //3. only digits are allowed
-        for ch in &array[i] {
-            if !(*ch).is_digit(10) {
+        for ch in &item {
+            if !ch.is_digit(10) {
                 return String::from("Neither");
             }
         }
         //4. less than 255
-        let num_str: String = array[i].iter().collect();
+        let num_str: String = item.iter().collect();
         let num = num_str.parse::<u16>().unwrap();
         if num > 255 {
             return String::from("Neither");
@@ -1110,9 +1113,9 @@ fn valid_ipv4_address_v2(ip: String) -> String {
 
 fn valid_ipv6_address(ip: String) -> String {
     let array: Vec<Vec<char>> = ip.split(':').map(|x| x.chars().collect()).collect();
-    for i in 0..array.len() {
-        let num = &array[i];
-        if num.len() == 0 || num.len() > 4 {
+    for item in &array {
+        let num = item;
+        if num.is_empty() || num.len() > 4 {
             return String::from("Neither");
         }
         //2.
@@ -1127,7 +1130,7 @@ fn valid_ipv6_address(ip: String) -> String {
 
 fn valid_ipv6_address_v2(ip: String) -> String {
     // let array: Vec<Vec<char>> = ip.split(':').map(|x| x.chars().collect()).collect();
-    let array: Vec<&str> = ip.split(":").collect();
+    let array: Vec<&str> = ip.split(':').collect();
     for item in array {
         let len = item.len();
         if len == 0 || len > 4 {
@@ -1226,8 +1229,8 @@ fn medium() {
     let heights = vec![4, 3, 2, 1, 4];
     println!("max area : {}", max_area(heights));
 
-    println!("{} to roman {}", 3999, int_to_roman(3999));
-    println!("{} to roman {}", 3999, int_to_roman_v2(3999));
+    println!("3999 to roman {}", int_to_roman(3999));
+    println!("3999 to roman {}", int_to_roman_v2(3999));
 
     println!("{}", my_pow(2.10000, 3));
 

@@ -3,12 +3,8 @@ pub fn max_continue_array_sum(array: &[i32]) -> i32 {
     let len = array.len();
     let mut max = array[0];
     let mut sum = array[0];
-    for i in 1..len {
-        sum = if sum + array[i] > array[i] {
-            sum + array[i]
-        } else {
-            array[i]
-        };
+    for &item in array.iter().take(len).skip(1) {
+        sum = if sum + item > item { sum + item } else { item };
 
         if sum >= max {
             max = sum;

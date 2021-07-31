@@ -34,10 +34,10 @@ pub fn find_median_sorted_arrays(nums1: Vec<i32>, nums2: Vec<i32>) -> f64 {
 
     let t1 = (len1 + len2) % 2;
     if t1 == 1 {
-        return merge_vec[(len1 + len2) / 2] as f64;
+        merge_vec[(len1 + len2) / 2] as f64
     } else {
         let t2 = (len1 + len2) / 2;
-        return ((merge_vec[t2 - 1] + merge_vec[t2]) as f64) / 2.0;
+        ((merge_vec[t2 - 1] + merge_vec[t2]) as f64) / 2.0
     }
 }
 
@@ -50,12 +50,11 @@ pub fn find_median_sorted_arrays_v2(nums1: Vec<i32>, nums2: Vec<i32>) -> f64 {
     let total_len = len1 + len2;
     if total_len % 2 == 1 {
         let medium_idx = total_len / 2;
-        return kth_elem(&nums1, &nums2, medium_idx + 1);
+        kth_elem(&nums1, &nums2, medium_idx + 1)
     } else {
         let medium_idx1 = total_len / 2 - 1;
         let medium_idx2 = total_len / 2;
-        (kth_elem(&nums1, &nums2, medium_idx1 + 1)
-            + kth_elem(&nums1, &nums2, medium_idx2 + 1))
+        (kth_elem(&nums1, &nums2, medium_idx1 + 1) + kth_elem(&nums1, &nums2, medium_idx2 + 1))
             / 2.0
     }
 }
@@ -71,7 +70,7 @@ use std::cmp::min;
 /// 如果 pivot = pivot1，那么 nums1[0 .. k/2-1] 都不可能是第 k 小的元素。把这些元素全部 "删除"，剩下的作为新的 nums1 数组
 /// 如果 pivot = pivot2，那么 nums2[0 .. k/2-1] 都不可能是第 k 小的元素。把这些元素全部 "删除"，剩下的作为新的 nums2 数组
 /// 由于我们 "删除" 了一些元素（这些元素都比第 k 小的元素要小），因此需要修改 k 的值，减去删除的数的个数
-fn kth_elem(nums1: &Vec<i32>, nums2: &Vec<i32>, k: usize) -> f64 {
+fn kth_elem(nums1: &[i32], nums2: &[i32], k: usize) -> f64 {
     let mut k = k;
     let len1 = nums1.len();
     let len2 = nums2.len();
@@ -142,8 +141,8 @@ pub fn is_match(s: String, p: String) -> bool {
     for i in 1..patterns.len() {
         match patterns[i] {
             Pattern::Char(c) => {
-                for j in 1..s.len() {
-                    if (s[j] == c || c == '.') && matrix[i - 1][j - 1] {
+                for (j, &item) in s.iter().enumerate().skip(1) {
+                    if (item == c || c == '.') && matrix[i - 1][j - 1] {
                         matrix[i][j] = true;
                     }
                 }
@@ -155,10 +154,10 @@ pub fn is_match(s: String, p: String) -> bool {
                     }
                 }
 
-                for j in 1..s.len() {
-                    if matrix[i][j - 1] && (c == '.' || c == s[j]) {
-                            matrix[i][j] = true;
-                        }
+                for (j, &item) in s.iter().enumerate().skip(1) {
+                    if matrix[i][j - 1] && (c == '.' || c == item) {
+                        matrix[i][j] = true;
+                    }
                 }
             }
             _ => {
@@ -175,30 +174,28 @@ pub fn is_match(s: String, p: String) -> bool {
 /// 动态规划
 pub fn is_match_v2(s: String, p: String) -> bool {
     let chars: Vec<char> = p.chars().collect();
-    let m = s.len();
-    let n = p.len();
-    let mut f = Vec::<Vec<bool>>::with_capacity(m + 1);
-    for i in 0..=m {
-        f.push(vec![false; n + 1]);
+    let s_len = s.len();
+    let p_len = p.len();
+    let mut dp = Vec::<Vec<bool>>::with_capacity(s_len + 1);
+    for i in 0..=s_len {
+        dp.push(vec![false; p_len + 1]);
     }
-    f[0][0] = true;
+    dp[0][0] = true;
 
-    for i in 0..=m {
-        for j in 1..=n {
+    for i in 0..=s_len {
+        for j in 1..=p_len {
             if chars[j - 1] == '*' {
-                f[i][j] = f[i][j - 2];
+                dp[i][j] = dp[i][j - 2];
                 if matches(&s, &p, i, j - 1) {
-                    f[i][j] = f[i][j] || f[i - 1][j];
+                    dp[i][j] = dp[i][j] || dp[i - 1][j];
                 }
-            } else {
-                if matches(&s, &p, i, j) {
-                    f[i][j] = f[i - 1][j - 1];
-                }
+            } else if matches(&s, &p, i, j) {
+                dp[i][j] = dp[i - 1][j - 1];
             }
         }
     }
 
-    f[m][n]
+    dp[s_len][p_len]
 }
 
 fn matches(s: &str, p: &str, i: usize, j: usize) -> bool {
@@ -218,32 +215,32 @@ fn matches(s: &str, p: &str, i: usize, j: usize) -> bool {
 /// 动态规划
 pub fn is_match_v3(s: String, p: String) -> bool {
     let chars: Vec<char> = p.chars().collect();
-    let m = s.len();
-    let n = p.len();
-    let mut f = Vec::<Vec<bool>>::with_capacity(m + 1);
-    for i in 0..=m {
-        f.push(vec![false; n + 1]);
+    let s_len = s.len();
+    let p_len = p.len();
+    let mut dp = Vec::<Vec<bool>>::with_capacity(s_len + 1);
+    for i in 0..=s_len {
+        dp.push(vec![false; p_len + 1]);
     }
-    f[0][0] = true;
+    dp[0][0] = true;
 
     let s_chars: Vec<char> = s.chars().collect();
-    for i in 0..=m {
-        for j in 1..=n {
+    for i in 0..=s_len {
+        for j in 1..=p_len {
             if chars[j - 1] == '*' {
-                f[i][j] = f[i][j - 2];
+                dp[i][j] = dp[i][j - 2];
                 if matches_v2(&s_chars, &chars, i, j - 1) {
-                    f[i][j] = f[i][j] || f[i - 1][j];
+                    dp[i][j] = dp[i][j] || dp[i - 1][j];
                 }
             } else if matches_v2(&s_chars, &chars, i, j) {
-                    f[i][j] = f[i - 1][j - 1];
+                dp[i][j] = dp[i - 1][j - 1];
             }
         }
     }
 
-    f[m][n]
+    dp[s_len][p_len]
 }
 
-fn matches_v2(s_chars: &Vec<char>, p_chars: &Vec<char>, i: usize, j: usize) -> bool {
+fn matches_v2(s_chars: &[char], p_chars: &[char], i: usize, j: usize) -> bool {
     if i == 0 {
         return false;
     }
@@ -290,7 +287,7 @@ pub fn solve_sudoku(board: &mut Vec<Vec<char>>) {
     dfs(
         board,
         0,
-        &mut spaces,
+        &spaces,
         &mut valid,
         &mut line,
         &mut column,

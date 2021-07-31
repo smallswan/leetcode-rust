@@ -27,7 +27,6 @@ pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
 use std::io;
 ///
 /// 将16进制数字字符串&str转为10进制数字输出
-#[test]
 fn hua_wei_test() {
     loop {
         let mut line = String::new();

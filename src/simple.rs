@@ -16,8 +16,8 @@ lazy_static! {
         while version >= len {
             version = rand::random::<usize>();
         }
-        for index in version..len {
-            versions[index] = true;
+        for item in versions.iter_mut().take(len).skip(version) {
+            *item = true;
         }
         versions
     };
@@ -1164,7 +1164,7 @@ pub fn hamming_weight_v1(n: u32) -> i32 {
     i = (i & const1) + ((i >> 1) & const1);
     i = (i & const2) + ((i >> 2) & const2);
     i = (i & const3) + ((i >> 4) & const3);
-    i = i * const4 >> 24;
+    i = (i * const4) >> 24;
 
     i
 }
@@ -1179,7 +1179,7 @@ pub fn hamming_weight(n: u32) -> i32 {
     i = (i & MASK1) + ((i >> 1) & MASK1);
     i = (i & MASK2) + ((i >> 2) & MASK2);
     i = (i & MASK3) + ((i >> 4) & MASK3);
-    i = i * MASK4 >> 24;
+    i = (i * MASK4) >> 24;
 
     i as i32
 }
@@ -1724,10 +1724,8 @@ pub fn backspace_compare_v2(s: String, t: String) -> bool {
             if s_chars[i as usize] != t_chars[j as usize] {
                 return false;
             }
-        } else {
-            if i >= 0 || j >= 0 {
-                return false;
-            }
+        } else if i >= 0 || j >= 0 {
+            return false;
         }
 
         i -= 1;
@@ -1896,7 +1894,7 @@ pub fn height_checker(heights: Vec<i32>) -> i32 {
 
 /// 力扣（1486. 数组异或操作） https://leetcode-cn.com/problems/xor-operation-in-an-array/
 pub fn xor_operation(n: i32, start: i32) -> i32 {
-    (1..n).fold(start, |acc, i| acc ^ start + 2 * i as i32)
+    (1..n).fold(start, |acc, i| acc ^ (start + 2 * i))
 }
 
 #[test]

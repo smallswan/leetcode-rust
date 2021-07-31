@@ -27,34 +27,34 @@ pub fn fib(n: i32) -> i32 {
         return n;
     }
 
-    let mut a = 0i64;
-    let mut b = 1i64;
-    let mut c = 0i64;
+    let mut f0 = 0i64;
+    let mut f1 = 1i64;
+    let mut current = 0i64;
     let mut i = 1;
     while i < n {
         // 答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
-        c = (a + b) % 1000000007;
-        a = b;
-        b = c;
+        current = (f0 + f1) % 1000000007;
+        f0 = f1;
+        f1 = current;
         i += 1;
     }
 
-    c as i32
+    current as i32
 }
 
 /// 剑指 Offer 10- I. 斐波那契数列
 pub fn fib_v2(n: i32) -> i32 {
-    let mut a = 0;
-    let mut b = 1;
+    let mut f0 = 0;
+    let mut f1 = 1;
     let mut i = 0;
     let mut sum = 0;
     while i < n {
-        sum = (a + b) % 1000000007;
-        a = b;
-        b = sum;
+        sum = (f0 + f1) % 1000000007;
+        f0 = f1;
+        f1 = sum;
         i += 1;
     }
-    a
+    f0
 }
 
 /// 剑指 Offer 64. 求1+2+…+n  https://leetcode-cn.com/problems/qiu-12n-lcof/
