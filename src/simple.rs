@@ -53,8 +53,8 @@ pub fn length_of_longest_substring(s: String) -> i32 {
         // 例如：bits[48] 存储字符0出现的位置
         let mut bits = [0usize; 128]; // 用数组记录每个字符是否出现过
         let mut to = s.len() - 1;
-        for j in i..s.len() {
-            let index = s[j] as usize;
+        for (j, &item) in s.iter().enumerate().skip(i) {
+            let index = item as usize;
             if bits[index] == 0 {
                 bits[index] = j + 1;
                 len += 1;
@@ -90,7 +90,7 @@ pub fn reverse(x: i32) -> i32 {
     let mut y = x;
     while y != 0 {
         let pop = y % 10;
-        y = y / 10;
+        y /= 10;
         if ret > MAX / 10 || (ret == MAX / 10 && pop > 7) {
             return 0;
         }
@@ -456,14 +456,12 @@ fn is_valid(s: String) -> bool {
 
 /// 判断括号是否匹配
 fn is_match_brackets(left: char, right: char) -> bool {
-    let is_match = match left {
+    match left {
         '(' => right == ')',
         '{' => right == '}',
         '[' => right == ']',
         _ => false,
-    };
-
-    is_match
+    }
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -502,7 +500,7 @@ pub fn merge_two_lists(
     }
 }
 
-fn vec_to_list(v: &Vec<i32>) -> Option<Box<ListNode>> {
+fn vec_to_list(v: &[i32]) -> Option<Box<ListNode>> {
     let mut head = None;
     for i in v.iter().rev() {
         let mut node = ListNode::new(*i);
@@ -632,7 +630,7 @@ pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
     let len = nums.len();
     let mut idx = 0;
     while idx < len {
-        if target == nums[idx] || target < nums[idx] {
+        if target <= nums[idx] {
             return idx as i32;
         }
 
@@ -657,16 +655,21 @@ pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
 /// 力扣（35. 搜索插入位置）
 /// 二分查找
 pub fn search_insert_v2(nums: Vec<i32>, target: i32) -> i32 {
+    use std::cmp::Ordering;
     let mut left = 0;
     let mut right = (nums.len() - 1) as i32;
     while left <= right {
         let middle = (left + (right - left) / 2) as usize;
-        if nums[middle] > target {
-            right = (middle as i32) - 1;
-        } else if nums[middle] < target {
-            left = (middle + 1) as i32;
-        } else {
-            return middle as i32;
+        match nums[middle].cmp(&target) {
+            Ordering::Greater => {
+                right = (middle as i32) - 1;
+            }
+            Ordering::Less => {
+                left = (middle + 1) as i32;
+            }
+            Ordering::Equal => {
+                return middle as i32;
+            }
         }
     }
     (right + 1) as i32
@@ -887,8 +890,8 @@ pub fn climb_stairs_memo(n: i32, memo: Rc<RefCell<Vec<i32>>>) -> i32 {
 pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
     let mut m = m;
     let mut index: usize = 0;
-    for i in 0..(n as usize) {
-        while (index < m as usize) && nums1[index] <= nums2[i] {
+    for &item in nums2.iter().take(n as usize) {
+        while (index < m as usize) && nums1[index] <= item {
             index += 1;
         }
 
@@ -898,7 +901,7 @@ pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
             }
             m += 1;
         }
-        nums1[index] = nums2[i];
+        nums1[index] = item;
         index += 1;
     }
 }
@@ -919,10 +922,7 @@ pub fn merge_v2(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
         }
         p -= 1;
     }
-
-    for idx in 0..(p2 + 1) as usize {
-        nums1[idx] = nums2[idx];
-    }
+    nums1[..((p2 + 1) as usize)].clone_from_slice(&nums2[..((p2 + 1) as usize)]);
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -1000,11 +1000,11 @@ pub fn max_profit_v2(prices: Vec<i32>) -> i32 {
     let len = prices.len();
     let mut min_prince = i32::MAX;
     let mut max_profit = 0;
-    for day in 0..len {
-        if prices[day] < min_prince {
-            min_prince = prices[day];
-        } else if prices[day] - min_prince > max_profit {
-            max_profit = prices[day] - min_prince;
+    for price in prices {
+        if price < min_prince {
+            min_prince = price;
+        } else if price - min_prince > max_profit {
+            max_profit = price - min_prince;
         }
     }
 
@@ -1036,9 +1036,10 @@ pub fn get_row(row_index: i32) -> Vec<i32> {
 pub fn single_number(nums: Vec<i32>) -> i32 {
     let len = nums.len();
     let mut single_number = nums[0];
-    for i in 1..len {
-        single_number ^= nums[i];
+    for &num in nums.iter().take(len).skip(1) {
+        single_number ^= num;
     }
+
     single_number
 }
 
@@ -1277,7 +1278,7 @@ pub fn count_primes_v2(n: i32) -> i32 {
     let n = n as usize;
     let mut primes = vec![1; n];
     let mut ans = 0;
-    let mut i = 2 as usize;
+    let mut i = 2_usize;
 
     while i < n {
         if primes[i] == 1 {
@@ -1384,14 +1385,16 @@ pub fn first_bad_version(n: i32) -> i32 {
 pub fn move_zeroes(nums: &mut Vec<i32>) {
     let mut slow_index = 0;
     let len = nums.len();
+
     for fast_index in 0..len {
         if nums[fast_index] != 0 {
             nums[slow_index] = nums[fast_index];
             slow_index += 1;
         }
     }
-    for i in slow_index..len {
-        nums[i] = 0;
+
+    for num in nums.iter_mut().take(len).skip(slow_index) {
+        *num = 0;
     }
 }
 
@@ -1496,7 +1499,7 @@ pub fn hamming_distance_v2(x: i32, y: i32) -> i32 {
         if xor % 2 == 1 {
             distance += 1;
         }
-        xor = xor >> 1;
+        xor >>= 1;
     }
     distance
 }
@@ -1549,7 +1552,7 @@ pub fn array_pair_sum(nums: Vec<i32>) -> i32 {
     for num in nums.iter().take(len) {
         nums_sort.push(*num);
     }
-    nums_sort.sort();
+    nums_sort.sort_unstable();
 
     let mut sum = 0;
     for i in 0..len / 2 {
@@ -1589,17 +1592,22 @@ pub fn search(nums: Vec<i32>, target: i32) -> i32 {
 
 /// 力扣（704. 二分查找)
 pub fn search_v2(nums: Vec<i32>, target: i32) -> i32 {
+    use std::cmp::Ordering;
     // target在[left,right]中查找
-    let mut left = 0 as i32;
+    let mut left = 0;
     let mut right = (nums.len() - 1) as i32;
     while left <= right {
         let middle = (left + right) as usize / 2;
-        if nums[middle] > target {
-            right = middle as i32 - 1;
-        } else if nums[middle] < target {
-            left = middle as i32 + 1;
-        } else {
-            return middle as i32;
+        match nums[middle].cmp(&target) {
+            Ordering::Greater => {
+                right = middle as i32 - 1;
+            }
+            Ordering::Less => {
+                left = middle as i32 + 1;
+            }
+            Ordering::Equal => {
+                return middle as i32;
+            }
         }
     }
     -1
@@ -1612,12 +1620,16 @@ pub fn search_v3(nums: Vec<i32>, target: i32) -> i32 {
     let mut right = nums.len();
     while left < right {
         let middle = left + (right - left) / 2;
-        if nums[middle] > target {
-            right = middle;
-        } else if nums[middle] < target {
-            left = middle + 1;
-        } else {
-            return middle as i32;
+        match nums[middle].cmp(&target) {
+            Ordering::Greater => {
+                right = middle;
+            }
+            Ordering::Less => {
+                left = middle + 1;
+            }
+            Ordering::Equal => {
+                return middle as i32;
+            }
         }
     }
     -1
@@ -1744,9 +1756,9 @@ pub fn transpose(matrix: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
         transposed.push(vec![0; m]);
     }
 
-    for i in 0..m {
-        for j in 0..n {
-            transposed[j][i] = matrix[i][j];
+    for (i, item) in matrix.iter().enumerate().take(m) {
+        for (j, trans) in transposed.iter_mut().enumerate().take(n) {
+            trans[i] = item[j];
         }
     }
     transposed
@@ -1757,8 +1769,8 @@ pub fn transpose_v2(matrix: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     let mut transposed = Vec::with_capacity(n);
     for j in 0..n {
         let mut row = Vec::with_capacity(m);
-        for i in 0..m {
-            row.push(matrix[i][j]);
+        for item in matrix.iter().take(m) {
+            row.push(item[j]);
         }
         transposed.push(row);
     }
@@ -1769,7 +1781,7 @@ pub fn transpose_v2(matrix: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
 pub fn sorted_squares(nums: Vec<i32>) -> Vec<i32> {
     let mut v: Vec<i32> = nums.iter().map(|x| x * x).collect();
     if nums[0] < 0 {
-        v.sort();
+        v.sort_unstable();
     }
     v
 }
@@ -1780,16 +1792,16 @@ pub fn sorted_squares_v2(nums: Vec<i32>) -> Vec<i32> {
     let len = nums.len();
     if nums[0] >= 0 {
         let mut v = Vec::<i32>::with_capacity(len);
-        for i in 0..len {
-            v.push(nums[i] * nums[i]);
+        for &num in nums.iter().take(len) {
+            v.push(num * num);
         }
         return v;
     }
 
     if nums[len - 1] <= 0 {
         let mut v = Vec::<i32>::with_capacity(len);
-        for i in 0..len {
-            v.push(nums[i] * nums[i]);
+        for &num in nums.iter().take(len) {
+            v.push(num * num);
         }
         v.reverse();
         return v;
@@ -1797,8 +1809,8 @@ pub fn sorted_squares_v2(nums: Vec<i32>) -> Vec<i32> {
     //将数组划分成两组，负数组和非负数组，然后使用归并排序得到排序结果。
     //1. 确定最后个非负数的位置negtive。
     let mut negtive = 0;
-    for i in 0..len {
-        if nums[i] < 0 {
+    for (i, &num) in nums.iter().enumerate().take(len) {
+        if num < 0 {
             negtive = i;
         } else {
             break;
@@ -1818,13 +1830,7 @@ pub fn sorted_squares_v2(nums: Vec<i32>) -> Vec<i32> {
         if temp_i < 0 {
             v[index] = nums[j] * nums[j];
             j += 1;
-        } else if j == len {
-            v[index] = x;
-            temp_i -= 1;
-            if temp_i >= 0 {
-                i = temp_i as usize;
-            }
-        } else if x < nums[j] * nums[j] {
+        } else if j == len || x < nums[j] * nums[j] {
             v[index] = x;
             temp_i -= 1;
             if temp_i >= 0 {

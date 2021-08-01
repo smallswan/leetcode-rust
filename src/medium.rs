@@ -379,7 +379,7 @@ pub fn int_to_roman_v2(num: i32) -> String {
         (1, "I"),
     ];
 
-    fn find(n: i32, arr: &Vec<(i32, &'static str)>) -> (i32, &'static str) {
+    fn find(n: i32, arr: &[(i32, &'static str)]) -> (i32, &'static str) {
         for (value, s) in arr {
             if n >= *value {
                 return (*value, *s);
@@ -515,7 +515,7 @@ pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
     let mut anagrams_map = HashMap::<String, Vec<String>>::new();
     for str in strs {
         let sign = {
-            if str == "" {
+            if str.is_empty() {
                 "".to_string()
             } else {
                 let mut chars: Vec<char> = str.chars().collect();
@@ -1073,7 +1073,7 @@ fn valid_ipv4_address(ip: String) -> String {
 
 fn valid_ipv4_address_v2(ip: String) -> String {
     // let array: Vec<Vec<char>> = ip.split('.').map(|x| x.chars().collect()).collect();
-    let array: Vec<&str> = ip.split(".").collect();
+    let array: Vec<&str> = ip.split('.').collect();
     for item in array {
         let len = item.len();
         //Validate integer in range (0, 255):

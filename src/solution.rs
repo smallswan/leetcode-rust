@@ -61,22 +61,19 @@ fn hua_wei_test() {
 fn lamada_demo() {
     let vec = fibonacci(20);
     for num in vec {
-        println!("{}", num);
+        print!("{} ", num);
     }
 }
 
 fn fibonacci(n: usize) -> Vec<u32> {
-    let mut fib_vec = Vec::with_capacity(n);
-    let mut idx = 0;
-    if idx <= 2 {
-        for _ in 0..2 {
-            fib_vec.push(1);
-            idx += 1;
-        }
+    if n <= 2 {
+        return vec![1; n];
     }
-    while idx >= 2 && idx < n {
-        fib_vec.push(fib_vec[idx - 1] + fib_vec[idx - 2]);
-        idx += 1;
+    let mut fib_vec = Vec::with_capacity(n);
+    fib_vec.push(1);
+    fib_vec.push(1);
+    for index in 2..n {
+        fib_vec.push(fib_vec[index - 1] + fib_vec[index - 2]);
     }
     fib_vec
 }

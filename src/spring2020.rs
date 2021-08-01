@@ -68,7 +68,7 @@ fn search_recurse(
 /// 力扣（LCP 11. 期望个数统计） https://leetcode-cn.com/problems/qi-wang-ge-shu-tong-ji/
 pub fn expect_number(scores: Vec<i32>) -> i32 {
     let mut mut_scores = scores;
-    mut_scores.sort();
+    mut_scores.sort_unstable();
     mut_scores.dedup();
     //println!("{:?}", mut_scores);
     mut_scores.len() as i32

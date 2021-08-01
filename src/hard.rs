@@ -270,19 +270,17 @@ pub fn solve_sudoku(board: &mut Vec<Vec<char>>) {
     }
 
     for i in 0..9 {
-        for j in 0..9 {
+        for (j, col) in column.iter_mut().enumerate().take(9) {
             if board[i][j] == '.' {
                 spaces.push((i, j));
             } else {
                 let digit = (board[i][j] as usize) - ('0' as usize) - 1;
                 line[i][digit] = true;
-                column[j][digit] = true;
+                col[digit] = true;
                 block[i / 3][j / 3][digit] = true;
             }
         }
     }
-
-    let digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
     dfs(
         board,
@@ -292,19 +290,17 @@ pub fn solve_sudoku(board: &mut Vec<Vec<char>>) {
         &mut line,
         &mut column,
         &mut block,
-        &digits,
     );
 }
-
+static DIGITS: [char; 10] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 fn dfs(
     board: &mut Vec<Vec<char>>,
     pos: usize,
-    spaces: &Vec<(usize, usize)>,
+    spaces: &[(usize, usize)],
     valid: &mut bool,
     line: &mut Vec<Vec<bool>>,
     column: &mut Vec<Vec<bool>>,
     block: &mut Vec<Vec<Vec<bool>>>,
-    digits: &[char],
 ) {
     if pos == spaces.len() {
         *valid = true;
@@ -320,9 +316,8 @@ fn dfs(
             line[i][digit] = true;
             column[j][digit] = true;
             block[i / 3][j / 3][digit] = true;
-            //let c = char::from_u32((digit + ('0' as usize) + 1) as u32);
-            board[i][j] = digits[digit + 1];
-            dfs(board, pos + 1, spaces, valid, line, column, block, digits);
+            board[i][j] = DIGITS[digit + 1];
+            dfs(board, pos + 1, spaces, valid, line, column, block);
             line[i][digit] = false;
             column[j][digit] = false;
             block[i / 3][j / 3][digit] = false;
