@@ -437,7 +437,7 @@ pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
     let len = nums.len();
     let mut new_nums = nums;
     new_nums.sort_unstable();
-    // 枚举 a 
+    // 枚举 a
     for (first, &a) in new_nums.iter().enumerate() {
         // 需要和上一次枚举的数不相同
         if first > 0 && a == new_nums[first - 1] {
@@ -473,6 +473,52 @@ pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
     }
 
     result
+}
+
+/// 力扣（16. 最接近的三数之和） https://leetcode-cn.com/problems/3sum-closest/
+/// 方法1：排序 + 双指针
+pub fn three_sum_closest(nums: Vec<i32>, target: i32) -> i32 {
+    let len = nums.len();
+    let mut new_nums = nums;
+    new_nums.sort_unstable();
+    // -10^4 <= target <= 10^4
+    let mut best = 10000;
+    // 枚举 a
+    for (first, &a) in new_nums.iter().enumerate() {
+        // 需要和上一次枚举的数不相同
+        if first > 0 && a == new_nums[first - 1] {
+            continue;
+        }
+        let mut second = first + 1;
+        let mut third = len - 1;
+        while second < third {
+            let sum = a + new_nums[second] + new_nums[third];
+            if sum == target {
+                return target;
+            }
+
+            if (sum - target).abs() < (best - target).abs() {
+                best = sum;
+            }
+
+            if sum > target {
+                let mut third0 = third - 1;
+                while second < third0 && new_nums[third0] == new_nums[third] {
+                    third0 -= 1;
+                }
+
+                third = third0;
+            } else {
+                let mut second0 = second + 1;
+                while second0 < third && new_nums[second0] == new_nums[second] {
+                    second0 += 1;
+                }
+                second = second0;
+            }
+        }
+    }
+
+    best
 }
 
 /// 力扣（17. 电话号码的字母组合） https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
@@ -1356,4 +1402,9 @@ fn medium2() {
     let nums = vec![-1, 0, 1, 2, -1, -4];
     let three_sum_result = three_sum(nums);
     dbg!(three_sum_result);
+
+    let nums = vec![-1, 2, 1, -4];
+    let target = 1;
+    let three_sum_closest_result = three_sum_closest(nums, target);
+    dbg!(three_sum_closest_result);
 }
