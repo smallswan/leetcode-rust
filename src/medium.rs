@@ -429,6 +429,52 @@ fn backtrace(
         }
     }
 }
+
+/// 力扣（15. 三数之和） https://leetcode-cn.com/problems/3sum/
+/// 方法1：排序 + 双指针
+pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
+    let mut result = Vec::<Vec<i32>>::new();
+    let len = nums.len();
+    let mut new_nums = nums;
+    new_nums.sort_unstable();
+    // 枚举 a 
+    for (first, &a) in new_nums.iter().enumerate() {
+        // 需要和上一次枚举的数不相同
+        if first > 0 && a == new_nums[first - 1] {
+            continue;
+        }
+        let mut third = len - 1;
+        let target = -a;
+        let mut second = first + 1;
+        while second < len {
+            // 需要和上一次枚举的数不相同
+            if second > first + 1 && new_nums[second] == new_nums[second - 1] {
+                second += 1;
+                continue;
+            }
+
+            // 需要保证 b 的指针在 c 的指针的左侧
+            while second < third && new_nums[second] + new_nums[third] > target {
+                third -= 1;
+            }
+
+            // 如果指针重合，随着 b 后续的增加
+            // 就不会有满足 a+b+c=0 并且 b<c 的 c 了，可以退出循环
+            if second == third {
+                break;
+            }
+
+            if new_nums[second] + new_nums[third] == target {
+                result.push(vec![a, new_nums[second], new_nums[third]]);
+            }
+
+            second += 1;
+        }
+    }
+
+    result
+}
+
 /// 力扣（17. 电话号码的字母组合） https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
 /// 回溯法（递归+深度优先）
 pub fn letter_combinations(digits: String) -> Vec<String> {
@@ -1306,4 +1352,8 @@ fn medium2() {
     ];
     let anagrams = group_anagrams(strs);
     println!("anagrams: {:?}", anagrams);
+
+    let nums = vec![-1, 0, 1, 2, -1, -4];
+    let three_sum_result = three_sum(nums);
+    dbg!(three_sum_result);
 }
