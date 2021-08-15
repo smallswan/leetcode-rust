@@ -1484,6 +1484,48 @@ pub fn is_perfect_square(num: i32) -> bool {
     false
 }
 
+/// 力扣（412. Fizz Buzz） https://leetcode-cn.com/problems/fizz-buzz/
+pub fn fizz_buzz(n: i32) -> Vec<String> {
+    let len = n as usize;
+    let mut result = Vec::<String>::with_capacity(len);
+    for i in 1..=len {
+        let divisible_by_3 = i % 3 == 0;
+        let divisible_by_5 = i % 5 == 0;
+        if divisible_by_3 && divisible_by_5 {
+            result.push("FizzBuzz".to_string());
+        } else if divisible_by_3 {
+            result.push("Fizz".to_string());
+        } else if divisible_by_5 {
+            result.push("Buzz".to_string());
+        } else {
+            result.push(i.to_string());
+        }
+    }
+
+    result
+}
+
+/// 力扣（412. Fizz Buzz）
+pub fn fizz_buzz_v2(n: i32) -> Vec<String> {
+    let len = n as usize;
+    let mut result = Vec::<String>::with_capacity(len);
+    for i in 1..=len {
+        if i % 3 == 0 {
+            if i % 5 == 0 {
+                result.push("FizzBuzz".to_string());
+            } else {
+                result.push("Fizz".to_string());
+            }
+        } else if i % 5 == 0 {
+            result.push("Buzz".to_string());
+        } else {
+            result.push(i.to_string());
+        }
+    }
+
+    result
+}
+
 /// 力扣（461. 汉明距离） https://leetcode-cn.com/problems/hamming-distance/
 pub fn hamming_distance(x: i32, y: i32) -> i32 {
     let z = x ^ y;

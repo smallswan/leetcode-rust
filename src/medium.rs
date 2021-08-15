@@ -610,7 +610,7 @@ pub fn four_sum(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
                         fourth -= 1
                     }
                     fourth -= 1;
-                } else if sum > target {                  
+                } else if sum > target {
                     fourth -= 1;
                 } else {
                     third += 1;
