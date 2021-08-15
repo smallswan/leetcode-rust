@@ -1483,6 +1483,106 @@ pub fn is_perfect_square(num: i32) -> bool {
     }
     false
 }
+/// 力扣（387. 字符串中的第一个唯一字符） https://leetcode-cn.com/problems/first-unique-character-in-a-string/
+///  方法一：使用哈希表存储频数
+pub fn first_uniq_char(s: String) -> i32 {
+    let chars: Vec<char> = s.chars().collect();
+    let len = chars.len();
+    // 统计各个字符出现的次数
+    use std::collections::HashMap;
+    let mut counts_map = HashMap::<char, i32>::new();
+    for ch in &chars {
+        match counts_map.get_mut(&ch) {
+            Some(count) => *count += 1,
+            None => {
+                counts_map.insert(*ch, 1);
+            }
+        };
+    }
+
+    for (i, &ch) in chars.iter().enumerate() {
+        if let Some(&count) = counts_map.get(&ch) {
+            if count == 1 {
+                return i as i32;
+            }
+        }
+    }
+
+    -1
+}
+
+/// 力扣（387. 字符串中的第一个唯一字符）
+/// 方法二：使用哈希表存储索引
+pub fn first_uniq_char_v2(s: String) -> i32 {
+    let chars: Vec<char> = s.chars().collect();
+    let len = chars.len();
+    // 存储首次出现的下标
+    use std::collections::HashMap;
+    let mut indexs_map = HashMap::<char, i32>::new();
+    for (i, &ch) in chars.iter().enumerate() {
+        match indexs_map.get_mut(&ch) {
+            Some(index) => {
+                // 再次出现则将下标设置为-1
+                *index = -1;
+            }
+            None => {
+                // 首次出现存储下标
+                indexs_map.insert(ch, i as i32);
+            }
+        };
+    }
+
+    // 下标不为-1且最小的值即为答案
+    let mut first = len as i32;
+    for index in indexs_map.values() {
+        if *index != -1 && *index < first {
+            first = *index;
+        }
+    }
+
+    if first == len as i32 {
+        first = -1;
+    }
+
+    first
+}
+
+/// 力扣（387. 字符串中的第一个唯一字符）
+/// 方法三：队列
+pub fn first_uniq_char_v3(s: String) -> i32 {
+    let chars: Vec<char> = s.chars().collect();
+    let len = chars.len();
+    // 存储首次出现的下标
+    use std::collections::HashMap;
+    use std::collections::VecDeque;
+    // 存放各个字符及其首次出现的位置下标的元组
+    let mut queue = VecDeque::<(char, i32)>::new();
+    let mut indexs_map = HashMap::<char, i32>::new();
+    for (i, &ch) in chars.iter().enumerate() {
+        match indexs_map.get_mut(&ch) {
+            Some(index) => {
+                // 再次出现则将下标设置为-1
+                *index = -1;
+                // 只保留第一次出现的
+                queue.retain(|x| x.0 != ch);
+            }
+            None => {
+                // 首次出现存储下标
+                indexs_map.insert(ch, i as i32);
+                queue.push_back((ch, i as i32));
+            }
+        };
+    }
+
+    if queue.is_empty() {
+        return -1;
+    } else {
+        if let Some(only) = queue.pop_front() {
+            return only.1;
+        }
+    }
+    -1
+}
 
 /// 力扣（412. Fizz Buzz） https://leetcode-cn.com/problems/fizz-buzz/
 pub fn fizz_buzz(n: i32) -> Vec<String> {
@@ -2222,4 +2322,16 @@ fn no_pass() {
     println!("profit0:{}", profit);
     let profit1 = max_profit_v2(vec![7, 1, 5, 3, 6, 4]);
     println!("profit1:{}", profit1);
+
+    let s = String::from("leetcode");
+    let first_uniq_char_result = first_uniq_char(s);
+    dbg!(first_uniq_char_result);
+
+    let s = String::from("loveleetcodeverymuch");
+    let first_uniq_char_v2_result = first_uniq_char_v2(s);
+    dbg!(first_uniq_char_v2_result);
+
+    let s = String::from("loveleetcodeverymuch");
+    let first_uniq_char_v3_result = first_uniq_char_v3(s);
+    dbg!(first_uniq_char_v3_result);
 }
