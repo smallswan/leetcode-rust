@@ -1443,6 +1443,58 @@ pub fn is_power_of_three_v3(n: i32) -> bool {
     }
     true
 }
+/// 力扣（350. 两个数组的交集 II） https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/
+pub fn intersect(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
+    let len1 = nums1.len();
+    let len2 = nums2.len();
+
+    let mut less_sorted_nums: Vec<i32> = Vec::new();
+    let mut greater_sorted_nums: Vec<i32> = Vec::new();
+    let mut greater_len = 0;
+    let mut less_len = 0;
+    match len1.cmp(&len2) {
+        Ordering::Greater => {
+            greater_len = len1;
+            less_len = len2;
+            less_sorted_nums = nums2;
+            less_sorted_nums.sort_unstable();
+            greater_sorted_nums = nums1;
+            greater_sorted_nums.sort_unstable();
+        }
+        Ordering::Equal | Ordering::Less => {
+            greater_len = len2;
+            less_len = len1;
+            less_sorted_nums = nums1;
+            less_sorted_nums.sort_unstable();
+            greater_sorted_nums = nums2;
+            greater_sorted_nums.sort_unstable();
+        }
+    }
+    let mut intersect_vec = Vec::new();
+    let mut i = 0;
+    let mut j = 0;
+    loop {
+        if (j >= less_len || i >= greater_len) {
+            break;
+        }
+
+        match greater_sorted_nums[i].cmp(&less_sorted_nums[j]) {
+            Ordering::Equal => {
+                intersect_vec.push(greater_sorted_nums[i]);
+                i += 1;
+                j += 1;
+            }
+            Ordering::Greater => {
+                j += 1;
+            }
+            Ordering::Less => {
+                i += 1;
+            }
+        }
+    }
+
+    intersect_vec
+}
 
 /// 力扣（344. 反转字符串） https://leetcode-cn.com/problems/reverse-string/
 pub fn reverse_string(s: &mut Vec<char>) {
@@ -2334,4 +2386,9 @@ fn no_pass() {
     let s = String::from("loveleetcodeverymuch");
     let first_uniq_char_v3_result = first_uniq_char_v3(s);
     dbg!(first_uniq_char_v3_result);
+
+    let nums1 = vec![4, 9, 5, 1];
+    let nums2 = vec![9, 2, 4, 10, 5];
+    let intersect_result = intersect(nums1, nums2);
+    dbg!(intersect_result);
 }
