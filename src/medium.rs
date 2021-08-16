@@ -1194,6 +1194,22 @@ pub fn find_duplicate(nums: Vec<i32>) -> i32 {
     slow as i32
 }
 
+/// 力扣（287. 寻找重复数）
+/// 方法1：快慢指针法（龟兔赛跑法）V2
+pub fn find_duplicate_v2(nums: Vec<i32>) -> i32 {
+    let (mut slow, mut fast) = (nums[0], nums[nums[0] as usize]);
+    while slow != fast {
+        slow = nums[slow as usize];
+        fast = nums[nums[fast as usize] as usize];
+    }
+    slow = 0;
+    while slow != fast {
+        slow = nums[slow as usize];
+        fast = nums[fast as usize];
+    }
+    slow
+}
+
 /// 力扣（468. 验证IP地址）  https://leetcode-cn.com/problems/validate-ip-address/
 /// 使用标准库中的方法
 use std::net::IpAddr;
