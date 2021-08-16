@@ -528,13 +528,11 @@ pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
     let mut slow_index = 0;
     let mut fast_index = 1;
     while fast_index < len {
-        if nums[slow_index] == nums[fast_index] {
-            fast_index += 1;
-        } else {
+        if nums[slow_index] != nums[fast_index] {
             nums[slow_index + 1] = nums[fast_index];
             slow_index += 1;
-            fast_index += 1;
         }
+        fast_index += 1;
     }
 
     (slow_index + 1) as i32
@@ -1701,10 +1699,8 @@ pub fn first_uniq_char_v3(s: String) -> i32 {
 
     if queue.is_empty() {
         return -1;
-    } else {
-        if let Some(only) = queue.pop_front() {
-            return only.1;
-        }
+    } else if let Some(only) = queue.pop_front() {
+        return only.1;
     }
     -1
 }
