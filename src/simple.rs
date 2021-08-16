@@ -1299,6 +1299,40 @@ pub fn count_primes_v2(n: i32) -> i32 {
     ans
 }
 
+/// 力扣（217. 存在重复元素） https://leetcode-cn.com/problems/contains-duplicate/
+/// 方法1： 排序
+pub fn contains_duplicate(nums: Vec<i32>) -> bool {
+    let mut new_nums = nums;
+    new_nums.sort_unstable();
+    let len = new_nums.len();
+    for i in 1..len {
+        if new_nums[i] == new_nums[i - 1] {
+            return true;
+        }
+    }
+
+    false
+}
+
+/// 力扣（217. 存在重复元素）
+/// 方法2：哈希表
+pub fn contains_duplicate_v2(nums: Vec<i32>) -> bool {
+    use std::collections::HashMap;
+    let mut counts_map = HashMap::<i32, i32>::new();
+    for num in nums {
+        match counts_map.get(&num) {
+            Some(_) => {
+                return true;
+            }
+            None => {
+                counts_map.insert(num, 1);
+            }
+        }
+    }
+
+    false
+}
+
 /// 力扣（231. 2的幂） https://leetcode-cn.com/problems/power-of-two/
 pub fn is_power_of_two(n: i32) -> bool {
     if n <= 0 {
