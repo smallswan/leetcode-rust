@@ -555,6 +555,8 @@ pub fn letter_combinations(digits: String) -> Vec<String> {
 /// 力扣（18. 四数之和) https://leetcode-cn.com/problems/4sum/
 /// 方法1：排序 + 双指针
 pub fn four_sum(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
+    use std::cmp::Ordering;
+
     let mut result = Vec::<Vec<i32>>::new();
     let len = nums.len();
 
@@ -599,21 +601,26 @@ pub fn four_sum(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
             let mut fourth = len - 1;
             while third < fourth {
                 let sum = a + new_nums[second] + new_nums[third] + new_nums[fourth];
-                if sum == target {
-                    result.push(vec![a, new_nums[second], new_nums[third], new_nums[fourth]]);
-                    // 相等的情況下，不能break;還需要继续遍历
-                    while third < fourth && new_nums[third + 1] == new_nums[third] {
+
+                match sum.cmp(&target) {
+                    Ordering::Equal => {
+                        result.push(vec![a, new_nums[second], new_nums[third], new_nums[fourth]]);
+                        // 相等的情況下，不能break;還需要继续遍历
+                        while third < fourth && new_nums[third + 1] == new_nums[third] {
+                            third += 1;
+                        }
+                        third += 1;
+                        while third < fourth && new_nums[fourth - 1] == new_nums[fourth] {
+                            fourth -= 1
+                        }
+                        fourth -= 1;
+                    }
+                    Ordering::Greater => {
+                        fourth -= 1;
+                    }
+                    Ordering::Less => {
                         third += 1;
                     }
-                    third += 1;
-                    while third < fourth && new_nums[fourth - 1] == new_nums[fourth] {
-                        fourth -= 1
-                    }
-                    fourth -= 1;
-                } else if sum > target {
-                    fourth -= 1;
-                } else {
-                    third += 1;
                 }
             }
 
