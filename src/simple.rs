@@ -1444,6 +1444,7 @@ pub fn is_power_of_three_v3(n: i32) -> bool {
     true
 }
 /// 力扣（350. 两个数组的交集 II） https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/
+/// 方法1： 排序 + 双指针
 pub fn intersect(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
     let len1 = nums1.len();
     let len2 = nums2.len();
@@ -1489,6 +1490,44 @@ pub fn intersect(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
             }
             Ordering::Less => {
                 i += 1;
+            }
+        }
+    }
+
+    intersect_vec
+}
+
+/// 力扣（350. 两个数组的交集 II）
+/// 方法2：哈希表
+pub fn intersect_v2(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
+    if nums1.len() > nums2.len() {
+        return intersect_v2(nums2, nums1);
+    }
+
+    use std::collections::HashMap;
+    // nums1 较短的数组，nums2 较长的数组
+    let mut counts_map = HashMap::new();
+    for num in nums1 {
+        match counts_map.get_mut(&num) {
+            Some(count) => {
+                *count += 1;
+            }
+            None => {
+                counts_map.insert(num, 1);
+            }
+        }
+    }
+
+    let mut intersect_vec = Vec::with_capacity(nums2.len());
+
+    for num in nums2 {
+        if let Some(count) = counts_map.get_mut(&num) {
+            if *count > 0 {
+                intersect_vec.push(num);
+                *count -= 1;
+            }
+            if *count <= 0 {
+                counts_map.remove(&num);
             }
         }
     }
@@ -2391,4 +2430,9 @@ fn no_pass() {
     let nums2 = vec![9, 2, 4, 10, 5];
     let intersect_result = intersect(nums1, nums2);
     dbg!(intersect_result);
+
+    let nums1 = vec![4, 9, 5, 1];
+    let nums2 = vec![9, 2, 4, 10, 5];
+    let intersect_v2_result = intersect_v2(nums1, nums2);
+    dbg!(intersect_v2_result);
 }
