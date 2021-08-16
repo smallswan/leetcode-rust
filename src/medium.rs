@@ -1171,6 +1171,29 @@ pub fn nth_ugly_number_v2(n: i32) -> i32 {
     dp[n]
 }
 
+/// 力扣（287. 寻找重复数） https://leetcode-cn.com/problems/find-the-duplicate-number/
+/// 方法1：快慢指针法（龟兔赛跑法）
+pub fn find_duplicate(nums: Vec<i32>) -> i32 {
+    let mut slow = 0;
+    let mut fast = 0;
+    let new_nums = nums.iter().map(|n| *n as usize).collect::<Vec<_>>();
+
+    slow = new_nums[slow];
+    fast = new_nums[new_nums[fast]];
+    while slow != fast {
+        slow = new_nums[slow];
+        fast = new_nums[new_nums[fast]];
+    }
+
+    slow = 0usize;
+    while slow != fast {
+        slow = new_nums[slow];
+        fast = new_nums[fast];
+    }
+
+    slow as i32
+}
+
 /// 力扣（468. 验证IP地址）  https://leetcode-cn.com/problems/validate-ip-address/
 /// 使用标准库中的方法
 use std::net::IpAddr;
