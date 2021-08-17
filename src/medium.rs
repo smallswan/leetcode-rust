@@ -886,6 +886,47 @@ pub fn set_zeroes(matrix: &mut Vec<Vec<i32>>) {
     }
 }
 
+/// 力扣（137. 只出现一次的数字 II） https://leetcode-cn.com/problems/single-number-ii/
+/// 方法1：哈希表
+pub fn single_number(nums: Vec<i32>) -> i32 {
+    use std::collections::HashMap;
+    let mut counts_map = HashMap::<i32, i32>::new();
+    for num in nums {
+        match counts_map.get_mut(&num) {
+            Some(count) => {
+                *count += 1;
+            }
+            None => {
+                counts_map.insert(num, 1);
+            }
+        }
+    }
+
+    for (key, value) in counts_map {
+        if value == 1 {
+            return key;
+        }
+    }
+    -1
+}
+
+/// 力扣（137. 只出现一次的数字 II）
+/// 方法2 ：依次确定每一个二进制位
+pub fn single_number_v2(nums: Vec<i32>) -> i32 {
+    let mut answer = 0;
+    for i in 0..32 {
+        let mut total = 0;
+        for &num in &nums {
+            total += ((num >> i) & 1);
+        }
+        if total % 3 != 0 {
+            answer |= (1 << i);
+        }
+    }
+
+    answer
+}
+
 /// 力扣（150. 逆波兰表达式求值） https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/
 pub fn eval_rpn(tokens: Vec<String>) -> i32 {
     let len = (tokens.len() + 1) / 2;
@@ -1531,4 +1572,8 @@ fn medium2() {
 
     let four_sum_result = four_sum(nums, target);
     println!("{:?}", four_sum_result);
+
+    let nums = vec![6, i32::MIN, 6, 6, 7, 8, 7, 8, 8, 7];
+    let single_number_v2_result = single_number_v2(nums);
+    dbg!(single_number_v2_result);
 }
