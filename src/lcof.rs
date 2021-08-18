@@ -19,6 +19,66 @@ fn test_lcoff() {
 
     println!("{}", sum >> 1);
     println!("{}", sum);
+
+    let nums = vec![2, 3, 1, 0, 2, 5, 3];
+    let find_repeat_number_result = find_repeat_number(nums);
+    dbg!(find_repeat_number_result);
+
+    let nums = vec![2, 3, 1, 0, 2, 5, 3];
+    let find_repeat_number_v3_result = find_repeat_number_v3(nums);
+    dbg!(find_repeat_number_v3_result);
+}
+
+/// 剑指 Offer 03. 数组中重复的数字 https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/
+///  方法1：哈希集合
+pub fn find_repeat_number(nums: Vec<i32>) -> i32 {
+    use std::collections::HashSet;
+    let mut nums_set = HashSet::<i32>::new();
+    for num in nums {
+        if nums_set.contains(&num) {
+            return num;
+        } else {
+            nums_set.insert(num);
+        }
+    }
+
+    // 题目没有指明如果没有重复的数字就返回-1，是测试出来的
+    -1
+}
+
+/// 剑指 Offer 03. 数组中重复的数字
+pub fn find_repeat_number_v2(nums: Vec<i32>) -> i32 {
+    use std::collections::HashSet;
+    let mut nums_set = HashSet::<i32>::new();
+    for num in nums {
+        if !nums_set.insert(num) {
+            return num;
+        }
+    }
+
+    // 题目没有指明如果没有重复的数字就返回-1，是测试出来的
+    -1
+}
+
+/// 剑指 Offer 03. 数组中重复的数字
+/// 方法2：原地交换
+pub fn find_repeat_number_v3(nums: Vec<i32>) -> i32 {
+    let len = nums.len();
+    let mut new_nums = nums;
+    let mut i = 0;
+    while i < len {
+        let num = new_nums[i] as usize;
+        if num == i {
+            i += 1;
+            continue;
+        }
+        if new_nums[num] as usize == num {
+            return num as i32;
+        }
+        new_nums.swap(i, num);
+    }
+
+    -1
 }
 
 /// 剑指 Offer 10- I. 斐波那契数列   https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/

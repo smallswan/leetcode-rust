@@ -1157,6 +1157,30 @@ pub fn majority_element(nums: Vec<i32>) -> Vec<i32> {
     result
 }
 
+/// 力扣（260. 只出现一次的数字 III） https://leetcode-cn.com/problems/single-number-iii/
+/// 方法1：分组异或
+pub fn single_number_260(nums: Vec<i32>) -> Vec<i32> {
+    // ret 为 a,b两个数异或的结果
+    let mut ret = 0;
+    for &num in &nums {
+        ret ^= num;
+    }
+    // div 为 a,b 二进制位上不相同时，最低的位
+    let mut div = 1;
+    while div & ret == 0 {
+        div <<= 1;
+    }
+    let (mut a, mut b) = (0, 0);
+    for &num in &nums {
+        if div & num != 0 {
+            a ^= num;
+        } else {
+            b ^= num;
+        }
+    }
+    vec![a, b]
+}
+
 use std::cmp::Reverse;
 use std::collections::{BinaryHeap, HashSet};
 /// 力扣（264. 丑数 II） https://leetcode-cn.com/problems/ugly-number-ii/
@@ -1576,4 +1600,8 @@ fn medium2() {
     let nums = vec![6, i32::MIN, 6, 6, 7, 8, 7, 8, 8, 7];
     let single_number_v2_result = single_number_v2(nums);
     dbg!(single_number_v2_result);
+
+    let nums = vec![1, 2, 1, 3, 2, 5];
+    let single_number_260_result = single_number_260(nums);
+    dbg!(single_number_260_result);
 }
