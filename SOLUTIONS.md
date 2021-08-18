@@ -18,6 +18,10 @@ a=(k−1)L+(L−b)=(k−1)L+c
 来源：力扣（LeetCode）
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
+### 应用场景
+- 判断图形结构是否存在环
+- 判断重复数字
+
 ### 相关问题
 - [26. 删除有序数组中的重复项](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/ )
 - [202. 快乐数](https://leetcode-cn.com/problems/happy-number/ ) 
@@ -25,3 +29,13 @@ a=(k−1)L+(L−b)=(k−1)L+c
 
 ### 实际应用
 [C++ 标准库的 unique 方法](http://www.cplusplus.com/reference/algorithm/unique/ )
+
+## 数字二进制异或运算
+
+### 应用场景
+- 查找只出现一次的数字
+
+### 相关问题
+- [136. 只出现一次的数字]( https://leetcode-cn.com/problems/single-number/)
+- [137. 只出现一次的数字 II]( https://leetcode-cn.com/problems/single-number-ii/)
+- [260. 只出现一次的数字 III](https://leetcode-cn.com/problems/single-number-iii/) 和 [剑指 Offer 56 - I. 数组中数字出现的次数](https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/) 是同一题
