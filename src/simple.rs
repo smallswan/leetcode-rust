@@ -118,6 +118,14 @@ pub fn reverse2(x: i32) -> i32 {
     .unwrap_or(0)
 }
 
+/// rust slice pattern
+fn is_palindrome_str(chars: &[char]) -> bool {
+    match chars {
+        [first, middle @ .., last] => first == last && is_palindrome_str(middle),
+        [] | [_] => true,
+    }
+}
+
 /// 力扣（9. 回文数） https://leetcode-cn.com/problems/palindrome-number/
 /// 数字转字符串
 pub fn is_palindrome(x: i32) -> bool {
@@ -153,6 +161,38 @@ pub fn is_palindrome_v2(x: i32) -> bool {
         y /= 10;
     }
     y == reverted_num || y == reverted_num / 10
+}
+
+/// 力扣（9. 回文数）
+/// rust slice pattern
+pub fn is_palindrome_v3(x: i32) -> bool {
+    // 负数以及以0结尾但不是0的数字都不是回文数
+    if x < 0 || (x % 10 == 0 && x != 0) {
+        return false;
+    }
+    let s = x.to_string().chars().collect::<Vec<_>>();
+    is_palindrome_str(s.as_slice())
+}
+
+/// 力扣（9. 回文数）
+/// 双指针
+pub fn is_palindrome_v4(x: i32) -> bool {
+    // 负数以及以0结尾但不是0的数字都不是回文数
+    if x < 0 || (x % 10 == 0 && x != 0) {
+        return false;
+    }
+    let s = x.to_string().chars().collect::<Vec<_>>();
+    let len = s.len();
+    let (mut first, mut last) = (0, len - 1);
+    while first < last {
+        if s[first] == s[last] {
+            first += 1;
+            last -= 1;
+        } else {
+            return false;
+        }
+    }
+    true
 }
 
 /// 力扣（13. 罗马数字转整数） https://leetcode-cn.com/problems/roman-to-integer/
@@ -2285,6 +2325,7 @@ fn simple_test() {
     println!("{}", is_palindrome(-121));
     println!("{}", is_palindrome(10));
     println!("{}", is_palindrome(1));
+    dbg!(is_palindrome_v3(8848));
 
     assert_eq!(length_of_longest_substring("dvdf".to_string()), 3);
     assert_eq!(length_of_longest_substring("abcabcbb".to_string()), 3);
