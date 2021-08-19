@@ -1337,6 +1337,18 @@ pub fn count_primes_v2(n: i32) -> i32 {
     ans
 }
 
+/// 力扣（206. 反转链表） https://leetcode-cn.com/problems/reverse-linked-list/
+pub fn reverse_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+    let mut head = head;
+    let mut tail = None;
+    while let Some(mut n) = head.take() {
+        head = n.next;
+        n.next = tail;
+        tail = Some(n);
+    }
+    tail
+}
+
 /// 力扣（217. 存在重复元素） https://leetcode-cn.com/problems/contains-duplicate/
 /// 方法1： 排序
 pub fn contains_duplicate(nums: Vec<i32>) -> bool {
