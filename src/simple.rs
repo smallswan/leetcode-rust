@@ -5,7 +5,7 @@ use std::{
     borrow::Borrow,
     cmp::max,
     collections::HashMap,
-    ops::{BitAndAssign, BitOr},
+    ops::{BitAndAssign, BitOr, DerefMut},
 };
 
 lazy_static! {
@@ -1297,6 +1297,23 @@ fn is_prime(x: i32) -> bool {
     true
 }
 
+/// 力扣（203. 移除链表元素) https://leetcode-cn.com/problems/remove-linked-list-elements/
+pub fn remove_elements(head: Option<Box<ListNode>>, val: i32) -> Option<Box<ListNode>> {
+    let mut dummy_head = ListNode::new(0);
+    dummy_head.next = head;
+    let mut nums = vec![];
+    while let Some(mut node) = dummy_head.next.take() {
+        if node.val != val {
+            nums.push(node.val);
+        }
+        if let Some(next) = node.next.take() {
+            dummy_head.next = Some(next);
+        }
+    }
+
+    vec_to_list(&nums)
+}
+
 /// 力扣（204. 计数质数) https://leetcode-cn.com/problems/count-primes/
 pub fn count_primes(n: i32) -> i32 {
     let mut ans = 0;
@@ -2518,4 +2535,17 @@ fn no_pass() {
     let nums2 = vec![9, 2, 4, 10, 5];
     let intersect_v2_result = intersect_v2(nums1, nums2);
     dbg!(intersect_v2_result);
+}
+
+#[test]
+fn test_200_plus() {
+    let nums = vec![1, 2, 3, 4, 5];
+    let head = vec_to_list(&nums);
+    let tail = reverse_list(head);
+
+    display(tail);
+
+    let head = vec_to_list(&nums);
+    let remove_elements_result = remove_elements(head, 3);
+    display(remove_elements_result);
 }
