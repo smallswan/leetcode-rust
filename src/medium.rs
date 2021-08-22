@@ -1517,13 +1517,66 @@ impl MyLinkedList {
     }
 
     /** Append a node of value val to the last element of the linked list. */
-    fn add_at_tail(&self, val: i32) {
-        //TODO
+    fn add_at_tail(&mut self, val: i32) {
+        //
+        if self.root.is_none() {
+            self.root = Some(Box::new(ListNode::new(val)));
+            self.len = 1;
+        } else {
+            let mut current = &mut self.root;
+            while current.is_some() {
+                let next = &current.as_ref().unwrap().next;
+                if *next == None {
+                    if let Some(last) = current.as_deref_mut() {
+                        last.next = Some(Box::new(ListNode::new(val)));
+                        self.len += 1;
+                        break;
+                    }
+                }
+
+                current = &mut current.as_deref_mut().unwrap().next;
+            }
+        }
     }
 
     /** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
-    fn add_at_index(&self, index: i32, val: i32) {
+    fn add_at_index(&mut self, index: i32, val: i32) {
         //TODO
+        if index < 0 || index > self.len as i32 {
+            eprintln!("invalid index :{}", index);
+            return;
+        }
+        if self.root.is_none() && index == 0 {
+            self.add_at_head(val);
+        } else if self.root.is_some() && index == self.len as i32 {
+            self.add_at_tail(val);
+        }
+        let mut current_index = 0;
+        let mut current = &mut self.root;
+        while current.is_some() {
+            if (current_index == index - 1) {
+                // if let Some(cur) = current {
+                //     if let Some(next) = cur.next.take().as_ref() {
+                //         cur.next = Some(Box::new(ListNode {
+                //             val,
+                //             next: Some(Box::new(*next.clone())),
+                //         }));
+                //     }
+
+                //     break;
+                // }
+                let next = current.as_mut().unwrap().next.clone();
+
+                let node = Some(Box::new(ListNode { val, next }));
+
+                current.as_mut().unwrap().next = node;
+                self.len += 1;
+                break;
+            }
+            current = &mut current.as_deref_mut().unwrap().next;
+
+            current_index += 1;
+        }
     }
 
     /** Delete the index-th node in the linked list, if the index is valid. */
@@ -1721,6 +1774,13 @@ fn medium2() {
     linked_list.add_at_head(7);
     linked_list.add_at_head(6);
     linked_list.add_at_head(8);
+    linked_list.add_at_tail(9);
+    dbg!(linked_list.get(2));
+    dbg!(linked_list.get(3));
+
+    linked_list.add_at_index(2, 10);
 
     dbg!(linked_list.get(2));
+    dbg!(linked_list.get(3));
+    dbg!(linked_list.get(4));
 }
