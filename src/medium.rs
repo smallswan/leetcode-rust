@@ -1510,15 +1510,14 @@ impl MyLinkedList {
             self.root = Some(Box::new(ListNode::new(val)));
             self.len = 1;
         } else {
-            let node = self.root.take().clone();
-            self.root = Some(Box::new(ListNode { val, next: node }));
+            let next = self.root.take();
+            self.root = Some(Box::new(ListNode { val, next }));
             self.len += 1;
         }
     }
 
     /** Append a node of value val to the last element of the linked list. */
     fn add_at_tail(&mut self, val: i32) {
-        //
         if self.root.is_none() {
             self.root = Some(Box::new(ListNode::new(val)));
             self.len = 1;
@@ -1526,7 +1525,8 @@ impl MyLinkedList {
             let mut current = &mut self.root;
             while current.is_some() {
                 let next = &current.as_ref().unwrap().next;
-                if *next == None {
+                //判断当前元素current是否为最后一个元素
+                if next.is_none() {
                     if let Some(last) = current.as_deref_mut() {
                         last.next = Some(Box::new(ListNode::new(val)));
                         self.len += 1;
@@ -1564,7 +1564,7 @@ impl MyLinkedList {
 
                 //     break;
                 // }
-                let next = current.as_mut().unwrap().next.clone();
+                let next = current.as_mut().unwrap().next.take();
 
                 let node = Some(Box::new(ListNode { val, next }));
 
@@ -1598,14 +1598,7 @@ impl MyLinkedList {
         let mut current = &mut self.root;
         while current.is_some() {
             if current_index == index - 1 {
-                let next_next = current
-                    .as_mut()
-                    .unwrap()
-                    .next
-                    .as_mut()
-                    .unwrap()
-                    .next
-                    .clone();
+                let next_next = current.as_mut().unwrap().next.as_mut().unwrap().next.take();
                 current.as_mut().unwrap().next = next_next;
                 self.len -= 1;
                 break;
