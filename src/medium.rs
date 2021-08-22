@@ -631,6 +631,41 @@ pub fn four_sum(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
     result
 }
 
+/// 力扣(19. 删除链表的倒数第 N 个结点) https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/
+pub fn remove_nth_from_end(head: Option<Box<ListNode>>, n: i32) -> Option<Box<ListNode>> {
+    let mut dummy_head = Some(Box::new(ListNode {
+        val: 0i32,
+        next: head,
+    }));
+    //链表长度（不包括虚拟节点的长度）
+    let mut len = 0;
+    {
+        let mut current = &dummy_head.as_ref().unwrap().next;
+        while current.is_some() {
+            len += 1;
+            current = &(current.as_ref().unwrap().next);
+        }
+    }
+    {
+        let steps = len - n;
+        let mut current = dummy_head.as_mut();
+        for _ in 0..steps {
+            current = current.unwrap().next.as_mut();
+        }
+        // current 被删除元素的前一个元素， next 为 被删除元素的后一个元素
+        let next = current
+            .as_mut()
+            .unwrap()
+            .next
+            .as_mut()
+            .unwrap()
+            .next
+            .clone();
+        current.as_mut().unwrap().next = next;
+    }
+    dummy_head.unwrap().next
+}
+
 /// 力扣（34. 在排序数组中查找元素的第一个和最后一个位置) https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
 /// 先用二分查找算法找到target的下标，然后向左右两边继续查找
 pub fn search_range(nums: Vec<i32>, target: i32) -> Vec<i32> {

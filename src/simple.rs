@@ -540,6 +540,7 @@ pub fn merge_two_lists(
     }
 }
 
+/// 将数组转为链表
 fn vec_to_list(v: &[i32]) -> Option<Box<ListNode>> {
     let mut head = None;
     for i in v.iter().rev() {
@@ -1314,6 +1315,55 @@ pub fn remove_elements(head: Option<Box<ListNode>>, val: i32) -> Option<Box<List
     vec_to_list(&nums)
 }
 
+/// 力扣（203. 移除链表元素)
+/// 虚拟头结点
+pub fn remove_elements_v2(head: Option<Box<ListNode>>, val: i32) -> Option<Box<ListNode>> {
+    let mut head = head;
+    let mut root = Box::new(ListNode::new(0));
+    //用于存储、修改当前值不为val的节点
+    let mut current = &mut root;
+    while let Some(mut node) = head.take() {
+        head = node.next.take();
+        if node.val != val {
+            current.next = Some(node);
+            current = current.next.as_mut().unwrap();
+        }
+    }
+    root.next
+}
+
+/// 力扣（203. 移除链表元素)
+/// 直接使用原来的链表来进行删除操作 FIXME take()会消耗掉Option中的值，以下代码不正确
+pub fn remove_elements_v3(head: Option<Box<ListNode>>, val: i32) -> Option<Box<ListNode>> {
+    let mut head = head;
+
+    while let Some(mut node) = head.take() {
+        if node.val == val {
+            head = node.next.take();
+        } else {
+            head = Some(node);
+            break;
+        }
+    }
+    while let Some(node) = head.take().as_deref_mut() {
+        if node.val == val {
+            head = node.next.take();
+            continue;
+        } else {
+            head = node.next.take();
+        }
+        if let Some(next) = node.next.take().as_deref_mut() {
+            if next.val == val {
+                if let Some(next2) = next.next.take() {
+                    *next = *next2;
+                }
+            }
+        }
+    }
+
+    head
+}
+
 /// 力扣（204. 计数质数) https://leetcode-cn.com/problems/count-primes/
 pub fn count_primes(n: i32) -> i32 {
     let mut ans = 0;
@@ -1355,13 +1405,17 @@ pub fn count_primes_v2(n: i32) -> i32 {
 }
 
 /// 力扣（206. 反转链表） https://leetcode-cn.com/problems/reverse-linked-list/
+/// 假设：head 对应的链表为：1 -> 2 -> 3 -> 4 -> 5 -> None
 pub fn reverse_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
     let mut head = head;
     let mut tail = None;
-    while let Some(mut n) = head.take() {
-        head = n.next;
-        n.next = tail;
-        tail = Some(n);
+    while let Some(mut node) = head.take() {
+        // head = node(1).next = node(2)
+        head = node.next;
+        // node(1).next = None
+        node.next = tail;
+        // tail = node(1)
+        tail = Some(node);
     }
     tail
 }
@@ -2548,4 +2602,12 @@ fn test_200_plus() {
     let head = vec_to_list(&nums);
     let remove_elements_result = remove_elements(head, 3);
     display(remove_elements_result);
+
+    let head = vec_to_list(&nums);
+    let remove_elements_v2_result = remove_elements_v2(head, 3);
+    display(remove_elements_v2_result);
+
+    let head = vec_to_list(&[7, 6, 8, 7, 7, 7, 7, 7]);
+    let remove_elements_v3_result = remove_elements_v3(head, 7);
+    display(remove_elements_v3_result);
 }
