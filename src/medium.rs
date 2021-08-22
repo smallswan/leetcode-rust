@@ -1541,7 +1541,6 @@ impl MyLinkedList {
 
     /** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
     fn add_at_index(&mut self, index: i32, val: i32) {
-        //TODO
         if index < 0 || index > self.len as i32 {
             eprintln!("invalid index :{}", index);
             return;
@@ -1580,8 +1579,40 @@ impl MyLinkedList {
     }
 
     /** Delete the index-th node in the linked list, if the index is valid. */
-    fn delete_at_index(&self, index: i32) {
-        //TODO
+    fn delete_at_index(&mut self, index: i32) {
+        if index < 0 || index >= self.len as i32 {
+            eprintln!("invalid index :{}", index);
+            return;
+        }
+
+        if index == 0 {
+            let mut current = &mut self.root;
+            if current.is_some() {
+                *current = current.as_mut().unwrap().next.take();
+                self.len -= 1;
+            }
+        }
+
+        // 遍历到 index - 1的位置，则删除index位置的元素，并将index+1位置以后的元素添加到当前元素的后面
+        let mut current_index = 0;
+        let mut current = &mut self.root;
+        while current.is_some() {
+            if current_index == index - 1 {
+                let next_next = current
+                    .as_mut()
+                    .unwrap()
+                    .next
+                    .as_mut()
+                    .unwrap()
+                    .next
+                    .clone();
+                current.as_mut().unwrap().next = next_next;
+                self.len -= 1;
+                break;
+            }
+            current_index += 1;
+            current = &mut current.as_deref_mut().unwrap().next;
+        }
     }
 }
 
@@ -1768,7 +1799,10 @@ fn medium2() {
     let nums = vec![1, 2, 1, 3, 2, 5];
     let single_number_260_result = single_number_260(nums);
     dbg!(single_number_260_result);
+}
 
+#[test]
+fn test_linked_list_() {
     //use MyLinkedList;
     let mut linked_list = MyLinkedList::new();
     linked_list.add_at_head(7);
@@ -1783,4 +1817,15 @@ fn medium2() {
     dbg!(linked_list.get(2));
     dbg!(linked_list.get(3));
     dbg!(linked_list.get(4));
+
+    linked_list.delete_at_index(0);
+    dbg!(linked_list.get(0));
+    dbg!(linked_list.get(3));
+
+    linked_list.delete_at_index(1);
+    dbg!(linked_list.get(0));
+    dbg!(linked_list.get(1));
+    dbg!(linked_list.get(2));
+
+    linked_list.delete_at_index(3);
 }
