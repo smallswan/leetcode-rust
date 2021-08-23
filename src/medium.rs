@@ -1545,10 +1545,12 @@ impl MyLinkedList {
             eprintln!("invalid index :{}", index);
             return;
         }
-        if self.root.is_none() && index == 0 {
+        if index == 0 {
             self.add_at_head(val);
+            return;
         } else if self.root.is_some() && index == self.len as i32 {
             self.add_at_tail(val);
+            return;
         }
         let mut current_index = 0;
         let mut current = &mut self.root;
@@ -1821,4 +1823,47 @@ fn test_linked_list_() {
     dbg!(linked_list.get(2));
 
     linked_list.delete_at_index(3);
+}
+
+/// ["MyLinkedList","addAtHead","addAtHead","addAtHead","addAtIndex","deleteAtIndex","addAtHead","addAtTail","get","addAtHead","addAtIndex","addAtHead"]
+/// [[],[7],[2],[1],[3,0],[2],[6],[4],[4],[4],[5,0],[6]]
+#[test]
+fn test_linked_list_fn_add_at_head() {
+    //use MyLinkedList;
+    let mut linked_list = MyLinkedList::new();
+    linked_list.add_at_head(7);
+    linked_list.add_at_head(2);
+    linked_list.add_at_head(1);
+    linked_list.add_at_index(3, 0);
+    linked_list.delete_at_index(2);
+    linked_list.add_at_head(6);
+    linked_list.add_at_tail(4);
+    let val = linked_list.get(4);
+    dbg!(val);
+    linked_list.add_at_head(4);
+    linked_list.add_at_index(5, 0);
+    linked_list.add_at_head(6);
+}
+
+//["MyLinkedList","addAtIndex","addAtIndex","addAtIndex","get"]
+//[[],[0,10],[0,20],[1,30],[0]]
+#[test]
+fn test_linked_list_fn_add_at_index() {
+    //use MyLinkedList;
+    let mut linked_list = MyLinkedList::new();
+    linked_list.delete_at_index(0);
+    linked_list.add_at_index(0, 10);
+    linked_list.add_at_index(0, 20);
+    linked_list.add_at_index(0, 30);
+    dbg!(linked_list.get(0));
+
+    linked_list.add_at_tail(40);
+    linked_list.add_at_tail(50);
+    linked_list.add_at_tail(60);
+    dbg!(linked_list.get(4));
+    dbg!(linked_list.get(5));
+    dbg!(linked_list.get(6));
+
+    linked_list.delete_at_index(3);
+    dbg!(linked_list.get(3));
 }
