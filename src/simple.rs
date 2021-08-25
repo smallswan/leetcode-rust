@@ -6,6 +6,7 @@ use std::{
     cmp::max,
     collections::HashMap,
     ops::{BitAndAssign, BitOr, DerefMut},
+    str::Chars,
 };
 
 lazy_static! {
@@ -1402,6 +1403,55 @@ pub fn count_primes_v2(n: i32) -> i32 {
         i += 1;
     }
     ans
+}
+
+/// 力扣（205. 同构字符串） https://leetcode-cn.com/problems/isomorphic-strings/
+pub fn is_isomorphic(s: String, t: String) -> bool {
+    let s_chars: Vec<char> = s.chars().collect();
+    let t_chars: Vec<char> = t.chars().collect();
+
+    let mut s2t = HashMap::new();
+    let mut t2s = HashMap::new();
+    let len = s_chars.len();
+    for i in 0..len {
+        let (x, y) = (s_chars[i], t_chars[i]);
+        if (s2t.contains_key(&x) && s2t.get(&x) != Some(&y))
+            || (t2s.contains_key(&y) && t2s.get(&y) != Some(&x))
+        {
+            return false;
+        }
+        s2t.insert(x, y);
+        t2s.insert(y, x);
+    }
+
+    true
+}
+
+/// 力扣（205. 同构字符串）
+pub fn is_isomorphic_v2(s: String, t: String) -> bool {
+    let mut s_t = std::collections::HashMap::<char, char>::new();
+    let mut t_s = std::collections::HashMap::<char, char>::new();
+    // 提示：可以假设 s 和 t 长度相同。
+    // if s.len() != t.len() {
+    //     return false;
+    // }
+    for (a, b) in s.chars().zip(t.chars()) {
+        match (s_t.get(&a), t_s.get(&b)) {
+            (Some(&v1), Some(v2)) => {
+                if v1 != b {
+                    return false;
+                }
+            }
+            (None, None) => {
+                s_t.insert(a, b);
+                t_s.insert(b, a);
+            }
+            _ => {
+                return false;
+            }
+        }
+    }
+    true
 }
 
 /// 力扣（206. 反转链表） https://leetcode-cn.com/problems/reverse-linked-list/
