@@ -1504,6 +1504,23 @@ pub fn contains_duplicate_v2(nums: Vec<i32>) -> bool {
     false
 }
 
+/// 力扣（219. 存在重复元素 II） https://leetcode-cn.com/problems/contains-duplicate-ii/
+pub fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
+    use std::collections::HashSet;
+    let mut nums_set = HashSet::new();
+    let len = nums.len();
+    for i in 0..len {
+        if nums_set.contains(&nums[i]) {
+            return true;
+        }
+        nums.insert(&nums[i]);
+        if nums_set.len() > (k as usize) {
+            nums_set.remove(&nums[i - k as usize]);
+        }
+    }
+    return false;
+}
+
 /// 力扣（231. 2的幂） https://leetcode-cn.com/problems/power-of-two/
 pub fn is_power_of_two(n: i32) -> bool {
     if n <= 0 {
@@ -1568,6 +1585,49 @@ fn is_bad_version(version: i32) -> bool {
     // let mut versions = vec![false;100];
     VERSIONS[version as usize]
 }
+
+/// 力扣（242. 有效的字母异位词） https://leetcode-cn.com/problems/valid-anagram/
+pub fn is_anagram(s: String, t: String) -> bool {
+    use std::collections::HashMap;
+    let s_chars: Vec<char> = s.chars().collect();
+    let t_chars: Vec<char> = t.chars().collect();
+
+    let mut s_map = HashMap::<char, i32>::new();
+    let mut t_map = HashMap::<char, i32>::new();
+
+    for ch in s_chars {
+        if let Some(val) = s_map.get_mut(&ch) {
+            *val += 1;
+        } else {
+            s_map.insert(ch, 1);
+        }
+    }
+
+    for ch in t_chars {
+        if let Some(val) = t_map.get_mut(&ch) {
+            *val += 1;
+        } else {
+            t_map.insert(ch, 1);
+        }
+    }
+
+    if s_map.len() != t_map.len() {
+        return false;
+    }
+
+    for (key, val) in s_map.iter() {
+        if !t_map.contains_key(&key) {
+            return false;
+        }
+        if let Some(val2) = t_map.get(&key) {
+            if val != val2 {
+                return false;
+            }
+        }
+    }
+    true
+}
+
 /// 力扣（278. 第一个错误的版本）  https://leetcode-cn.com/problems/first-bad-version/
 // The API isBadVersion is defined for you.
 // isBadVersion(versions:i32)-> bool;
