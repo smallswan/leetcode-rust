@@ -1713,6 +1713,37 @@ pub fn move_zeroes_v2(nums: &mut Vec<i32>) {
     }
 }
 
+/// 力扣（290. 单词规律） https://leetcode-cn.com/problems/word-pattern/
+///  与 力扣（205. 同构字符串）类似
+pub fn word_pattern(pattern: String, s: String) -> bool {
+    let pattern_chars = pattern.chars().collect::<Vec<_>>();
+    let words = s.split(' ').collect::<Vec<_>>();
+    let len = words.len();
+    if pattern_chars.len() != len {
+        return false;
+    }
+    let mut pattern_map = HashMap::<char, String>::new();
+    let mut word_map = HashMap::<String, char>::new();
+    for i in 0..len {
+        match (pattern_map.get(&pattern_chars[i]), word_map.get(words[i])) {
+            (Some(word), Some(ch)) => {
+                if word != words[i] || *ch != pattern_chars[i] {
+                    return false;
+                }
+            }
+            (None, None) => {
+                pattern_map.insert(pattern_chars[i], String::from(words[i]));
+                word_map.insert(String::from(words[i]), pattern_chars[i]);
+            }
+            _ => {
+                return false;
+            }
+        }
+    }
+
+    true
+}
+
 /// 力扣（326. 3的幂) https://leetcode-cn.com/problems/power-of-three/
 pub fn is_power_of_three(n: i32) -> bool {
     n > 0 && 1162261467 % n == 0
@@ -1796,6 +1827,22 @@ pub fn intersect(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
     }
 
     intersect_vec
+}
+
+/// 力扣（349. 两个数组的交集） https://leetcode-cn.com/problems/intersection-of-two-arrays/
+pub fn intersection(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
+    use std::collections::HashSet;
+    let mut nums1_set = HashSet::new();
+    let mut nums2_set = HashSet::new();
+    nums1.iter().for_each(|num| {
+        nums1_set.insert(*num);
+    });
+    nums2.iter().for_each(|num| {
+        nums2_set.insert(*num);
+    });
+
+    let result = nums1_set.intersection(&nums2_set).map(|num| *num).collect();
+    result
 }
 
 /// 力扣（350. 两个数组的交集 II）
