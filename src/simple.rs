@@ -1513,7 +1513,7 @@ pub fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
         if nums_set.contains(&nums[i]) {
             return true;
         }
-        nums.insert(&nums[i]);
+        nums_set.insert(nums[i]);
         if nums_set.len() > (k as usize) {
             nums_set.remove(&nums[i - k as usize]);
         }
@@ -1626,6 +1626,42 @@ pub fn is_anagram(s: String, t: String) -> bool {
         }
     }
     true
+}
+/// 力扣（268. 丢失的数字） https://leetcode-cn.com/problems/missing-number/
+pub fn missing_number(nums: Vec<i32>) -> i32 {
+    use std::collections::HashSet;
+    let len = nums.len();
+    let mut nums_set = HashSet::with_capacity(len);
+    nums.iter().for_each(|num| {
+        nums_set.insert(*num as usize);
+    });
+
+    for num in 0..=len {
+        if !nums_set.contains(&num) {
+            return num as i32;
+        }
+    }
+
+    -1
+}
+
+/// 力扣（268. 丢失的数字）
+/// 方法：数学法
+pub fn missing_number_v2(nums: Vec<i32>) -> i32 {
+    let len = nums.len();
+    let expect_sum = (len * (len + 1) / 2) as i32;
+    let sum = nums.iter().fold(0, |sum, num| sum + *num);
+    expect_sum - sum
+}
+/// 力扣（268. 丢失的数字）
+/// 方法：位运算（异或）
+pub fn missing_number_v3(nums: Vec<i32>) -> i32 {
+    let len = nums.len();
+    let mut missing = len;
+    for num in 0..len {
+        missing ^= num ^ (nums[num] as usize);
+    }
+    missing as i32
 }
 
 /// 力扣（278. 第一个错误的版本）  https://leetcode-cn.com/problems/first-bad-version/
