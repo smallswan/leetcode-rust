@@ -1518,7 +1518,7 @@ pub fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
             nums_set.remove(&nums[i - k as usize]);
         }
     }
-    return false;
+    false
 }
 
 /// 力扣（231. 2的幂） https://leetcode-cn.com/problems/power-of-two/
@@ -1658,8 +1658,8 @@ pub fn missing_number_v2(nums: Vec<i32>) -> i32 {
 pub fn missing_number_v3(nums: Vec<i32>) -> i32 {
     let len = nums.len();
     let mut missing = len;
-    for num in 0..len {
-        missing ^= num ^ (nums[num] as usize);
+    for (idx, num) in nums.iter().enumerate().take(len) {
+        missing ^= idx ^ (*num as usize);
     }
     missing as i32
 }
@@ -1841,8 +1841,7 @@ pub fn intersection(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
         nums2_set.insert(*num);
     });
 
-    let result = nums1_set.intersection(&nums2_set).map(|num| *num).collect();
-    result
+    nums1_set.intersection(&nums2_set).copied().collect()
 }
 
 /// 力扣（350. 两个数组的交集 II）
@@ -1922,6 +1921,26 @@ pub fn is_perfect_square(num: i32) -> bool {
     }
     false
 }
+
+/// 力扣（383. 赎金信） https://leetcode-cn.com/problems/ransom-note/
+pub fn can_construct(ransom_note: String, magazine: String) -> bool {
+    // 记录杂志中各个字符出现的次数
+    let mut chars_vec = vec![0; 26];
+    let a = b'a';
+    magazine.as_bytes().iter().for_each(|ch| {
+        chars_vec[(*ch - a) as usize] += 1;
+    });
+
+    for ch in ransom_note.as_bytes().iter() {
+        chars_vec[(*ch - a) as usize] -= 1;
+        if chars_vec[(*ch - a) as usize] < 0 {
+            return false;
+        }
+    }
+
+    true
+}
+
 /// 力扣（387. 字符串中的第一个唯一字符） https://leetcode-cn.com/problems/first-unique-character-in-a-string/
 ///  方法一：使用哈希表存储频数
 pub fn first_uniq_char(s: String) -> i32 {
@@ -2019,6 +2038,25 @@ pub fn first_uniq_char_v3(s: String) -> i32 {
         return only.1;
     }
     -1
+}
+
+/// 力扣（389. 找不同） https://leetcode-cn.com/problems/find-the-difference/
+pub fn find_the_difference(s: String, t: String) -> char {
+    let mut chars_vec = vec![0; 26];
+    let a = b'a' as usize;
+    t.as_bytes().iter().for_each(|x| {
+        chars_vec[(*x as usize) - a] += 1;
+    });
+    s.as_bytes().iter().for_each(|x| {
+        chars_vec[(*x as usize) - a] -= 1;
+    });
+
+    for (index, count) in chars_vec.iter().enumerate() {
+        if *count == 1 {
+            return (index as u8 + b'a') as char;
+        }
+    }
+    ' '
 }
 
 /// 力扣（412. Fizz Buzz） https://leetcode-cn.com/problems/fizz-buzz/
