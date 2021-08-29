@@ -1019,6 +1019,15 @@ pub fn rotate(nums: &mut Vec<i32>, k: i32) {
     }
 }
 
+/// 力扣（201. 数字范围按位与） https://leetcode-cn.com/problems/bitwise-and-of-numbers-range/
+pub fn range_bitwise_and(left: i32, right: i32) -> i32 {
+    let mut right = right;
+    while left < right {
+        right &= (right - 1);
+    }
+    right
+}
+
 ///  力扣（209. 长度最小的子数组） https://leetcode-cn.com/problems/minimum-size-subarray-sum/
 pub fn min_sub_array_len(s: i32, nums: Vec<i32>) -> i32 {
     let mut k = 0;

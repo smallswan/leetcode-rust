@@ -1,4 +1,7 @@
 # 经典算法
+## 计算机大师
+- Brian Kernighan (布莱恩·克尼汉)
+- 
 
 ## Floyd判圈算法（又称快慢指针法、龟兔赛跑法）
 ### 数学证明
@@ -39,6 +42,23 @@ a=(k−1)L+(L−b)=(k−1)L+c
 - [136. 只出现一次的数字]( https://leetcode-cn.com/problems/single-number/)
 - [137. 只出现一次的数字 II]( https://leetcode-cn.com/problems/single-number-ii/)
 - [260. 只出现一次的数字 III](https://leetcode-cn.com/problems/single-number-iii/) 和 [剑指 Offer 56 - I. 数组中数字出现的次数](https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/) 是同一题
+
+
+## 数字二进制按位与运算
+Brian Kernighan 算法
+```
+n & (n - 1) 使得二进制位最后一位为0
+```
+
+### 应用场景
+- 统计二进制中1的个数
+
+### 相关问题
+- [力扣（191. 位1的个数)](https://leetcode-cn.com/problems/number-of-1-bits/)
+- [力扣（338. 比特位计数）](https://leetcode-cn.com/problems/counting-bits/)
+- [力扣（231. 2的幂）](https://leetcode-cn.com/problems/power-of-two/)
+- [力扣（201. 数字范围按位与） ](https://leetcode-cn.com/problems/bitwise-and-of-numbers-range/)
+- [力扣（461. 汉明距离）](https://leetcode-cn.com/problems/hamming-distance/ )
 
 ## 双指针法
 
