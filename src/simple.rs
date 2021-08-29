@@ -1230,6 +1230,22 @@ pub fn hamming_weight_v2(n: u32) -> i32 {
     format!("{:b}", n).chars().filter(|c| *c == '1').count() as i32
 }
 
+/// 力扣（191. 位1的个数)
+pub fn hamming_weight_v3(n: u32) -> i32 {
+    count_ones(n)
+}
+
+/// Brian Kernighan 算法
+fn count_ones(n: u32) -> i32 {
+    let mut ones = 0;
+    let mut n = n;
+    while n > 0 {
+        n &= (n - 1);
+        ones += 1;
+    }
+    ones
+}
+
 /// 计算数字number各个位上的数字的平方和
 fn get_next(number: i32) -> i32 {
     let mut total_sum = 0;
@@ -1775,6 +1791,47 @@ pub fn is_power_of_three_v3(n: i32) -> bool {
     }
     true
 }
+
+/// 力扣（338. 比特位计数） https://leetcode-cn.com/problems/counting-bits/
+/// 与 力扣（191. 位1的个数) 类似
+pub fn count_bits(n: i32) -> Vec<i32> {
+    let n = n as usize;
+    let mut result = vec![0; n + 1];
+
+    for (num, item) in result.iter_mut().enumerate().take(n + 1) {
+        *item = num.count_ones() as i32;
+    }
+
+    result
+}
+
+/// 力扣（338. 比特位计数）
+pub fn count_bits_v2(n: i32) -> Vec<i32> {
+    let n = n as usize;
+    let mut result = vec![0; n + 1];
+    for (num, item) in result.iter_mut().enumerate().take(n + 1).skip(1) {
+        *item = count_ones(num as u32);
+    }
+
+    result
+}
+
+/// 力扣（338. 比特位计数）
+/// 动态规划
+pub fn count_bits_v3(n: i32) -> Vec<i32> {
+    let n = n as usize;
+    let mut result = vec![0; n + 1];
+    let mut high_bit = 0;
+    for num in 1..=n {
+        if num & (num - 1) == 0 {
+            high_bit = num;
+        }
+        result[num] = result[num - high_bit] + 1;
+    }
+
+    result
+}
+
 /// 力扣（350. 两个数组的交集 II） https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/
 /// 方法1： 排序 + 双指针
 pub fn intersect(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
