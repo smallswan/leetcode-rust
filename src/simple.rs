@@ -320,19 +320,20 @@ pub fn roman_to_int(s: String) -> i32 {
     sum
 }
 
+static ROMAN_NUMBERS: [(char, i32); 7] = [
+    ('I', 1),
+    ('V', 5),
+    ('X', 10),
+    ('L', 50),
+    ('C', 100),
+    ('D', 500),
+    ('M', 1000),
+];
 /// 力扣（13. 罗马数字转整数）
 pub fn roman_to_int_v2(s: String) -> i32 {
     use std::collections::HashMap;
-    let roman = vec![
-        ('I', 1),
-        ('V', 5),
-        ('X', 10),
-        ('L', 50),
-        ('C', 100),
-        ('D', 500),
-        ('M', 1000),
-    ];
-    let map: HashMap<_, _> = roman.into_iter().collect();
+    // [(a,b)] convert to HashMap<a,b>
+    let map: HashMap<char, i32> = ROMAN_NUMBERS.iter().cloned().collect();
     let mut ret = 0;
     let mut it = s.chars().peekable();
     while let Some(c) = it.next() {
@@ -459,7 +460,28 @@ pub fn longest_common_prefix(strs: Vec<String>) -> String {
         i += 1;
     }
 
-    //println!("idx4:{}", idx); //这条表达式仅仅为了编译通过
+    prefix.to_owned()
+}
+
+/// 力扣（14. 最长公共前缀）
+/// 方法二：纵向扫描
+pub fn longest_common_prefix_v2(strs: Vec<String>) -> String {
+    let len = strs.len();
+    if len == 0 {
+        return "".to_owned();
+    }
+    let mut prefix = &strs[0][..];
+    let len_of_prefix = prefix.len();
+    for i in 0..len_of_prefix {
+        if let Some(ch) = prefix.bytes().nth(i) {
+            for item in strs.iter().take(len).skip(1) {
+                if i == item.len() || item.bytes().nth(i) != Some(ch) {
+                    return String::from(prefix.get(0..i).unwrap());
+                }
+            }
+        }
+    }
+
     prefix.to_owned()
 }
 

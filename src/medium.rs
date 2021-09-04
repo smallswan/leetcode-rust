@@ -1142,10 +1142,7 @@ pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
 
 /// 力扣（215. 数组中的第K个最大元素） https://leetcode-cn.com/problems/kth-largest-element-in-an-array/
 pub fn find_kth_largest(nums: Vec<i32>, k: i32) -> i32 {
-    let mut heap = BinaryHeap::new();
-    for num in nums {
-        heap.push(num);
-    }
+    let mut heap = BinaryHeap::from(nums);
     for _ in 1..k {
         heap.pop();
     }
@@ -1227,21 +1224,23 @@ pub fn single_number_260(nums: Vec<i32>) -> Vec<i32> {
 
 use std::cmp::Reverse;
 use std::collections::{BinaryHeap, HashSet};
+static UGLY_NUMBER_FACTORS: [i64; 3] = [2, 3, 5];
 /// 力扣（264. 丑数 II） https://leetcode-cn.com/problems/ugly-number-ii/
+/// 1 通常被视为丑数。
 /// 方法一：最小堆
 pub fn nth_ugly_number(n: i32) -> i32 {
-    let factors = vec![2, 3, 5];
+    //let factors = vec![2, 3, 5];
     let mut seen = HashSet::new();
     let mut heap = BinaryHeap::new();
-    seen.insert(Reverse(1i64));
+    seen.insert(1i64);
     heap.push(Reverse(1i64));
     let mut ugly = 0;
     for _ in 0..n {
         if let Some(Reverse(curr)) = heap.pop() {
             ugly = curr;
-            for factor in &factors {
+            for factor in &UGLY_NUMBER_FACTORS {
                 let next: i64 = curr * (*factor);
-                if seen.insert(Reverse(next)) {
+                if seen.insert(next) {
                     heap.push(Reverse(next));
                 }
             }
@@ -1257,14 +1256,11 @@ pub fn nth_ugly_number_v2(n: i32) -> i32 {
     let n = n as usize;
     let mut dp = vec![0; n + 1];
     dp[1] = 1;
-    let mut p2 = 1;
-    let mut p3 = 1;
-    let mut p5 = 1;
+
+    let (mut p2, mut p3, mut p5) = (1, 1, 1);
 
     for i in 2..=n {
-        let num2 = dp[p2] * 2;
-        let num3 = dp[p3] * 3;
-        let num5 = dp[p5] * 5;
+        let (num2, num3, num5) = (dp[p2] * 2, dp[p3] * 3, dp[p5] * 5);
         dp[i] = min(min(num2, num3), num5);
         if dp[i] == num2 {
             p2 += 1;
