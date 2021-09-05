@@ -703,6 +703,48 @@ pub fn str_str_v2(haystack: String, needle: String) -> i32 {
     }
 }
 
+/// 力扣（28. 实现 strStr()）
+/// KMP(Knuth-Morris-Pratt)算法
+/// 前缀函数，记作 π(i)，其定义如下：
+/// 对于长度为 m 的字符串 s，其前缀函数 π(i)(0≤i<m) 表示 s 的子串 s[0:i] 的最长的相等的真前缀与真后缀的长度。特别地，如果不存在符合条件的前后缀，那么 π(i)=0。
+pub fn str_str_v3(haystack: String, needle: String) -> i32 {
+    let (m, n) = (needle.len(), haystack.len());
+    if m == 0 {
+        return 0;
+    }
+    let haystack_chars = haystack.chars().collect::<Vec<char>>();
+    let needle_chars = needle.chars().collect::<Vec<char>>();
+    let mut pi = vec![0; m];
+    let (mut i, mut j) = (1, 0);
+    while i < m {
+        while j > 0 && (&needle_chars[i] != &needle_chars[j]) {
+            j = pi[j - 1];
+        }
+        // 如果 s[i]=s[π(i−1)]，那么 π(i)=π(i−1)+1。
+        if &needle_chars[i] == &needle_chars[j] {
+            j += 1;
+        }
+        pi[i] = j;
+        i += 1;
+    }
+
+    let (mut i, mut j) = (0, 0);
+    while i < n {
+        while j > 0 && (&haystack_chars[i] != &needle_chars[j]) {
+            j = pi[j - 1];
+        }
+        if &haystack_chars[i] == &needle_chars[j] {
+            j += 1;
+        }
+        if (j == m) {
+            return (i - m + 1) as i32;
+        }
+        i += 1;
+    }
+
+    -1
+}
+
 /// 力扣（35. 搜索插入位置） https://leetcode-cn.com/problems/search-insert-position/
 pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
     let len = nums.len();
