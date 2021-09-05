@@ -622,6 +622,12 @@ pub fn remove_duplicates_v2(nums: &mut Vec<i32>) -> i32 {
     slow_index as i32
 }
 
+/// 力扣（26. 删除有序数组中的重复项)
+pub fn remove_duplicates_v3(nums: &mut Vec<i32>) -> i32 {
+    nums.dedup();
+    nums.len() as i32
+}
+
 ///  力扣（27. 移除元素）https://leetcode-cn.com/problems/remove-element/
 pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
     let mut k = 0;
@@ -635,6 +641,7 @@ pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
 }
 
 /// 力扣（28. 实现 strStr()）  https://leetcode-cn.com/problems/implement-strstr/
+/// 当 needle 是空字符串时我们应当返回 0 。这与 C 语言的 strstr() 以及 Java 的 indexOf() 定义相符。
 pub fn str_str(haystack: String, needle: String) -> i32 {
     // 参考Java String.indexOf()的代码
     let source = haystack.as_bytes();
@@ -685,6 +692,15 @@ pub fn str_str(haystack: String, needle: String) -> i32 {
     }
 
     -1
+}
+
+/// 力扣（28. 实现 strStr()）
+/// 系统内置方法
+pub fn str_str_v2(haystack: String, needle: String) -> i32 {
+    match haystack.find(&needle) {
+        Some(index) => index as i32,
+        None => return -1,
+    }
 }
 
 /// 力扣（35. 搜索插入位置） https://leetcode-cn.com/problems/search-insert-position/
