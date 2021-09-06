@@ -403,6 +403,35 @@ pub fn int_to_roman_v2(num: i32) -> String {
 use std::collections::HashMap;
 fn backtrace(
     combinations: &mut Vec<String>,
+    nums_map: &HashMap<char, &[char]>,
+    digits: &[char],
+    index: usize,
+    combination: &mut Vec<char>,
+) {
+    if index == digits.len() {
+        let abc = combination.iter().collect();
+        combinations.push(abc);
+    } else {
+        let digit = digits[index];
+
+        match nums_map.get(&digit) {
+            Some(&letters) => {
+                //let len = letters.len();
+                for &letter in letters {
+                    combination.push(letter);
+                    backtrace(combinations, nums_map, digits, index + 1, combination);
+                    combination.remove(index);
+                }
+            }
+            None => {
+                panic!("digits is invalid.");
+            }
+        }
+    }
+}
+
+fn backtrace_v2(
+    combinations: &mut Vec<String>,
     nums_map: &HashMap<char, Vec<char>>,
     digits: &[char],
     index: usize,
@@ -419,7 +448,7 @@ fn backtrace(
                 //let len = letters.len();
                 for &letter in letters {
                     combination.push(letter);
-                    backtrace(combinations, nums_map, digits, index + 1, combination);
+                    backtrace_v2(combinations, nums_map, digits, index + 1, combination);
                     combination.remove(index);
                 }
             }
@@ -521,9 +550,43 @@ pub fn three_sum_closest(nums: Vec<i32>, target: i32) -> i32 {
     best
 }
 
+const PHONE_LETTER: [(char, &[char]); 8] = [
+    ('2', &['a', 'b', 'c']),
+    ('3', &['d', 'e', 'f']),
+    ('4', &['g', 'h', 'i']),
+    ('5', &['j', 'k', 'l']),
+    ('6', &['m', 'n', 'o']),
+    ('7', &['p', 'q', 'r', 's']),
+    ('8', &['t', 'u', 'v']),
+    ('9', &['w', 'x', 'y', 'z']),
+];
 /// 力扣（17. 电话号码的字母组合） https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
 /// 回溯法（递归+深度优先）
 pub fn letter_combinations(digits: String) -> Vec<String> {
+    let mut combinations = vec![];
+    let len = digits.len();
+    if len == 0 {
+        return combinations;
+    }
+    let char_map = PHONE_LETTER
+        .iter()
+        .map(|(ch, letter)| (*ch, *(letter)))
+        .collect();
+    let digits_chars = digits.chars().collect::<Vec<char>>();
+    let mut combination = vec![];
+    backtrace(
+        &mut combinations,
+        &char_map,
+        &digits_chars,
+        0,
+        &mut combination,
+    );
+    combinations
+}
+
+/// 力扣（17. 电话号码的字母组合） https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
+/// 回溯法（递归+深度优先）
+pub fn letter_combinations_v2(digits: String) -> Vec<String> {
     let mut combinations = vec![];
     let len = digits.len();
     if len == 0 {
@@ -542,7 +605,7 @@ pub fn letter_combinations(digits: String) -> Vec<String> {
 
     let digits_chars = digits.chars().collect::<Vec<char>>();
     let mut combination = vec![];
-    backtrace(
+    backtrace_v2(
         &mut combinations,
         &char_map,
         &digits_chars,
@@ -714,12 +777,36 @@ pub fn search_range(nums: Vec<i32>, target: i32) -> Vec<i32> {
     range
 }
 
+/// 力扣（38. 外观数列） https://leetcode-cn.com/problems/count-and-say/
+pub fn count_and_say(n: i32) -> String {
+    let mut s = "1".to_string();
+    for _ in 0..n - 1 {
+        let mut ret = "".to_string();
+        let mut count = 0;
+        // use peekable to check next char
+        let mut it = s.chars().peekable();
+        while let Some(c) = it.next() {
+            match it.peek() {
+                Some(next) if next == &c => count += 1,
+                _ => {
+                    ret.push_str(&(count + 1).to_string());
+                    ret.push(c);
+                    count = 0;
+                }
+            }
+        }
+        s = ret;
+    }
+    s
+}
+
 /// 力扣（49. 字母异位词分组） https://leetcode-cn.com/problems/group-anagrams/
 pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
     let mut result: Vec<Vec<String>> = vec![];
     use std::collections::HashMap;
     let mut anagrams_map = HashMap::<String, Vec<String>>::new();
     for str in strs {
+        // 字母异位词拥有相同的签名（所有字符排序后得到的字符串）
         let sign = {
             if str.is_empty() {
                 "".to_string()
@@ -1623,6 +1710,9 @@ fn medium() {
     let zz = convert(s, 4);
     println!("{}", zz);
 
+    let s = count_and_say(6);
+    println!("{}", s);
+
     let mut matrix = Vec::<Vec<i32>>::new();
     matrix.push(vec![1, 2, 3, 4]);
     matrix.push(vec![5, 6, 7, 8]);
@@ -1761,7 +1851,11 @@ fn medium() {
 
     let digits = String::from("234");
     let combination = letter_combinations(digits);
-    println!("combination: {:?}", combination);
+    println!("combination1: {:?}", combination);
+
+    let digits = String::from("234");
+    let combination = letter_combinations_v2(digits);
+    println!("combination2: {:?}", combination);
 }
 
 #[test]

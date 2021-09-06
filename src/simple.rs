@@ -665,6 +665,7 @@ pub fn str_str(haystack: String, needle: String) -> i32 {
 
     let mut i = source_offset + from_index;
     while i <= max {
+        // 首先匹配首字母
         while source[i] != first {
             i += 1;
             if i <= max {
@@ -678,6 +679,7 @@ pub fn str_str(haystack: String, needle: String) -> i32 {
             let mut j = i + 1;
             let end = j + target_count - 1;
             let mut k = target_offset + 1;
+            // 匹配剩余的字符
             while j < end && source[j] == target[k] {
                 j += 1;
                 k += 1;
@@ -746,6 +748,7 @@ pub fn str_str_v3(haystack: String, needle: String) -> i32 {
 }
 
 /// 力扣（35. 搜索插入位置） https://leetcode-cn.com/problems/search-insert-position/
+/// 提示:nums 为无重复元素的升序排列数组
 pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
     let len = nums.len();
     let mut idx = 0;
@@ -806,28 +809,6 @@ pub fn max_sub_array(nums: Vec<i32>) -> i32 {
         max_ans = max(max_ans, prev);
     }
     max_ans
-}
-
-/// 力扣（38. 外观数列） https://leetcode-cn.com/problems/count-and-say/
-pub fn count_and_say(n: i32) -> String {
-    let mut s = "1".to_string();
-    for _ in 0..n - 1 {
-        let mut ret = "".to_string();
-        let mut count = 0;
-        let mut it = s.chars().peekable(); // use peekable to check next char
-        while let Some(c) = it.next() {
-            match it.peek() {
-                Some(next) if next == &c => count += 1,
-                _ => {
-                    ret.push_str(&(count + 1).to_string());
-                    ret.push(c);
-                    count = 0;
-                }
-            }
-        }
-        s = ret;
-    }
-    s
 }
 
 /// 力扣（66. 加一） https://leetcode-cn.com/problems/plus-one/
@@ -2299,13 +2280,7 @@ pub fn array_pair_sum(nums: Vec<i32>) -> i32 {
         panic!("数组长度必须为偶数");
     }
 
-    let mut nums_sort = Vec::<i32>::with_capacity(len);
-    // for i in 0..len {
-    //     nums_sort.push(nums[i]);
-    // }
-    for num in nums.iter().take(len) {
-        nums_sort.push(*num);
-    }
+    let mut nums_sort = nums;
     nums_sort.sort_unstable();
 
     let mut sum = 0;
@@ -2812,9 +2787,6 @@ fn simple_test() {
 
 #[test]
 fn no_pass() {
-    let s = count_and_say(6);
-    println!("{}", s);
-
     println!("{}", my_sqrt(2147395599));
     println!("{}", my_sqrt_v2(2147395599));
     println!("{}", my_sqrt_v2(256));
