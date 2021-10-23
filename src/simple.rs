@@ -1821,6 +1821,11 @@ pub fn word_pattern(pattern: String, s: String) -> bool {
     true
 }
 
+/// 力扣（292. Nim 游戏） https://leetcode-cn.com/problems/nim-game/
+pub fn can_win_nim(n: i32) -> bool {
+    n % 4 != 0
+}
+
 /// 力扣（326. 3的幂) https://leetcode-cn.com/problems/power-of-three/
 pub fn is_power_of_three(n: i32) -> bool {
     n > 0 && 1162261467 % n == 0
@@ -2175,6 +2180,30 @@ pub fn find_the_difference(s: String, t: String) -> char {
         }
     }
     ' '
+}
+
+static HEX_CHARS: [&str; 16] = [
+    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f",
+];
+/// 力扣（405. 数字转换为十六进制数） https://leetcode-cn.com/problems/convert-a-number-to-hexadecimal/
+pub fn to_hex(num: i32) -> String {
+    match num.cmp(&0) {
+        Ordering::Greater | Ordering::Less => {
+            let mut ret = String::new();
+            let mut num = num;
+            let mut i = 7;
+            while i >= 0 {
+                let val = (num >> (4 * i)) & 0xf;
+                if !ret.is_empty() || val > 0 {
+                    ret.push_str(HEX_CHARS[val as usize]);
+                }
+                i -= 1;
+            }
+            ret
+        }
+
+        Ordering::Equal => "0".to_owned(),
+    }
 }
 
 /// 力扣（412. Fizz Buzz） https://leetcode-cn.com/problems/fizz-buzz/
