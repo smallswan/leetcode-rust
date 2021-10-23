@@ -1240,6 +1240,18 @@ pub fn majority_element_v2(nums: Vec<i32>) -> i32 {
     major_entry.0
 }
 
+/// 力扣（171. Excel 表列序号） https://leetcode-cn.com/problems/excel-sheet-column-number/submissions/
+pub fn title_to_number(column_title: String) -> i32 {
+    let mut sum = 0;
+    let mut hex_base = 1;
+    for ch in column_title.chars().rev() {
+        sum += (hex_base * (ch as u8 - b'A' + 1) as i32);
+        hex_base *= 26;
+    }
+
+    sum
+}
+
 /// 力扣（172. 阶乘后的零） https://leetcode-cn.com/problems/factorial-trailing-zeroes/
 pub fn trailing_zeroes(n: i32) -> i32 {
     let mut count_fives = 0;
