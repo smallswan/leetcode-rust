@@ -1193,6 +1193,20 @@ pub fn majority_element(nums: Vec<i32>) -> i32 {
     candidate
 }
 
+/// 力扣（168. Excel表列名称） https://leetcode-cn.com/problems/excel-sheet-column-title/
+pub fn convert_to_title(column_number: i32) -> String {
+    let mut ret = String::new();
+    let mut column_number = column_number;
+    while column_number > 0 {
+        let a0 = (column_number - 1) % 26 + 1;
+        let ch = b'A' + (a0 - 1) as u8;
+        ret.push(ch as char);
+        column_number = (column_number - a0) / 26;
+    }
+
+    ret.chars().rev().collect()
+}
+
 /// 力扣（169. 多数元素）
 /// 哈希表
 pub fn majority_element_v2(nums: Vec<i32>) -> i32 {
