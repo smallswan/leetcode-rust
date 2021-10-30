@@ -1978,6 +1978,86 @@ pub fn count_bits_v3(n: i32) -> Vec<i32> {
     result
 }
 
+/// 力扣（345. 反转字符串中的元音字母） https://leetcode-cn.com/problems/reverse-vowels-of-a-string/
+pub fn reverse_vowels(s: String) -> String {
+    const VOWELS: [char; 10] = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
+    //vowels.contains(&'a');
+    let mut chars: Vec<char> = s.chars().collect();
+    let mut vowels_chars: Vec<usize> = Vec::new();
+    for (idx, ch) in chars.iter().enumerate() {
+        if VOWELS.contains(ch) {
+            vowels_chars.push(idx);
+        }
+    }
+
+    let len = vowels_chars.len();
+    if len > 1 {
+        let mut left = 0;
+        let mut right = len - 1;
+        while left < right {
+            chars.swap(vowels_chars[left], vowels_chars[right]);
+            left += 1;
+            right -= 1;
+        }
+        return chars.iter().collect();
+    } else {
+        return s;
+    }
+}
+
+/// 力扣（345. 反转字符串中的元音字母）
+pub fn reverse_vowels_v2(s: String) -> String {
+    const VOWELS: [char; 10] = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
+    //vowels.contains(&'a');
+    let mut chars: Vec<char> = s.chars().collect();
+    let len = chars.len();
+    let mut left = 0;
+    let mut right = len - 1;
+    while left < right {
+        while left < len && !VOWELS.contains(&chars[left]) {
+            left += 1;
+        }
+        while right > 0 && !VOWELS.contains(&chars[right]) {
+            right -= 1;
+        }
+        if left < right {
+            chars.swap(left, right);
+            left += 1;
+            right -= 1;
+        }
+    }
+    chars.iter().collect()
+}
+
+/// 力扣（345. 反转字符串中的元音字母）
+pub fn reverse_vowels_v3(s: String) -> String {
+    let mut chars = s.into_bytes();
+    let len = chars.len();
+    let mut left = 0;
+    let mut right = len - 1;
+    while left < right {
+        while left < len && !is_vowel(chars[left]) {
+            left += 1;
+        }
+        while right > 0 && !is_vowel(chars[right]) {
+            right -= 1;
+        }
+        if left < right {
+            chars.swap(left, right);
+            left += 1;
+            right -= 1;
+        }
+    }
+    std::str::from_utf8(&chars).unwrap().to_string()
+}
+
+fn is_vowel(ch: u8) -> bool {
+    match ch {
+        b'a' | b'e' | b'i' | b'o' | b'u' | b'A' | b'E' | b'I' | b'O' | b'U' => true,
+        _ => false,
+    }
+}
+
 /// 力扣（350. 两个数组的交集 II） https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/
 /// 方法1： 排序 + 双指针
 pub fn intersect(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
