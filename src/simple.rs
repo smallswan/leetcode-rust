@@ -811,6 +811,13 @@ pub fn max_sub_array(nums: Vec<i32>) -> i32 {
     max_ans
 }
 
+/// 力扣（58. 最后一个单词的长度） https://leetcode-cn.com/problems/length-of-last-word/submissions/
+pub fn length_of_last_word(s: String) -> i32 {
+    let s_trim = s.trim_end();
+    let words: Vec<&str> = s_trim.rsplitn(2, ' ').collect();
+    words[0].len() as i32
+}
+
 /// 力扣（66. 加一） https://leetcode-cn.com/problems/plus-one/
 pub fn plus_one(digits: Vec<i32>) -> Vec<i32> {
     // 以下算法参考了：https://leetcode-cn.com/problems/plus-one/solution/java-shu-xue-jie-ti-by-yhhzw/
@@ -1130,6 +1137,53 @@ pub fn get_row(row_index: i32) -> Vec<i32> {
 
         result_vec
     }
+}
+
+/// 力扣（125. 验证回文串)  https://leetcode-cn.com/problems/valid-palindrome/
+pub fn is_palindrome_125(s: String) -> bool {
+    let chars: Vec<char> = s.chars().collect();
+    let mut left = 0;
+    let mut right = chars.len() - 1;
+    while left < right {
+        if !chars[left].is_alphanumeric() {
+            left += 1;
+            continue;
+        }
+        if !chars[right].is_alphanumeric() {
+            right -= 1;
+            continue;
+        }
+        if chars[left].eq_ignore_ascii_case(&chars[right]) {
+            left += 1;
+            right -= 1;
+            continue;
+        } else {
+            break;
+        }
+    }
+    left >= right
+}
+
+/// 力扣（125. 验证回文串)
+pub fn is_palindrome_125_v2(s: String) -> bool {
+    let chars: Vec<char> = s.chars().filter(|c| c.is_alphanumeric()).collect();
+    let len = chars.len();
+    if len == 0 {
+        return true;
+    }
+
+    let mut left = 0;
+    let mut right = len - 1;
+    while left < right {
+        if chars[left].eq_ignore_ascii_case(&chars[right]) {
+            left += 1;
+            right -= 1;
+            continue;
+        } else {
+            break;
+        }
+    }
+    left >= right
 }
 
 /// 力扣（136. 只出现一次的数字） https://leetcode-cn.com/problems/single-number/
