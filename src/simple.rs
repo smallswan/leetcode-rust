@@ -2413,6 +2413,35 @@ pub fn fizz_buzz_v2(n: i32) -> Vec<String> {
     result
 }
 
+/// 力扣（415. 字符串相加） https://leetcode-cn.com/problems/add-strings/
+pub fn add_strings(num1: String, num2: String) -> String {
+    let mut i = (num1.len() - 1) as i32;
+    let mut j = (num2.len() - 1) as i32;
+    let mut add = 0;
+    let mut ans = Vec::<u8>::new();
+    let num1_chars = num1.into_bytes();
+    let num2_chars = num2.into_bytes();
+
+    while i >= 0 || j >= 0 || add != 0 {
+        let x = if i >= 0 {
+            num1_chars[i as usize] - b'0'
+        } else {
+            0
+        };
+        let y = if j >= 0 {
+            num2_chars[j as usize] - b'0'
+        } else {
+            0
+        };
+        let result = x + y + add;
+        ans.push((result % 10 + b'0') as u8);
+        add = result / 10;
+        i -= 1;
+        j -= 1;
+    }
+    ans.reverse();
+    String::from_utf8(ans).unwrap()
+}
 /// 力扣（461. 汉明距离） https://leetcode-cn.com/problems/hamming-distance/
 pub fn hamming_distance(x: i32, y: i32) -> i32 {
     let z = x ^ y;
@@ -3182,4 +3211,6 @@ fn test_200_plus() {
     display(remove_elements_v3_result);
 
     dbg!(next_greater_element(vec![4, 1, 2], vec![1, 3, 4, 2]));
+
+    dbg!(add_strings("11".to_string(), "123".to_string()));
 }
