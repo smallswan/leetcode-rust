@@ -2165,6 +2165,11 @@ pub fn intersect_v2(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
     intersect_vec
 }
 
+/// 力扣（342. 4的幂） https://leetcode-cn.com/problems/power-of-four/
+pub fn is_power_of_four(n: i32) -> bool {
+    n > 0 && (n & (n - 1)) == 0 && (n & 0x2aaaaaaa == 0)
+}
+
 /// 力扣（344. 反转字符串） https://leetcode-cn.com/problems/reverse-string/
 pub fn reverse_string(s: &mut Vec<char>) {
     let len = s.len();
