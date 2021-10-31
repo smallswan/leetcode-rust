@@ -81,6 +81,19 @@ pub fn find_repeat_number_v3(nums: Vec<i32>) -> i32 {
     -1
 }
 
+/// 剑指 Offer 06. 从尾到头打印链表
+use crate::simple::ListNode;
+pub fn reverse_print(head: Option<Box<ListNode>>) -> Vec<i32> {
+    let mut res = Vec::new();
+    let mut next = &head;
+    while next.is_some() {
+        res.push(next.as_ref().unwrap().val);
+        next = &(next.as_ref().unwrap().next);
+    }
+    res.reverse();
+    res
+}
+
 /// 剑指 Offer 10- I. 斐波那契数列   https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/
 pub fn fib(n: i32) -> i32 {
     if n <= 1 {
