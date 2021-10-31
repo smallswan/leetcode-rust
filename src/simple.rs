@@ -2462,6 +2462,42 @@ pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
     }
 }
 
+/// 力扣（496. 下一个更大元素 I） https://leetcode-cn.com/problems/next-greater-element-i/
+pub fn next_greater_element(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
+    use std::collections::HashMap;
+    use std::collections::VecDeque;
+    let mut map = HashMap::new();
+    // VecDeque模拟单调栈（栈底最大，栈顶最小），front 栈底，back 栈顶
+    let mut stack = VecDeque::new();
+    for num in nums2.iter().rev() {
+        while let Some(top) = stack.back() {
+            if num > top {
+                stack.pop_back();
+            } else {
+                break;
+            }
+        }
+
+        let next_element = if stack.is_empty() {
+            -1
+        } else {
+            *stack.back().unwrap()
+        };
+
+        map.insert(num, next_element);
+        stack.push_back(*num);
+    }
+
+    let mut res = Vec::with_capacity(nums1.len());
+    for num in nums1 {
+        if let Some(&next_element) = map.get(&num) {
+            res.push(next_element);
+        }
+    }
+
+    res
+}
+
 /// 力扣（561. 数组拆分 I） https://leetcode-cn.com/problems/array-partition-i/
 pub fn array_pair_sum(nums: Vec<i32>) -> i32 {
     let len = nums.len();
@@ -3139,4 +3175,6 @@ fn test_200_plus() {
     let head = vec_to_list(&[7, 6, 8, 7, 7, 7, 7, 7]);
     let remove_elements_v3_result = remove_elements_v3(head, 7);
     display(remove_elements_v3_result);
+
+    dbg!(next_greater_element(vec![4, 1, 2], vec![1, 3, 4, 2]));
 }
