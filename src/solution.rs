@@ -11,6 +11,20 @@ fn simple() {
     let intervals: Vec<Vec<i32>> = vec![vec![1, 3], vec![2, 6], vec![8, 10], vec![15, 18]];
     let merge_intervals = merge(intervals);
     println!("{:?}", merge_intervals);
+
+    use itertools::kmerge;
+    for element in kmerge(vec![vec![1, 3], vec![2, 6], vec![8, 10], vec![15, 18]]) {
+        print!("{} ", element);
+    }
+    println!();
+
+    use itertools::cloned;
+    let elements = vec![vec![1, 3], vec![2, 6], vec![8, 10], vec![15, 18]];
+    let cloned_elements = cloned(&elements);
+
+    for element in cloned_elements {
+        println!("{:?}", element);
+    }
 }
 
 ///
