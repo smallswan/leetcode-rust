@@ -275,6 +275,50 @@ pub fn merge_k_lists(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>>
     head
 }
 
+/// 力扣（23. 合并K个升序链表）
+pub fn merge_k_lists_v2(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
+    use std::collections::BinaryHeap;
+    let mut result = BinaryHeap::new();
+    for node in lists.iter() {
+        let mut head = node;
+        while head.is_some() {
+            let value = head.as_ref().unwrap().val;
+            result.push(value);
+            head = &(head.as_ref().unwrap().next);
+        }
+    }
+
+    let mut head = None;
+    for i in result.into_sorted_vec().iter().rev() {
+        let mut node = ListNode::new(*i);
+        node.next = head;
+        head = Some(Box::new(node));
+    }
+    head
+}
+
+/// 力扣（23. 合并K个升序链表）
+pub fn merge_k_lists_v3(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
+    use std::cmp::Reverse;
+    use std::collections::BinaryHeap;
+    let mut dummy_head = Box::new(ListNode::new(0));
+    let mut pans = &mut dummy_head;
+    let mut result = BinaryHeap::new();
+    for node in lists {
+        let mut head = &node;
+        while let Some(node) = head {
+            result.push(Reverse(node.val));
+            head = &(node.next);
+        }
+    }
+
+    while let Some(Reverse(num)) = result.pop() {
+        pans.next = Some(Box::new(ListNode::new(num)));
+        pans = pans.next.as_mut().unwrap();
+    }
+    dummy_head.next
+}
+
 /// 力扣（37. 解数独） https://leetcode-cn.com/problems/sudoku-solver/
 pub fn solve_sudoku(board: &mut Vec<Vec<char>>) {
     let mut line = Vec::<Vec<bool>>::with_capacity(9);
@@ -382,8 +426,23 @@ mod tests {
         let node3 = crate::simple::vec_to_list(&vec![2, 6]);
         let lists = vec![node1, node2, node3];
         let res = merge_k_lists(lists);
-
         crate::simple::display(res);
+
+        let node4 = crate::simple::vec_to_list(&vec![1, 2, 3]);
+        let node5 = crate::simple::vec_to_list(&vec![1, 3, 4]);
+        let node6 = crate::simple::vec_to_list(&vec![2, 6]);
+        let lists2 = vec![node4, node5, node6];
+
+        let res2 = merge_k_lists_v2(lists2);
+        crate::simple::display(res2);
+
+        let node7 = crate::simple::vec_to_list(&vec![1, 2, 3]);
+        let node8 = crate::simple::vec_to_list(&vec![1, 3, 4]);
+        let node9 = crate::simple::vec_to_list(&vec![2, 6]);
+        let lists3 = vec![node7, node8, node9];
+        let res3 = merge_k_lists_v3(lists3);
+
+        crate::simple::display(res3);
     }
 }
 

@@ -4,6 +4,7 @@ use core::num;
 use std::{
     borrow::Borrow,
     cmp::max,
+    cmp::Ordering,
     collections::HashMap,
     ops::{BitAndAssign, BitOr, DerefMut},
     str::Chars,
@@ -537,6 +538,17 @@ impl ListNode {
     #[inline]
     pub fn new(val: i32) -> Self {
         ListNode { val, next: None }
+    }
+}
+
+impl Ord for ListNode {
+    fn cmp(&self, other: &Self) -> Ordering {
+        other.val.cmp(&self.val)
+    }
+}
+impl PartialOrd for ListNode {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
     }
 }
 
@@ -1197,8 +1209,6 @@ pub fn single_number(nums: Vec<i32>) -> i32 {
 
     single_number
 }
-
-use std::cmp::Ordering;
 
 /// 力扣（167. 两数之和 II - 输入有序数组）https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
 pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
