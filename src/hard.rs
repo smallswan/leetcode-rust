@@ -298,6 +298,7 @@ pub fn merge_k_lists_v2(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNod
 }
 
 /// 力扣（23. 合并K个升序链表）
+/// 方法3：小顶堆
 pub fn merge_k_lists_v3(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
     use std::cmp::Reverse;
     use std::collections::BinaryHeap;

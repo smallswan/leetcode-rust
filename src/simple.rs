@@ -575,7 +575,7 @@ pub fn merge_two_lists(
     }
 }
 
-/// 将数组转为链表
+/// 将数组转为链表（从尾到头构建）
 pub fn vec_to_list(v: &[i32]) -> Option<Box<ListNode>> {
     let mut head = None;
     for i in v.iter().rev() {
@@ -584,6 +584,17 @@ pub fn vec_to_list(v: &[i32]) -> Option<Box<ListNode>> {
         head = Some(Box::new(node));
     }
     head
+}
+
+/// 将数组转为链表（从头到尾构建）
+pub fn vec_to_list_v2(v: &[i32]) -> Option<Box<ListNode>> {
+    let mut dummy_head = Box::new(ListNode::new(0));
+    let mut head = &mut dummy_head;
+    for i in v {
+        head.next = Some(Box::new(ListNode::new(*i)));
+        head = head.next.as_mut().unwrap();
+    }
+    dummy_head.next
 }
 
 pub fn display(l: Option<Box<ListNode>>) {
@@ -2909,6 +2920,9 @@ fn simple_test() {
 
     let valid_string = String::from("(){{}");
     println!("is valid : {}", is_valid(valid_string));
+
+    let linked_list = vec_to_list_v2(&vec![1, 3, 5, 7, 9]);
+    display(linked_list);
 
     let l = merge_two_lists(
         vec_to_list(&vec![1, 3, 5, 7, 9]),
