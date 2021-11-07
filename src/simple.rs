@@ -2463,6 +2463,24 @@ pub fn add_strings(num1: String, num2: String) -> String {
     ans.reverse();
     String::from_utf8(ans).unwrap()
 }
+
+/// 力扣（448. 找到所有数组中消失的数字） https://leetcode-cn.com/problems/find-all-numbers-disappeared-in-an-array/
+pub fn find_disappeared_numbers(nums: Vec<i32>) -> Vec<i32> {
+    let len = nums.len();
+    let mut appear = vec![false; len + 1];
+    let mut result = vec![];
+    for num in nums {
+        appear[num as usize] = true;
+    }
+
+    for i in 1..=len {
+        if !appear[i] {
+            result.push(i as i32);
+        }
+    }
+    result
+}
+
 /// 力扣（461. 汉明距离） https://leetcode-cn.com/problems/hamming-distance/
 pub fn hamming_distance(x: i32, y: i32) -> i32 {
     let z = x ^ y;
