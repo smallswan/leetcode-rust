@@ -251,6 +251,30 @@ fn matches_v2(s_chars: &[char], p_chars: &[char], i: usize, j: usize) -> bool {
     s_chars[i - 1] == p_chars[j - 1]
 }
 
+use crate::simple::ListNode;
+/// 力扣（23. 合并K个升序链表） https://leetcode-cn.com/problems/merge-k-sorted-lists/
+pub fn merge_k_lists(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
+    let mut result = Vec::new();
+    for node in lists.iter() {
+        let mut head = node;
+        while head.is_some() {
+            let value = head.as_ref().unwrap().val;
+            result.push(value);
+            head = &(head.as_ref().unwrap().next);
+        }
+    }
+
+    result.sort();
+
+    let mut head = None;
+    for i in result.iter().rev() {
+        let mut node = ListNode::new(*i);
+        node.next = head;
+        head = Some(Box::new(node));
+    }
+    head
+}
+
 /// 力扣（37. 解数独） https://leetcode-cn.com/problems/sudoku-solver/
 pub fn solve_sudoku(board: &mut Vec<Vec<char>>) {
     let mut line = Vec::<Vec<bool>>::with_capacity(9);
@@ -347,6 +371,19 @@ mod tests {
         for row in 0..9 {
             println!("{:?}", board[row]);
         }
+    }
+
+    use crate::simple;
+    #[test]
+    fn test_k_merge() {
+        // lists: Vec<Option<Box<ListNode>>
+        let node1 = crate::simple::vec_to_list(&vec![1, 2, 3]);
+        let node2 = crate::simple::vec_to_list(&vec![1, 3, 4]);
+        let node3 = crate::simple::vec_to_list(&vec![2, 6]);
+        let lists = vec![node1, node2, node3];
+        let res = merge_k_lists(lists);
+
+        crate::simple::display(res);
     }
 }
 

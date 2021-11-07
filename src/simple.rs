@@ -535,7 +535,7 @@ pub struct ListNode {
 
 impl ListNode {
     #[inline]
-    fn new(val: i32) -> Self {
+    pub fn new(val: i32) -> Self {
         ListNode { val, next: None }
     }
 }
@@ -564,7 +564,7 @@ pub fn merge_two_lists(
 }
 
 /// 将数组转为链表
-fn vec_to_list(v: &[i32]) -> Option<Box<ListNode>> {
+pub fn vec_to_list(v: &[i32]) -> Option<Box<ListNode>> {
     let mut head = None;
     for i in v.iter().rev() {
         let mut node = ListNode::new(*i);
@@ -574,7 +574,7 @@ fn vec_to_list(v: &[i32]) -> Option<Box<ListNode>> {
     head
 }
 
-fn display(l: Option<Box<ListNode>>) {
+pub fn display(l: Option<Box<ListNode>>) {
     let mut head = &l;
     while head.is_some() {
         print!("{}, ", head.as_ref().unwrap().val);
