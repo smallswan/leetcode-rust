@@ -1017,6 +1017,23 @@ pub fn climb_stairs_memo(n: i32, memo: Rc<RefCell<Vec<i32>>>) -> i32 {
     memo.borrow_mut()[n as usize]
 }
 
+/// 力扣（83. 删除排序链表中的重复元素) https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/
+pub fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+    let mut dummy_head = Box::new(ListNode::new(0));
+    let mut dummy_node = &mut dummy_head;
+    let mut node = &head;
+    while node.is_some() {
+        let value = node.as_ref().unwrap().val;
+        node = &(node.as_ref().unwrap().next);
+        if node.is_none() || value != node.as_ref().unwrap().val {
+            dummy_node.next = Some(Box::new(ListNode::new(value)));
+            dummy_node = dummy_node.next.as_mut().unwrap();
+        }
+    }
+
+    dummy_head.next
+}
+
 /// 力扣（88. 合并两个有序数组） https://leetcode-cn.com/problems/merge-sorted-array/
 pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
     let mut m = m;
@@ -3255,4 +3272,11 @@ fn test_200_plus() {
     dbg!(next_greater_element(vec![4, 1, 2], vec![1, 3, 4, 2]));
 
     dbg!(add_strings("11".to_string(), "123".to_string()));
+}
+
+#[test]
+fn test_list_node() {
+    let head = vec_to_list(&vec![1, 1, 2, 3, 3]);
+    let unique_nodes = delete_duplicates(head);
+    display(unique_nodes);
 }
