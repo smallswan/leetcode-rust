@@ -1,5 +1,6 @@
 //! 中等难度
 
+use crate::simple::ListNode;
 ///  力扣（2. 两数相加） https://leetcode-cn.com/problems/add-two-numbers/
 pub fn add_two_numbers(
     l1: Option<Box<ListNode>>,
@@ -40,20 +41,6 @@ pub fn add_two_numbers(
         tail = Some(n);
     }
     tail
-}
-
-// Definition for singly-linked list.
-#[derive(PartialEq, Eq, Clone, Debug)]
-pub struct ListNode {
-    pub val: i32,
-    pub next: Option<Box<ListNode>>,
-}
-
-impl ListNode {
-    #[inline]
-    fn new(val: i32) -> Self {
-        ListNode { next: None, val }
-    }
 }
 
 // 计算以第i个字符为中点的字符串的最长回文，从中间往两边检查，复杂度为O(N)。
@@ -1742,268 +1729,272 @@ impl MyLinkedList {
     }
 }
 
-#[test]
-fn medium() {
+#[cfg(test)]
+mod tests {
     use super::*;
-    let s = String::from("LEETCODEISHIRING");
-    let zz = convert(s, 4);
-    println!("{}", zz);
+    #[test]
+    fn medium() {
+        use super::*;
+        let s = String::from("LEETCODEISHIRING");
+        let zz = convert(s, 4);
+        dbg!(zz);
 
-    let s = count_and_say(6);
-    println!("{}", s);
+        let s = count_and_say(6);
+        dbg!(s);
 
-    let mut matrix = Vec::<Vec<i32>>::new();
-    matrix.push(vec![1, 2, 3, 4]);
-    matrix.push(vec![5, 6, 7, 8]);
-    matrix.push(vec![9, 10, 11, 12]);
+        let mut matrix = Vec::<Vec<i32>>::new();
+        matrix.push(vec![1, 2, 3, 4]);
+        matrix.push(vec![5, 6, 7, 8]);
+        matrix.push(vec![9, 10, 11, 12]);
 
-    println!("{:?}", matrix);
-    //    println!("{:?}",find_diagonal_order(matrix));
+        println!("{:?}", matrix);
+        //    dbg!("{:?}",find_diagonal_order(matrix));
 
-    println!("spiral_order: {:?}", spiral_order(matrix));
+        dbg!("spiral_order: {:?}", spiral_order(matrix));
 
-    let s = 7;
-    let nums = vec![1, 2, 3, 4, 3, 7, 2, 2];
-    let min_len = min_sub_array_len(s, nums);
-    println!("min_len:{}", min_len);
+        let s = 7;
+        let nums = vec![1, 2, 3, 4, 3, 7, 2, 2];
+        let min_len = min_sub_array_len(s, nums);
+        dbg!("min_len:{}", min_len);
 
-    let target = 7;
-    let nums = vec![1, 2, 3, 4, 3, 7, 2, 2];
+        let target = 7;
+        let nums = vec![1, 2, 3, 4, 3, 7, 2, 2];
 
-    let min_len = min_sub_array_len_v2(target, nums);
-    println!("min_len:{}", min_len);
+        let min_len = min_sub_array_len_v2(target, nums);
+        dbg!("min_len:{}", min_len);
 
-    let mut rotate_vec = vec![1, 2];
-    rotate(&mut rotate_vec, 1);
+        let mut rotate_vec = vec![1, 2];
+        rotate(&mut rotate_vec, 1);
 
-    println!("{:?}", rotate_vec);
+        dbg!("{:?}", rotate_vec);
 
-    let ip = String::from("2001:0db8:85a3:0:0:8A2E:0370:7334");
+        let ip = String::from("2001:0db8:85a3:0:0:8A2E:0370:7334");
 
-    let ret = valid_ip_address2(ip);
-    println!("{}", ret);
+        let ret = valid_ip_address2(ip);
+        dbg!(ret);
 
-    let mut prerequisites = Vec::<Vec<i32>>::new();
-    prerequisites.push(vec![1, 0]);
-    prerequisites.push(vec![2, 0]);
-    prerequisites.push(vec![3, 1]);
-    prerequisites.push(vec![3, 2]);
+        let mut prerequisites = Vec::<Vec<i32>>::new();
+        prerequisites.push(vec![1, 0]);
+        prerequisites.push(vec![2, 0]);
+        prerequisites.push(vec![3, 1]);
+        prerequisites.push(vec![3, 2]);
 
-    let result = find_order(4, prerequisites);
-    println!("result-> : {:?}", result);
+        let result = find_order(4, prerequisites);
+        dbg!("result-> : {:?}", result);
 
-    let result = find_order(2, vec![]);
-    println!("{:?}", result);
+        let result = find_order(2, vec![]);
+        dbg!("{:?}", result);
 
-    let l1 = ListNode {
-        val: 2,
-        next: Some(Box::new(ListNode {
-            val: 4,
-            next: Some(Box::new(ListNode::new(3))),
-        })),
-    };
+        let l1 = ListNode {
+            val: 2,
+            next: Some(Box::new(ListNode {
+                val: 4,
+                next: Some(Box::new(ListNode::new(3))),
+            })),
+        };
 
-    let l2 = ListNode {
-        val: 5,
-        next: Some(Box::new(ListNode {
-            val: 6,
-            next: Some(Box::new(ListNode::new(4))),
-        })),
-    };
+        let l2 = ListNode {
+            val: 5,
+            next: Some(Box::new(ListNode {
+                val: 6,
+                next: Some(Box::new(ListNode::new(4))),
+            })),
+        };
 
-    let result = add_two_numbers(Some(Box::new(l1)), Some(Box::new(l2)));
-    println!("{:?}", result);
+        let result = add_two_numbers(Some(Box::new(l1)), Some(Box::new(l2)));
+        dbg!("{:?}", result);
 
-    println!("{}", my_atoi(" -423456".to_string()));
-    println!("{}", my_atoi("4193 with words".to_string()));
-    println!("{}", my_atoi("words and 987".to_string()));
-    println!("{}", my_atoi("-91283472332".to_string()));
+        dbg!(my_atoi(" -423456".to_string()));
+        dbg!(my_atoi("4193 with words".to_string()));
+        dbg!(my_atoi("words and 987".to_string()));
+        dbg!(my_atoi("-91283472332".to_string()));
 
-    println!("{}", longest_palindrome("babad".to_string()));
-    // Fixed println!("{}",longest_palindrome_v2("babad".to_string()));
+        dbg!(longest_palindrome("babad".to_string()));
+        // Fixed dbg!("{}",longest_palindrome_v2("babad".to_string()));
 
-    let heights = vec![1, 8, 6, 2, 5, 4, 8, 3, 7];
-    println!("max area : {}", max_area(heights));
+        let heights = vec![1, 8, 6, 2, 5, 4, 8, 3, 7];
+        dbg!("max area : {}", max_area(heights));
 
-    let heights = vec![4, 3, 2, 1, 4];
-    println!("max area : {}", max_area(heights));
+        let heights = vec![4, 3, 2, 1, 4];
+        dbg!("max area : {}", max_area(heights));
 
-    println!("3999 to roman {}", int_to_roman(3999));
-    println!("3999 to roman {}", int_to_roman_v2(3999));
+        dbg!("3999 to roman {}", int_to_roman(3999));
+        dbg!("3999 to roman {}", int_to_roman_v2(3999));
 
-    println!("{}", my_pow(2.10000, 3));
+        dbg!(my_pow(2.10000, 3));
 
-    println!("{}", my_pow_v2(2.00000, -4));
-    println!("{}", my_pow_v2(2.00000, 10));
+        dbg!(my_pow_v2(2.00000, -4));
+        dbg!(my_pow_v2(2.00000, 10));
 
-    println!("i32 max :{},min :{}", std::i32::MAX, std::i32::MIN);
-    // println!("{}",my_pow_v3(2.00000,-2147483648));
-    // println!("{}",my_pow_v3(2.00000,-2147483647));
+        dbg!("i32 max :{},min :{}", std::i32::MAX, std::i32::MIN);
+        // dbg!("{}",my_pow_v3(2.00000,-2147483648));
+        // dbg!("{}",my_pow_v3(2.00000,-2147483647));
 
-    println!("{}", my_pow_v4(2.00000, -2147483648));
-    println!("{}", my_pow_v4(2.00000, -2147483647));
-    println!("{}", my_pow_v4(2.00000, 2147483647));
+        dbg!(my_pow_v4(2.00000, -2147483648));
+        dbg!(my_pow_v4(2.00000, -2147483647));
+        dbg!(my_pow_v4(2.00000, 2147483647));
 
-    // let tokens = vec![
-    //     "2".to_string(),
-    //     "1".to_string(),
-    //     "+".to_string(),
-    //     "3".to_string(),
-    //     "*".to_string(),
-    // ];
-    let tokens = vec![
-        "10".to_string(),
-        "6".to_string(),
-        "9".to_string(),
-        "3".to_string(),
-        "+".to_string(),
-        "-11".to_string(),
-        "*".to_string(),
-        "/".to_string(),
-        "*".to_string(),
-        "17".to_string(),
-        "+".to_string(),
-        "5".to_string(),
-        "+".to_string(),
-    ];
+        // let tokens = vec![
+        //     "2".to_string(),
+        //     "1".to_string(),
+        //     "+".to_string(),
+        //     "3".to_string(),
+        //     "*".to_string(),
+        // ];
+        let tokens = vec![
+            "10".to_string(),
+            "6".to_string(),
+            "9".to_string(),
+            "3".to_string(),
+            "+".to_string(),
+            "-11".to_string(),
+            "*".to_string(),
+            "/".to_string(),
+            "*".to_string(),
+            "17".to_string(),
+            "+".to_string(),
+            "5".to_string(),
+            "+".to_string(),
+        ];
 
-    println!("rpn {}", eval_rpn(tokens));
+        dbg!("rpn {}", eval_rpn(tokens));
 
-    let nums = vec![3, 2];
-    let result = majority_element(nums);
-    println!("majority_element: {:?}", result);
+        let nums = vec![3, 2];
+        let result = majority_element(nums);
+        dbg!("majority_element: {:?}", result);
 
-    println!("nth_ugly_number    {}", nth_ugly_number(1690));
-    println!("nth_ugly_number_v2 {}", nth_ugly_number_v2(1690));
+        dbg!("nth_ugly_number    {}", nth_ugly_number(1690));
+        dbg!("nth_ugly_number_v2 {}", nth_ugly_number_v2(1690));
 
-    let nums = vec![3, 2, 3, 1, 2, 4, 5, 5, 6];
-    let kth_largest = find_kth_largest(nums, 4);
-    println!("kth_largest    {}", kth_largest);
+        let nums = vec![3, 2, 3, 1, 2, 4, 5, 5, 6];
+        let kth_largest = find_kth_largest(nums, 4);
+        dbg!("kth_largest    {}", kth_largest);
 
-    let nums = vec![3, 2, 1, 5, 6, 4];
-    let kth_largest = find_kth_largest(nums, 6);
-    println!("kth_largest    {}", kth_largest);
+        let nums = vec![3, 2, 1, 5, 6, 4];
+        let kth_largest = find_kth_largest(nums, 6);
+        dbg!("kth_largest    {}", kth_largest);
 
-    let nums = vec![8, 8, 8, 8, 8, 8];
-    let range = search_range(nums, 7);
-    println!("range {:?}", range);
+        let nums = vec![8, 8, 8, 8, 8, 8];
+        let range = search_range(nums, 7);
+        dbg!("range {:?}", range);
 
-    let digits = String::from("234");
-    let combination = letter_combinations(digits);
-    println!("combination1: {:?}", combination);
+        let digits = String::from("234");
+        let combination = letter_combinations(digits);
+        dbg!("combination1: {:?}", combination);
 
-    let digits = String::from("234");
-    let combination = letter_combinations_v2(digits);
-    println!("combination2: {:?}", combination);
-}
+        let digits = String::from("234");
+        let combination = letter_combinations_v2(digits);
+        dbg!("combination2: {:?}", combination);
+    }
 
-#[test]
-fn medium2() {
-    let strs = vec![
-        "eat".to_string(),
-        "tea".to_string(),
-        "tan".to_string(),
-        "ate".to_string(),
-        "nat".to_string(),
-        "bat".to_string(),
-    ];
-    let anagrams = group_anagrams(strs);
-    println!("anagrams: {:?}", anagrams);
+    #[test]
+    fn medium2() {
+        let strs = vec![
+            "eat".to_string(),
+            "tea".to_string(),
+            "tan".to_string(),
+            "ate".to_string(),
+            "nat".to_string(),
+            "bat".to_string(),
+        ];
+        let anagrams = group_anagrams(strs);
+        dbg!("anagrams: {:?}", anagrams);
 
-    let nums = vec![-1, 0, 1, 2, -1, -4];
-    let three_sum_result = three_sum(nums);
-    dbg!(three_sum_result);
+        let nums = vec![-1, 0, 1, 2, -1, -4];
+        let three_sum_result = three_sum(nums);
+        dbg!(three_sum_result);
 
-    let nums = vec![-1, 2, 1, -4];
-    let target = 1;
-    let three_sum_closest_result = three_sum_closest(nums, target);
-    dbg!(three_sum_closest_result);
+        let nums = vec![-1, 2, 1, -4];
+        let target = 1;
+        let three_sum_closest_result = three_sum_closest(nums, target);
+        dbg!(three_sum_closest_result);
 
-    let nums = vec![-3, -2, -1, 0, 0, 1, 2, 3];
-    let target = 0;
+        let nums = vec![-3, -2, -1, 0, 0, 1, 2, 3];
+        let target = 0;
 
-    let four_sum_result = four_sum(nums, target);
-    println!("{:?}", four_sum_result);
+        let four_sum_result = four_sum(nums, target);
+        dbg!("{:?}", four_sum_result);
 
-    let nums = vec![6, i32::MIN, 6, 6, 7, 8, 7, 8, 8, 7];
-    let single_number_v2_result = single_number_v2(nums);
-    dbg!(single_number_v2_result);
+        let nums = vec![6, i32::MIN, 6, 6, 7, 8, 7, 8, 8, 7];
+        let single_number_v2_result = single_number_v2(nums);
+        dbg!(single_number_v2_result);
 
-    let nums = vec![1, 2, 1, 3, 2, 5];
-    let single_number_260_result = single_number_260(nums);
-    dbg!(single_number_260_result);
+        let nums = vec![1, 2, 1, 3, 2, 5];
+        let single_number_260_result = single_number_260(nums);
+        dbg!(single_number_260_result);
 
-    dbg!(permute(vec![1, 2, 3]));
-}
+        dbg!(permute(vec![1, 2, 3]));
+    }
 
-#[test]
-fn test_linked_list_() {
-    //use MyLinkedList;
-    let mut linked_list = MyLinkedList::new();
-    linked_list.add_at_head(7);
-    linked_list.add_at_head(6);
-    linked_list.add_at_head(8);
-    linked_list.add_at_tail(9);
-    dbg!(linked_list.get(2));
-    dbg!(linked_list.get(3));
+    #[test]
+    fn test_linked_list_() {
+        //use MyLinkedList;
+        let mut linked_list = MyLinkedList::new();
+        linked_list.add_at_head(7);
+        linked_list.add_at_head(6);
+        linked_list.add_at_head(8);
+        linked_list.add_at_tail(9);
+        dbg!(linked_list.get(2));
+        dbg!(linked_list.get(3));
 
-    linked_list.add_at_index(2, 10);
+        linked_list.add_at_index(2, 10);
 
-    dbg!(linked_list.get(2));
-    dbg!(linked_list.get(3));
-    dbg!(linked_list.get(4));
+        dbg!(linked_list.get(2));
+        dbg!(linked_list.get(3));
+        dbg!(linked_list.get(4));
 
-    linked_list.delete_at_index(0);
-    dbg!(linked_list.get(0));
-    dbg!(linked_list.get(3));
+        linked_list.delete_at_index(0);
+        dbg!(linked_list.get(0));
+        dbg!(linked_list.get(3));
 
-    linked_list.delete_at_index(1);
-    dbg!(linked_list.get(0));
-    dbg!(linked_list.get(1));
-    dbg!(linked_list.get(2));
+        linked_list.delete_at_index(1);
+        dbg!(linked_list.get(0));
+        dbg!(linked_list.get(1));
+        dbg!(linked_list.get(2));
 
-    linked_list.delete_at_index(3);
-}
+        linked_list.delete_at_index(3);
+    }
 
-/// ["MyLinkedList","addAtHead","addAtHead","addAtHead","addAtIndex","deleteAtIndex","addAtHead","addAtTail","get","addAtHead","addAtIndex","addAtHead"]
-/// [[],[7],[2],[1],[3,0],[2],[6],[4],[4],[4],[5,0],[6]]
-#[test]
-fn test_linked_list_fn_add_at_head() {
-    //use MyLinkedList;
-    let mut linked_list = MyLinkedList::new();
-    linked_list.add_at_head(7);
-    linked_list.add_at_head(2);
-    linked_list.add_at_head(1);
-    linked_list.add_at_index(3, 0);
-    linked_list.delete_at_index(2);
-    linked_list.add_at_head(6);
-    linked_list.add_at_tail(4);
-    let val = linked_list.get(4);
-    dbg!(val);
-    linked_list.add_at_head(4);
-    linked_list.add_at_index(5, 0);
-    linked_list.add_at_head(6);
-}
+    /// ["MyLinkedList","addAtHead","addAtHead","addAtHead","addAtIndex","deleteAtIndex","addAtHead","addAtTail","get","addAtHead","addAtIndex","addAtHead"]
+    /// [[],[7],[2],[1],[3,0],[2],[6],[4],[4],[4],[5,0],[6]]
+    #[test]
+    fn test_linked_list_fn_add_at_head() {
+        //use MyLinkedList;
+        let mut linked_list = MyLinkedList::new();
+        linked_list.add_at_head(7);
+        linked_list.add_at_head(2);
+        linked_list.add_at_head(1);
+        linked_list.add_at_index(3, 0);
+        linked_list.delete_at_index(2);
+        linked_list.add_at_head(6);
+        linked_list.add_at_tail(4);
+        let val = linked_list.get(4);
+        dbg!(val);
+        linked_list.add_at_head(4);
+        linked_list.add_at_index(5, 0);
+        linked_list.add_at_head(6);
+    }
 
-//["MyLinkedList","addAtIndex","addAtIndex","addAtIndex","get"]
-//[[],[0,10],[0,20],[1,30],[0]]
-#[test]
-fn test_linked_list_fn_add_at_index() {
-    //use MyLinkedList;
-    let mut linked_list = MyLinkedList::new();
-    linked_list.delete_at_index(0);
-    linked_list.add_at_index(0, 10);
-    linked_list.add_at_index(0, 20);
-    linked_list.add_at_index(0, 30);
-    dbg!(linked_list.get(0));
+    //["MyLinkedList","addAtIndex","addAtIndex","addAtIndex","get"]
+    //[[],[0,10],[0,20],[1,30],[0]]
+    #[test]
+    fn test_linked_list_fn_add_at_index() {
+        //use MyLinkedList;
+        let mut linked_list = MyLinkedList::new();
+        linked_list.delete_at_index(0);
+        linked_list.add_at_index(0, 10);
+        linked_list.add_at_index(0, 20);
+        linked_list.add_at_index(0, 30);
+        dbg!(linked_list.get(0));
 
-    linked_list.add_at_tail(40);
-    linked_list.add_at_tail(50);
-    linked_list.add_at_tail(60);
-    dbg!(linked_list.get(4));
-    dbg!(linked_list.get(5));
-    dbg!(linked_list.get(6));
+        linked_list.add_at_tail(40);
+        linked_list.add_at_tail(50);
+        linked_list.add_at_tail(60);
+        dbg!(linked_list.get(4));
+        dbg!(linked_list.get(5));
+        dbg!(linked_list.get(6));
 
-    linked_list.delete_at_index(3);
-    dbg!(linked_list.get(3));
+        linked_list.delete_at_index(3);
+        dbg!(linked_list.get(3));
+    }
 }

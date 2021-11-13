@@ -1,32 +1,35 @@
 //! 剑指Offer
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_lcoff() {
+        let mut c = 80;
+        c >>= 1;
+        println!("{}", c);
+        println!("{}", c & 1);
+        println!("{}", 1 & 1);
+        println!("{}", 2 & 1);
+        println!("{}", 3 & 1);
+        println!("{}", 4 & 1);
 
-#[test]
-fn test_lcoff() {
-    let mut c = 80;
-    c >>= 1;
-    println!("{}", c);
-    println!("{}", c & 1);
-    println!("{}", 1 & 1);
-    println!("{}", 2 & 1);
-    println!("{}", 3 & 1);
-    println!("{}", 4 & 1);
+        let sum = sum_nums(10000);
+        println!("{}", sum);
 
-    let sum = sum_nums(10000);
-    println!("{}", sum);
+        let sum = sum_nums_v2(10000);
+        println!("{}", sum);
 
-    let sum = sum_nums_v2(10000);
-    println!("{}", sum);
+        println!("{}", sum >> 1);
+        println!("{}", sum);
 
-    println!("{}", sum >> 1);
-    println!("{}", sum);
+        let nums = vec![2, 3, 1, 0, 2, 5, 3];
+        let find_repeat_number_result = find_repeat_number(nums);
+        dbg!(find_repeat_number_result);
 
-    let nums = vec![2, 3, 1, 0, 2, 5, 3];
-    let find_repeat_number_result = find_repeat_number(nums);
-    dbg!(find_repeat_number_result);
-
-    let nums = vec![2, 3, 1, 0, 2, 5, 3];
-    let find_repeat_number_v3_result = find_repeat_number_v3(nums);
-    dbg!(find_repeat_number_v3_result);
+        let nums = vec![2, 3, 1, 0, 2, 5, 3];
+        let find_repeat_number_v3_result = find_repeat_number_v3(nums);
+        dbg!(find_repeat_number_v3_result);
+    }
 }
 
 /// 剑指 Offer 03. 数组中重复的数字 https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/

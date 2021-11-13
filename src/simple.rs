@@ -597,6 +597,7 @@ pub fn vec_to_list_v2(v: &[i32]) -> Option<Box<ListNode>> {
     dummy_head.next
 }
 
+/// 打印链表的值
 pub fn display(l: Option<Box<ListNode>>) {
     let mut head = &l;
     while head.is_some() {
@@ -2947,336 +2948,336 @@ pub fn xor_operation(n: i32, start: i32) -> i32 {
     (1..n).fold(start, |acc, i| acc ^ (start + 2 * i))
 }
 
-#[test]
-fn simple_test() {
-    let nums = vec![2, 7, 2, 11];
-    let result = two_sum(nums, 9);
-    println!("{:?}", result);
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    let valid_string = String::from("(){{}");
-    println!("is valid : {}", is_valid(valid_string));
+    #[test]
+    fn simple_test() {
+        let nums = vec![2, 7, 2, 11];
+        let result = two_sum(nums, 9);
+        dbg!(result);
 
-    let linked_list = vec_to_list_v2(&vec![1, 3, 5, 7, 9]);
-    display(linked_list);
+        let valid_string = String::from("(){{}");
+        dbg!(is_valid(valid_string));
 
-    let l = merge_two_lists(
-        vec_to_list(&vec![1, 3, 5, 7, 9]),
-        vec_to_list(&vec![2, 4, 6, 8, 10]),
-    );
-    display(l);
+        let linked_list = vec_to_list_v2(&vec![1, 3, 5, 7, 9]);
+        display(linked_list);
 
-    let l = merge_two_lists(
-        vec_to_list(&vec![1, 2, 4]),
-        vec_to_list(&vec![1, 3, 4, 5, 6]),
-    );
-    display(l);
+        let l = merge_two_lists(
+            vec_to_list(&vec![1, 3, 5, 7, 9]),
+            vec_to_list(&vec![2, 4, 6, 8, 10]),
+        );
+        display(l);
 
-    let new_x = reverse(132);
-    println!("new_x:{}", new_x);
-    let new_x = reverse(-1999999999);
-    println!("new_x:{}", new_x);
+        let l = merge_two_lists(
+            vec_to_list(&vec![1, 2, 4]),
+            vec_to_list(&vec![1, 3, 4, 5, 6]),
+        );
+        display(l);
 
-    let roman_numbers = String::from("MCMXCIV");
-    println!("roman_to_int()={}", roman_to_int(roman_numbers));
-    let roman_numbers_v2 = String::from("MCMXCIV");
-    println!("roman_to_int_v2()={}", roman_to_int_v2(roman_numbers_v2));
+        dbg!(reverse(132));
+        dbg!(reverse(-1999999999));
 
-    let roman_numbers_v3 = String::from("MCMXCIV");
-    println!("roman_to_int_v3()={}", roman_to_int_v3(roman_numbers_v3));
+        let roman_numbers = String::from("MCMXCIV");
+        dbg!(roman_to_int(roman_numbers));
+        let roman_numbers_v2 = String::from("MCMXCIV");
+        dbg!(roman_to_int_v2(roman_numbers_v2));
 
-    let sorted_nums = vec![1, 3, 5, 6];
-    let target = 4;
-    let idx = search_insert(sorted_nums, target);
-    println!("idx:{}", idx);
+        let roman_numbers_v3 = String::from("MCMXCIV");
+        dbg!(roman_to_int_v3(roman_numbers_v3));
 
-    let idx = search_insert_v2(vec![1, 3, 5, 6], 7);
-    println!("idx:{}", idx);
+        let sorted_nums = vec![1, 3, 5, 6];
+        let target = 4;
 
-    let mut nums = vec![3, 2, 2, 3];
-    let val = 3;
+        dbg!(search_insert(sorted_nums, target));
 
-    let len = remove_element(&mut nums, val);
+        dbg!(search_insert_v2(vec![1, 3, 5, 6], 7));
 
-    let haystack = String::from("aaacaaab");
-    let needle = String::from("aaab");
-    println!("idx:{}", str_str(haystack, needle));
+        let mut nums = vec![3, 2, 2, 3];
+        let val = 3;
 
-    let mut strs = Vec::new();
-    strs.push(String::from("cdf"));
-    //strs.push(String::from("acc"));
-    strs.push(String::from("cd"));
-    strs.push(String::from("cde"));
-    //    strs.push(String::from("abscd"));
-    println!("common:{}", longest_common_prefix(strs));
+        let len = remove_element(&mut nums, val);
 
-    let count = climb_stairs(30);
-    println!("count:{}", count);
+        let haystack = String::from("aaacaaab");
+        let needle = String::from("aaab");
+        dbg!(str_str(haystack, needle));
 
-    println!("{:?}", plus_one(vec![9, 1, 9]));
+        let mut strs = Vec::new();
+        strs.push(String::from("cdf"));
+        //strs.push(String::from("acc"));
+        strs.push(String::from("cd"));
+        strs.push(String::from("cde"));
+        //    strs.push(String::from("abscd"));
+        dbg!(longest_common_prefix(strs));
 
-    let mut chars = Vec::<char>::new();
-    chars.push('a');
-    chars.push('b');
-    chars.push('c');
-    chars.push('d');
-    //    chars.push('e');
-    reverse_string(&mut chars);
-    println!("reverse_string:{:?}", chars);
+        let count = climb_stairs(30);
+        dbg!(count);
 
-    let a = String::from("0");
-    let b = String::from("0");
-    println!("{}", add_binary(a, b));
+        dbg!(plus_one(vec![9, 1, 9]));
 
-    println!("{:?}", generate(10));
+        let mut chars = Vec::<char>::new();
+        chars.push('a');
+        chars.push('b');
+        chars.push('c');
+        chars.push('d');
+        //    chars.push('e');
+        reverse_string(&mut chars);
+        dbg!(chars);
 
-    println!("{:?}", get_row(33));
+        let a = String::from("0");
+        let b = String::from("0");
+        dbg!(add_binary(a, b));
 
-    let numbers = vec![2, 7, 11, 15];
-    let target = 18;
-    let result = two_sum2(numbers, target);
-    println!("two_sum2 : {:?}", result);
+        dbg!(generate(10));
 
-    let nums = vec![1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1];
-    let len = find_max_consecutive_ones(nums);
-    println!("len:{}", len);
+        dbg!(get_row(33));
 
-    let mut nums = Vec::<i32>::new();
-    nums.push(1);
-    nums.push(4);
-    nums.push(3);
-    nums.push(2);
-    println!("sum:{}", array_pair_sum(nums));
+        let numbers = vec![2, 7, 11, 15];
+        let target = 18;
 
-    println!("index:{}", pivot_index(vec![1, 7, 3, 6, 5, 6]));
+        dbg!(two_sum2(numbers, target));
 
-    println!("{}", dominant_index(vec![2]));
+        let nums = vec![1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1];
+        dbg!(find_max_consecutive_ones(nums));
 
-    sorted_squares_v2(vec![-10000, -9999, -7, -5, 0, 0, 10000]);
+        let mut nums = Vec::<i32>::new();
+        nums.push(1);
+        nums.push(4);
+        nums.push(3);
+        nums.push(2);
+        dbg!(array_pair_sum(nums));
 
-    let sorted_vec = vec![-3, -2, 0, 1, 4, 5];
-    let sorted_squares_vec = sorted_squares(sorted_vec);
-    assert_eq!(sorted_squares_vec, vec![0, 1, 4, 9, 16, 25]);
+        dbg!(pivot_index(vec![1, 7, 3, 6, 5, 6]));
 
-    let sorted_vec_v2 = vec![-3, -2, 0, 1, 4, 5];
-    let sorted_squares_vec_v2 = sorted_squares_v2(sorted_vec_v2);
-    assert_eq!(sorted_squares_vec_v2, vec![0, 1, 4, 9, 16, 25]);
+        dbg!(dominant_index(vec![2]));
 
-    let sorted_vec_v3 = vec![-3, 3, 4];
-    let sorted_squares_vec_v3 = sorted_squares_v3(sorted_vec_v3);
-    assert_eq!(sorted_squares_vec_v3, vec![9, 9, 16]);
+        sorted_squares_v2(vec![-10000, -9999, -7, -5, 0, 0, 10000]);
 
-    println!("{}", is_palindrome(121));
-    println!("{}", is_palindrome(-121));
-    println!("{}", is_palindrome(10));
-    println!("{}", is_palindrome(1));
-    dbg!(is_palindrome_v3(8848));
+        let sorted_vec = vec![-3, -2, 0, 1, 4, 5];
+        let sorted_squares_vec = sorted_squares(sorted_vec);
+        assert_eq!(sorted_squares_vec, vec![0, 1, 4, 9, 16, 25]);
 
-    assert_eq!(length_of_longest_substring("dvdf".to_string()), 3);
-    assert_eq!(length_of_longest_substring("abcabcbb".to_string()), 3);
-    assert_eq!(length_of_longest_substring("bbbbb".to_string()), 1);
-    assert_eq!(length_of_longest_substring("pwwkew".to_string()), 3);
-    assert_eq!(length_of_longest_substring("c".to_string()), 1);
-    assert_eq!(length_of_longest_substring("au".to_string()), 2);
+        let sorted_vec_v2 = vec![-3, -2, 0, 1, 4, 5];
+        let sorted_squares_vec_v2 = sorted_squares_v2(sorted_vec_v2);
+        assert_eq!(sorted_squares_vec_v2, vec![0, 1, 4, 9, 16, 25]);
 
-    // for ch in '0'..='z'{
-    //     println!("{} {}",ch, ch as u8);
-    // }
+        let sorted_vec_v3 = vec![-3, 3, 4];
+        let sorted_squares_vec_v3 = sorted_squares_v3(sorted_vec_v3);
+        assert_eq!(sorted_squares_vec_v3, vec![9, 9, 16]);
 
-    let mut nums1: Vec<i32> = vec![1, 2, 3, 0, 0, 0];
-    let mut nums2: Vec<i32> = vec![2, 5, 6];
-    merge(&mut nums1, 3, &mut nums2, 3);
-    println!("{:?}", nums1);
+        dbg!(is_palindrome(121));
+        dbg!(is_palindrome(-121));
+        dbg!(is_palindrome(10));
+        dbg!(is_palindrome(1));
+        dbg!(is_palindrome_v3(8848));
 
-    let mut nums3: Vec<i32> = vec![7, 8, 9, 0, 0, 0];
-    let mut nums4: Vec<i32> = vec![2, 5, 6];
-    merge_v2(&mut nums3, 3, &mut nums4, 3);
-    println!("{:?}", nums3);
+        assert_eq!(length_of_longest_substring("dvdf".to_string()), 3);
+        assert_eq!(length_of_longest_substring("abcabcbb".to_string()), 3);
+        assert_eq!(length_of_longest_substring("bbbbb".to_string()), 1);
+        assert_eq!(length_of_longest_substring("pwwkew".to_string()), 3);
+        assert_eq!(length_of_longest_substring("c".to_string()), 1);
+        assert_eq!(length_of_longest_substring("au".to_string()), 2);
 
-    // let res = longest_palindrome(String::from("banana"));
-    // println!("longest_palindrome res:{}",res);
+        // for ch in '0'..='z'{
+        //     dbg!("{} {}",ch, ch as u8);
+        // }
 
-    let heights = vec![1, 2, 4, 5, 3, 3];
-    let move_person = height_checker(heights);
-    println!("height_checker move_person:{}", move_person);
+        let mut nums1: Vec<i32> = vec![1, 2, 3, 0, 0, 0];
+        let mut nums2: Vec<i32> = vec![2, 5, 6];
+        merge(&mut nums1, 3, &mut nums2, 3);
+        dbg!(nums1);
 
-    assert_eq!(my_sqrt(4), 2);
-    assert_eq!(my_sqrt(8), 2);
-}
+        let mut nums3: Vec<i32> = vec![7, 8, 9, 0, 0, 0];
+        let mut nums4: Vec<i32> = vec![2, 5, 6];
+        merge_v2(&mut nums3, 3, &mut nums4, 3);
+        dbg!(nums3);
 
-#[test]
-fn no_pass() {
-    println!("{}", my_sqrt(2147395599));
-    println!("{}", my_sqrt_v2(2147395599));
-    println!("{}", my_sqrt_v2(256));
-    let num = 2147395599f64;
-    println!("{}", num.sqrt().floor());
-    println!("{}", my_sqrt_v3(2147395599));
-    println!("{}", my_sqrt_v4(2147395599));
+        // let res = longest_palindrome(String::from("banana"));
+        // dbg!("longest_palindrome res:{}",res);
 
-    println!("1e-7 is very small");
+        let heights = vec![1, 2, 4, 5, 3, 3];
 
-    assert_eq!(hamming_weight(15), hamming_weight(15));
+        dbg!(height_checker(heights));
 
-    let mut matrix = Vec::<Vec<i32>>::new();
-    matrix.push(vec![1, 2, 3]);
-    matrix.push(vec![4, 5, 6]);
-    // matrix.push(vec![7, 8, 9]);
-
-    let new_matrix = transpose(matrix);
-    println!("{:?}", new_matrix);
-
-    let mut matrix2 = Vec::<Vec<i32>>::new();
-    matrix2.push(vec![1, 2, 3]);
-    matrix2.push(vec![4, 5, 6]);
-    // matrix.push(vec![7, 8, 9]);
-
-    let new_matrix2 = transpose_v2(matrix2);
-    println!("{:?}", new_matrix2);
-
-    let nums = vec![1, 16, 218];
-    for num in nums {
-        assert_eq!(is_power_of_two(num), is_power_of_two_v2(num));
+        assert_eq!(my_sqrt(4), 2);
+        assert_eq!(my_sqrt(8), 2);
     }
 
-    let mut nums = vec![0, 1, 0, 3, 0, 12, 14];
-    move_zeroes(&mut nums);
-    println!("{:?}", nums);
+    #[test]
+    fn no_pass() {
+        dbg!(my_sqrt(2147395599));
+        dbg!(my_sqrt_v2(2147395599));
+        dbg!(my_sqrt_v2(256));
+        let num = 2147395599f64;
+        dbg!(num.sqrt().floor());
+        dbg!(my_sqrt_v3(2147395599));
+        dbg!(my_sqrt_v4(2147395599));
 
-    let mut nums2 = vec![0, 1, 0, 3, 0, 12, 14];
-    move_zeroes_v2(&mut nums2);
-    println!("{:?}", nums2);
+        dbg!("1e-7 is very small");
 
-    let nums3 = vec![-2, 1, -3, 4, -1, 2, 1, -5, 4];
-    let max_ans = max_sub_array(nums3);
-    println!("{:?}", max_ans);
+        assert_eq!(hamming_weight(15), hamming_weight(15));
 
-    let ones = hamming_distance(1, 4);
-    println!("{:?}", ones);
+        let mut matrix = Vec::<Vec<i32>>::new();
+        matrix.push(vec![1, 2, 3]);
+        matrix.push(vec![4, 5, 6]);
+        // matrix.push(vec![7, 8, 9]);
 
-    let distance = hamming_distance_v2(4, 255);
-    println!("distance:{:?}", distance);
+        let new_matrix = transpose(matrix);
+        dbg!(new_matrix);
 
-    let distance = hamming_distance_v3(4, 65535);
-    println!("distance:{:?}", distance);
+        let mut matrix2 = Vec::<Vec<i32>>::new();
+        matrix2.push(vec![1, 2, 3]);
+        matrix2.push(vec![4, 5, 6]);
+        // matrix.push(vec![7, 8, 9]);
 
-    let nums = vec![2, 2, 1, 1, 1, 2, 2];
-    let major = majority_element(nums);
-    println!("major:{:?}", major);
+        let new_matrix2 = transpose_v2(matrix2);
+        dbg!(new_matrix2);
 
-    let nums2 = vec![6, 5, 5];
-    let major2 = majority_element_v2(nums2);
-    println!("major2:{:?}", major2);
-
-    let nums3 = vec![-12, 6, 10, 11, 12, 13, 15];
-    for num in nums3 {
-        println!("{} is ugly : {}", num, is_ugly(num));
-    }
-
-    let rand_num = rand::random::<u16>() as i32;
-    println!("{} is happy : {}", rand_num, is_happy(rand_num));
-    println!("{} is happy : {}", rand_num, is_happy_v2(rand_num));
-
-    println!("bit_square_sum : {}", bit_square_sum(123456));
-
-    println!("is_power_of_three : {}", is_power_of_three(81 * 3));
-
-    let ans = count_primes(10000);
-    println!("count_primes {}", ans);
-
-    let ans = count_primes_v2(10000);
-    println!("count_primes {}", ans);
-
-    let nums = vec![-1, 0, 3, 5, 9, 12];
-    let target = 9;
-    let idx = search(nums, target);
-    println!("targt's index is {}", idx);
-
-    let nums = vec![1, 0, 3, 5, 9, 12];
-    let idx = search_v2(nums, 2);
-    println!("targt's index is {}", idx);
-
-    let mut nums = vec![1, 3, 3, 3, 5, 5, 9, 9, 9, 9];
-    let new_len = remove_duplicates(&mut nums);
-    println!("new_len is {}", new_len);
-
-    let mut nums = vec![1, 3, 3, 3, 5, 5, 9, 9, 9, 9];
-    let new_len = remove_duplicates_v2(&mut nums);
-    println!("new_len is {}", new_len);
-
-    let s = String::from("ab#c");
-    let t = String::from("ad#c");
-    let eq = backspace_compare(s, t);
-    println!("s equals t ? : {}", eq);
-
-    let mut version0 = 0;
-    for version in 0..100 {
-        if (VERSIONS[version]) {
-            println!("version0:{}", version);
-            version0 = version;
-            break;
+        let nums = vec![1, 16, 218];
+        for num in nums {
+            assert_eq!(is_power_of_two(num), is_power_of_two_v2(num));
         }
+
+        let mut nums = vec![0, 1, 0, 3, 0, 12, 14];
+        move_zeroes(&mut nums);
+        dbg!(nums);
+
+        let mut nums2 = vec![0, 1, 0, 3, 0, 12, 14];
+        move_zeroes_v2(&mut nums2);
+        dbg!(nums2);
+
+        let nums3 = vec![-2, 1, -3, 4, -1, 2, 1, -5, 4];
+        let max_ans = max_sub_array(nums3);
+        dbg!(max_ans);
+
+        let ones = hamming_distance(1, 4);
+        dbg!(ones);
+
+        let distance = hamming_distance_v2(4, 255);
+        dbg!(distance);
+
+        let distance = hamming_distance_v3(4, 65535);
+        dbg!(distance);
+
+        let nums = vec![2, 2, 1, 1, 1, 2, 2];
+        let major = majority_element(nums);
+        dbg!(major);
+
+        let nums2 = vec![6, 5, 5];
+        let major2 = majority_element_v2(nums2);
+        dbg!(major2);
+
+        let nums3 = vec![-12, 6, 10, 11, 12, 13, 15];
+        for num in nums3 {
+            dbg!(is_ugly(num));
+        }
+
+        let rand_num = rand::random::<u16>() as i32;
+        dbg!(is_happy(rand_num));
+        dbg!(is_happy_v2(rand_num));
+
+        dbg!(bit_square_sum(123456));
+
+        dbg!(is_power_of_three(81 * 3));
+
+        let ans = count_primes(10000);
+        dbg!(ans);
+
+        let ans = count_primes_v2(10000);
+        dbg!(ans);
+
+        let nums = vec![-1, 0, 3, 5, 9, 12];
+        let target = 9;
+
+        dbg!(search(nums, target));
+
+        let nums = vec![1, 0, 3, 5, 9, 12];
+
+        dbg!(search_v2(nums, 2));
+
+        let mut nums = vec![1, 3, 3, 3, 5, 5, 9, 9, 9, 9];
+
+        dbg!(remove_duplicates(&mut nums));
+
+        let mut nums = vec![1, 3, 3, 3, 5, 5, 9, 9, 9, 9];
+
+        dbg!(remove_duplicates_v2(&mut nums));
+
+        let s = String::from("ab#c");
+        let t = String::from("ad#c");
+
+        dbg!(backspace_compare(s, t));
+
+        let mut version0 = 0;
+        for version in 0..100 {
+            if (VERSIONS[version]) {
+                dbg!(version);
+                version0 = version;
+                break;
+            }
+        }
+
+        dbg!(first_bad_version(100));
+
+        let prices = vec![7, 1, 5, 3, 6, 4];
+
+        dbg!(max_profit(prices));
+
+        dbg!(max_profit_v2(vec![7, 1, 5, 3, 6, 4]));
+
+        let s = String::from("leetcode");
+        let first_uniq_char_result = first_uniq_char(s);
+        dbg!(first_uniq_char_result);
+
+        let s = String::from("loveleetcodeverymuch");
+        let first_uniq_char_v2_result = first_uniq_char_v2(s);
+        dbg!(first_uniq_char_v2_result);
+
+        let s = String::from("loveleetcodeverymuch");
+        let first_uniq_char_v3_result = first_uniq_char_v3(s);
+        dbg!(first_uniq_char_v3_result);
+
+        let nums1 = vec![4, 9, 5, 1];
+        let nums2 = vec![9, 2, 4, 10, 5];
+        let intersect_result = intersect(nums1, nums2);
+        dbg!(intersect_result);
+
+        let nums1 = vec![4, 9, 5, 1];
+        let nums2 = vec![9, 2, 4, 10, 5];
+        let intersect_v2_result = intersect_v2(nums1, nums2);
+        dbg!(intersect_v2_result);
     }
-    let version = first_bad_version(100);
-    println!("version1: {}", version);
-    assert_eq!(version0 as i32, version);
 
-    let prices = vec![7, 1, 5, 3, 6, 4];
-    let profit = max_profit(prices);
-    println!("profit0:{}", profit);
-    let profit1 = max_profit_v2(vec![7, 1, 5, 3, 6, 4]);
-    println!("profit1:{}", profit1);
+    #[test]
+    fn test_200_plus() {
+        let nums = vec![1, 2, 3, 4, 5];
+        let head = vec_to_list(&nums);
+        let tail = reverse_list(head);
 
-    let s = String::from("leetcode");
-    let first_uniq_char_result = first_uniq_char(s);
-    dbg!(first_uniq_char_result);
+        display(tail);
 
-    let s = String::from("loveleetcodeverymuch");
-    let first_uniq_char_v2_result = first_uniq_char_v2(s);
-    dbg!(first_uniq_char_v2_result);
+        let head = vec_to_list(&nums);
+        let remove_elements_result = remove_elements(head, 3);
+        display(remove_elements_result);
 
-    let s = String::from("loveleetcodeverymuch");
-    let first_uniq_char_v3_result = first_uniq_char_v3(s);
-    dbg!(first_uniq_char_v3_result);
+        let head = vec_to_list(&nums);
+        let remove_elements_v2_result = remove_elements_v2(head, 3);
+        display(remove_elements_v2_result);
 
-    let nums1 = vec![4, 9, 5, 1];
-    let nums2 = vec![9, 2, 4, 10, 5];
-    let intersect_result = intersect(nums1, nums2);
-    dbg!(intersect_result);
+        let head = vec_to_list(&[7, 6, 8, 7, 7, 7, 7, 7]);
+        let remove_elements_v3_result = remove_elements_v3(head, 7);
+        display(remove_elements_v3_result);
 
-    let nums1 = vec![4, 9, 5, 1];
-    let nums2 = vec![9, 2, 4, 10, 5];
-    let intersect_v2_result = intersect_v2(nums1, nums2);
-    dbg!(intersect_v2_result);
-}
+        dbg!(next_greater_element(vec![4, 1, 2], vec![1, 3, 4, 2]));
 
-#[test]
-fn test_200_plus() {
-    let nums = vec![1, 2, 3, 4, 5];
-    let head = vec_to_list(&nums);
-    let tail = reverse_list(head);
+        dbg!(add_strings("11".to_string(), "123".to_string()));
+    }
 
-    display(tail);
-
-    let head = vec_to_list(&nums);
-    let remove_elements_result = remove_elements(head, 3);
-    display(remove_elements_result);
-
-    let head = vec_to_list(&nums);
-    let remove_elements_v2_result = remove_elements_v2(head, 3);
-    display(remove_elements_v2_result);
-
-    let head = vec_to_list(&[7, 6, 8, 7, 7, 7, 7, 7]);
-    let remove_elements_v3_result = remove_elements_v3(head, 7);
-    display(remove_elements_v3_result);
-
-    dbg!(next_greater_element(vec![4, 1, 2], vec![1, 3, 4, 2]));
-
-    dbg!(add_strings("11".to_string(), "123".to_string()));
-}
-
-#[test]
-fn test_list_node() {
-    let head = vec_to_list(&vec![1, 1, 2, 3, 3]);
-    let unique_nodes = delete_duplicates(head);
-    display(unique_nodes);
+    #[test]
+    fn test_list_node() {
+        let head = vec_to_list(&vec![1, 1, 2, 3, 3]);
+        let unique_nodes = delete_duplicates(head);
+        display(unique_nodes);
+    }
 }

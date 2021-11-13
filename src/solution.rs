@@ -1,29 +1,38 @@
 use std::collections::HashMap;
 
-#[test]
-fn unit_test() {
-    let num = 123_456f64;
-    println!("sqrt(x)={}", num.sqrt().floor());
-}
-
-#[test]
-fn simple() {
-    let intervals: Vec<Vec<i32>> = vec![vec![1, 3], vec![2, 6], vec![8, 10], vec![15, 18]];
-    let merge_intervals = merge(intervals);
-    println!("{:?}", merge_intervals);
-
-    use itertools::kmerge;
-    for element in kmerge(vec![vec![1, 3], vec![2, 6], vec![8, 10], vec![15, 18]]) {
-        print!("{} ", element);
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn lamada_demo() {
+        let vec = fibonacci(20);
+        for num in vec {
+            print!("{} ", num);
+        }
     }
-    println!();
 
-    use itertools::cloned;
-    let elements = vec![vec![1, 3], vec![2, 6], vec![8, 10], vec![15, 18]];
-    let cloned_elements = cloned(&elements);
+    #[test]
+    fn simple() {
+        let num = 123_456f64;
+        println!("sqrt(x)={}", num.sqrt().floor());
 
-    for element in cloned_elements {
-        println!("{:?}", element);
+        let intervals: Vec<Vec<i32>> = vec![vec![1, 3], vec![2, 6], vec![8, 10], vec![15, 18]];
+        let merge_intervals = merge(intervals);
+        println!("{:?}", merge_intervals);
+
+        use itertools::kmerge;
+        for element in kmerge(vec![vec![1, 3], vec![2, 6], vec![8, 10], vec![15, 18]]) {
+            print!("{} ", element);
+        }
+        println!();
+
+        use itertools::cloned;
+        let elements = vec![vec![1, 3], vec![2, 6], vec![8, 10], vec![15, 18]];
+        let cloned_elements = cloned(&elements);
+
+        for element in cloned_elements {
+            println!("{:?}", element);
+        }
     }
 }
 
@@ -68,14 +77,6 @@ fn hua_wei_test() {
                 break;
             }
         }
-    }
-}
-
-#[test]
-fn lamada_demo() {
-    let vec = fibonacci(20);
-    for num in vec {
-        print!("{} ", num);
     }
 }
 

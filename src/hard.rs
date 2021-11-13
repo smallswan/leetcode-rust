@@ -445,41 +445,41 @@ mod tests {
 
         crate::simple::display(res3);
     }
-}
 
-#[test]
-fn hard() {
-    let nums1: Vec<i32> = vec![1, 3];
-    let nums2: Vec<i32> = vec![2];
-    let median_num = find_median_sorted_arrays(nums1, nums2);
-    println!("median_num v1:{}", median_num);
+    #[test]
+    fn other() {
+        let nums1: Vec<i32> = vec![1, 3];
+        let nums2: Vec<i32> = vec![2];
+        let median_num = find_median_sorted_arrays(nums1, nums2);
+        dbg!("median_num v1:{}", median_num);
 
-    let mut nums3: Vec<i32> = vec![1, 3];
-    let mut nums4: Vec<i32> = vec![2];
-    let median_num = find_median_sorted_arrays_v2(nums3, nums4);
-    println!("median_num v2:{}", median_num);
+        let mut nums3: Vec<i32> = vec![1, 3];
+        let mut nums4: Vec<i32> = vec![2];
+        let median_num = find_median_sorted_arrays_v2(nums3, nums4);
+        dbg!("median_num v2:{}", median_num);
 
-    println!(
-        "{}",
-        is_match("mississippi".to_string(), "mis*is*p*.".to_string())
-    );
-    println!("{}", is_match("aab".to_string(), "c*a*b".to_string()));
-    println!("{}", is_match("ab".to_string(), ".*".to_string()));
-    println!("{}", is_match("a".to_string(), "ab*a".to_string()));
+        dbg!(
+            "{}",
+            is_match("mississippi".to_string(), "mis*is*p*.".to_string())
+        );
+        dbg!(is_match("aab".to_string(), "c*a*b".to_string()));
+        dbg!(is_match("ab".to_string(), ".*".to_string()));
+        dbg!(is_match("a".to_string(), "ab*a".to_string()));
 
-    println!(
-        "{}",
-        is_match_v2("mississippi".to_string(), "mis*is*p*.".to_string())
-    );
-    println!("{}", is_match_v2("aab".to_string(), "c*a*b".to_string()));
-    println!("{}", is_match_v2("ab".to_string(), ".*".to_string()));
-    println!("{}", is_match_v2("a".to_string(), "ab*a".to_string()));
+        dbg!(
+            "{}",
+            is_match_v2("mississippi".to_string(), "mis*is*p*.".to_string())
+        );
+        dbg!(is_match_v2("aab".to_string(), "c*a*b".to_string()));
+        dbg!(is_match_v2("ab".to_string(), ".*".to_string()));
+        dbg!(is_match_v2("a".to_string(), "ab*a".to_string()));
 
-    println!(
-        "{}",
-        is_match_v3("mississippi".to_string(), "mis*is*p*.".to_string())
-    );
-    println!("{}", is_match_v3("aab".to_string(), "c*a*b".to_string()));
-    println!("{}", is_match_v3("ab".to_string(), ".*".to_string()));
-    println!("{}", is_match_v3("a".to_string(), "ab*a".to_string()));
+        dbg!(
+            "{}",
+            is_match_v3("mississippi".to_string(), "mis*is*p*.".to_string())
+        );
+        dbg!(is_match_v3("aab".to_string(), "c*a*b".to_string()));
+        dbg!(is_match_v3("ab".to_string(), ".*".to_string()));
+        dbg!(is_match_v3("a".to_string(), "ab*a".to_string()));
+    }
 }

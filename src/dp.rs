@@ -48,9 +48,24 @@ pub fn number_tower(tower: Vec<Vec<i32>>) -> i32 {
     max
 }
 
-#[test]
-fn dp_demo() {
-    let array = vec![6, -1, 3, -4, -6, 9, 2, -2, 5];
-    let sum = max_continue_array_sum(&array);
-    println!("max_continue_array_sum sum = {:?}", sum);
+#[cfg(test)]
+mod tests {
+
+    #[test]
+    fn dp_demo() {
+        use super::*;
+        let array = vec![6, -1, 3, -4, -6, 9, 2, -2, 5];
+        let sum = max_continue_array_sum(&array);
+        dbg!("max_continue_array_sum sum = {:?}", sum);
+
+        let mut tower = vec![
+            vec![3],
+            vec![1, 5],
+            vec![8, 4, 3],
+            vec![2, 6, 7, 9],
+            vec![6, 2, 3, 5, 1],
+        ];
+        let max = number_tower(tower);
+        dbg!("number_tower max = {:?}", max);
+    }
 }

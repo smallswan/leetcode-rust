@@ -74,6 +74,7 @@ pub fn expect_number(scores: Vec<i32>) -> i32 {
     mut_scores.len() as i32
 }
 
+/// 力扣（LCP 11. 期望个数统计）
 pub fn expect_number_v2(scores: Vec<i32>) -> i32 {
     let mut unique_scores = HashSet::new();
     for score in scores {
@@ -83,30 +84,34 @@ pub fn expect_number_v2(scores: Vec<i32>) -> i32 {
     unique_scores.len() as i32
 }
 
-#[test]
-fn min_count_test() {
-    let coins: Vec<i32> = vec![4, 2, 1];
-    let times = min_count(coins);
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn min_count_test() {
+        let coins: Vec<i32> = vec![4, 2, 1];
+        let times = min_count(coins);
 
-    println!("times:{}", times);
+        dbg!(times);
 
-    let mut relation = vec![];
-    relation.push(vec![0, 2]);
-    relation.push(vec![4, 1]);
-    relation.push(vec![2, 1]);
-    relation.push(vec![3, 4]);
-    relation.push(vec![2, 3]);
-    relation.push(vec![1, 4]);
-    relation.push(vec![2, 0]);
-    relation.push(vec![0, 4]);
+        let mut relation = vec![];
+        relation.push(vec![0, 2]);
+        relation.push(vec![4, 1]);
+        relation.push(vec![2, 1]);
+        relation.push(vec![3, 4]);
+        relation.push(vec![2, 3]);
+        relation.push(vec![1, 4]);
+        relation.push(vec![2, 0]);
+        relation.push(vec![0, 4]);
 
-    let n = 5;
-    let k = 3;
+        let n = 5;
+        let k = 3;
 
-    let r = num_ways(n, relation, k);
+        let r = num_ways(n, relation, k);
 
-    println!("r:{}", r);
+        dbg!(r);
 
-    let scores = vec![1, 1, 2];
-    expect_number(scores);
+        let scores = vec![1, 1, 2];
+        dbg!(expect_number(scores));
+    }
 }
