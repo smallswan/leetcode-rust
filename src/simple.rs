@@ -1372,7 +1372,34 @@ pub fn trailing_zeroes_v2(n: i32) -> i32 {
     }
     count_fives
 }
+/// 力扣（190. 颠倒二进制位） https://leetcode-cn.com/problems/reverse-bits/
+//  方法一：逐位颠倒
+pub fn reverse_bits(x: u32) -> u32 {
+    let mut n = x;
+    let mut rev = 0;
+    let mut i = 0;
+    while i < 32 && n > 0 {
+        rev |= (n & 1) << (31 - i);
+        n >>= 1;
+        i += 1;
+    }
+    rev
+}
 
+//  方法二：位运算分治
+pub fn reverse_bits_v2(x: u32) -> u32 {
+    const M1: u32 = 0x55555555; // 01010101010101010101010101010101
+    const M2: u32 = 0x33333333; // 00110011001100110011001100110011
+    const M4: u32 = 0x0f0f0f0f; // 00001111000011110000111100001111
+    const M8: u32 = 0x00ff00ff; // 00000000111111110000000011111111
+
+    let mut n = x;
+    n = n >> 1 & M1 | (n & M1) << 1;
+    n = n >> 2 & M2 | (n & M2) << 2;
+    n = n >> 4 & M4 | (n & M4) << 4;
+    n = n >> 8 & M8 | (n & M8) << 8;
+    n >> 16 | n << 16
+}
 /// 力扣（191. 位1的个数) https://leetcode-cn.com/problems/number-of-1-bits/
 /// SWAR算法“计算汉明重量” https://baike.baidu.com/item/%E6%B1%89%E6%98%8E%E9%87%8D%E9%87%8F
 pub fn hamming_weight_v1(n: u32) -> i32 {
@@ -3279,5 +3306,11 @@ mod tests {
         let head = vec_to_list(&vec![1, 1, 2, 3, 3]);
         let unique_nodes = delete_duplicates(head);
         display(unique_nodes);
+
+        dbg!(reverse_bits(43261596));
+
+        let x = 43261596u32;
+        dbg!(x.to_be_bytes());
+        println!("{:02X}", x);
     }
 }
