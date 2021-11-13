@@ -34,6 +34,25 @@ mod tests {
             println!("{:?}", element);
         }
     }
+
+    #[test]
+    fn rotate_reverse() {
+        use std::collections::VecDeque;
+
+        let mut buf: VecDeque<_> = (0..10).collect();
+
+        buf.rotate_right(3);
+        assert_eq!(buf, [7, 8, 9, 0, 1, 2, 3, 4, 5, 6]);
+
+        // https://doc.rust-lang.org/std/primitive.slice.html#method.rotate_right
+        let mut nums: Vec<i32> = (0..10).collect();
+        crate::medium::rotate(&mut nums, 3);
+        assert_eq!(nums, [7, 8, 9, 0, 1, 2, 3, 4, 5, 6]);
+
+        let mut nums2: Vec<i32> = (0..10).collect();
+        nums2.rotate_right(3);
+        assert_eq!(nums2, [7, 8, 9, 0, 1, 2, 3, 4, 5, 6]);
+    }
 }
 
 ///

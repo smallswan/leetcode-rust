@@ -77,3 +77,6 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 ### 问题：电话号码的字母组合
 [17. 电话号码的字母组合](https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/)
 [回溯法](https://baike.baidu.com/item/%E5%9B%9E%E6%BA%AF%E6%B3%95/86074?fr=aladdin)
+
+### 问题：旋转操作
+[189. 旋转数组](https://leetcode-cn.com/problems/rotate-array/) 

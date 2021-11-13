@@ -2,6 +2,7 @@
 ## 计算机大师
 - Brian Kernighan (布莱恩·克尼汉)
 - Donald Knuth （唐纳德·克努特 ，中文名：高德纳） 经典巨著《计算机程序设计的艺术》的年轻作者。
+- Doung Mcllroy （著名计算机科学家，美国工程院院士）
 
 ## Floyd判圈算法（又称快慢指针法、龟兔赛跑法）
 ### 数学证明
@@ -64,3 +65,24 @@ n & (n - 1) 使得二进制位最右边一位（不一定是最后一位，比�
 
 ### 相关问题
 
+## 旋转操作
+Doung Mcllroy 给出了将十元数组向上旋转5个位置的翻手例子。初始时掌心对着我们的脸，左手在右手上面。
+通过“翻转左手”、“翻转右手”、“翻转双手”三次翻转，达到模拟向左旋转5位的效果。
+
+rotate(旋转) 可以通过三次reverse实现；
+reverse(反转，颠倒，翻转) 可以通过交换（swap）实现。
+
+```
+rotate可以通过三次reverse实现，具体来说：
+（1）rotate_left(mid) 可以通过以下三次reverse实现：
+reverse(0,mid);
+reverse(mid,len);
+reverse(0,len);
+
+（2）rotate_right(mid) 可以通过以下三次reverse实现：
+reverse(0,len);
+reverse(0,mid);
+reverse(mid,len);
+```
+### 相关问题
+[189. 旋转数组](https://leetcode-cn.com/problems/rotate-array/) 
