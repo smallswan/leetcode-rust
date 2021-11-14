@@ -1386,6 +1386,7 @@ pub fn reverse_bits(x: u32) -> u32 {
     rev
 }
 
+/// 力扣（190. 颠倒二进制位）
 //  方法二：位运算分治
 pub fn reverse_bits_v2(x: u32) -> u32 {
     const M1: u32 = 0x55555555; // 01010101010101010101010101010101
@@ -1400,6 +1401,13 @@ pub fn reverse_bits_v2(x: u32) -> u32 {
     n = n >> 8 & M8 | (n & M8) << 8;
     n >> 16 | n << 16
 }
+
+/// 力扣（190. 颠倒二进制位）
+pub fn reverse_bits_v3(x: u32) -> u32 {
+    let mut n = x;
+    n.reverse_bits()
+}
+
 /// 力扣（191. 位1的个数) https://leetcode-cn.com/problems/number-of-1-bits/
 /// SWAR算法“计算汉明重量” https://baike.baidu.com/item/%E6%B1%89%E6%98%8E%E9%87%8D%E9%87%8F
 pub fn hamming_weight_v1(n: u32) -> i32 {
@@ -2413,6 +2421,44 @@ pub fn find_the_difference(s: String, t: String) -> char {
     ' '
 }
 
+// TODO 400
+
+/// 力扣（401. 二进制手表） https://leetcode-cn.com/problems/binary-watch/
+pub fn read_binary_watch(turned_on: i32) -> Vec<String> {
+    if turned_on < 0 || turned_on > 8 {
+        return vec![];
+    }
+    //小时最多亮3盏灯[0,3]
+    let mut hour_turn_on: Vec<Vec<String>> = vec![vec![]; 4];
+    for hour in (0i32..=11i32) {
+        hour_turn_on[hour.count_ones() as usize].push(format!("{}", hour));
+    }
+    //dbg!(hour_turn_on);
+    //分钟最多亮5盏灯[0,5]
+    let mut minute_turn_on: Vec<Vec<String>> = vec![vec![]; 6];
+    for minute in (0i32..=59i32) {
+        minute_turn_on[minute.count_ones() as usize].push(format!("{:02}", minute));
+    }
+    //dbg!(minute_turn_on);
+    let mut result = Vec::new();
+
+    // turned_on = hour + minute;
+    for hour in (0i32..=3i32) {
+        let mut minute = turned_on - hour;
+        if minute >= 0 && minute <= 5 {
+            for h in &hour_turn_on[hour as usize] {
+                for m in &minute_turn_on[minute as usize] {
+                    result.push(format!("{}:{}", h, m));
+                }
+            }
+        } else {
+            continue;
+        }
+    }
+
+    result
+}
+
 static HEX_CHARS: [&str; 16] = [
     "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f",
 ];
@@ -3299,6 +3345,8 @@ mod tests {
         dbg!(next_greater_element(vec![4, 1, 2], vec![1, 3, 4, 2]));
 
         dbg!(add_strings("11".to_string(), "123".to_string()));
+
+        dbg!(read_binary_watch(7));
     }
 
     #[test]
@@ -3310,7 +3358,14 @@ mod tests {
         dbg!(reverse_bits(43261596));
 
         let x = 43261596u32;
+        // [u8;4]
         dbg!(x.to_be_bytes());
-        println!("{:02X}", x);
+        // 16进制
+        println!("{:08X}", x);
+        // 2进制
+        println!("{:032b}", x);
+
+        let rev_x: String = format!("{:032b}", x).chars().rev().collect();
+        dbg!(u32::from_str_radix(&rev_x, 2));
     }
 }
