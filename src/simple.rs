@@ -2605,6 +2605,7 @@ pub fn hamming_distance_v3(x: i32, y: i32) -> i32 {
 }
 
 /// 力扣（476. 数字的补数） https://leetcode-cn.com/problems/number-complement/
+/// 方法1：左移求出最高位所需移动的次数，然后构建与之匹配的掩码
 pub fn find_complement(num: i32) -> i32 {
     let mut num = num;
     //最高位为1的位
@@ -2623,6 +2624,19 @@ pub fn find_complement(num: i32) -> i32 {
     };
 
     num ^ mark
+}
+
+/// 力扣（476. 数字的补数）
+/// 方法2：右移统计数字的有效位数，同时构建与之匹配的掩码
+pub fn find_complement_v2(num: i32) -> i32 {
+    let mut temp = num;
+    let mut mask = 0;
+    while temp > 0 {
+        temp >>= 1;
+        mask = (mask << 1) + 1;
+    }
+
+    num ^ mask
 }
 
 ///力扣（485. 最大连续1的个数）https://leetcode-cn.com/problems/max-consecutive-ones/
