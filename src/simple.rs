@@ -2604,6 +2604,27 @@ pub fn hamming_distance_v3(x: i32, y: i32) -> i32 {
     distance
 }
 
+/// 力扣（476. 数字的补数） https://leetcode-cn.com/problems/number-complement/
+pub fn find_complement(num: i32) -> i32 {
+    let mut num = num;
+    //最高位为1的位
+    let mut high_bit = 0;
+    for i in 1..=30 {
+        if num >= (1 << i) {
+            high_bit = i;
+        } else {
+            break;
+        }
+    }
+
+    let mark = match (high_bit == 30) {
+        true => 0x7fffffff,
+        false => (1 << (high_bit + 1)) - 1,
+    };
+
+    num ^ mark
+}
+
 ///力扣（485. 最大连续1的个数）https://leetcode-cn.com/problems/max-consecutive-ones/
 pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
     let mut max = 0;
@@ -2661,6 +2682,8 @@ pub fn next_greater_element(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
 
     res
 }
+
+/// TODO: 500
 
 /// 力扣（561. 数组拆分 I） https://leetcode-cn.com/problems/array-partition-i/
 pub fn array_pair_sum(nums: Vec<i32>) -> i32 {
@@ -2809,6 +2832,9 @@ fn build(s: String) -> String {
     }
     chars_vec.into_iter().collect()
 }
+
+/// TODO 800
+
 /// 力扣（844. 比较含退格的字符串)  https://leetcode-cn.com/problems/backspace-string-compare/
 /// 方法一：重构字符串
 pub fn backspace_compare(s: String, t: String) -> bool {
@@ -2894,6 +2920,8 @@ pub fn transpose_v2(matrix: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     }
     transposed
 }
+
+/// TODO 900
 
 /// 力扣（977. 有序数组的平方）https://leetcode-cn.com/problems/squares-of-a-sorted-array/
 pub fn sorted_squares(nums: Vec<i32>) -> Vec<i32> {
@@ -2990,6 +3018,8 @@ pub fn sorted_squares_v3(nums: Vec<i32>) -> Vec<i32> {
 
     ans
 }
+
+/// TODO 1000
 
 /// 力扣（1051. 高度检查器），https://leetcode-cn.com/problems/height-checker/
 pub fn height_checker(heights: Vec<i32>) -> i32 {
