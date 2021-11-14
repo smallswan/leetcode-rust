@@ -3021,6 +3021,33 @@ pub fn xor_operation(n: i32, start: i32) -> i32 {
     (1..n).fold(start, |acc, i| acc ^ (start + 2 * i))
 }
 
+/// 力扣（1863. 找出所有子集的异或总和再求和）https://leetcode-cn.com/problems/sum-of-all-subset-xor-totals/
+pub fn subset_xor_sum(nums: Vec<i32>) -> i32 {
+    let mut xor_sum = 0;
+    let n = nums.len();
+    for num in nums {
+        xor_sum |= num;
+    }
+    xor_sum << (n - 1)
+}
+
+/// 力扣（1863. 找出所有子集的异或总和再求和）
+pub fn subset_xor_sum_v2(nums: Vec<i32>) -> i32 {
+    let mut xor_sum = 0;
+    let n = nums.len();
+    let two_pow_n = 1 << n;
+    for i in 0..two_pow_n {
+        let mut temp = 0;
+        for j in 0..n {
+            if i & (1 << j) != 0 {
+                temp ^= nums[j];
+            }
+        }
+        xor_sum += temp;
+    }
+    xor_sum
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
