@@ -716,6 +716,24 @@ pub fn remove_nth_from_end(head: Option<Box<ListNode>>, n: i32) -> Option<Box<Li
     dummy_head.unwrap().next
 }
 
+/// 31. 下一个排列 https://leetcode-cn.com/problems/next-permutation/
+pub fn next_permutation(nums: &mut Vec<i32>) {
+    let n = nums.len();
+    let mut i = n - 1;
+    while i > 0 && nums[i - 1] >= nums[i] {
+        i -= 1;
+    }
+    if i > 0 {
+        let mut j = n - 1;
+        while nums[i - 1] >= nums[j] {
+            j -= 1;
+        }
+        // 较小数nums[i-i]与较大数nums[j]交换位置
+        nums.swap(i - 1, j);
+    }
+    nums[i..].reverse();
+}
+
 /// 力扣（34. 在排序数组中查找元素的第一个和最后一个位置) https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
 /// 先用二分查找算法找到target的下标，然后向左右两边继续查找
 pub fn search_range(nums: Vec<i32>, target: i32) -> Vec<i32> {
@@ -1885,6 +1903,10 @@ mod tests {
         let digits = String::from("234");
         let combination = letter_combinations_v2(digits);
         dbg!("combination2: {:?}", combination);
+
+        let mut nums = vec![4, 5, 2, 6, 3, 1];
+        next_permutation(&mut nums);
+        println!("nums: {:?}", nums);
     }
 
     #[test]
