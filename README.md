@@ -80,3 +80,6 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 
 ### 问题：旋转操作
 [189. 旋转数组](https://leetcode-cn.com/problems/rotate-array/) 
+
+### 问题：字符串模式匹配(strStr)
+[28. 实现 strStr()](https://leetcode-cn.com/problems/implement-strstr/)
