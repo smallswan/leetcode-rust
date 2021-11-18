@@ -133,6 +133,30 @@ pub fn fib_v2(n: i32) -> i32 {
     f0
 }
 
+/// 剑指 Offer 56 - I. 数组中数字出现的次数 https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/
+/// 方法1：分组异或
+pub fn single_numbers(nums: Vec<i32>) -> Vec<i32> {
+    // ret 为 a,b两个数异或的结果
+    let mut ret = 0;
+    for &num in &nums {
+        ret ^= num;
+    }
+    // div 为 a,b 二进制位上不相同时，最低的位
+    let mut div = 1;
+    while div & ret == 0 {
+        div <<= 1;
+    }
+    let (mut a, mut b) = (0, 0);
+    for &num in &nums {
+        if div & num != 0 {
+            a ^= num;
+        } else {
+            b ^= num;
+        }
+    }
+    vec![a, b]
+}
+
 /// 剑指 Offer 64. 求1+2+…+n  https://leetcode-cn.com/problems/qiu-12n-lcof/
 /// 求 1+2+...+n ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
 /// 使用match语句是否违规呢？

@@ -37,7 +37,7 @@ a=(k−1)L+(L−b)=(k−1)L+c
 ## 数字二进制异或运算
 
 ### 应用场景
-- 查找只出现一次的数字
+- 只出现一次的数字
 
 ### 相关问题
 - [136. 只出现一次的数字]( https://leetcode-cn.com/problems/single-number/)

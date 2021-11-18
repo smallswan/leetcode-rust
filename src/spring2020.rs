@@ -15,6 +15,7 @@ pub fn min_count(coins: Vec<i32>) -> i32 {
 use std::collections::HashMap;
 use std::collections::HashSet;
 /// 力扣（LCP 07. 传递信息） https://leetcode-cn.com/problems/chuan-di-xin-xi/submissions/
+/// 方法一：深度优先搜索
 pub fn num_ways(n: i32, relation: Vec<Vec<i32>>, k: i32) -> i32 {
     let mut map = HashMap::<i32, HashSet<i32>>::new();
     for re in relation {
@@ -39,15 +40,15 @@ pub fn num_ways(n: i32, relation: Vec<Vec<i32>>, k: i32) -> i32 {
 
 fn search_recurse(
     map: &HashMap<i32, HashSet<i32>>,
-    search: i32,
+    start: i32,
     end: i32,
     level: i32,
     k: i32,
     count: &mut i32,
 ) -> bool {
-    if let Some(set) = map.get(&search) {
+    if let Some(set) = map.get(&start) {
         for val in set.iter() {
-            print!("{}->{}->", search, *val);
+            print!("{}->{}->", start, *val);
             if level >= k {
                 if set.contains(&end) {
                     *count += 1;
