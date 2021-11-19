@@ -48,7 +48,7 @@ fn search_recurse(
 ) -> bool {
     if let Some(set) = map.get(&start) {
         for val in set.iter() {
-            print!("{}->{}->", start, *val);
+            print!("{}->{} ", start, *val);
             if level >= k {
                 if set.contains(&end) {
                     *count += 1;
@@ -71,7 +71,6 @@ pub fn expect_number(scores: Vec<i32>) -> i32 {
     let mut mut_scores = scores;
     mut_scores.sort_unstable();
     mut_scores.dedup();
-    //println!("{:?}", mut_scores);
     mut_scores.len() as i32
 }
 

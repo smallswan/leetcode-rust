@@ -1,5 +1,5 @@
 //！ 简单难度
-
+//!  [简单]: https://leetcode-cn.com/problemset/all/?difficulty=EASY&page=1
 use core::num;
 use std::{
     borrow::Borrow,
@@ -1417,9 +1417,11 @@ pub fn hamming_weight_v1(n: u32) -> i32 {
     let const3 = 0x0F0F0F0F;
     let const4 = 0x01010101;
 
+    // 奇数位 + 偶数位
     i = (i & const1) + ((i >> 1) & const1);
     i = (i & const2) + ((i >> 2) & const2);
     i = (i & const3) + ((i >> 4) & const3);
+    // (i * 0x01010101)>>24 == ((i<<24)>>24) + ((i<<16)>>24) + ((i<<8)>>24) + ((i<<0)>>24)
     i = (i * const4) >> 24;
 
     i
@@ -2052,6 +2054,18 @@ pub fn count_bits_v3(n: i32) -> Vec<i32> {
     result
 }
 
+/// 力扣（338. 比特位计数）
+/// 动态规划——最低有效位
+pub fn count_bits_v4(n: i32) -> Vec<i32> {
+    let n = n as usize;
+    let mut result = vec![0i32; n + 1];
+    for num in 1..=n {
+        result[num] = result[num >> 1] + ((num as i32) & 1);
+    }
+
+    result
+}
+
 /// 力扣（345. 反转字符串中的元音字母） https://leetcode-cn.com/problems/reverse-vowels-of-a-string/
 pub fn reverse_vowels(s: String) -> String {
     const VOWELS: [char; 10] = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
@@ -2424,6 +2438,7 @@ pub fn find_the_difference(s: String, t: String) -> char {
 // TODO 400
 
 /// 力扣（401. 二进制手表） https://leetcode-cn.com/problems/binary-watch/
+/// 方法1：空间换时间避免重复计算
 pub fn read_binary_watch(turned_on: i32) -> Vec<String> {
     if turned_on < 0 || turned_on > 8 {
         return vec![];

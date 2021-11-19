@@ -86,6 +86,7 @@ pub fn find_repeat_number_v3(nums: Vec<i32>) -> i32 {
 
 /// 剑指 Offer 06. 从尾到头打印链表 https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/
 use crate::simple::ListNode;
+/// 反转数组
 pub fn reverse_print(head: Option<Box<ListNode>>) -> Vec<i32> {
     let mut res = Vec::new();
     let mut next = &head;
@@ -98,6 +99,7 @@ pub fn reverse_print(head: Option<Box<ListNode>>) -> Vec<i32> {
 }
 
 /// 剑指 Offer 10- I. 斐波那契数列   https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/
+/// 方法1：动态规划
 pub fn fib(n: i32) -> i32 {
     if n <= 1 {
         return n;
