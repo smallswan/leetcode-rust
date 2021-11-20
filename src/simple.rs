@@ -2715,6 +2715,45 @@ pub fn next_greater_element(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
 
 /// TODO: 500
 
+/// 520. 检测大写字母 https://leetcode-cn.com/problems/detect-capital/
+pub fn detect_capital_use(word: String) -> bool {
+    let mut word = word.chars();
+    let first = word.next();
+    if first.is_none() {
+        return true;
+    }
+    let first = first.unwrap();
+
+    if let Some(second) = word.next() {
+        let res = word.try_fold(second, move |sd, x| {
+            if sd.is_lowercase() && x.is_lowercase() {
+                return Ok(sd);
+            }
+
+            if sd.is_uppercase() && x.is_uppercase() {
+                return Ok(sd);
+            }
+
+            Err(())
+        });
+
+        if res.is_err() {
+            return false;
+        }
+        if first.is_uppercase() {
+            return true;
+        }
+
+        if first.is_lowercase() && second.is_lowercase() {
+            return true;
+        }
+
+        false
+    } else {
+        true
+    }
+}
+
 /// 力扣（561. 数组拆分 I） https://leetcode-cn.com/problems/array-partition-i/
 pub fn array_pair_sum(nums: Vec<i32>) -> i32 {
     let len = nums.len();
