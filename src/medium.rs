@@ -10,6 +10,7 @@ pub fn add_two_numbers(
     let mut l2 = l2;
     let mut head = None;
 
+    // 进位
     let mut left = 0;
 
     loop {
@@ -34,6 +35,7 @@ pub fn add_two_numbers(
     }
 
     // reverse the list
+    // 8->0->7 => 7->0->8
     let mut tail = None;
     while let Some(mut n) = head.take() {
         head = n.next;
@@ -1189,7 +1191,22 @@ pub fn rotate(nums: &mut Vec<i32>, k: i32) {
 }
 
 /// 力扣（201. 数字范围按位与） https://leetcode-cn.com/problems/bitwise-and-of-numbers-range/
+/// 我们可以将问题重新表述为：给定两个整数，我们要找到它们对应的二进制字符串的公共前缀。
+/// 方法1：位移
 pub fn range_bitwise_and(left: i32, right: i32) -> i32 {
+    let mut left = left;
+    let mut right = right;
+    let mut shift = 0;
+    while left < right {
+        left >>= 1;
+        right >>= 1;
+        shift += 1;
+    }
+    left << shift
+}
+
+/// 方法2：Brian Kernighan 算法
+pub fn range_bitwise_and_v2(left: i32, right: i32) -> i32 {
     let mut right = right;
     while left < right {
         right &= (right - 1);
@@ -1841,25 +1858,6 @@ mod tests {
         let result = find_order(2, vec![]);
         dbg!("{:?}", result);
 
-        let l1 = ListNode {
-            val: 2,
-            next: Some(Box::new(ListNode {
-                val: 4,
-                next: Some(Box::new(ListNode::new(3))),
-            })),
-        };
-
-        let l2 = ListNode {
-            val: 5,
-            next: Some(Box::new(ListNode {
-                val: 6,
-                next: Some(Box::new(ListNode::new(4))),
-            })),
-        };
-
-        let result = add_two_numbers(Some(Box::new(l1)), Some(Box::new(l2)));
-        dbg!("{:?}", result);
-
         dbg!(my_atoi(" -423456".to_string()));
         dbg!(my_atoi("4193 with words".to_string()));
         dbg!(my_atoi("words and 987".to_string()));
@@ -1984,6 +1982,28 @@ mod tests {
         dbg!(single_number_260_result);
 
         dbg!(permute(vec![1, 2, 3]));
+    }
+
+    #[test]
+    fn test_add_linked_list() {
+        let l1 = ListNode {
+            val: 2,
+            next: Some(Box::new(ListNode {
+                val: 4,
+                next: Some(Box::new(ListNode::new(3))),
+            })),
+        };
+
+        let l2 = ListNode {
+            val: 5,
+            next: Some(Box::new(ListNode {
+                val: 6,
+                next: Some(Box::new(ListNode::new(4))),
+            })),
+        };
+
+        let result = add_two_numbers(Some(Box::new(l1)), Some(Box::new(l2)));
+        dbg!("{:?}", result);
     }
 
     #[test]

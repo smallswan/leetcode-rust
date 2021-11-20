@@ -41,6 +41,7 @@ pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
 }
 
 /// 力扣（3. 无重复的字符串的最长子串）https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/submissions/
+/// 方法一：滑动窗口
 pub fn length_of_longest_substring(s: String) -> i32 {
     if s.is_empty() {
         return 0;
@@ -70,8 +71,8 @@ pub fn length_of_longest_substring(s: String) -> i32 {
 
     let mut ret = 1;
     let mut i = 0;
-    while i < s.len() - 1 {
-        //println!("i={}", i);
+    let len = s.len(); 
+    while i < len - 1 {
         let (len, next) = get_len(i, &s);
         if len > ret {
             ret = len;
