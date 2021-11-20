@@ -71,7 +71,7 @@ pub fn length_of_longest_substring(s: String) -> i32 {
 
     let mut ret = 1;
     let mut i = 0;
-    let len = s.len(); 
+    let len = s.len();
     while i < len - 1 {
         let (len, next) = get_len(i, &s);
         if len > ret {
