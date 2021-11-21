@@ -1801,6 +1801,48 @@ impl MyLinkedList {
         }
     }
 }
+/// 1208. 尽可能使字符串相等 https://leetcode-cn.com/problems/get-equal-substrings-within-budget/
+pub fn equal_substring(s: String, t: String, max_cost: i32) -> i32 {
+    use std::cmp::max;
+    let (mut left, mut right, mut cost, mut result) = (0, 0, 0, 0);
+    let len = s.len();
+    let s_bytes = s.as_bytes();
+    let t_bytes = t.as_bytes();
+    while right < len {
+        cost += (s_bytes[right] as i32 - t_bytes[right] as i32).abs();
+        right += 1;
+        while cost > max_cost {
+            cost -= (s_bytes[left] as i32 - t_bytes[left] as i32).abs();
+            left += 1;
+        }
+        result = max(result, right - left);
+    }
+    result as i32
+}
+
+/// 1208. 尽可能使字符串相等
+pub fn equal_substring_v2(s: String, t: String, max_cost: i32) -> i32 {
+    use std::cmp::max;
+    let (mut left, mut right, mut cost, mut result) = (0, 0, 0, 0);
+    let len = s.len();
+
+    let s_bytes = s.as_bytes();
+    let t_bytes = t.as_bytes();
+    let mut diff: Vec<i32> = vec![0; len];
+    for idx in 0..len {
+        diff[idx] = (s_bytes[idx] as i32 - t_bytes[idx] as i32).abs();
+    }
+    while right < len {
+        cost += diff[right];
+        right += 1;
+        while cost > max_cost {
+            cost -= diff[left];
+            left += 1;
+        }
+        result = max(result, right - left);
+    }
+    result as i32
+}
 
 #[cfg(test)]
 mod tests {
@@ -2076,5 +2118,10 @@ mod tests {
 
         linked_list.delete_at_index(3);
         dbg!(linked_list.get(3));
+    }
+
+    #[test]
+    fn test_equal_substring() {
+        dbg!(equal_substring("abcd".to_string(), "bcdf".to_string(), 3));
     }
 }
