@@ -3116,8 +3116,27 @@ pub fn height_checker(heights: Vec<i32>) -> i32 {
 }
 
 /// 力扣（1486. 数组异或操作） https://leetcode-cn.com/problems/xor-operation-in-an-array/
+/// 方法一：模拟
 pub fn xor_operation(n: i32, start: i32) -> i32 {
     (1..n).fold(start, |acc, i| acc ^ (start + 2 * i))
+}
+
+/// 力扣（1486. 数组异或操作）
+/// 方法二：数学
+pub fn xor_operation_v2(n: i32, start: i32) -> i32 {
+    let (s, e) = (start >> 1, n & start & 1);
+    let result = sum_xor(s - 1) ^ sum_xor(s + n - 1);
+
+    result << 1 | e
+}
+
+fn sum_xor(x: i32) -> i32 {
+    match x % 4 {
+        0 => x,
+        1 => 1,
+        2 => x + 1,
+        _ => 0,
+    }
 }
 
 /// 力扣（1863. 找出所有子集的异或总和再求和）https://leetcode-cn.com/problems/sum-of-all-subset-xor-totals/
