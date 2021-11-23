@@ -3090,6 +3090,26 @@ pub fn sorted_squares_v3(nums: Vec<i32>) -> Vec<i32> {
 
 /// TODO 1000
 
+/// 1009. 十进制整数的反码 https://leetcode-cn.com/problems/complement-of-base-10-integer/
+pub fn bitwise_complement(n: i32) -> i32 {
+    let mut num = n;
+    let mut high_bit = 0;
+    for i in 1..=30 {
+        if num >= (1 << i) {
+            high_bit = i;
+        } else {
+            break;
+        }
+    }
+
+    let mark = match (high_bit == 30) {
+        true => 0x7fffffff,
+        false => (1 << (high_bit + 1)) - 1,
+    };
+
+    num ^ mark
+}
+
 /// 力扣（1051. 高度检查器），https://leetcode-cn.com/problems/height-checker/
 pub fn height_checker(heights: Vec<i32>) -> i32 {
     let len = heights.len();
