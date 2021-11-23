@@ -3110,6 +3110,28 @@ pub fn bitwise_complement(n: i32) -> i32 {
     num ^ mark
 }
 
+/// 1009. 十进制整数的反码
+pub fn bitwise_complement_v2(n: i32) -> i32 {
+    if n == 0 {
+        return 1;
+    }
+    let mut num = n;
+    let mut mark = 1;
+    let mut high_bit = 0;
+    while num > 0 {
+        num >>= 1;
+        high_bit += 1;
+    }
+
+    //dbg!(high_bit);
+    let mark = match (high_bit == 31) {
+        true => i32::MAX - 1,
+        false => (1 << high_bit) - 1,
+    };
+
+    n ^ mark
+}
+
 /// 力扣（1051. 高度检查器），https://leetcode-cn.com/problems/height-checker/
 pub fn height_checker(heights: Vec<i32>) -> i32 {
     let len = heights.len();
@@ -3532,5 +3554,18 @@ mod tests {
 
         let rev_x: String = format!("{:032b}", x).chars().rev().collect();
         dbg!(u32::from_str_radix(&rev_x, 2));
+    }
+
+    #[test]
+    fn test_bitwise_operators() {
+        dbg!(bitwise_complement_v2(0));
+        dbg!(bitwise_complement_v2(5));
+        dbg!(bitwise_complement_v2(7));
+        dbg!(bitwise_complement_v2(1022));
+        //100000000
+        //214748364
+        dbg!(bitwise_complement_v2(100000000));
+        dbg!(bitwise_complement_v2(i32::MAX));
+        dbg!(i32::MAX);
     }
 }
