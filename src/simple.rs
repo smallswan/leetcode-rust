@@ -2960,11 +2960,10 @@ pub fn backspace_compare_v2(s: String, t: String) -> bool {
 }
 
 /// 力扣（867. 转置矩阵) https://leetcode-cn.com/problems/transpose-matrix/
+/// matrixT[i][j] = matrix[j][i]
 pub fn transpose(matrix: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
-    let mut transposed = Vec::<Vec<i32>>::new();
-
-    let m = matrix.len();
-    let n = matrix[0].len();
+    let (m, n) = (matrix.len(), matrix[0].len());
+    let mut transposed = Vec::<Vec<i32>>::with_capacity(n);
     for i in 0..n {
         transposed.push(vec![0; m]);
     }
@@ -2993,6 +2992,7 @@ pub fn transpose_v2(matrix: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
 /// TODO 900
 
 /// 力扣（977. 有序数组的平方）https://leetcode-cn.com/problems/squares-of-a-sorted-array/
+/// 方法一：直接排序
 pub fn sorted_squares(nums: Vec<i32>) -> Vec<i32> {
     let mut v: Vec<i32> = nums.iter().map(|x| x * x).collect();
     if nums[0] < 0 {
@@ -3002,9 +3002,10 @@ pub fn sorted_squares(nums: Vec<i32>) -> Vec<i32> {
 }
 
 /// 归并排序解法（参考官方java版本解法，主要区别在于i下标的范围）
-/// 力扣（977. 有序数组的平方）https://leetcode-cn.com/problems/squares-of-a-sorted-array/
+/// 力扣（977. 有序数组的平方）
 pub fn sorted_squares_v2(nums: Vec<i32>) -> Vec<i32> {
     let len = nums.len();
+    // 非负数数组
     if nums[0] >= 0 {
         let mut v = Vec::<i32>::with_capacity(len);
         for &num in nums.iter().take(len) {
@@ -3013,6 +3014,7 @@ pub fn sorted_squares_v2(nums: Vec<i32>) -> Vec<i32> {
         return v;
     }
 
+    // 非正数数组
     if nums[len - 1] <= 0 {
         let mut v = Vec::<i32>::with_capacity(len);
         for &num in nums.iter().take(len) {
@@ -3062,6 +3064,8 @@ pub fn sorted_squares_v2(nums: Vec<i32>) -> Vec<i32> {
 
 /// 力扣（977. 有序数组的平方）
 /// 方法三：双指针
+/// 同样地，我们可以使用两个指针分别指向位置 0 和 n−1，每次比较两个指针对应的数，选择较大的那个逆序放入答案并移动指针。
+/// 这种方法无需处理某一指针移动至边界的情况，读者可以仔细思考其精髓所在。
 pub fn sorted_squares_v3(nums: Vec<i32>) -> Vec<i32> {
     let len = nums.len();
     if len == 1 {
@@ -3125,7 +3129,7 @@ pub fn bitwise_complement_v2(n: i32) -> i32 {
 
     //dbg!(high_bit);
     let mark = match (high_bit == 31) {
-        true => i32::MAX - 1,
+        true => i32::MAX,
         false => (1 << high_bit) - 1,
     };
 
@@ -3567,5 +3571,6 @@ mod tests {
         dbg!(bitwise_complement_v2(100000000));
         dbg!(bitwise_complement_v2(i32::MAX));
         dbg!(i32::MAX);
+        println!("{:b}", i32::MAX);
     }
 }
