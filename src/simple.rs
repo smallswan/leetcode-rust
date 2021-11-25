@@ -2588,6 +2588,23 @@ pub fn find_disappeared_numbers(nums: Vec<i32>) -> Vec<i32> {
     result
 }
 
+/// 力扣（448. 找到所有数组中消失的数字）
+pub fn find_disappeared_numbers_v2(nums: Vec<i32>) -> Vec<i32> {
+    let mut nums = nums;
+    let mut result = vec![];
+    let len = nums.len();
+    for i in 0..len {
+        let x = ((nums[i] - 1) as usize) % len;
+        nums[x] += (len as i32);
+    }
+    for i in 0..len {
+        if nums[i] <= (len as i32) {
+            result.push(i as i32 + 1);
+        }
+    }
+    result
+}
+
 /// 力扣（461. 汉明距离） https://leetcode-cn.com/problems/hamming-distance/
 pub fn hamming_distance(x: i32, y: i32) -> i32 {
     let z = x ^ y;
@@ -2658,23 +2675,22 @@ pub fn find_complement_v2(num: i32) -> i32 {
 ///力扣（485. 最大连续1的个数）https://leetcode-cn.com/problems/max-consecutive-ones/
 pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
     let mut max = 0;
-    let mut max_temp = 0;
+    let mut len = 0;
     for num in nums {
-        if num == 0 {
-            if max_temp > max {
-                max = max_temp;
-            }
-            max_temp = 0;
+        if num == 1 {
+            len += 1;
+            max = len.max(max);
         } else {
-            max_temp += 1;
+            len = 0;
         }
     }
+    max
+}
 
-    if max_temp > max {
-        max_temp
-    } else {
-        max
-    }
+///力扣（485. 最大连续1的个数）
+pub fn find_max_consecutive_ones_v2(nums: Vec<i32>) -> i32 {
+    let ones_group = nums.as_slice().split(|&num| num == 0);
+    ones_group.map(|ones| ones.len()).max().unwrap_or(0) as i32
 }
 
 /// 力扣（496. 下一个更大元素 I） https://leetcode-cn.com/problems/next-greater-element-i/
