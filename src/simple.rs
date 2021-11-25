@@ -2713,6 +2713,41 @@ pub fn next_greater_element(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
     res
 }
 
+/// 力扣（496. 下一个更大元素 I）
+pub fn next_greater_element_v2(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
+    use std::collections::HashMap;
+    let mut map = HashMap::new();
+    // Vec模拟单调栈（栈底最大，栈顶最小），first 栈底，last 栈顶
+    let mut stack = Vec::new();
+    for num in nums2.iter().rev() {
+        while let Some(top) = stack.last() {
+            if num > top {
+                stack.pop();
+            } else {
+                break;
+            }
+        }
+
+        let next_element = if stack.is_empty() {
+            -1
+        } else {
+            *stack.last().unwrap()
+        };
+
+        map.insert(num, next_element);
+        stack.push(*num);
+    }
+
+    let mut res = Vec::with_capacity(nums1.len());
+    for num in nums1 {
+        if let Some(&next_element) = map.get(&num) {
+            res.push(next_element);
+        }
+    }
+
+    res
+}
+
 /// TODO: 500
 
 /// 520. 检测大写字母 https://leetcode-cn.com/problems/detect-capital/
@@ -2865,14 +2900,13 @@ pub fn pivot_index(nums: Vec<i32>) -> i32 {
 pub fn dominant_index(nums: Vec<i32>) -> i32 {
     let mut idx = 0;
     let mut max = nums[idx];
-    // 找出最大值及其下表
+    // 找出最大值及其下标
     for (i, num) in nums.iter().enumerate() {
         if *num > max {
             max = *num;
             idx = i;
         }
     }
-    //println!("max:{},idx:{}",max,idx);
     // 找出第二大的数,最小的值为0
     let mut second_biggest = 0;
     for (i, num) in nums.iter().enumerate() {
@@ -2890,6 +2924,7 @@ pub fn dominant_index(nums: Vec<i32>) -> i32 {
     -1
 }
 
+/// 重构字符串
 fn build(s: String) -> String {
     let mut chars_vec = Vec::new();
     for ch in s.chars() {

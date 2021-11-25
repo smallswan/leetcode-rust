@@ -737,6 +737,7 @@ pub fn next_permutation(nums: &mut Vec<i32>) {
 }
 
 /// 33. 搜索旋转排序数组 https://leetcode-cn.com/problems/search-in-rotated-sorted-array/
+/// 方法一：二分查找
 pub fn search(nums: Vec<i32>, target: i32) -> i32 {
     let len = nums.len();
     if len == 0 {
@@ -1646,6 +1647,48 @@ fn valid_ipv6_address_v2(ip: String) -> String {
     }
     String::from("IPv6")
 }
+
+/// 498. 对角线遍历  https://leetcode-cn.com/problems/diagonal-traverse/
+pub fn find_diagonal_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
+    let m = matrix.len();
+    if m == 0 {
+        return vec![];
+    }
+    let n = matrix[0].len();
+
+    let mut result = Vec::<i32>::with_capacity(m * n);
+
+    let mut i = 0;
+    let mut j = 0;
+    for _ in 0..m * n {
+        result.push(matrix[i][j]);
+        if (i + j) % 2 == 0 {
+            //往右上角移动，即i-,j+
+            if j == n - 1 {
+                i += 1;
+            } else if i == 0 {
+                j += 1;
+            } else {
+                i -= 1;
+                j += 1;
+            }
+        } else {
+            //往左下角移动，即i+,j-
+            if i == m - 1 {
+                j += 1;
+            } else if j == 0 {
+                i += 1;
+            } else {
+                i += 1;
+                j -= 1;
+            }
+        }
+    }
+
+    result
+}
+
+// TODO 500
 
 /// 力扣（707. 设计链表) https://leetcode-cn.com/problems/design-linked-list/
 /**
