@@ -823,6 +823,54 @@ pub fn search_range(nums: Vec<i32>, target: i32) -> Vec<i32> {
     range
 }
 
+/// 36. 有效的数独 https://leetcode-cn.com/problems/valid-sudoku/
+pub fn is_valid_sudoku(board: Vec<Vec<char>>) -> bool {
+    let mut rows = vec![vec![0; 9]; 9];
+    let mut columns = vec![vec![0; 9]; 9];
+    let mut sub_boxes = vec![vec![vec![0; 9]; 3]; 3];
+    for i in 0..9 {
+        for j in 0..9 {
+            let c = board[i][j];
+            if c != '.' {
+                let index = (c as u8 - b'0' - 1) as usize;
+                rows[i][index] += 1;
+                columns[j][index] += 1;
+                sub_boxes[i / 3][j / 3][index] += 1;
+                if rows[i][index] > 1 || columns[j][index] > 1 || sub_boxes[i / 3][j / 3][index] > 1
+                {
+                    return false;
+                }
+            }
+        }
+    }
+    true
+}
+
+/// 36. 有效的数独
+pub fn is_valid_sudoku_v2(board: Vec<Vec<char>>) -> bool {
+    // row: 第一层代表第 1-9 数字，第二层代表第 1-9 行；col、 block 类似
+    let [mut row, mut col, mut block] = [[[0u8; 9]; 9]; 3];
+    let exists = |arr: &mut [[u8; 9]; 9], number: usize, idx: usize| -> bool {
+        arr[number][idx] += 1;
+        return if arr[number][idx] > 1 { true } else { false };
+    };
+    for i in 0..9 {
+        for j in 0..9 {
+            let ch = board[i][j];
+            if ch != '.' {
+                let number = ch as usize - 49; // '1' 转换 u8 为 49
+                if exists(&mut row, number, i)
+                    || exists(&mut col, number, j)
+                    || exists(&mut block, number, i / 3 * 3 + j / 3)
+                {
+                    return false;
+                }
+            }
+        }
+    }
+    true
+}
+
 /// 力扣（38. 外观数列） https://leetcode-cn.com/problems/count-and-say/
 pub fn count_and_say(n: i32) -> String {
     let mut s = "1".to_string();
