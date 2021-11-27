@@ -894,6 +894,39 @@ pub fn count_and_say(n: i32) -> String {
     s
 }
 
+/// 39. 组合总和  https://leetcode-cn.com/problems/combination-sum/
+pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
+    let mut res: Vec<Vec<i32>> = Vec::with_capacity(150);
+    let mut v: Vec<i32> = Vec::with_capacity(150);
+    // println!("\ncandidates: {:?} target: {}", candidates, target);
+    combination_sum_backtrace(&candidates, 0, target, &mut res, &mut v);
+    res
+}
+
+fn combination_sum_backtrace(
+    candidates: &[i32],
+    i: usize,
+    target: i32,
+    res: &mut Vec<Vec<i32>>,
+    v: &mut Vec<i32>,
+) {
+    if i == candidates.len() {
+        return;
+    }
+    if target == 0 {
+        res.push(v.clone());
+        return;
+    }
+    combination_sum_backtrace(candidates, i + 1, target, res, v);
+    let d = candidates[i];
+    if target >= d {
+        v.push(d);
+
+        combination_sum_backtrace(candidates, i, target - d, res, v);
+        v.pop();
+    }
+}
+
 /// 力扣（49. 字母异位词分组） https://leetcode-cn.com/problems/group-anagrams/
 pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
     let mut result: Vec<Vec<String>> = vec![];
