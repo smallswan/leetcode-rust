@@ -837,10 +837,31 @@ pub fn max_sub_array(nums: Vec<i32>) -> i32 {
 }
 
 /// 力扣（58. 最后一个单词的长度） https://leetcode-cn.com/problems/length-of-last-word/submissions/
+/// 方法1：rsplitn()
 pub fn length_of_last_word(s: String) -> i32 {
     let s_trim = s.trim_end();
     let words: Vec<&str> = s_trim.rsplitn(2, ' ').collect();
     words[0].len() as i32
+}
+
+/// 力扣（58. 最后一个单词的长度）
+/// 方法2：双指针
+pub fn length_of_last_word_v2(s: String) -> i32 {
+    let chars: Vec<char> = s.chars().collect();
+    let mut end = (chars.len() - 1) as i32;
+    while end >= 0 && chars[end as usize] == ' ' {
+        end -= 1;
+    }
+    if end < 0 {
+        return 0;
+    }
+
+    let mut start = end;
+    while start >= 0 && chars[start as usize] != ' ' {
+        start -= 1;
+    }
+
+    end - start
 }
 
 /// 力扣（66. 加一） https://leetcode-cn.com/problems/plus-one/
@@ -863,6 +884,7 @@ pub fn plus_one(digits: Vec<i32>) -> Vec<i32> {
         }
     }
 
+    // digits为全部是9的情况
     let mut new_digits = vec![0; len + 1];
     new_digits[0] = 1;
     new_digits
@@ -915,7 +937,7 @@ pub fn add_binary(a: String, b: String) -> String {
 }
 
 /// 力扣（69. x 的平方根） https://leetcode-cn.com/problems/sqrtx/
-/// 二分查找，注意相乘溢出
+/// 方法1：二分查找，注意相乘溢出
 pub fn my_sqrt(x: i32) -> i32 {
     let mut left = 0;
     let mut right = x;
@@ -933,7 +955,7 @@ pub fn my_sqrt(x: i32) -> i32 {
 }
 
 /// 力扣（69. x 的平方根）
-/// 换底公式（自然数e为底）
+/// 方法2：换底公式（自然数e为底）
 pub fn my_sqrt_v2(x: i32) -> i32 {
     if x == 0 {
         return 0;
@@ -956,7 +978,7 @@ pub fn my_sqrt_v2(x: i32) -> i32 {
 }
 
 /// 力扣（69. x 的平方根）
-///
+/// 方法3：系统内置方法
 pub fn my_sqrt_v3(x: i32) -> i32 {
     let y = x as f64;
     y.sqrt().floor() as i32
@@ -988,6 +1010,7 @@ pub fn my_sqrt_v4(x: i32) -> i32 {
 use std::cell::RefCell;
 use std::rc::Rc;
 /// 力扣（70. 爬楼梯） https://leetcode-cn.com/problems/climbing-stairs/
+/// 方法1：动态规划
 pub fn climb_stairs(n: i32) -> i32 {
     if n == 1 {
         return 1;
@@ -1003,6 +1026,15 @@ pub fn climb_stairs(n: i32) -> i32 {
     }
 
     dp[n as usize]
+}
+
+/// 力扣（70. 爬楼梯）
+/// 方法2：通用公式
+pub fn climb_stairs_v2(n: i32) -> i32 {
+    let sqrt5 = 5.0_f64.sqrt();
+    let fibn = ((1.0 + sqrt5) / 2.0).powi(n as i32 + 1) + ((1.0 - sqrt5) / 2.0).powi(n as i32 + 1);
+
+    (fibn / sqrt5).round() as i32
 }
 
 pub fn climb_stairs_memo(n: i32, memo: Rc<RefCell<Vec<i32>>>) -> i32 {

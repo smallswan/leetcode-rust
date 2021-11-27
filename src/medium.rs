@@ -985,6 +985,7 @@ pub fn my_pow_v2(x: f64, n: i32) -> f64 {
     }
 }
 
+/// 快速幂
 fn quick_mul(x: f64, n: i32) -> f64 {
     if n == 0 {
         return 1.0;
@@ -1109,7 +1110,7 @@ pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
                 }
             }
             _ => {
-                println!("不可能发生这种情况");
+                unreachable!();
             }
         }
     }
@@ -1183,6 +1184,7 @@ pub fn single_number_v2(nums: Vec<i32>) -> i32 {
 }
 
 /// 力扣（150. 逆波兰表达式求值） https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/
+/// 方法二：数组模拟栈
 pub fn eval_rpn(tokens: Vec<String>) -> i32 {
     let len = (tokens.len() + 1) / 2;
     let mut stack = vec![0; len];
