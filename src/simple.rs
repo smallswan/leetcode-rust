@@ -2216,7 +2216,7 @@ pub fn intersection(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
     nums1_set.intersection(&nums2_set).copied().collect()
 }
 
-/// 力扣（350. 两个数组的交集 II）
+/// 力扣（350. 两个数组的交集 II） https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/
 /// 方法2：哈希表
 pub fn intersect_v2(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
     if nums1.len() > nums2.len() {
@@ -2273,6 +2273,7 @@ pub fn reverse_string(s: &mut Vec<char>) {
 }
 
 /// 力扣（367. 有效的完全平方数) https://leetcode-cn.com/problems/valid-perfect-square/
+/// 方法1： 二分查找
 pub fn is_perfect_square(num: i32) -> bool {
     if num == 1 {
         return true;
@@ -2297,6 +2298,22 @@ pub fn is_perfect_square(num: i32) -> bool {
         }
     }
     false
+}
+
+/// 力扣（367. 有效的完全平方数)
+/// 方法2：牛顿迭代法
+pub fn is_perfect_square_v2(num: i32) -> bool {
+    let mut x0 = num as f64;
+    loop {
+        let x1 = (x0 + (num as f64) / x0) / 2.0;
+        if x0 - x1 < 1e-6 {
+            break;
+        }
+        x0 = x1;
+    }
+
+    let x = x0 as i32;
+    x * x == num
 }
 
 /// 力扣（383. 赎金信） https://leetcode-cn.com/problems/ransom-note/
@@ -3623,5 +3640,11 @@ mod tests {
         dbg!(bitwise_complement_v2(i32::MAX));
         dbg!(i32::MAX);
         println!("{:b}", i32::MAX);
+    }
+
+    #[test]
+    fn math() {
+        dbg!(is_perfect_square_v2(256));
+        dbg!(is_perfect_square_v2(i32::MAX));
     }
 }
