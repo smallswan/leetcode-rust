@@ -3678,6 +3678,7 @@ mod tests {
     #[test]
     fn math() {
         dbg!(is_perfect_square_v2(256));
+        dbg!(is_perfect_square_v2(142857));
         dbg!(is_perfect_square_v2(i32::MAX));
     }
 }
