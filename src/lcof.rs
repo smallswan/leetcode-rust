@@ -30,6 +30,16 @@ mod tests {
         let find_repeat_number_v3_result = find_repeat_number_v3(nums);
         dbg!(find_repeat_number_v3_result);
     }
+
+    #[test]
+    fn strings() {
+        let s = String::from("We are happy.");
+        dbg!(replace_space(s));
+
+        let mut s_url_encode = String::from(" are you ok?");
+
+        dbg!(s_url_encode.replace(" ", "%20"));
+    }
 }
 
 /// 剑指 Offer 03. 数组中重复的数字 https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/
@@ -118,6 +128,45 @@ pub fn fib(n: i32) -> i32 {
     }
 
     current as i32
+}
+
+/// 剑指 Offer 05. 替换空格 https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/
+pub fn replace_space(s: String) -> String {
+    let original_len = s.len();
+    if original_len == 0 {
+        return "".into();
+    }
+    let num_of_blank = s.as_bytes().iter().filter(|&x| *x == b' ').count();
+    if num_of_blank == 0 {
+        return s;
+    }
+    let bytes = s.as_bytes();
+    let new_len = original_len + num_of_blank * 2;
+    let mut new_bytes: Vec<u8> = vec![0; new_len];
+    let mut index_of_original = original_len - 1;
+    let mut index_of_new = new_len - 1;
+    while index_of_new >= index_of_original {
+        if bytes[index_of_original] == b' ' {
+            new_bytes[index_of_new] = b'0';
+            new_bytes[index_of_new - 1] = b'2';
+            new_bytes[index_of_new - 2] = b'%';
+            index_of_new -= 3;
+        } else {
+            new_bytes[index_of_new] = bytes[index_of_original];
+            if index_of_new == 0 {
+                break;
+            }
+            index_of_new -= 1;
+        }
+        if index_of_original == 0 {
+            break;
+        }
+        index_of_original -= 1;
+    }
+    //dbg!(index_of_new);
+    //dbg!(index_of_original);
+
+    String::from_utf8(new_bytes).unwrap()
 }
 
 /// 剑指 Offer 10- I. 斐波那契数列
