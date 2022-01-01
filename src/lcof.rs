@@ -40,6 +40,13 @@ mod tests {
 
         dbg!(s_url_encode.replace(" ", "%20"));
     }
+
+    #[test]
+    fn linked_list() {
+        let linked_list = crate::simple::vec_to_list_v2(&vec![1, 2, 3, 4, 5]);
+        let result = reverse_between(linked_list, 2, 4);
+        crate::simple::display(result);
+    }
 }
 
 /// 剑指 Offer 03. 数组中重复的数字 https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/
@@ -379,4 +386,55 @@ pub fn sum_nums_v2(n: i32) -> i32 {
     b >>= 1;
 
     sum >> 1
+}
+
+/// 92. 反转链表 II  https://leetcode-cn.com/problems/reverse-linked-list-ii/
+pub fn reverse_between(
+    head: Option<Box<ListNode>>,
+    left: i32,
+    right: i32,
+) -> Option<Box<ListNode>> {
+    let mut dummy_tail = Box::new(ListNode::new(0));
+    let mut tail = &mut dummy_tail;
+    let mut fast = &head;
+    let mut slow = &head;
+    let mut prev = 0;
+    while fast.is_some() {
+        prev += 1;
+        if prev >= left && prev <= right {
+            let val = fast.as_ref().unwrap().val;
+            tail.next = Some(Box::new(ListNode::new(val)));
+            tail = tail.next.as_mut().unwrap();
+        }
+        fast = &(fast.as_ref().unwrap().next);
+    }
+
+    let mut dummy_head = Box::new(ListNode::new(0));
+    let mut new_head = &mut dummy_head;
+    let mut reverse_list = crate::simple::reverse_list(dummy_tail.next);
+    prev = 0;
+    while slow.is_some() {
+        prev += 1;
+
+        if prev < left || prev > right {
+            let val = slow.as_ref().unwrap().val;
+            new_head.next = Some(Box::new(ListNode::new(val)));
+            new_head = new_head.next.as_mut().unwrap();
+            slow = &(slow.as_ref().unwrap().next);
+        }
+
+        if prev == left {
+            while let Some(mut node) = reverse_list.take() {
+                new_head.next = Some(Box::new(ListNode::new(node.val)));
+
+                new_head = new_head.next.as_mut().unwrap();
+
+                prev += 1;
+                slow = &(slow.as_ref().unwrap().next);
+                reverse_list = node.next.take();
+            }
+        }
+    }
+
+    dummy_head.next
 }
