@@ -1123,6 +1123,19 @@ impl TreeNode {
             right: None,
         }
     }
+
+    pub fn get_height(root: &Option<Rc<RefCell<TreeNode>>>) -> i32 {
+        fn dfs(root: &Option<Rc<RefCell<TreeNode>>>) -> i32 {
+            match root {
+                None => 0,
+                Some(node) => {
+                    let node = node.borrow_mut();
+                    1 + max(dfs(&node.left), dfs(&node.right))
+                }
+            }
+        }
+        dfs(&root)
+    }
 }
 
 /// 94. 二叉树的中序遍历  https://leetcode-cn.com/problems/binary-tree-inorder-traversal/

@@ -1833,6 +1833,39 @@ pub fn find_diagonal_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
 
 // TODO 500
 
+// TODO 600
+
+/// 655. 输出二叉树 https://leetcode-cn.com/problems/print-binary-tree/
+use std::cmp::max;
+pub fn print_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<String>> {
+    // 二叉树高度
+    let height = TreeNode::get_height(&root);
+    // 满二叉树的宽度
+    let width = (1 << height) - 1;
+    let mut ans = vec![vec!["".to_string(); width as usize]; height as usize];
+
+    // dfs 搜索
+    fn dfs(
+        ans: &mut Vec<Vec<String>>,
+        node: &Option<Rc<RefCell<TreeNode>>>,
+        deep: usize,
+        lo: usize,
+        hi: usize,
+    ) {
+        if let Some(x) = node {
+            let node = x.borrow();
+            let mid = lo + (hi - lo) / 2;
+            ans[deep][mid] = x.borrow().val.to_string();
+            dfs(ans, &node.left, deep + 1, lo, mid);
+            dfs(ans, &node.right, deep + 1, mid + 1, hi);
+        }
+    }
+
+    dfs(&mut ans, &root, 0usize, 0usize, width as usize);
+    // 将所有字符连起来
+    ans
+}
+
 /// 力扣（707. 设计链表) https://leetcode-cn.com/problems/design-linked-list/
 /**
  * Your MyLinkedList object will be instantiated and called as such:
