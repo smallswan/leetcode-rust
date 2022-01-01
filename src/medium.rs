@@ -718,6 +718,37 @@ pub fn remove_nth_from_end(head: Option<Box<ListNode>>, n: i32) -> Option<Box<Li
     dummy_head.unwrap().next
 }
 
+/// 24. 两两交换链表中的节点 https://leetcode-cn.com/problems/swap-nodes-in-pairs/
+pub fn swap_pairs(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+    if head.is_none() {
+        return None;
+    }
+
+    let mut dummy_head = Box::new(ListNode::new(0));
+    let mut new_head = &mut dummy_head;
+
+    let (mut left, mut right) = (&head, &(head.as_ref().unwrap().next));
+    while left.is_some() && right.is_some() {
+        new_head.next = Some(Box::new(ListNode::new(right.as_ref().unwrap().val)));
+        new_head = new_head.next.as_mut().unwrap();
+
+        new_head.next = Some(Box::new(ListNode::new(left.as_ref().unwrap().val)));
+        new_head = new_head.next.as_mut().unwrap();
+
+        left = &(right.as_ref().unwrap().next);
+        if left.is_none() {
+            break;
+        }
+        right = &(left.as_ref().unwrap().next);
+    }
+    if let Some(next) = left.as_ref().take() {
+        new_head.next = Some(Box::new(ListNode::new(left.as_ref().unwrap().val)));
+        new_head = new_head.next.as_mut().unwrap();
+    }
+
+    dummy_head.next
+}
+
 /// 31. 下一个排列 https://leetcode-cn.com/problems/next-permutation/
 pub fn next_permutation(nums: &mut Vec<i32>) {
     let n = nums.len();
@@ -2249,5 +2280,13 @@ mod tests {
     #[test]
     fn test_equal_substring() {
         dbg!(equal_substring("abcd".to_string(), "bcdf".to_string(), 3));
+    }
+
+    #[test]
+    fn linked_list() {
+        let linked_list = crate::simple::vec_to_list_v2(&vec![3, 2, 4]);
+
+        let swap_linked_list = swap_pairs(linked_list);
+        crate::simple::display(swap_linked_list);
     }
 }
