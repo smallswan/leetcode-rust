@@ -1125,6 +1125,21 @@ impl TreeNode {
     }
 }
 
+/// 94. 二叉树的中序遍历  https://leetcode-cn.com/problems/binary-tree-inorder-traversal/
+pub fn inorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+    fn traverse(root: Option<Rc<RefCell<TreeNode>>>, counter: &mut Vec<i32>) {
+        if let Some(node) = root {
+            traverse(node.borrow_mut().left.take(), counter);
+            counter.push(node.borrow_mut().val);
+            traverse(node.borrow_mut().right.take(), counter);
+        }
+    }
+
+    let mut counter = vec![];
+    traverse(root, &mut counter);
+    counter
+}
+
 /// 力扣（101. 对称二叉树)  https://leetcode-cn.com/problems/symmetric-tree/
 pub fn is_symmetric(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
     false
@@ -1271,6 +1286,36 @@ pub fn single_number(nums: Vec<i32>) -> i32 {
 
     single_number
 }
+
+// fn preorder_dfs(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+//     let mut ans = vec![];
+
+//     if root.is_none() {
+//         return ans;
+//     }
+//     // root 节点不是 None， unwrap 安全
+//     let mut stack = vec![root.unwrap()];
+//     while !stack.is_empty() {
+//         if let Some(node) = stack.pop() {
+//             ans.push(node.borrow().unwrap().val);
+
+//             if let Some(ref right) = node.borrow().unwrap().right {
+//                 // 右子树 Rc 结构进栈，不需要包装一层 option
+//                 stack.push(right.clone());
+//             }
+//             if let Some(ref left) = node.borrow().unwrap().left {
+//                  // 左子树 Rc 结构进栈
+//                 stack.push(left.clone());
+//             }
+//         }
+//     }
+//     ans
+// }
+
+// /// 144. 二叉树的前序遍历 https://leetcode-cn.com/problems/binary-tree-preorder-traversal/
+// pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+//     preorder_dfs(root)
+// }
 
 /// 力扣（167. 两数之和 II - 输入有序数组）https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
 pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
@@ -3752,5 +3797,18 @@ mod tests {
         stack.pop();
         dbg!(stack.get_min());
         dbg!(stack.top());
+    }
+
+    #[test]
+    fn trees() {
+        let node = TreeNode {
+            val: 119,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(110)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(120)))),
+        };
+        let root = Rc::new(RefCell::new(node));
+
+        let vec = inorder_traversal(Some(root));
+        println!("{:?}", vec);
     }
 }
