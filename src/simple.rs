@@ -1287,35 +1287,48 @@ pub fn single_number(nums: Vec<i32>) -> i32 {
     single_number
 }
 
-// fn preorder_dfs(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
-//     let mut ans = vec![];
+/// 144. 二叉树的前序遍历 https://leetcode-cn.com/problems/binary-tree-preorder-traversal/
+pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+    let mut ans = vec![];
 
-//     if root.is_none() {
-//         return ans;
-//     }
-//     // root 节点不是 None， unwrap 安全
-//     let mut stack = vec![root.unwrap()];
-//     while !stack.is_empty() {
-//         if let Some(node) = stack.pop() {
-//             ans.push(node.borrow().unwrap().val);
+    if root.is_none() {
+        return ans;
+    }
+    // 进栈
+    let mut stack = vec![root];
+    while !stack.is_empty() {
+        // stack pop的值会自动包装 Option，需要调用 flatten 打平
+        let node = stack.pop().flatten().unwrap();
+        // 通过 Rc 的borrow 获取 Ref<TreeNode> 节点
+        let node = node.borrow_mut();
+        // 访问节点值
+        ans.push(node.val);
+        // 右子树进栈
+        if let Some(ref right) = node.right {
+            stack.push(Some(right.clone()));
+        }
+        // 左子树进栈
+        if let Some(ref left) = node.left {
+            stack.push(Some(left.clone()));
+        }
+    }
+    ans
+}
 
-//             if let Some(ref right) = node.borrow().unwrap().right {
-//                 // 右子树 Rc 结构进栈，不需要包装一层 option
-//                 stack.push(right.clone());
-//             }
-//             if let Some(ref left) = node.borrow().unwrap().left {
-//                  // 左子树 Rc 结构进栈
-//                 stack.push(left.clone());
-//             }
-//         }
-//     }
-//     ans
-// }
+/// 145. 二叉树的后序遍历 https://leetcode-cn.com/problems/binary-tree-postorder-traversal/
+pub fn postorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+    fn postorder_dfs(node: Option<Rc<RefCell<TreeNode>>>, ans: &mut Vec<i32>) {
+        if let Some(x) = node {
+            postorder_dfs(x.borrow_mut().left.take(), ans);
+            postorder_dfs(x.borrow_mut().right.take(), ans);
+            ans.push(x.borrow_mut().val);
+        }
+    }
 
-// /// 144. 二叉树的前序遍历 https://leetcode-cn.com/problems/binary-tree-preorder-traversal/
-// pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
-//     preorder_dfs(root)
-// }
+    let mut ans = vec![];
+    postorder_dfs(root, &mut ans);
+    ans
+}
 
 /// 力扣（167. 两数之和 II - 输入有序数组）https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
 pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
@@ -3809,6 +3822,26 @@ mod tests {
         let root = Rc::new(RefCell::new(node));
 
         let vec = inorder_traversal(Some(root));
+        println!("{:?}", vec);
+
+        let node = TreeNode {
+            val: 119,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(110)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(120)))),
+        };
+        let root = Rc::new(RefCell::new(node));
+
+        let vec = preorder_traversal(Some(root));
+        println!("{:?}", vec);
+
+        let node = TreeNode {
+            val: 119,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(110)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(120)))),
+        };
+        let root = Rc::new(RefCell::new(node));
+
+        let vec = postorder_traversal(Some(root));
         println!("{:?}", vec);
     }
 }
