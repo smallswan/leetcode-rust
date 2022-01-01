@@ -1206,6 +1206,35 @@ pub fn set_zeroes(matrix: &mut Vec<Vec<i32>>) {
     }
 }
 
+use crate::simple::TreeNode;
+use std::cell::RefCell;
+use std::collections::VecDeque;
+use std::rc::Rc;
+/// 102. 二叉树的层序遍历 https://leetcode-cn.com/problems/binary-tree-level-order-traversal/
+pub fn level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+    let mut ans = vec![];
+
+    let mut queue = VecDeque::new();
+    queue.push_back(root);
+
+    while !queue.is_empty() {
+        let size = queue.len();
+        let mut level = vec![];
+        for _ in 0..size {
+            if let Some(x) = queue.pop_front().flatten() {
+                let node = x.borrow();
+                level.push(node.val);
+                queue.push_back(node.left.clone());
+                queue.push_back(node.right.clone());
+            }
+        }
+        if !level.is_empty() {
+            ans.push(level);
+        }
+    }
+    ans
+}
+
 /// 力扣（137. 只出现一次的数字 II） https://leetcode-cn.com/problems/single-number-ii/
 /// 方法1：哈希表
 pub fn single_number(nums: Vec<i32>) -> i32 {
