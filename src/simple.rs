@@ -1330,17 +1330,17 @@ pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
 
 /// 145. 二叉树的后序遍历 https://leetcode-cn.com/problems/binary-tree-postorder-traversal/
 pub fn postorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
-    fn postorder_dfs(node: Option<Rc<RefCell<TreeNode>>>, ans: &mut Vec<i32>) {
-        if let Some(x) = node {
-            postorder_dfs(x.borrow_mut().left.take(), ans);
-            postorder_dfs(x.borrow_mut().right.take(), ans);
-            ans.push(x.borrow_mut().val);
+    fn traverse(root: Option<Rc<RefCell<TreeNode>>>, counter: &mut Vec<i32>) {
+        if let Some(node) = root {
+            traverse(node.borrow_mut().left.take(), counter);
+            traverse(node.borrow_mut().right.take(), counter);
+            counter.push(node.borrow_mut().val);
         }
     }
 
-    let mut ans = vec![];
-    postorder_dfs(root, &mut ans);
-    ans
+    let mut counter = vec![];
+    traverse(root, &mut counter);
+    counter
 }
 
 /// 力扣（167. 两数之和 II - 输入有序数组）https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
@@ -3856,5 +3856,29 @@ mod tests {
 
         let vec = postorder_traversal(Some(root));
         println!("{:?}", vec);
+
+        let four = TreeNode {
+            val: 4,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(1)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(2)))),
+        };
+
+        let six = TreeNode {
+            val: 6,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(7)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(8)))),
+        };
+
+        let five = TreeNode {
+            val: 5,
+            left: Some(Rc::new(RefCell::new(four))),
+            right: Some(Rc::new(RefCell::new(six))),
+        };
+        let root = Rc::new(RefCell::new(five));
+
+        //TODO 为什么以下三条语句调整顺序，第三条语句总是输出不正确呢？
+        dbg!(preorder_traversal(Some(root.clone())));
+        dbg!(inorder_traversal(Some(root.clone())));
+        dbg!(postorder_traversal(Some(root.clone())));
     }
 }
