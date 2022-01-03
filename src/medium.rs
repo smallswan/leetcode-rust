@@ -1489,6 +1489,29 @@ pub fn count_nodes(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     return count_nodes(l) + count_nodes(r) + 1;
 }
 
+/// 222. 完全二叉树的节点个数
+pub fn count_nodes_v2(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    if let Some(root) = root {
+        let left_height = count_height(root.borrow().left.clone());
+        let right_height = count_height(root.borrow().right.clone());
+        if left_height == right_height {
+            (1 << left_height) + count_nodes(root.borrow().right.clone())
+        } else {
+            (1 << right_height) + count_nodes(root.borrow().left.clone())
+        }
+    } else {
+        0
+    }
+}
+
+fn count_height(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    if let Some(node) = root {
+        1 + count_height(node.borrow().left.clone())
+    } else {
+        0
+    }
+}
+
 /// 力扣（229. 求众数 II） https://leetcode-cn.com/problems/majority-element-ii/
 pub fn majority_element(nums: Vec<i32>) -> Vec<i32> {
     let mut count1 = 0;
