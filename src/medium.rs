@@ -1479,6 +1479,16 @@ pub fn find_kth_largest(nums: Vec<i32>, k: i32) -> i32 {
     heap.pop().unwrap()
 }
 
+/// 222. 完全二叉树的节点个数 https://leetcode-cn.com/problems/count-complete-tree-nodes/
+pub fn count_nodes(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    if root.is_none() {
+        return 0;
+    }
+    let mut r_b = root.as_ref().unwrap().borrow_mut();
+    let (mut l, mut r) = (r_b.left.take(), r_b.right.take());
+    return count_nodes(l) + count_nodes(r) + 1;
+}
+
 /// 力扣（229. 求众数 II） https://leetcode-cn.com/problems/majority-element-ii/
 pub fn majority_element(nums: Vec<i32>) -> Vec<i32> {
     let mut count1 = 0;
