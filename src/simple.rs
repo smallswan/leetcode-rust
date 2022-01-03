@@ -1153,6 +1153,25 @@ pub fn inorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     counter
 }
 
+/// 100. 相同的树 https://leetcode-cn.com/problems/same-tree/
+pub fn is_same_tree(p: Option<Rc<RefCell<TreeNode>>>, q: Option<Rc<RefCell<TreeNode>>>) -> bool {
+    match (p, q) {
+        (Some(x), Some(y)) => {
+            let mut x_b = x.borrow_mut();
+            let mut y_b = y.borrow_mut();
+            if x_b.val != y_b.val {
+                return false;
+            }
+
+            return is_same_tree(x_b.left.take(), y_b.left.take())
+                && is_same_tree(x_b.right.take(), y_b.right.take());
+        }
+        (None, None) => return true,
+        (_, _) => return false,
+    }
+    return false;
+}
+
 fn symmetric(l: Option<Rc<RefCell<TreeNode>>>, r: Option<Rc<RefCell<TreeNode>>>) -> bool {
     match (l.as_ref(), r.as_ref()) {
         (None, None) => return true,

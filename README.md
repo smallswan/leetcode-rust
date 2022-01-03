@@ -97,6 +97,8 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 
 ### 二叉树
 - [94. 二叉树的中序遍历 ](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/ )
+- [100. 相同的树](https://leetcode-cn.com/problems/same-tree/ )
+- [101. 对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/ )
 - [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/ )
 - [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/ )
 - [145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/ )
