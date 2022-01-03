@@ -1153,9 +1153,30 @@ pub fn inorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     counter
 }
 
+fn symmetric(l: Option<Rc<RefCell<TreeNode>>>, r: Option<Rc<RefCell<TreeNode>>>) -> bool {
+    match (l.as_ref(), r.as_ref()) {
+        (None, None) => return true,
+        (Some(x), Some(y)) => {
+            if x.borrow_mut().val != y.borrow_mut().val {
+                return false;
+            }
+            let (mut x_b, mut y_b) = (x.borrow_mut(), y.borrow_mut());
+            // 左 = 右，右 = 左
+            return symmetric(x_b.left.take(), y_b.right.take())
+                && symmetric(x_b.right.take(), y_b.left.take());
+        }
+        (_, _) => return false,
+    }
+}
 /// 力扣（101. 对称二叉树)  https://leetcode-cn.com/problems/symmetric-tree/
 pub fn is_symmetric(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
-    false
+    if root.is_none() {
+        return true;
+    }
+
+    let mut r_b = root.as_ref().unwrap().borrow_mut();
+    let (l, r) = (r_b.left.take(), r_b.right.take());
+    return symmetric(l, r);
 }
 
 /// 力扣（118. 杨辉三角） https://leetcode-cn.com/problems/pascals-triangle/
