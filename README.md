@@ -84,3 +84,19 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 
 ### 问题：字符串模式匹配(strStr)
 [28. 实现 strStr()](https://leetcode-cn.com/problems/implement-strstr/)
+
+### 链表
+- [2. 两数相加](https://leetcode-cn.com/problems/add-two-numbers/ )
+- [19. 删除链表的倒数第 N 个结点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/ )
+- [23. 合并K个升序链表](https://leetcode-cn.com/problems/merge-k-sorted-lists/ )
+- [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/ )
+- [203. 移除链表元素](https://leetcode-cn.com/problems/remove-linked-list-elements/ )
+- [206. 反转链表](https://leetcode-cn.com/problems/reverse-linked-list/ )
+- [剑指 Offer 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/submissions/ )
+
+
+### 二叉树
+- [94. 二叉树的中序遍历 ](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/ )
+- [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/ )
+- [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/ )
+- [145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/ )
