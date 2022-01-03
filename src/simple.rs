@@ -1198,6 +1198,50 @@ pub fn is_symmetric(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
     return symmetric(l, r);
 }
 
+/// 104. 二叉树的最大深度 https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/
+pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    let mut max_depth = 0;
+    fn traverse(n: Option<Rc<RefCell<TreeNode>>>, max_depth: &mut i32, parent_depth: i32) {
+        if n.is_none() {
+            return;
+        }
+
+        if parent_depth + 1 > *max_depth {
+            *max_depth = parent_depth + 1;
+        }
+
+        let mut n_b = n.as_ref().unwrap().borrow_mut();
+        let (mut l, mut r) = (n_b.left.clone(), n_b.right.clone());
+        traverse(l, max_depth, parent_depth + 1);
+        traverse(r, max_depth, parent_depth + 1);
+    }
+    traverse(root, &mut max_depth, 0);
+    return max_depth;
+}
+
+/// 104. 二叉树的最大深度
+pub fn max_depth_v2(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    use std::collections::VecDeque;
+    if root.is_none() {
+        return 0;
+    }
+    let mut queue: VecDeque<(Rc<RefCell<TreeNode>>, i32)> = VecDeque::new();
+    let mut max = 0;
+    queue.push_back((root.unwrap(), 1));
+
+    while let Some((cur, level)) = queue.pop_front() {
+        let borrow = cur.borrow_mut();
+        if let Some(left) = borrow.left.clone() {
+            queue.push_back((left, level + 1));
+        }
+        if let Some(right) = borrow.right.clone() {
+            queue.push_back((right, level + 1));
+        }
+        max = if max > level { max } else { level };
+    }
+    max
+}
+
 /// 力扣（118. 杨辉三角） https://leetcode-cn.com/problems/pascals-triangle/
 /// 动态规划算法：由上一行的数据推导出下一行的数据
 pub fn generate(num_rows: i32) -> Vec<Vec<i32>> {
