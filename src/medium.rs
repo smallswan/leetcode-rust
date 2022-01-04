@@ -1206,6 +1206,36 @@ pub fn set_zeroes(matrix: &mut Vec<Vec<i32>>) {
     }
 }
 
+/// 98. 验证二叉搜索树 https://leetcode-cn.com/problems/validate-binary-search-tree/
+pub fn is_valid_bst(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
+    traverse(root, None, None)
+}
+
+fn traverse(root: Option<Rc<RefCell<TreeNode>>>, min: Option<i32>, max: Option<i32>) -> bool {
+    match root {
+        None => true,
+        Some(root) => {
+            let val = root.borrow().val;
+            let mut valid = true;
+            if let Some(min) = min {
+                valid = valid && min < val;
+            }
+            if let Some(max) = max {
+                valid = valid && val < max;
+            }
+            if !valid {
+                return false;
+            }
+            let left = root.borrow().left.as_ref().map(|rc| rc.clone());
+            let right = root.borrow().right.as_ref().map(|rc| rc.clone());
+            if !traverse(left, min, Some(val)) {
+                return false;
+            }
+            traverse(right, Some(val), max)
+        }
+    }
+}
+
 use crate::simple::TreeNode;
 use std::cell::RefCell;
 use std::collections::VecDeque;
@@ -1233,6 +1263,40 @@ pub fn level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
         }
     }
     ans
+}
+
+/// 103. 二叉树的锯齿形层序遍历 https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/
+pub fn zigzag_level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+    let mut res = Vec::new();
+    let mut current_level = 0;
+    if root.is_none() {
+        return res;
+    }
+    let mut deq = VecDeque::new();
+    deq.push_back((0, root.clone()));
+    let mut vec = Vec::new();
+    while !deq.is_empty() {
+        if let Some((level, Some(node))) = deq.pop_front() {
+            deq.push_back((level + 1, node.borrow().left.clone()));
+            deq.push_back((level + 1, node.borrow().right.clone()));
+            if level > current_level {
+                if current_level % 2 == 1 {
+                    vec.reverse();
+                }
+                res.push(vec);
+                vec = Vec::new();
+                current_level = level;
+            }
+            vec.push(node.borrow().val);
+        }
+    }
+    if !vec.is_empty() {
+        if current_level % 2 == 1 {
+            vec.reverse();
+        }
+        res.push(vec)
+    }
+    res
 }
 
 /// 力扣（137. 只出现一次的数字 II） https://leetcode-cn.com/problems/single-number-ii/

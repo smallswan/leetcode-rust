@@ -98,10 +98,13 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 
 ### 二叉树
 - [94. 二叉树的中序遍历 ](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/ )
+- [98. 验证二叉搜索树 ](https://leetcode-cn.com/problems/validate-binary-search-tree/)
 - [100. 相同的树](https://leetcode-cn.com/problems/same-tree/ )
 - [101. 对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/ )
 - [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/ )
+- [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/ )
 - [104. 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/ )
 - [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/ )
 - [145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/ )
 - [222. 完全二叉树的节点个数](https://leetcode-cn.com/problems/count-complete-tree-nodes/ )
+- [226. 翻转二叉树 ](https://leetcode-cn.com/problems/invert-binary-tree/ )
