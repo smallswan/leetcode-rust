@@ -1983,6 +1983,19 @@ pub fn contains_duplicate_v2(nums: Vec<i32>) -> bool {
     false
 }
 
+/// 226. 翻转二叉树 https://leetcode-cn.com/problems/invert-binary-tree/
+pub fn invert_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<TreeNode>>> {
+    if let Some(node) = root.clone() {
+        invert_tree(node.borrow_mut().right.clone());
+        invert_tree(node.borrow_mut().left.clone());
+        let left = node.borrow_mut().left.clone();
+        let right = node.borrow_mut().right.clone();
+        node.borrow_mut().left = right;
+        node.borrow_mut().right = left;
+    }
+    root
+}
+
 /// 力扣（219. 存在重复元素 II） https://leetcode-cn.com/problems/contains-duplicate-ii/
 pub fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
     use std::collections::HashSet;
@@ -3448,6 +3461,25 @@ pub fn bitwise_complement_v2(n: i32) -> i32 {
     };
 
     n ^ mark
+}
+
+/// 1046. 最后一块石头的重量 https://leetcode-cn.com/problems/last-stone-weight/
+use std::collections::BinaryHeap;
+pub fn last_stone_weight(stones: Vec<i32>) -> i32 {
+    let mut heap = BinaryHeap::from(stones);
+    loop {
+        if let Some(rock1) = heap.pop() {
+            if let Some(rock2) = heap.pop() {
+                if rock1 > rock2 {
+                    heap.push(rock1 - rock2);
+                }
+            } else {
+                return rock1;
+            }
+        } else {
+            return 0;
+        }
+    }
 }
 
 /// 力扣（1051. 高度检查器），https://leetcode-cn.com/problems/height-checker/

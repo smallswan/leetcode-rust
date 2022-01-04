@@ -92,6 +92,7 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 - [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/ )
 - [203. 移除链表元素](https://leetcode-cn.com/problems/remove-linked-list-elements/ )
 - [206. 反转链表](https://leetcode-cn.com/problems/reverse-linked-list/ )
+- [707. 设计链表](https://leetcode-cn.com/problems/design-linked-list/ )
 - [剑指 Offer 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/submissions/ )
 
 
