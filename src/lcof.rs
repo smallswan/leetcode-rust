@@ -40,13 +40,6 @@ mod tests {
 
         dbg!(s_url_encode.replace(" ", "%20"));
     }
-
-    #[test]
-    fn linked_list() {
-        let linked_list = crate::simple::vec_to_list_v2(&vec![1, 2, 3, 4, 5]);
-        let result = reverse_between(linked_list, 2, 4);
-        crate::simple::display(result);
-    }
 }
 
 /// 剑指 Offer 03. 数组中重复的数字 https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/
@@ -140,20 +133,6 @@ pub fn replace_space(s: String) -> String {
     String::from_utf8(new_bytes).unwrap()
 }
 
-/// 剑指 Offer 06. 从尾到头打印链表 https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/
-use crate::simple::ListNode;
-/// 反转数组
-pub fn reverse_print(head: Option<Box<ListNode>>) -> Vec<i32> {
-    let mut res = Vec::new();
-    let mut next = &head;
-    while next.is_some() {
-        res.push(next.as_ref().unwrap().val);
-        next = &(next.as_ref().unwrap().next);
-    }
-    res.reverse();
-    res
-}
-
 /// 剑指 Offer 10- I. 斐波那契数列   https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/
 /// 方法1：动态规划
 pub fn fib(n: i32) -> i32 {
@@ -189,34 +168,6 @@ pub fn fib_v2(n: i32) -> i32 {
         i += 1;
     }
     f0
-}
-
-/// 剑指 Offer 22. 链表中倒数第k个节点  https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/
-pub fn get_kth_from_end(head: Option<Box<ListNode>>, k: i32) -> Option<Box<ListNode>> {
-    let mut fast = &head;
-    let mut slow = &head;
-    for i in 0..k {
-        if fast.is_some() {
-            fast = &(fast.as_ref().unwrap().next);
-        }
-    }
-    while fast.is_some() {
-        fast = &(fast.as_ref().unwrap().next);
-        slow = &(slow.as_ref().unwrap().next);
-    }
-    if slow.is_none() {
-        None
-    } else {
-        let mut dummy_head = Box::new(ListNode::new(0));
-        let mut new_head = &mut dummy_head;
-        while slow.is_some() {
-            new_head.next = Some(Box::new(ListNode::new(slow.as_ref().unwrap().val)));
-            new_head = new_head.next.as_mut().unwrap();
-            slow = &(slow.as_ref().unwrap().next);
-        }
-
-        dummy_head.next
-    }
 }
 
 /// 剑指 Offer 56 - I. 数组中数字出现的次数 https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/
@@ -386,55 +337,4 @@ pub fn sum_nums_v2(n: i32) -> i32 {
     b >>= 1;
 
     sum >> 1
-}
-
-/// 92. 反转链表 II  https://leetcode-cn.com/problems/reverse-linked-list-ii/
-pub fn reverse_between(
-    head: Option<Box<ListNode>>,
-    left: i32,
-    right: i32,
-) -> Option<Box<ListNode>> {
-    let mut dummy_tail = Box::new(ListNode::new(0));
-    let mut tail = &mut dummy_tail;
-    let mut fast = &head;
-    let mut slow = &head;
-    let mut prev = 0;
-    while fast.is_some() {
-        prev += 1;
-        if prev >= left && prev <= right {
-            let val = fast.as_ref().unwrap().val;
-            tail.next = Some(Box::new(ListNode::new(val)));
-            tail = tail.next.as_mut().unwrap();
-        }
-        fast = &(fast.as_ref().unwrap().next);
-    }
-
-    let mut dummy_head = Box::new(ListNode::new(0));
-    let mut new_head = &mut dummy_head;
-    let mut reverse_list = crate::simple::reverse_list(dummy_tail.next);
-    prev = 0;
-    while slow.is_some() {
-        prev += 1;
-
-        if prev < left || prev > right {
-            let val = slow.as_ref().unwrap().val;
-            new_head.next = Some(Box::new(ListNode::new(val)));
-            new_head = new_head.next.as_mut().unwrap();
-            slow = &(slow.as_ref().unwrap().next);
-        }
-
-        if prev == left {
-            while let Some(mut node) = reverse_list.take() {
-                new_head.next = Some(Box::new(ListNode::new(node.val)));
-
-                new_head = new_head.next.as_mut().unwrap();
-
-                prev += 1;
-                slow = &(slow.as_ref().unwrap().next);
-                reverse_list = node.next.take();
-            }
-        }
-    }
-
-    dummy_head.next
 }

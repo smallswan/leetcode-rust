@@ -322,3 +322,62 @@ pub fn print_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<String>> {
     // 将所有字符连起来
     ans
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn trees() {
+        let node = TreeNode {
+            val: 119,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(110)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(120)))),
+        };
+        let root = Rc::new(RefCell::new(node));
+
+        let vec = inorder_traversal(Some(root));
+        println!("{:?}", vec);
+
+        let node = TreeNode {
+            val: 119,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(110)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(120)))),
+        };
+        let root = Rc::new(RefCell::new(node));
+
+        let vec = preorder_traversal(Some(root));
+        println!("{:?}", vec);
+        let node = TreeNode {
+            val: 119,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(110)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(120)))),
+        };
+        let root = Rc::new(RefCell::new(node));
+
+        let vec = postorder_traversal(Some(root));
+        println!("{:?}", vec);
+
+        let four = TreeNode {
+            val: 4,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(1)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(2)))),
+        };
+
+        let six = TreeNode {
+            val: 6,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(7)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(8)))),
+        };
+
+        let five = TreeNode {
+            val: 5,
+            left: Some(Rc::new(RefCell::new(four))),
+            right: Some(Rc::new(RefCell::new(six))),
+        };
+        let root = Rc::new(RefCell::new(five));
+        //TODO 为什么以下三条语句调整顺序，第三条语句总是输出不正确呢？
+        dbg!(preorder_traversal(Some(root.clone())));
+        dbg!(inorder_traversal(Some(root.clone())));
+        dbg!(postorder_traversal(Some(root.clone())));
+    }
+}

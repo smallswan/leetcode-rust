@@ -88,13 +88,17 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 ### 链表
 - [2. 两数相加](https://leetcode-cn.com/problems/add-two-numbers/ )
 - [19. 删除链表的倒数第 N 个结点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/ )
+- [21. 合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/ )
 - [23. 合并K个升序链表](https://leetcode-cn.com/problems/merge-k-sorted-lists/ )
+- [24. 两两交换链表中的节点 ](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)
 - [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/ )
+- [92. 反转链表 II  ](https://leetcode-cn.com/problems/reverse-linked-list-ii/)
 - [203. 移除链表元素](https://leetcode-cn.com/problems/remove-linked-list-elements/ )
 - [206. 反转链表](https://leetcode-cn.com/problems/reverse-linked-list/ )
 - [707. 设计链表](https://leetcode-cn.com/problems/design-linked-list/ )
+- [剑指 Offer 06. 从尾到头打印链表 ](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)
 - [剑指 Offer 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/submissions/ )
-
+- 
 
 ### 二叉树
 - [94. 二叉树的中序遍历 ](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/ )

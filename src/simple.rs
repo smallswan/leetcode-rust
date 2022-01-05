@@ -529,85 +529,6 @@ fn is_match_brackets(left: char, right: char) -> bool {
     }
 }
 
-#[derive(Debug, PartialEq, Eq, Clone)]
-pub struct ListNode {
-    pub val: i32,
-    pub next: Option<Box<ListNode>>,
-}
-
-impl ListNode {
-    #[inline]
-    pub fn new(val: i32) -> Self {
-        ListNode { val, next: None }
-    }
-}
-
-impl Ord for ListNode {
-    fn cmp(&self, other: &Self) -> Ordering {
-        other.val.cmp(&self.val)
-    }
-}
-impl PartialOrd for ListNode {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.cmp(other))
-    }
-}
-
-/// 力扣（21. 合并两个有序链表) https://leetcode-cn.com/problems/merge-two-sorted-lists/
-pub fn merge_two_lists(
-    l1: Option<Box<ListNode>>,
-    l2: Option<Box<ListNode>>,
-) -> Option<Box<ListNode>> {
-    match (l1, l2) {
-        (Some(v1), None) => Some(v1),
-        (None, Some(v2)) => Some(v2),
-        (Some(mut v1), Some(mut v2)) => {
-            if v1.val < v2.val {
-                let n = v1.next.take();
-                v1.next = self::merge_two_lists(n, Some(v2));
-                Some(v1)
-            } else {
-                let n = v2.next.take();
-                v2.next = self::merge_two_lists(Some(v1), n);
-                Some(v2)
-            }
-        }
-        _ => None,
-    }
-}
-
-/// 将数组转为链表（从尾到头构建）
-pub fn vec_to_list(v: &[i32]) -> Option<Box<ListNode>> {
-    let mut head = None;
-    for i in v.iter().rev() {
-        let mut node = ListNode::new(*i);
-        node.next = head;
-        head = Some(Box::new(node));
-    }
-    head
-}
-
-/// 将数组转为链表（从头到尾构建）
-pub fn vec_to_list_v2(v: &[i32]) -> Option<Box<ListNode>> {
-    let mut dummy_head = Box::new(ListNode::new(0));
-    let mut head = &mut dummy_head;
-    for i in v {
-        head.next = Some(Box::new(ListNode::new(*i)));
-        head = head.next.as_mut().unwrap();
-    }
-    dummy_head.next
-}
-
-/// 打印链表的值
-pub fn display(l: Option<Box<ListNode>>) {
-    let mut head = &l;
-    while head.is_some() {
-        print!("{}, ", head.as_ref().unwrap().val);
-        head = &(head.as_ref().unwrap().next);
-    }
-    println!();
-}
-
 /// 力扣（26. 删除有序数组中的重复项) https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
 pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
     let len = nums.len();
@@ -1049,23 +970,6 @@ pub fn climb_stairs_memo(n: i32, memo: Rc<RefCell<Vec<i32>>>) -> i32 {
     }
 
     memo.borrow_mut()[n as usize]
-}
-
-/// 力扣（83. 删除排序链表中的重复元素) https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/
-pub fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-    let mut dummy_head = Box::new(ListNode::new(0));
-    let mut dummy_node = &mut dummy_head;
-    let mut node = &head;
-    while node.is_some() {
-        let value = node.as_ref().unwrap().val;
-        node = &(node.as_ref().unwrap().next);
-        if node.is_none() || value != node.as_ref().unwrap().val {
-            dummy_node.next = Some(Box::new(ListNode::new(value)));
-            dummy_node = dummy_node.next.as_mut().unwrap();
-        }
-    }
-
-    dummy_head.next
 }
 
 /// 力扣（88. 合并两个有序数组） https://leetcode-cn.com/problems/merge-sorted-array/
@@ -1600,72 +1504,6 @@ fn is_prime(x: i32) -> bool {
     true
 }
 
-/// 力扣（203. 移除链表元素) https://leetcode-cn.com/problems/remove-linked-list-elements/
-pub fn remove_elements(head: Option<Box<ListNode>>, val: i32) -> Option<Box<ListNode>> {
-    let mut dummy_head = ListNode::new(0);
-    dummy_head.next = head;
-    let mut nums = vec![];
-    while let Some(mut node) = dummy_head.next.take() {
-        if node.val != val {
-            nums.push(node.val);
-        }
-        if let Some(next) = node.next.take() {
-            dummy_head.next = Some(next);
-        }
-    }
-
-    vec_to_list(&nums)
-}
-
-/// 力扣（203. 移除链表元素)
-/// 虚拟头结点
-pub fn remove_elements_v2(head: Option<Box<ListNode>>, val: i32) -> Option<Box<ListNode>> {
-    let mut head = head;
-    let mut root = Box::new(ListNode::new(0));
-    //用于存储、修改当前值不为val的节点
-    let mut current = &mut root;
-    while let Some(mut node) = head.take() {
-        head = node.next.take();
-        if node.val != val {
-            current.next = Some(node);
-            current = current.next.as_mut().unwrap();
-        }
-    }
-    root.next
-}
-
-/// 力扣（203. 移除链表元素)
-/// 直接使用原来的链表来进行删除操作 FIXME take()会消耗掉Option中的值，以下代码不正确
-pub fn remove_elements_v3(head: Option<Box<ListNode>>, val: i32) -> Option<Box<ListNode>> {
-    let mut head = head;
-
-    while let Some(mut node) = head.take() {
-        if node.val == val {
-            head = node.next.take();
-        } else {
-            head = Some(node);
-            break;
-        }
-    }
-    while let Some(node) = head.take().as_deref_mut() {
-        if node.val == val {
-            head = node.next.take();
-            continue;
-        } else {
-            head = node.next.take();
-        }
-        if let Some(next) = node.next.take().as_deref_mut() {
-            if next.val == val {
-                if let Some(next2) = next.next.take() {
-                    *next = *next2;
-                }
-            }
-        }
-    }
-
-    head
-}
-
 /// 力扣（204. 计数质数) https://leetcode-cn.com/problems/count-primes/
 pub fn count_primes(n: i32) -> i32 {
     let mut ans = 0;
@@ -1753,22 +1591,6 @@ pub fn is_isomorphic_v2(s: String, t: String) -> bool {
         }
     }
     true
-}
-
-/// 力扣（206. 反转链表） https://leetcode-cn.com/problems/reverse-linked-list/
-/// 假设：head 对应的链表为：1 -> 2 -> 3 -> 4 -> 5 -> None
-pub fn reverse_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-    let mut head = head;
-    let mut tail = None;
-    while let Some(mut node) = head.take() {
-        // head = node(1).next = node(2)
-        head = node.next;
-        // node(1).next = None
-        node.next = tail;
-        // tail = node(1)
-        tail = Some(node);
-    }
-    tail
 }
 
 /// 力扣（217. 存在重复元素） https://leetcode-cn.com/problems/contains-duplicate/
@@ -3380,21 +3202,6 @@ mod tests {
         let valid_string = String::from("(){{}");
         dbg!(is_valid(valid_string));
 
-        let linked_list = vec_to_list_v2(&vec![1, 3, 5, 7, 9]);
-        display(linked_list);
-
-        let l = merge_two_lists(
-            vec_to_list(&vec![1, 3, 5, 7, 9]),
-            vec_to_list(&vec![2, 4, 6, 8, 10]),
-        );
-        display(l);
-
-        let l = merge_two_lists(
-            vec_to_list(&vec![1, 2, 4]),
-            vec_to_list(&vec![1, 3, 4, 5, 6]),
-        );
-        display(l);
-
         dbg!(reverse(132));
         dbg!(reverse(-1999999999));
 
@@ -3670,24 +3477,6 @@ mod tests {
 
     #[test]
     fn test_200_plus() {
-        let nums = vec![1, 2, 3, 4, 5];
-        let head = vec_to_list(&nums);
-        let tail = reverse_list(head);
-
-        display(tail);
-
-        let head = vec_to_list(&nums);
-        let remove_elements_result = remove_elements(head, 3);
-        display(remove_elements_result);
-
-        let head = vec_to_list(&nums);
-        let remove_elements_v2_result = remove_elements_v2(head, 3);
-        display(remove_elements_v2_result);
-
-        let head = vec_to_list(&[7, 6, 8, 7, 7, 7, 7, 7]);
-        let remove_elements_v3_result = remove_elements_v3(head, 7);
-        display(remove_elements_v3_result);
-
         dbg!(next_greater_element(vec![4, 1, 2], vec![1, 3, 4, 2]));
 
         dbg!(add_strings("11".to_string(), "123".to_string()));
@@ -3697,10 +3486,6 @@ mod tests {
 
     #[test]
     fn test_list_node() {
-        let head = vec_to_list(&vec![1, 1, 2, 3, 3]);
-        let unique_nodes = delete_duplicates(head);
-        display(unique_nodes);
-
         dbg!(reverse_bits(43261596));
 
         let x = 43261596u32;
@@ -3748,62 +3533,5 @@ mod tests {
         stack.pop();
         dbg!(stack.get_min());
         dbg!(stack.top());
-    }
-
-    #[test]
-    fn trees() {
-        let node = TreeNode {
-            val: 119,
-            left: Some(Rc::new(RefCell::new(TreeNode::new(110)))),
-            right: Some(Rc::new(RefCell::new(TreeNode::new(120)))),
-        };
-        let root = Rc::new(RefCell::new(node));
-
-        let vec = inorder_traversal(Some(root));
-        println!("{:?}", vec);
-
-        let node = TreeNode {
-            val: 119,
-            left: Some(Rc::new(RefCell::new(TreeNode::new(110)))),
-            right: Some(Rc::new(RefCell::new(TreeNode::new(120)))),
-        };
-        let root = Rc::new(RefCell::new(node));
-
-        let vec = preorder_traversal(Some(root));
-        println!("{:?}", vec);
-
-        let node = TreeNode {
-            val: 119,
-            left: Some(Rc::new(RefCell::new(TreeNode::new(110)))),
-            right: Some(Rc::new(RefCell::new(TreeNode::new(120)))),
-        };
-        let root = Rc::new(RefCell::new(node));
-
-        let vec = postorder_traversal(Some(root));
-        println!("{:?}", vec);
-
-        let four = TreeNode {
-            val: 4,
-            left: Some(Rc::new(RefCell::new(TreeNode::new(1)))),
-            right: Some(Rc::new(RefCell::new(TreeNode::new(2)))),
-        };
-
-        let six = TreeNode {
-            val: 6,
-            left: Some(Rc::new(RefCell::new(TreeNode::new(7)))),
-            right: Some(Rc::new(RefCell::new(TreeNode::new(8)))),
-        };
-
-        let five = TreeNode {
-            val: 5,
-            left: Some(Rc::new(RefCell::new(four))),
-            right: Some(Rc::new(RefCell::new(six))),
-        };
-        let root = Rc::new(RefCell::new(five));
-
-        //TODO 为什么以下三条语句调整顺序，第三条语句总是输出不正确呢？
-        dbg!(preorder_traversal(Some(root.clone())));
-        dbg!(inorder_traversal(Some(root.clone())));
-        dbg!(postorder_traversal(Some(root.clone())));
     }
 }
