@@ -1232,99 +1232,6 @@ pub fn set_zeroes(matrix: &mut Vec<Vec<i32>>) {
     }
 }
 
-/// 98. 验证二叉搜索树 https://leetcode-cn.com/problems/validate-binary-search-tree/
-pub fn is_valid_bst(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
-    traverse(root, None, None)
-}
-
-fn traverse(root: Option<Rc<RefCell<TreeNode>>>, min: Option<i32>, max: Option<i32>) -> bool {
-    match root {
-        None => true,
-        Some(root) => {
-            let val = root.borrow().val;
-            let mut valid = true;
-            if let Some(min) = min {
-                valid = valid && min < val;
-            }
-            if let Some(max) = max {
-                valid = valid && val < max;
-            }
-            if !valid {
-                return false;
-            }
-            let left = root.borrow().left.as_ref().map(|rc| rc.clone());
-            let right = root.borrow().right.as_ref().map(|rc| rc.clone());
-            if !traverse(left, min, Some(val)) {
-                return false;
-            }
-            traverse(right, Some(val), max)
-        }
-    }
-}
-
-use crate::simple::TreeNode;
-use std::cell::RefCell;
-use std::collections::VecDeque;
-use std::rc::Rc;
-/// 102. 二叉树的层序遍历 https://leetcode-cn.com/problems/binary-tree-level-order-traversal/
-pub fn level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
-    let mut ans = vec![];
-
-    let mut queue = VecDeque::new();
-    queue.push_back(root);
-
-    while !queue.is_empty() {
-        let size = queue.len();
-        let mut level = vec![];
-        for _ in 0..size {
-            if let Some(x) = queue.pop_front().flatten() {
-                let node = x.borrow();
-                level.push(node.val);
-                queue.push_back(node.left.clone());
-                queue.push_back(node.right.clone());
-            }
-        }
-        if !level.is_empty() {
-            ans.push(level);
-        }
-    }
-    ans
-}
-
-/// 103. 二叉树的锯齿形层序遍历 https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/
-pub fn zigzag_level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
-    let mut res = Vec::new();
-    let mut current_level = 0;
-    if root.is_none() {
-        return res;
-    }
-    let mut deq = VecDeque::new();
-    deq.push_back((0, root.clone()));
-    let mut vec = Vec::new();
-    while !deq.is_empty() {
-        if let Some((level, Some(node))) = deq.pop_front() {
-            deq.push_back((level + 1, node.borrow().left.clone()));
-            deq.push_back((level + 1, node.borrow().right.clone()));
-            if level > current_level {
-                if current_level % 2 == 1 {
-                    vec.reverse();
-                }
-                res.push(vec);
-                vec = Vec::new();
-                current_level = level;
-            }
-            vec.push(node.borrow().val);
-        }
-    }
-    if !vec.is_empty() {
-        if current_level % 2 == 1 {
-            vec.reverse();
-        }
-        res.push(vec)
-    }
-    res
-}
-
 /// 力扣（137. 只出现一次的数字 II） https://leetcode-cn.com/problems/single-number-ii/
 /// 方法1：哈希表
 pub fn single_number(nums: Vec<i32>) -> i32 {
@@ -1567,39 +1474,6 @@ pub fn find_kth_largest(nums: Vec<i32>, k: i32) -> i32 {
         heap.pop();
     }
     heap.pop().unwrap()
-}
-
-/// 222. 完全二叉树的节点个数 https://leetcode-cn.com/problems/count-complete-tree-nodes/
-pub fn count_nodes(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
-    if root.is_none() {
-        return 0;
-    }
-    let mut r_b = root.as_ref().unwrap().borrow_mut();
-    let (mut l, mut r) = (r_b.left.take(), r_b.right.take());
-    return count_nodes(l) + count_nodes(r) + 1;
-}
-
-/// 222. 完全二叉树的节点个数
-pub fn count_nodes_v2(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
-    if let Some(root) = root {
-        let left_height = count_height(root.borrow().left.clone());
-        let right_height = count_height(root.borrow().right.clone());
-        if left_height == right_height {
-            (1 << left_height) + count_nodes(root.borrow().right.clone())
-        } else {
-            (1 << right_height) + count_nodes(root.borrow().left.clone())
-        }
-    } else {
-        0
-    }
-}
-
-fn count_height(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
-    if let Some(node) = root {
-        1 + count_height(node.borrow().left.clone())
-    } else {
-        0
-    }
 }
 
 /// 力扣（229. 求众数 II） https://leetcode-cn.com/problems/majority-element-ii/
@@ -1957,37 +1831,6 @@ pub fn find_diagonal_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
 // TODO 500
 
 // TODO 600
-
-/// 655. 输出二叉树 https://leetcode-cn.com/problems/print-binary-tree/
-use std::cmp::max;
-pub fn print_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<String>> {
-    // 二叉树高度
-    let height = TreeNode::get_height(&root);
-    // 满二叉树的宽度
-    let width = (1 << height) - 1;
-    let mut ans = vec![vec!["".to_string(); width as usize]; height as usize];
-
-    // dfs 搜索
-    fn dfs(
-        ans: &mut Vec<Vec<String>>,
-        node: &Option<Rc<RefCell<TreeNode>>>,
-        deep: usize,
-        lo: usize,
-        hi: usize,
-    ) {
-        if let Some(x) = node {
-            let node = x.borrow();
-            let mid = lo + (hi - lo) / 2;
-            ans[deep][mid] = x.borrow().val.to_string();
-            dfs(ans, &node.left, deep + 1, lo, mid);
-            dfs(ans, &node.right, deep + 1, mid + 1, hi);
-        }
-    }
-
-    dfs(&mut ans, &root, 0usize, 0usize, width as usize);
-    // 将所有字符连起来
-    ans
-}
 
 /// 力扣（707. 设计链表) https://leetcode-cn.com/problems/design-linked-list/
 /**
