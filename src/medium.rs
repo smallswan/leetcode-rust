@@ -1282,6 +1282,7 @@ pub fn min_sub_array_len(s: i32, nums: Vec<i32>) -> i32 {
 /// 力扣（209. 长度最小的子数组)
 /// 滑动窗口
 pub fn min_sub_array_len_v2(target: i32, nums: Vec<i32>) -> i32 {
+    use std::cmp::min;
     let mut result = i32::MAX;
     let mut sum = 0;
     let mut i = 0;
@@ -1356,6 +1357,7 @@ pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
     }
 }
 
+use std::collections::{BinaryHeap, HashSet};
 /// 力扣（215. 数组中的第K个最大元素） https://leetcode-cn.com/problems/kth-largest-element-in-an-array/
 pub fn find_kth_largest(nums: Vec<i32>, k: i32) -> i32 {
     let mut heap = BinaryHeap::from(nums);
@@ -1436,60 +1438,6 @@ pub fn single_number_260(nums: Vec<i32>) -> Vec<i32> {
         }
     }
     vec![a, b]
-}
-
-use std::cmp::Reverse;
-use std::collections::{BinaryHeap, HashSet};
-static UGLY_NUMBER_FACTORS: [i64; 3] = [2, 3, 5];
-/// 力扣（264. 丑数 II） https://leetcode-cn.com/problems/ugly-number-ii/
-/// 1 通常被视为丑数。
-/// 方法一：最小堆
-pub fn nth_ugly_number(n: i32) -> i32 {
-    //let factors = vec![2, 3, 5];
-    let mut seen = HashSet::new();
-    let mut heap = BinaryHeap::new();
-    seen.insert(1i64);
-    heap.push(Reverse(1i64));
-    let mut ugly = 0;
-    for _ in 0..n {
-        if let Some(Reverse(curr)) = heap.pop() {
-            ugly = curr;
-            for factor in &UGLY_NUMBER_FACTORS {
-                let next: i64 = curr * (*factor);
-                if seen.insert(next) {
-                    heap.push(Reverse(next));
-                }
-            }
-        };
-    }
-    ugly as i32
-}
-
-use std::cmp::min;
-/// 力扣（264. 丑数 II）
-/// 方法二：动态规划
-pub fn nth_ugly_number_v2(n: i32) -> i32 {
-    let n = n as usize;
-    let mut dp = vec![0; n + 1];
-    dp[1] = 1;
-
-    let (mut p2, mut p3, mut p5) = (1, 1, 1);
-
-    for i in 2..=n {
-        let (num2, num3, num5) = (dp[p2] * 2, dp[p3] * 3, dp[p5] * 5);
-        dp[i] = min(min(num2, num3), num5);
-        if dp[i] == num2 {
-            p2 += 1;
-        }
-        if dp[i] == num3 {
-            p3 += 1;
-        }
-        if dp[i] == num5 {
-            p5 += 1;
-        }
-    }
-
-    dp[n]
 }
 
 /// 力扣（287. 寻找重复数） https://leetcode-cn.com/problems/find-the-duplicate-number/
@@ -1877,9 +1825,6 @@ mod tests {
         let nums = vec![3, 2];
         let result = majority_element(nums);
         dbg!("majority_element: {:?}", result);
-
-        dbg!("nth_ugly_number    {}", nth_ugly_number(1690));
-        dbg!("nth_ugly_number_v2 {}", nth_ugly_number_v2(1690));
 
         let nums = vec![3, 2, 3, 1, 2, 4, 5, 5, 6];
         let kth_largest = find_kth_largest(nums, 4);
