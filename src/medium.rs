@@ -949,73 +949,6 @@ fn dfs(
         used_vec[i] = false;
     }
 }
-/// 力扣（50. Pow(x, n)） https://leetcode-cn.com/problems/powx-n/
-pub fn my_pow(x: f64, n: i32) -> f64 {
-    x.powi(n)
-}
-
-/// 力扣（50. Pow(x, n)）
-/// 方法一：快速幂 + 递归
-pub fn my_pow_v2(x: f64, n: i32) -> f64 {
-    if n >= 0 {
-        quick_mul(x, n)
-    } else {
-        1.0 / quick_mul(x, -n)
-    }
-}
-
-/// 快速幂
-fn quick_mul(x: f64, n: i32) -> f64 {
-    if n == 0 {
-        return 1.0;
-    }
-
-    let y = quick_mul(x, n / 2);
-    if n % 2 == 0 {
-        y * y
-    } else {
-        y * y * x
-    }
-}
-
-fn quick_mul_v2(x: f64, n: i32) -> f64 {
-    let mut ans = 1.0f64;
-    let mut x_contribute = x;
-    let mut n_mut = n;
-    while n_mut > 0 {
-        if n_mut % 2 == 1 {
-            ans *= x_contribute;
-        }
-        x_contribute *= x_contribute;
-        n_mut /= 2;
-    }
-    ans
-}
-
-/// 力扣（50. Pow(x, n)）
-/// 方法二：快速幂 + 迭代 (该方法容易造成溢出不可取)
-pub fn my_pow_v3(x: f64, n: i32) -> f64 {
-    if n >= 0 {
-        quick_mul_v2(x, n)
-    } else {
-        1.0f64 / quick_mul_v2(x, -n)
-    }
-}
-
-/// 力扣（50. Pow(x, n)）
-pub fn my_pow_v4(x: f64, n: i32) -> f64 {
-    let mut x = if n > 0 { x } else { 1f64 / x };
-    let mut n = n;
-    let mut r = 1f64;
-    while n != 0 {
-        if n & 1 == 1 {
-            r *= x;
-        }
-        x *= x;
-        n /= 2;
-    }
-    r
-}
 
 /// 力扣（54. 螺旋矩阵） https://leetcode-cn.com/problems/spiral-matrix/
 pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
@@ -1783,19 +1716,6 @@ mod tests {
 
         dbg!("3999 to roman {}", int_to_roman(3999));
         dbg!("3999 to roman {}", int_to_roman_v2(3999));
-
-        dbg!(my_pow(2.10000, 3));
-
-        dbg!(my_pow_v2(2.00000, -4));
-        dbg!(my_pow_v2(2.00000, 10));
-
-        dbg!("i32 max :{},min :{}", std::i32::MAX, std::i32::MIN);
-        // dbg!("{}",my_pow_v3(2.00000,-2147483648));
-        // dbg!("{}",my_pow_v3(2.00000,-2147483647));
-
-        dbg!(my_pow_v4(2.00000, -2147483648));
-        dbg!(my_pow_v4(2.00000, -2147483647));
-        dbg!(my_pow_v4(2.00000, 2147483647));
 
         // let tokens = vec![
         //     "2".to_string(),

@@ -496,6 +496,111 @@ pub fn nth_ugly_number_v2(n: i32) -> i32 {
     dp[n]
 }
 
+/// 力扣（367. 有效的完全平方数) https://leetcode-cn.com/problems/valid-perfect-square/
+/// 方法1： 二分查找
+pub fn is_perfect_square(num: i32) -> bool {
+    if num == 1 {
+        return true;
+    }
+    let mut left = 2;
+    let mut right = num / 2;
+    while left <= right {
+        let x = left + (right - left) / 2;
+        if let Some(guess_square) = x.checked_mul(x) {
+            if guess_square == num {
+                return true;
+            }
+
+            if guess_square > num {
+                right = x - 1;
+            } else {
+                left = x + 1;
+            }
+        } else {
+            // 过大
+            right = x - 1;
+        }
+    }
+    false
+}
+
+/// 力扣（367. 有效的完全平方数)
+/// 方法2：牛顿迭代法
+pub fn is_perfect_square_v2(num: i32) -> bool {
+    let mut x0 = num as f64;
+    loop {
+        let x1 = (x0 + (num as f64) / x0) / 2.0;
+        if x0 - x1 < 1e-6 {
+            break;
+        }
+        x0 = x1;
+    }
+
+    let x = x0 as i32;
+    x * x == num
+}
+
+static HEX_CHARS: [&str; 16] = [
+    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f",
+];
+/// 力扣（405. 数字转换为十六进制数） https://leetcode-cn.com/problems/convert-a-number-to-hexadecimal/
+pub fn to_hex(num: i32) -> String {
+    match num.cmp(&0) {
+        Ordering::Greater | Ordering::Less => {
+            let mut ret = String::new();
+            let mut num = num;
+            let mut i = 7;
+            while i >= 0 {
+                let val = (num >> (4 * i)) & 0xf;
+                if !ret.is_empty() || val > 0 {
+                    ret.push_str(HEX_CHARS[val as usize]);
+                }
+                i -= 1;
+            }
+            ret
+        }
+
+        Ordering::Equal => "0".to_owned(),
+    }
+}
+
+/// 剑指 Offer 10- I. 斐波那契数列   https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/
+/// 方法1：动态规划
+pub fn fib(n: i32) -> i32 {
+    if n <= 1 {
+        return n;
+    }
+
+    let mut f0 = 0i64;
+    let mut f1 = 1i64;
+    let mut current = 0i64;
+    let mut i = 1;
+    while i < n {
+        // 答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+        current = (f0 + f1) % 1000000007;
+        f0 = f1;
+        f1 = current;
+        i += 1;
+    }
+
+    current as i32
+}
+
+/// 剑指 Offer 10- I. 斐波那契数列
+pub fn fib_v2(n: i32) -> i32 {
+    let mut f0 = 0;
+    let mut f1 = 1;
+    let mut i = 0;
+    let mut sum = 0;
+    while i < n {
+        sum = (f0 + f1) % 1000000007;
+        f0 = f1;
+        f1 = sum;
+        i += 1;
+    }
+    f0
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -534,5 +639,9 @@ mod tests {
 
         dbg!("nth_ugly_number    {}", nth_ugly_number(1690));
         dbg!("nth_ugly_number_v2 {}", nth_ugly_number_v2(1690));
+
+        dbg!(is_perfect_square_v2(256));
+        dbg!(is_perfect_square_v2(142857));
+        dbg!(is_perfect_square_v2(i32::MAX));
     }
 }

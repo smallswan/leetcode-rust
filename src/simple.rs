@@ -476,149 +476,6 @@ pub fn length_of_last_word_v2(s: String) -> i32 {
     end - start
 }
 
-/// 力扣（66. 加一） https://leetcode-cn.com/problems/plus-one/
-pub fn plus_one(digits: Vec<i32>) -> Vec<i32> {
-    // 以下算法参考了：https://leetcode-cn.com/problems/plus-one/solution/java-shu-xue-jie-ti-by-yhhzw/
-    let len = digits.len();
-    let mut new_digits = digits.clone();
-
-    let mut i = len - 1;
-    loop {
-        let b = (digits[i] + 1) % 10;
-        new_digits[i] = b;
-        if b != 0 {
-            return new_digits;
-        }
-        if i > 0 {
-            i -= 1;
-        } else {
-            break;
-        }
-    }
-
-    // digits为全部是9的情况
-    let mut new_digits = vec![0; len + 1];
-    new_digits[0] = 1;
-    new_digits
-}
-
-/// 力扣（67. 二进制求和） https://leetcode-cn.com/problems/add-binary/
-pub fn add_binary(a: String, b: String) -> String {
-    let mut result = String::new();
-    let mut ca = 0;
-    let mut s = true;
-    let mut t = true;
-    let mut a_rev = a.chars().rev();
-    let mut b_rev = b.chars().rev();
-
-    while s || t {
-        let mut sum = ca;
-
-        if let Some(x) = a_rev.next() {
-            let temp = x as i32 - 48;
-
-            sum += temp;
-        } else {
-            s = false;
-        }
-
-        if let Some(x) = b_rev.next() {
-            let temp = x as i32 - 48;
-            sum += temp;
-        } else {
-            t = false;
-        }
-
-        if !s && !t {
-            break;
-        }
-
-        if sum % 2 == 0 {
-            result.push('0');
-        } else {
-            result.push('1');
-        }
-        ca = sum / 2;
-    }
-
-    if ca == 1 {
-        result.push('1');
-    }
-    //字符串翻转
-    result.chars().rev().collect()
-}
-
-/// 力扣（69. x 的平方根） https://leetcode-cn.com/problems/sqrtx/
-/// 方法1：二分查找，注意相乘溢出
-pub fn my_sqrt(x: i32) -> i32 {
-    let mut left = 0;
-    let mut right = x;
-    let mut ans = -1;
-    while left <= right {
-        let mid = left + (right - left) / 2;
-        if (mid as i64) * (mid as i64) <= x as i64 {
-            ans = mid;
-            left = mid + 1;
-        } else {
-            right = mid - 1;
-        }
-    }
-    ans
-}
-
-/// 力扣（69. x 的平方根）
-/// 方法2：换底公式（自然数e为底）
-pub fn my_sqrt_v2(x: i32) -> i32 {
-    if x == 0 {
-        return 0;
-    }
-
-    // x1/2=(elnx)1/2=e21​lnx
-    //java int ans = (int) Math.exp(0.5 * Math.log(x));
-    let x = x as f64;
-
-    //exp(self) = e^(self)
-    //ln(self) = self's  natural logarithm
-    let ans = (0.5 * (x).ln()).exp();
-    let squar = (ans + 1f64) * (ans + 1f64);
-
-    if squar <= x {
-        (ans as i32) + 1
-    } else {
-        ans as i32
-    }
-}
-
-/// 力扣（69. x 的平方根）
-/// 方法3：系统内置方法
-pub fn my_sqrt_v3(x: i32) -> i32 {
-    let y = x as f64;
-    y.sqrt().floor() as i32
-}
-
-/// 力扣（69. x 的平方根）
-/// 牛顿迭代法
-/// 我们用 C表示待求出平方根的那个整数。显然，C 的平方根就是函数: y = f(x) = x^2 - C
-pub fn my_sqrt_v4(x: i32) -> i32 {
-    if x == 0 {
-        return 0i32;
-    }
-
-    let c = x as f64;
-    let mut x0 = c;
-    loop {
-        // 迭代方程
-        let xi = 0.5 * (x0 + c / x0);
-        // 1e-7即0.0000001
-        if (x0 - xi).abs() < 1e-7 {
-            break;
-        }
-        x0 = xi;
-    }
-
-    x0 as i32
-}
-
 use std::cell::RefCell;
 use std::rc::Rc;
 /// 力扣（70. 爬楼梯） https://leetcode-cn.com/problems/climbing-stairs/
@@ -1008,33 +865,6 @@ pub fn title_to_number(column_title: String) -> i32 {
     sum
 }
 
-/// 力扣（172. 阶乘后的零） https://leetcode-cn.com/problems/factorial-trailing-zeroes/
-pub fn trailing_zeroes(n: i32) -> i32 {
-    let mut count_fives = 0;
-    let mut steps: Vec<i32> = (5..=n).into_iter().filter(|x| *x % 5 == 0).collect();
-    // println!("{:?}",steps);
-    for step in steps {
-        let mut remaining = step;
-        while remaining % 5 == 0 {
-            count_fives += 1;
-            remaining /= 5;
-        }
-    }
-
-    count_fives
-}
-
-/// 力扣（172. 阶乘后的零）
-/// f(n) = n/5^1 + n/5^2 + n/5^3 + n/5^m (n < 5^m)
-pub fn trailing_zeroes_v2(n: i32) -> i32 {
-    let mut count_fives = 0;
-    let mut remaining = n;
-    while remaining > 0 {
-        remaining /= 5;
-        count_fives += remaining;
-    }
-    count_fives
-}
 /// 力扣（190. 颠倒二进制位） https://leetcode-cn.com/problems/reverse-bits/
 //  方法一：逐位颠倒
 pub fn reverse_bits(x: u32) -> u32 {
@@ -1226,38 +1056,6 @@ pub fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
     false
 }
 
-/// 力扣（231. 2的幂） https://leetcode-cn.com/problems/power-of-two/
-pub fn is_power_of_two(n: i32) -> bool {
-    if n <= 0 {
-        return false;
-    }
-    if n == 1 {
-        return true;
-    }
-
-    let mut m = n;
-    loop {
-        if m % 2 == 0 {
-            m /= 2;
-            if m <= 1 {
-                break;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    true
-}
-
-/// 力扣（231. 2的幂）
-pub fn is_power_of_two_v2(n: i32) -> bool {
-    if n == 0 {
-        return false;
-    }
-
-    n & (n - 1) == 0
-}
 /// 力扣（258. 各位相加） https://leetcode-cn.com/problems/add-digits/
 pub fn add_digits(num: i32) -> i32 {
     (num - 1) % 9 + 1
@@ -1438,38 +1236,6 @@ pub fn word_pattern(pattern: String, s: String) -> bool {
 /// 力扣（292. Nim 游戏） https://leetcode-cn.com/problems/nim-game/
 pub fn can_win_nim(n: i32) -> bool {
     n % 4 != 0
-}
-
-/// 力扣（326. 3的幂) https://leetcode-cn.com/problems/power-of-three/
-pub fn is_power_of_three(n: i32) -> bool {
-    n > 0 && 1162261467 % n == 0
-}
-
-/// 力扣（326. 3的幂)
-pub fn is_power_of_three_v2(n: i32) -> bool {
-    if n < 1 {
-        return false;
-    }
-    let mut n = n;
-    while n % 3 == 0 {
-        n /= 3;
-    }
-    n == 1
-}
-
-/// 力扣（326. 3的幂)
-pub fn is_power_of_three_v3(n: i32) -> bool {
-    if n <= 0 {
-        return false;
-    }
-    let mut n = n;
-    while n > 1 {
-        if n % 3 != 0 {
-            return false;
-        }
-        n /= 3;
-    }
-    true
 }
 
 /// 力扣（338. 比特位计数） https://leetcode-cn.com/problems/counting-bits/
@@ -1711,11 +1477,6 @@ pub fn intersect_v2(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
     intersect_vec
 }
 
-/// 力扣（342. 4的幂） https://leetcode-cn.com/problems/power-of-four/
-pub fn is_power_of_four(n: i32) -> bool {
-    n > 0 && (n & (n - 1)) == 0 && (n & 0x2aaaaaaa == 0)
-}
-
 /// 力扣（344. 反转字符串） https://leetcode-cn.com/problems/reverse-string/
 pub fn reverse_string(s: &mut Vec<char>) {
     let len = s.len();
@@ -1727,50 +1488,6 @@ pub fn reverse_string(s: &mut Vec<char>) {
             i += 1;
         }
     }
-}
-
-/// 力扣（367. 有效的完全平方数) https://leetcode-cn.com/problems/valid-perfect-square/
-/// 方法1： 二分查找
-pub fn is_perfect_square(num: i32) -> bool {
-    if num == 1 {
-        return true;
-    }
-    let mut left = 2;
-    let mut right = num / 2;
-    while left <= right {
-        let x = left + (right - left) / 2;
-        if let Some(guess_square) = x.checked_mul(x) {
-            if guess_square == num {
-                return true;
-            }
-
-            if guess_square > num {
-                right = x - 1;
-            } else {
-                left = x + 1;
-            }
-        } else {
-            // 过大
-            right = x - 1;
-        }
-    }
-    false
-}
-
-/// 力扣（367. 有效的完全平方数)
-/// 方法2：牛顿迭代法
-pub fn is_perfect_square_v2(num: i32) -> bool {
-    let mut x0 = num as f64;
-    loop {
-        let x1 = (x0 + (num as f64) / x0) / 2.0;
-        if x0 - x1 < 1e-6 {
-            break;
-        }
-        x0 = x1;
-    }
-
-    let x = x0 as i32;
-    x * x == num
 }
 
 /// 力扣（383. 赎金信） https://leetcode-cn.com/problems/ransom-note/
@@ -1947,30 +1664,6 @@ pub fn read_binary_watch(turned_on: i32) -> Vec<String> {
     }
 
     result
-}
-
-static HEX_CHARS: [&str; 16] = [
-    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f",
-];
-/// 力扣（405. 数字转换为十六进制数） https://leetcode-cn.com/problems/convert-a-number-to-hexadecimal/
-pub fn to_hex(num: i32) -> String {
-    match num.cmp(&0) {
-        Ordering::Greater | Ordering::Less => {
-            let mut ret = String::new();
-            let mut num = num;
-            let mut i = 7;
-            while i >= 0 {
-                let val = (num >> (4 * i)) & 0xf;
-                if !ret.is_empty() || val > 0 {
-                    ret.push_str(HEX_CHARS[val as usize]);
-                }
-                i -= 1;
-            }
-            ret
-        }
-
-        Ordering::Equal => "0".to_owned(),
-    }
 }
 
 /// 力扣（412. Fizz Buzz） https://leetcode-cn.com/problems/fizz-buzz/
@@ -2705,57 +2398,6 @@ pub fn height_checker(heights: Vec<i32>) -> i32 {
     count
 }
 
-/// 力扣（1486. 数组异或操作） https://leetcode-cn.com/problems/xor-operation-in-an-array/
-/// 方法一：模拟
-pub fn xor_operation(n: i32, start: i32) -> i32 {
-    (1..n).fold(start, |acc, i| acc ^ (start + 2 * i))
-}
-
-/// 力扣（1486. 数组异或操作）
-/// 方法二：数学
-pub fn xor_operation_v2(n: i32, start: i32) -> i32 {
-    let (s, e) = (start >> 1, n & start & 1);
-    let result = sum_xor(s - 1) ^ sum_xor(s + n - 1);
-
-    result << 1 | e
-}
-
-fn sum_xor(x: i32) -> i32 {
-    match x % 4 {
-        0 => x,
-        1 => 1,
-        2 => x + 1,
-        _ => 0,
-    }
-}
-
-/// 力扣（1863. 找出所有子集的异或总和再求和）https://leetcode-cn.com/problems/sum-of-all-subset-xor-totals/
-pub fn subset_xor_sum(nums: Vec<i32>) -> i32 {
-    let mut xor_sum = 0;
-    let n = nums.len();
-    for num in nums {
-        xor_sum |= num;
-    }
-    xor_sum << (n - 1)
-}
-
-/// 力扣（1863. 找出所有子集的异或总和再求和）
-pub fn subset_xor_sum_v2(nums: Vec<i32>) -> i32 {
-    let mut xor_sum = 0;
-    let n = nums.len();
-    let two_pow_n = 1 << n;
-    for i in 0..two_pow_n {
-        let mut temp = 0;
-        for j in 0..n {
-            if i & (1 << j) != 0 {
-                temp ^= nums[j];
-            }
-        }
-        xor_sum += temp;
-    }
-    xor_sum
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -2799,8 +2441,6 @@ mod tests {
         let count = climb_stairs(30);
         dbg!(count);
 
-        dbg!(plus_one(vec![9, 1, 9]));
-
         let mut chars = Vec::<char>::new();
         chars.push('a');
         chars.push('b');
@@ -2809,10 +2449,6 @@ mod tests {
         //    chars.push('e');
         reverse_string(&mut chars);
         dbg!(chars);
-
-        let a = String::from("0");
-        let b = String::from("0");
-        dbg!(add_binary(a, b));
 
         dbg!(generate(10));
 
@@ -2878,21 +2514,10 @@ mod tests {
         let heights = vec![1, 2, 4, 5, 3, 3];
 
         dbg!(height_checker(heights));
-
-        assert_eq!(my_sqrt(4), 2);
-        assert_eq!(my_sqrt(8), 2);
     }
 
     #[test]
     fn no_pass() {
-        dbg!(my_sqrt(2147395599));
-        dbg!(my_sqrt_v2(2147395599));
-        dbg!(my_sqrt_v2(256));
-        let num = 2147395599f64;
-        dbg!(num.sqrt().floor());
-        dbg!(my_sqrt_v3(2147395599));
-        dbg!(my_sqrt_v4(2147395599));
-
         dbg!("1e-7 is very small");
 
         assert_eq!(hamming_weight(15), hamming_weight(15));
@@ -2912,11 +2537,6 @@ mod tests {
 
         let new_matrix2 = transpose_v2(matrix2);
         dbg!(new_matrix2);
-
-        let nums = vec![1, 16, 218];
-        for num in nums {
-            assert_eq!(is_power_of_two(num), is_power_of_two_v2(num));
-        }
 
         let mut nums = vec![0, 1, 0, 3, 0, 12, 14];
         move_zeroes(&mut nums);
@@ -2946,8 +2566,6 @@ mod tests {
         let nums2 = vec![6, 5, 5];
         let major2 = majority_element_v2(nums2);
         dbg!(major2);
-
-        dbg!(is_power_of_three(81 * 3));
 
         let nums = vec![-1, 0, 3, 5, 9, 12];
         let target = 9;
@@ -3048,13 +2666,6 @@ mod tests {
         dbg!(bitwise_complement_v2(i32::MAX));
         dbg!(i32::MAX);
         println!("{:b}", i32::MAX);
-    }
-
-    #[test]
-    fn math() {
-        dbg!(is_perfect_square_v2(256));
-        dbg!(is_perfect_square_v2(142857));
-        dbg!(is_perfect_square_v2(i32::MAX));
     }
 
     #[test]
