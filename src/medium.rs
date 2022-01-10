@@ -1736,14 +1736,6 @@ mod tests {
         let result = majority_element(nums);
         dbg!("majority_element: {:?}", result);
 
-        let nums = vec![3, 2, 3, 1, 2, 4, 5, 5, 6];
-        let kth_largest = find_kth_largest(nums, 4);
-        dbg!("kth_largest    {}", kth_largest);
-
-        let nums = vec![3, 2, 1, 5, 6, 4];
-        let kth_largest = find_kth_largest(nums, 6);
-        dbg!("kth_largest    {}", kth_largest);
-
         let nums = vec![8, 8, 8, 8, 8, 8];
         let range = search_range(nums, 7);
         dbg!("range {:?}", range);
