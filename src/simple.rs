@@ -2354,25 +2354,6 @@ pub fn bitwise_complement_v2(n: i32) -> i32 {
     n ^ mark
 }
 
-/// 1046. 最后一块石头的重量 https://leetcode-cn.com/problems/last-stone-weight/
-use std::collections::BinaryHeap;
-pub fn last_stone_weight(stones: Vec<i32>) -> i32 {
-    let mut heap = BinaryHeap::from(stones);
-    loop {
-        if let Some(rock1) = heap.pop() {
-            if let Some(rock2) = heap.pop() {
-                if rock1 > rock2 {
-                    heap.push(rock1 - rock2);
-                }
-            } else {
-                return rock1;
-            }
-        } else {
-            return 0;
-        }
-    }
-}
-
 /// 力扣（1051. 高度检查器），https://leetcode-cn.com/problems/height-checker/
 pub fn height_checker(heights: Vec<i32>) -> i32 {
     let len = heights.len();

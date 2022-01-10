@@ -1290,16 +1290,6 @@ pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
     }
 }
 
-use std::collections::{BinaryHeap, HashSet};
-/// 力扣（215. 数组中的第K个最大元素） https://leetcode-cn.com/problems/kth-largest-element-in-an-array/
-pub fn find_kth_largest(nums: Vec<i32>, k: i32) -> i32 {
-    let mut heap = BinaryHeap::from(nums);
-    for _ in 1..k {
-        heap.pop();
-    }
-    heap.pop().unwrap()
-}
-
 /// 力扣（229. 求众数 II） https://leetcode-cn.com/problems/majority-element-ii/
 pub fn majority_element(nums: Vec<i32>) -> Vec<i32> {
     let mut count1 = 0;
