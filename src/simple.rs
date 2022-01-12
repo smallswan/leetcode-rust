@@ -689,18 +689,6 @@ pub fn is_palindrome_125_v2(s: String) -> bool {
     left >= right
 }
 
-/// 力扣（136. 只出现一次的数字） https://leetcode-cn.com/problems/single-number/
-/// 使用异或运算的规律
-pub fn single_number(nums: Vec<i32>) -> i32 {
-    let len = nums.len();
-    let mut single_number = nums[0];
-    for &num in nums.iter().take(len).skip(1) {
-        single_number ^= num;
-    }
-
-    single_number
-}
-
 /// 力扣（167. 两数之和 II - 输入有序数组）https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
 pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
     let mut result = Vec::<i32>::with_capacity(2);
@@ -807,42 +795,6 @@ pub fn title_to_number(column_title: String) -> i32 {
     sum
 }
 
-/// 力扣（190. 颠倒二进制位） https://leetcode-cn.com/problems/reverse-bits/
-//  方法一：逐位颠倒
-pub fn reverse_bits(x: u32) -> u32 {
-    let mut n = x;
-    let mut rev = 0;
-    let mut i = 0;
-    while i < 32 && n > 0 {
-        rev |= (n & 1) << (31 - i);
-        n >>= 1;
-        i += 1;
-    }
-    rev
-}
-
-/// 力扣（190. 颠倒二进制位）
-//  方法二：位运算分治
-pub fn reverse_bits_v2(x: u32) -> u32 {
-    const M1: u32 = 0x55555555; // 01010101010101010101010101010101
-    const M2: u32 = 0x33333333; // 00110011001100110011001100110011
-    const M4: u32 = 0x0f0f0f0f; // 00001111000011110000111100001111
-    const M8: u32 = 0x00ff00ff; // 00000000111111110000000011111111
-
-    let mut n = x;
-    n = n >> 1 & M1 | (n & M1) << 1;
-    n = n >> 2 & M2 | (n & M2) << 2;
-    n = n >> 4 & M4 | (n & M4) << 4;
-    n = n >> 8 & M8 | (n & M8) << 8;
-    n >> 16 | n << 16
-}
-
-/// 力扣（190. 颠倒二进制位）
-pub fn reverse_bits_v3(x: u32) -> u32 {
-    let mut n = x;
-    n.reverse_bits()
-}
-
 /// 力扣（191. 位1的个数) https://leetcode-cn.com/problems/number-of-1-bits/
 /// SWAR算法“计算汉明重量” https://baike.baidu.com/item/%E6%B1%89%E6%98%8E%E9%87%8D%E9%87%8F
 pub fn hamming_weight_v1(n: u32) -> i32 {
@@ -875,27 +827,6 @@ pub fn hamming_weight(n: u32) -> i32 {
     i = (i * MASK4) >> 24;
 
     i as i32
-}
-
-/// 力扣（191. 位1的个数)
-pub fn hamming_weight_v2(n: u32) -> i32 {
-    format!("{:b}", n).chars().filter(|c| *c == '1').count() as i32
-}
-
-/// 力扣（191. 位1的个数)
-pub fn hamming_weight_v3(n: u32) -> i32 {
-    count_ones(n)
-}
-
-/// Brian Kernighan 算法
-fn count_ones(n: u32) -> i32 {
-    let mut ones = 0;
-    let mut n = n;
-    while n > 0 {
-        n &= (n - 1);
-        ones += 1;
-    }
-    ones
 }
 
 /// 力扣（205. 同构字符串） https://leetcode-cn.com/problems/isomorphic-strings/
@@ -1057,43 +988,6 @@ pub fn is_anagram(s: String, t: String) -> bool {
     }
     true
 }
-/// 力扣（268. 丢失的数字） https://leetcode-cn.com/problems/missing-number/
-pub fn missing_number(nums: Vec<i32>) -> i32 {
-    use std::collections::HashSet;
-    let len = nums.len();
-    let mut nums_set = HashSet::with_capacity(len);
-    nums.iter().for_each(|num| {
-        nums_set.insert(*num as usize);
-    });
-
-    for num in 0..=len {
-        if !nums_set.contains(&num) {
-            return num as i32;
-        }
-    }
-
-    -1
-}
-
-/// 力扣（268. 丢失的数字）
-/// 方法：数学法
-pub fn missing_number_v2(nums: Vec<i32>) -> i32 {
-    let len = nums.len();
-    let expect_sum = (len * (len + 1) / 2) as i32;
-    // let sum = nums.iter().fold(0, |sum, num| sum + *num);
-    let sum: i32 = nums.iter().sum();
-    expect_sum - sum
-}
-/// 力扣（268. 丢失的数字）
-/// 方法：位运算（异或）
-pub fn missing_number_v3(nums: Vec<i32>) -> i32 {
-    let len = nums.len();
-    let mut missing = len;
-    for (idx, num) in nums.iter().enumerate().take(len) {
-        missing ^= idx ^ (*num as usize);
-    }
-    missing as i32
-}
 
 /// 力扣（278. 第一个错误的版本）  https://leetcode-cn.com/problems/first-bad-version/
 // The API isBadVersion is defined for you.
@@ -1178,58 +1072,6 @@ pub fn word_pattern(pattern: String, s: String) -> bool {
 /// 力扣（292. Nim 游戏） https://leetcode-cn.com/problems/nim-game/
 pub fn can_win_nim(n: i32) -> bool {
     n % 4 != 0
-}
-
-/// 力扣（338. 比特位计数） https://leetcode-cn.com/problems/counting-bits/
-/// 与 力扣（191. 位1的个数) 类似
-pub fn count_bits(n: i32) -> Vec<i32> {
-    let n = n as usize;
-    let mut result = vec![0; n + 1];
-
-    for (num, item) in result.iter_mut().enumerate().take(n + 1) {
-        *item = num.count_ones() as i32;
-    }
-
-    result
-}
-
-/// 力扣（338. 比特位计数）
-pub fn count_bits_v2(n: i32) -> Vec<i32> {
-    let n = n as usize;
-    let mut result = vec![0; n + 1];
-    for (num, item) in result.iter_mut().enumerate().take(n + 1).skip(1) {
-        *item = count_ones(num as u32);
-    }
-
-    result
-}
-
-/// 力扣（338. 比特位计数）
-/// 动态规划
-pub fn count_bits_v3(n: i32) -> Vec<i32> {
-    let n = n as usize;
-    let mut result = vec![0; n + 1];
-    let mut high_bit = 0;
-    for num in 1..=n {
-        if num & (num - 1) == 0 {
-            high_bit = num;
-        }
-        result[num] = result[num - high_bit] + 1;
-    }
-
-    result
-}
-
-/// 力扣（338. 比特位计数）
-/// 动态规划——最低有效位
-pub fn count_bits_v4(n: i32) -> Vec<i32> {
-    let n = n as usize;
-    let mut result = vec![0i32; n + 1];
-    for num in 1..=n {
-        result[num] = result[num >> 1] + ((num as i32) & 1);
-    }
-
-    result
 }
 
 /// 力扣（345. 反转字符串中的元音字母） https://leetcode-cn.com/problems/reverse-vowels-of-a-string/
@@ -1548,25 +1390,6 @@ pub fn first_uniq_char_v3(s: String) -> i32 {
         return only.1;
     }
     -1
-}
-
-/// 力扣（389. 找不同） https://leetcode-cn.com/problems/find-the-difference/
-pub fn find_the_difference(s: String, t: String) -> char {
-    let mut chars_vec = vec![0; 26];
-    let a = b'a' as usize;
-    t.as_bytes().iter().for_each(|x| {
-        chars_vec[(*x as usize) - a] += 1;
-    });
-    s.as_bytes().iter().for_each(|x| {
-        chars_vec[(*x as usize) - a] -= 1;
-    });
-
-    for (index, count) in chars_vec.iter().enumerate() {
-        if *count == 1 {
-            return (index as u8 + b'a') as char;
-        }
-    }
-    ' '
 }
 
 // TODO 400
@@ -2563,8 +2386,6 @@ mod tests {
 
     #[test]
     fn test_list_node() {
-        dbg!(reverse_bits(43261596));
-
         let x = 43261596u32;
         // [u8;4]
         dbg!(x.to_be_bytes());

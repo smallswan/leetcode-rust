@@ -1054,47 +1054,6 @@ pub fn set_zeroes(matrix: &mut Vec<Vec<i32>>) {
     }
 }
 
-/// 力扣（137. 只出现一次的数字 II） https://leetcode-cn.com/problems/single-number-ii/
-/// 方法1：哈希表
-pub fn single_number(nums: Vec<i32>) -> i32 {
-    use std::collections::HashMap;
-    let mut counts_map = HashMap::<i32, i32>::new();
-    for num in nums {
-        match counts_map.get_mut(&num) {
-            Some(count) => {
-                *count += 1;
-            }
-            None => {
-                counts_map.insert(num, 1);
-            }
-        }
-    }
-
-    for (key, value) in counts_map {
-        if value == 1 {
-            return key;
-        }
-    }
-    -1
-}
-
-/// 力扣（137. 只出现一次的数字 II）
-/// 方法2 ：依次确定每一个二进制位
-pub fn single_number_v2(nums: Vec<i32>) -> i32 {
-    let mut answer = 0;
-    for i in 0..32 {
-        let mut total = 0;
-        for &num in &nums {
-            total += ((num >> i) & 1);
-        }
-        if total % 3 != 0 {
-            answer |= (1 << i);
-        }
-    }
-
-    answer
-}
-
 /// 力扣（150. 逆波兰表达式求值） https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/
 /// 方法二：数组模拟栈
 pub fn eval_rpn(tokens: Vec<String>) -> i32 {
@@ -1151,30 +1110,6 @@ pub fn rotate(nums: &mut Vec<i32>, k: i32) {
     for j in 0..(len - offset) / 2 {
         nums.swap(j + offset, len - j - 1);
     }
-}
-
-/// 力扣（201. 数字范围按位与） https://leetcode-cn.com/problems/bitwise-and-of-numbers-range/
-/// 我们可以将问题重新表述为：给定两个整数，我们要找到它们对应的二进制字符串的公共前缀。
-/// 方法1：位移
-pub fn range_bitwise_and(left: i32, right: i32) -> i32 {
-    let mut left = left;
-    let mut right = right;
-    let mut shift = 0;
-    while left < right {
-        left >>= 1;
-        right >>= 1;
-        shift += 1;
-    }
-    left << shift
-}
-
-/// 方法2：Brian Kernighan 算法
-pub fn range_bitwise_and_v2(left: i32, right: i32) -> i32 {
-    let mut right = right;
-    while left < right {
-        right &= (right - 1);
-    }
-    right
 }
 
 ///  力扣（209. 长度最小的子数组） https://leetcode-cn.com/problems/minimum-size-subarray-sum/
@@ -1337,30 +1272,6 @@ pub fn majority_element(nums: Vec<i32>) -> Vec<i32> {
     }
 
     result
-}
-
-/// 力扣（260. 只出现一次的数字 III） https://leetcode-cn.com/problems/single-number-iii/
-/// 方法1：分组异或
-pub fn single_number_260(nums: Vec<i32>) -> Vec<i32> {
-    // ret 为 a,b两个数异或的结果
-    let mut ret = 0;
-    for &num in &nums {
-        ret ^= num;
-    }
-    // div 为 a,b 二进制位上不相同时，最低的位
-    let mut div = 1;
-    while div & ret == 0 {
-        div <<= 1;
-    }
-    let (mut a, mut b) = (0, 0);
-    for &num in &nums {
-        if div & num != 0 {
-            a ^= num;
-        } else {
-            b ^= num;
-        }
-    }
-    vec![a, b]
 }
 
 /// 力扣（287. 寻找重复数） https://leetcode-cn.com/problems/find-the-duplicate-number/
@@ -1780,14 +1691,6 @@ mod tests {
 
         let four_sum_result = four_sum(nums, target);
         dbg!("{:?}", four_sum_result);
-
-        let nums = vec![6, i32::MIN, 6, 6, 7, 8, 7, 8, 8, 7];
-        let single_number_v2_result = single_number_v2(nums);
-        dbg!(single_number_v2_result);
-
-        let nums = vec![1, 2, 1, 3, 2, 5];
-        let single_number_260_result = single_number_260(nums);
-        dbg!(single_number_260_result);
 
         dbg!(permute(vec![1, 2, 3]));
     }
