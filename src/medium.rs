@@ -682,93 +682,6 @@ pub fn next_permutation(nums: &mut Vec<i32>) {
     nums[i..].reverse();
 }
 
-/// 33. 搜索旋转排序数组 https://leetcode-cn.com/problems/search-in-rotated-sorted-array/
-/// 方法一：二分查找
-pub fn search(nums: Vec<i32>, target: i32) -> i32 {
-    let len = nums.len();
-    if len == 0 {
-        return -1;
-    }
-    if len == 1 {
-        if nums[0] == target {
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-
-    let (mut left, mut right) = (0, len - 1);
-    while left <= right {
-        let mut middle = (left + right) / 2;
-        if nums[middle] == target {
-            return middle as i32;
-        }
-        if nums[0] <= nums[middle] {
-            if nums[0] <= target && target < nums[middle] {
-                right = middle - 1;
-            } else {
-                left = middle + 1;
-            }
-        } else {
-            if nums[middle] < target && target <= nums[right] {
-                left = middle + 1;
-            } else {
-                right = middle - 1;
-            }
-        }
-    }
-
-    -1
-}
-
-/// 力扣（34. 在排序数组中查找元素的第一个和最后一个位置) https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
-/// 先用二分查找算法找到target的下标，然后向左右两边继续查找
-pub fn search_range(nums: Vec<i32>, target: i32) -> Vec<i32> {
-    use std::cmp::Ordering;
-    let mut range = vec![-1, -1];
-    let mut left = 0;
-    let mut right = nums.len();
-    while left < right {
-        let mut middle = (left + right) / 2;
-        match nums[middle].cmp(&target) {
-            Ordering::Greater => {
-                right = middle;
-            }
-            Ordering::Less => {
-                left = middle + 1;
-            }
-            Ordering::Equal => {
-                // 找到target的第一个位置后则向左右两边拓展查找
-                range[0] = middle as i32;
-                range[1] = middle as i32;
-                let mut l = middle;
-                let mut r = middle;
-                while r < right - 1 {
-                    if nums[r + 1] == target {
-                        r += 1;
-                    } else {
-                        break;
-                    }
-                }
-
-                while l > 0 {
-                    if nums[l - 1] == target {
-                        l -= 1;
-                    } else {
-                        break;
-                    }
-                }
-
-                range[0] = l as i32;
-                range[1] = r as i32;
-                break;
-            }
-        }
-    }
-
-    range
-}
-
 /// 36. 有效的数独 https://leetcode-cn.com/problems/valid-sudoku/
 pub fn is_valid_sudoku(board: Vec<Vec<char>>) -> bool {
     let mut rows = vec![vec![0; 9]; 9];
@@ -1646,10 +1559,6 @@ mod tests {
         let nums = vec![3, 2];
         let result = majority_element(nums);
         dbg!("majority_element: {:?}", result);
-
-        let nums = vec![8, 8, 8, 8, 8, 8];
-        let range = search_range(nums, 7);
-        dbg!("range {:?}", range);
 
         let digits = String::from("234");
         let combination = letter_combinations(digits);

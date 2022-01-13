@@ -384,57 +384,6 @@ pub fn str_str_v3(haystack: String, needle: String) -> i32 {
     -1
 }
 
-/// 力扣（35. 搜索插入位置） https://leetcode-cn.com/problems/search-insert-position/
-/// 提示:nums 为无重复元素的升序排列数组
-pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
-    let len = nums.len();
-    let mut idx = 0;
-    while idx < len {
-        if target <= nums[idx] {
-            return idx as i32;
-        }
-
-        if target > nums[idx] {
-            if idx != len - 1 {
-                if target < nums[idx + 1] {
-                    return (idx + 1) as i32;
-                } else {
-                    idx += 1;
-                    continue;
-                }
-            } else {
-                return len as i32;
-            }
-        }
-        idx += 1;
-    }
-
-    idx as i32
-}
-
-/// 力扣（35. 搜索插入位置）
-/// 二分查找
-pub fn search_insert_v2(nums: Vec<i32>, target: i32) -> i32 {
-    use std::cmp::Ordering;
-    let mut left = 0;
-    let mut right = (nums.len() - 1) as i32;
-    while left <= right {
-        let middle = (left + (right - left) / 2) as usize;
-        match nums[middle].cmp(&target) {
-            Ordering::Greater => {
-                right = (middle as i32) - 1;
-            }
-            Ordering::Less => {
-                left = (middle + 1) as i32;
-            }
-            Ordering::Equal => {
-                return middle as i32;
-            }
-        }
-    }
-    (right + 1) as i32
-}
-
 /// 力扣（53. 最大子序和） https://leetcode-cn.com/problems/maximum-subarray/
 /// 动态规划转移方程： f(i)=max{f(i−1)+nums[i],nums[i]}  
 ///  f(i) 代表以第 i 个数结尾的「连续子数组的最大和」
@@ -2086,13 +2035,6 @@ mod tests {
 
         dbg!(reverse(132));
         dbg!(reverse(-1999999999));
-
-        let sorted_nums = vec![1, 3, 5, 6];
-        let target = 4;
-
-        dbg!(search_insert(sorted_nums, target));
-
-        dbg!(search_insert_v2(vec![1, 3, 5, 6], 7));
 
         let mut nums = vec![3, 2, 2, 3];
         let val = 3;
