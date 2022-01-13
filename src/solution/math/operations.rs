@@ -590,6 +590,26 @@ pub fn find_the_difference_v2(s: String, t: String) -> char {
     result as char
 }
 
+/// 1009. 十进制整数的反码 https://leetcode-cn.com/problems/complement-of-base-10-integer/
+pub fn bitwise_complement(n: i32) -> i32 {
+    let mut num = n;
+    let mut high_bit = 0;
+    for i in 1..=30 {
+        if num >= (1 << i) {
+            high_bit = i;
+        } else {
+            break;
+        }
+    }
+
+    let mark = match (high_bit == 30) {
+        true => 0x7fffffff,
+        false => (1 << (high_bit + 1)) - 1,
+    };
+
+    num ^ mark
+}
+
 /// 力扣（1486. 数组异或操作） https://leetcode-cn.com/problems/xor-operation-in-an-array/
 /// 方法一：模拟
 pub fn xor_operation(n: i32, start: i32) -> i32 {
@@ -639,6 +659,30 @@ pub fn subset_xor_sum_v2(nums: Vec<i32>) -> i32 {
         xor_sum += temp;
     }
     xor_sum
+}
+
+/// 剑指 Offer 56 - I. 数组中数字出现的次数 https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/
+/// 方法1：分组异或
+pub fn single_numbers(nums: Vec<i32>) -> Vec<i32> {
+    // ret 为 a,b两个数异或的结果
+    let mut ret = 0;
+    for &num in &nums {
+        ret ^= num;
+    }
+    // div 为 a,b 二进制位上不相同时，最低的位
+    let mut div = 1;
+    while div & ret == 0 {
+        div <<= 1;
+    }
+    let (mut a, mut b) = (0, 0);
+    for &num in &nums {
+        if div & num != 0 {
+            a ^= num;
+        } else {
+            b ^= num;
+        }
+    }
+    vec![a, b]
 }
 
 /// 剑指 Offer 64. 求1+2+…+n  https://leetcode-cn.com/problems/qiu-12n-lcof/
