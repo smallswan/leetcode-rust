@@ -1,3 +1,5 @@
+//! 左移、右移
+
 /// 力扣（190. 颠倒二进制位） https://leetcode-cn.com/problems/reverse-bits/
 //  方法一：逐位颠倒
 pub fn reverse_bits(x: u32) -> u32 {
