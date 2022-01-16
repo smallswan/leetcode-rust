@@ -1379,73 +1379,6 @@ pub fn find_disappeared_numbers_v2(nums: Vec<i32>) -> Vec<i32> {
     result
 }
 
-/// 力扣（461. 汉明距离） https://leetcode-cn.com/problems/hamming-distance/
-pub fn hamming_distance(x: i32, y: i32) -> i32 {
-    let z = x ^ y;
-    z.count_ones() as i32
-}
-
-/// 力扣（461. 汉明距离）
-/// 这里采用右移位，每个位置都会被移动到最右边。移位后检查最右位的位是否为 1 即可。检查最右位是否为 1，可以使用取模运算（i % 2）或者 AND 操作（i & 1），这两个操作都会屏蔽最右位以外的其他位。
-pub fn hamming_distance_v2(x: i32, y: i32) -> i32 {
-    let mut xor = x ^ y;
-    let mut distance = 0;
-    while xor != 0 {
-        if xor % 2 == 1 {
-            distance += 1;
-        }
-        xor >>= 1;
-    }
-    distance
-}
-
-/// 力扣（461. 汉明距离）
-/// 布赖恩·克尼根算法
-pub fn hamming_distance_v3(x: i32, y: i32) -> i32 {
-    let mut xor = x ^ y;
-    let mut distance = 0;
-    while xor != 0 {
-        distance += 1;
-        xor = xor & (xor - 1);
-    }
-    distance
-}
-
-/// 力扣（476. 数字的补数） https://leetcode-cn.com/problems/number-complement/
-/// 方法1：左移求出最高位所需移动的次数，然后构建与之匹配的掩码
-pub fn find_complement(num: i32) -> i32 {
-    let mut num = num;
-    //最高位为1的位
-    let mut high_bit = 0;
-    for i in 1..=30 {
-        if num >= (1 << i) {
-            high_bit = i;
-        } else {
-            break;
-        }
-    }
-
-    let mark = match (high_bit == 30) {
-        true => 0x7fffffff,
-        false => (1 << (high_bit + 1)) - 1,
-    };
-
-    num ^ mark
-}
-
-/// 力扣（476. 数字的补数）
-/// 方法2：右移统计数字的有效位数，同时构建与之匹配的掩码
-pub fn find_complement_v2(num: i32) -> i32 {
-    let mut temp = num;
-    let mut mask = 0;
-    while temp > 0 {
-        temp >>= 1;
-        mask = (mask << 1) + 1;
-    }
-
-    num ^ mask
-}
-
 ///力扣（485. 最大连续1的个数）https://leetcode-cn.com/problems/max-consecutive-ones/
 pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
     let mut max = 0;
@@ -1846,48 +1779,6 @@ pub fn sorted_squares_v3(nums: Vec<i32>) -> Vec<i32> {
 
 /// TODO 1000
 
-/// 1009. 十进制整数的反码 https://leetcode-cn.com/problems/complement-of-base-10-integer/
-pub fn bitwise_complement(n: i32) -> i32 {
-    let mut num = n;
-    let mut high_bit = 0;
-    for i in 1..=30 {
-        if num >= (1 << i) {
-            high_bit = i;
-        } else {
-            break;
-        }
-    }
-
-    let mark = match (high_bit == 30) {
-        true => 0x7fffffff,
-        false => (1 << (high_bit + 1)) - 1,
-    };
-
-    num ^ mark
-}
-
-/// 1009. 十进制整数的反码
-pub fn bitwise_complement_v2(n: i32) -> i32 {
-    if n == 0 {
-        return 1;
-    }
-    let mut num = n;
-    let mut mark = 1;
-    let mut high_bit = 0;
-    while num > 0 {
-        num >>= 1;
-        high_bit += 1;
-    }
-
-    //dbg!(high_bit);
-    let mark = match (high_bit == 31) {
-        true => i32::MAX,
-        false => (1 << high_bit) - 1,
-    };
-
-    n ^ mark
-}
-
 /// 力扣（1051. 高度检查器），https://leetcode-cn.com/problems/height-checker/
 pub fn height_checker(heights: Vec<i32>) -> i32 {
     let len = heights.len();
@@ -2054,15 +1945,6 @@ mod tests {
         let max_ans = max_sub_array(nums3);
         dbg!(max_ans);
 
-        let ones = hamming_distance(1, 4);
-        dbg!(ones);
-
-        let distance = hamming_distance_v2(4, 255);
-        dbg!(distance);
-
-        let distance = hamming_distance_v3(4, 65535);
-        dbg!(distance);
-
         let nums = vec![2, 2, 1, 1, 1, 2, 2];
         let major = majority_element(nums);
         dbg!(major);
@@ -2145,19 +2027,5 @@ mod tests {
 
         let rev_x: String = format!("{:032b}", x).chars().rev().collect();
         dbg!(u32::from_str_radix(&rev_x, 2));
-    }
-
-    #[test]
-    fn test_bitwise_operators() {
-        dbg!(bitwise_complement_v2(0));
-        dbg!(bitwise_complement_v2(5));
-        dbg!(bitwise_complement_v2(7));
-        dbg!(bitwise_complement_v2(1022));
-        //100000000
-        //214748364
-        dbg!(bitwise_complement_v2(100000000));
-        dbg!(bitwise_complement_v2(i32::MAX));
-        dbg!(i32::MAX);
-        println!("{:b}", i32::MAX);
     }
 }
