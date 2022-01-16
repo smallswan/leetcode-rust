@@ -29,8 +29,4 @@ fn main() {
     let rand = unsafe { rand() };
 
     println!("{}", rand);
-
-    let index = solution::string::knuth_morris_pratt("Rust is a programming language empowering everyone to build reliable and efficient software".to_string(),"everyone".to_string());
-
-    println!("{:?}", index);
 }

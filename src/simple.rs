@@ -277,113 +277,6 @@ pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
     k as i32
 }
 
-/// 力扣（28. 实现 strStr()）  https://leetcode-cn.com/problems/implement-strstr/
-/// 当 needle 是空字符串时我们应当返回 0 。这与 C 语言的 strstr() 以及 Java 的 indexOf() 定义相符。
-pub fn str_str(haystack: String, needle: String) -> i32 {
-    // 参考Java String.indexOf()的代码
-    let source = haystack.as_bytes();
-    let target = needle.as_bytes();
-
-    let source_offset = 0usize;
-    let source_count = source.len();
-    let target_offset = 0usize;
-    let target_count = target.len();
-    let from_index = 0usize;
-    if target_count == 0usize {
-        return 0;
-    }
-
-    if target_count > source_count {
-        return -1;
-    }
-
-    let first = target[target_offset];
-    let max = source_offset + (source_count - target_count);
-
-    let mut i = source_offset + from_index;
-    while i <= max {
-        // 首先匹配首字母
-        while source[i] != first {
-            i += 1;
-            if i <= max {
-                continue;
-            } else {
-                break;
-            }
-        }
-
-        if i <= max {
-            let mut j = i + 1;
-            let end = j + target_count - 1;
-            let mut k = target_offset + 1;
-            // 匹配剩余的字符
-            while j < end && source[j] == target[k] {
-                j += 1;
-                k += 1;
-            }
-
-            if j == end {
-                return (i - source_offset) as i32;
-            }
-        }
-
-        i += 1;
-    }
-
-    -1
-}
-
-/// 力扣（28. 实现 strStr()）
-/// 系统内置方法
-pub fn str_str_v2(haystack: String, needle: String) -> i32 {
-    match haystack.find(&needle) {
-        Some(index) => index as i32,
-        None => return -1,
-    }
-}
-
-/// 力扣（28. 实现 strStr()）
-/// KMP(Knuth-Morris-Pratt)算法
-/// 前缀函数，记作 π(i)，其定义如下：
-/// 对于长度为 m 的字符串 s，其前缀函数 π(i)(0≤i<m) 表示 s 的子串 s[0:i] 的最长的相等的真前缀与真后缀的长度。特别地，如果不存在符合条件的前后缀，那么 π(i)=0。
-pub fn str_str_v3(haystack: String, needle: String) -> i32 {
-    let (m, n) = (needle.len(), haystack.len());
-    if m == 0 {
-        return 0;
-    }
-    let haystack_chars = haystack.chars().collect::<Vec<char>>();
-    let needle_chars = needle.chars().collect::<Vec<char>>();
-    let mut pi = vec![0; m];
-    let (mut i, mut j) = (1, 0);
-    while i < m {
-        while j > 0 && (&needle_chars[i] != &needle_chars[j]) {
-            j = pi[j - 1];
-        }
-        // 如果 s[i]=s[π(i−1)]，那么 π(i)=π(i−1)+1。
-        if &needle_chars[i] == &needle_chars[j] {
-            j += 1;
-        }
-        pi[i] = j;
-        i += 1;
-    }
-
-    let (mut i, mut j) = (0, 0);
-    while i < n {
-        while j > 0 && (&haystack_chars[i] != &needle_chars[j]) {
-            j = pi[j - 1];
-        }
-        if &haystack_chars[i] == &needle_chars[j] {
-            j += 1;
-        }
-        if (j == m) {
-            return (i - m + 1) as i32;
-        }
-        i += 1;
-    }
-
-    -1
-}
-
 /// 力扣（53. 最大子序和） https://leetcode-cn.com/problems/maximum-subarray/
 /// 动态规划转移方程： f(i)=max{f(i−1)+nums[i],nums[i]}  
 ///  f(i) 代表以第 i 个数结尾的「连续子数组的最大和」
@@ -2040,10 +1933,6 @@ mod tests {
         let val = 3;
 
         let len = remove_element(&mut nums, val);
-
-        let haystack = String::from("aaacaaab");
-        let needle = String::from("aaab");
-        dbg!(str_str(haystack, needle));
 
         let mut strs = Vec::new();
         strs.push(String::from("cdf"));
