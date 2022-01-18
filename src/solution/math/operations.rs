@@ -307,6 +307,15 @@ pub fn is_power_of_four(n: i32) -> bool {
     n > 0 && (n & (n - 1)) == 0 && (n & 0x2aaaaaaa == 0)
 }
 
+/// 492. 构造矩形 https://leetcode-cn.com/problems/construct-the-rectangle/
+pub fn construct_rectangle(area: i32) -> Vec<i32> {
+    let mut w = (area as f32).sqrt() as i32;
+    while area % w != 0 {
+        w -= 1;
+    }
+    vec![area / w, w]
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -350,5 +359,7 @@ mod tests {
         }
 
         dbg!(is_power_of_three(81 * 3));
+
+        dbg!(construct_rectangle(10_000_000));
     }
 }
