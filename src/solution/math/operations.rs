@@ -307,6 +307,11 @@ pub fn is_power_of_four(n: i32) -> bool {
     n > 0 && (n & (n - 1)) == 0 && (n & 0x2aaaaaaa == 0)
 }
 
+/// 441. 排列硬币 https://leetcode-cn.com/problems/arranging-coins/
+pub fn arrange_coins(n: i32) -> i32 {
+    (((1.0f64 + 8.0f64 * n as f64).sqrt() - 1.0f64)/ 2.0).floor() as i32
+}
+
 /// 492. 构造矩形 https://leetcode-cn.com/problems/construct-the-rectangle/
 pub fn construct_rectangle(area: i32) -> Vec<i32> {
     let mut w = (area as f32).sqrt() as i32;
