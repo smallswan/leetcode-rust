@@ -618,46 +618,6 @@ pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
     result
 }
 
-/// 力扣（46. 全排列） https://leetcode-cn.com/problems/permutations/
-pub fn permute(nums: Vec<i32>) -> Vec<Vec<i32>> {
-    let len = nums.len();
-    let mut result: Vec<Vec<i32>> = Vec::new();
-    if len == 0 {
-        return result;
-    }
-    let mut used_vec = vec![false; len];
-    let mut path = Vec::<i32>::new();
-    dfs(&nums, len, 0, &mut path, &mut used_vec, &mut result);
-    result
-}
-
-// use std::collections::VecDeque;
-fn dfs(
-    nums: &Vec<i32>,
-    len: usize,
-    dept: usize,
-    path: &mut Vec<i32>,
-    used_vec: &mut Vec<bool>,
-    result: &mut Vec<Vec<i32>>,
-) {
-    if dept == len {
-        let full_path: Vec<i32> = path.into_iter().map(|&mut num| num).collect();
-        result.push(full_path);
-        return;
-    }
-
-    for i in 0..len {
-        if used_vec[i] {
-            continue;
-        }
-        path.push(nums[i]);
-        used_vec[i] = true;
-        dfs(&nums, len, dept + 1, path, used_vec, result);
-        path.pop();
-        used_vec[i] = false;
-    }
-}
-
 /// 力扣（54. 螺旋矩阵） https://leetcode-cn.com/problems/spiral-matrix/
 pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
     let len = matrix.len();
@@ -1232,8 +1192,6 @@ mod tests {
 
         let four_sum_result = four_sum(nums, target);
         dbg!("{:?}", four_sum_result);
-
-        dbg!(permute(vec![1, 2, 3]));
     }
 
     fn test_equal_substring() {
