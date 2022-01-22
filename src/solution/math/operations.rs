@@ -309,7 +309,7 @@ pub fn is_power_of_four(n: i32) -> bool {
 
 /// 441. 排列硬币 https://leetcode-cn.com/problems/arranging-coins/
 pub fn arrange_coins(n: i32) -> i32 {
-    (((1.0f64 + 8.0f64 * n as f64).sqrt() - 1.0f64)/ 2.0).floor() as i32
+    (((1.0f64 + 8.0f64 * n as f64).sqrt() - 1.0f64) / 2.0).floor() as i32
 }
 
 /// 492. 构造矩形 https://leetcode-cn.com/problems/construct-the-rectangle/
