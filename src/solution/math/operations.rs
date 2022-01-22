@@ -321,6 +321,16 @@ pub fn construct_rectangle(area: i32) -> Vec<i32> {
     vec![area / w, w]
 }
 
+/// 剑指 Offer 17. 打印从1到最大的n位数 https://leetcode-cn.com/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/
+pub fn print_numbers(n: i32) -> Vec<i32> {
+    let max = (10i32.pow(n as u32) - 1);
+    let mut result = Vec::<i32>::with_capacity(max as usize);
+    for num in 1..=max {
+        result.push(num);
+    }
+    result
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
