@@ -466,32 +466,6 @@ pub fn four_sum(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
     result
 }
 
-/// 22. 括号生成 https://leetcode-cn.com/problems/generate-parentheses/
-pub fn generate_parenthesis(n: i32) -> Vec<String> {
-    if n < 1 {
-        return vec![];
-    }
-    fn dfs(n: i32, left: i32, right: i32, result: &mut Vec<String>, mut path: String) {
-        if left == n && right == n {
-            result.push(path);
-            return;
-        }
-        if left < n {
-            let mut new_path = path.clone();
-            new_path.push('(');
-            dfs(n, left + 1, right, result, new_path);
-        }
-        if right < left {
-            // reuse path to avoid clone overhead
-            path.push(')');
-            dfs(n, left, right + 1, result, path);
-        }
-    }
-    let mut result = Vec::new();
-    dfs(n, 0, 0, &mut result, String::new());
-    result
-}
-
 /// 31. 下一个排列 https://leetcode-cn.com/problems/next-permutation/
 pub fn next_permutation(nums: &mut Vec<i32>) {
     let n = nums.len();

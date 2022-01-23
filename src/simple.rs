@@ -178,48 +178,6 @@ pub fn longest_common_prefix_v2(strs: Vec<String>) -> String {
     prefix.to_owned()
 }
 
-/// 力扣（20. 有效的括号）https://leetcode-cn.com/problems/valid-parentheses/
-fn is_valid(s: String) -> bool {
-    let len = s.len();
-    if len == 0 {
-        return false;
-    }
-    let chars: Vec<char> = s.chars().collect();
-    //使用 Vec模拟Stack
-    let mut stack = Vec::<char>::with_capacity(len);
-
-    for char in chars {
-        if char == ')' || char == '}' || char == ']' {
-            let prev_ch = stack.pop();
-            match prev_ch {
-                Some(ch) => {
-                    let m = is_match_brackets(ch, char);
-                    if !m {
-                        return false;
-                    }
-                }
-                None => {
-                    return false;
-                }
-            };
-        } else {
-            stack.push(char);
-        }
-    }
-
-    stack.is_empty()
-}
-
-/// 判断括号是否匹配
-fn is_match_brackets(left: char, right: char) -> bool {
-    match left {
-        '(' => right == ')',
-        '{' => right == '}',
-        '[' => right == ']',
-        _ => false,
-    }
-}
-
 /// 力扣（26. 删除有序数组中的重复项) https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
 pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
     let len = nums.len();
@@ -1813,9 +1771,6 @@ mod tests {
         let nums = vec![2, 7, 2, 11];
         let result = two_sum(nums, 9);
         dbg!(result);
-
-        let valid_string = String::from("(){{}");
-        dbg!(is_valid(valid_string));
 
         dbg!(reverse(132));
         dbg!(reverse(-1999999999));
