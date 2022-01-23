@@ -71,6 +71,29 @@ impl Solution {
             }
         }
     }
+
+    /// 77. 组合 https://leetcode-cn.com/problems/combinations/
+    pub fn combine(n: i32, k: i32) -> Vec<Vec<i32>> {
+        let mut res: Vec<Vec<i32>> = Vec::new();
+        Solution::combine_backtrack(1, n, k, vec![], &mut res);
+        res
+    }
+
+    fn combine_backtrack(start: i32, end: i32, k: i32, curr: Vec<i32>, result: &mut Vec<Vec<i32>>) {
+        if k < 1 {
+            result.push(curr);
+            return;
+        }
+        if end - start + 1 < k {
+            // elements is not enough, return quickly
+            return;
+        }
+        for i in start..end + 1 {
+            let mut vec = curr.clone();
+            vec.push(i);
+            Solution::combine_backtrack(i + 1, end, k - 1, vec, result);
+        }
+    }
 }
 
 #[cfg(test)]
@@ -85,5 +108,7 @@ mod tests {
         let candidates = vec![10, 1, 2, 7, 6, 1, 5];
         let target = 8;
         dbg!(Solution::combination_sum2(candidates, target));
+
+        dbg!(Solution::combine(4, 2));
     }
 }

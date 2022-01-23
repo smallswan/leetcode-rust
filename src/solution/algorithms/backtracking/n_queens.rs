@@ -51,13 +51,16 @@ impl Solution {
         }
     }
 
+    /// 判断冲突
     #[inline(always)]
     fn collision(board: &Vec<Vec<char>>, len: usize, x: usize, y: usize) -> bool {
+        // 同一列
         for i in 0..x {
             if board[i][y] == 'Q' {
                 return true;
             }
         }
+        // 从右下到左上
         let (mut i, mut j) = (x as i32 - 1, y as i32 - 1);
         while i >= 0 && j >= 0 {
             if board[i as usize][j as usize] == 'Q' {
@@ -66,6 +69,7 @@ impl Solution {
             i -= 1;
             j -= 1;
         }
+        //  从左下到右上
         let (mut i, mut j) = (x as i32 - 1, y as i32 + 1);
         while i >= 0 && j < len as i32 {
             if board[i as usize][j as usize] == 'Q' {
