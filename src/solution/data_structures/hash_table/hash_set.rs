@@ -1,53 +1,43 @@
 struct MyHashSet {
-    // FIXME 由于Rust所有权的限制，链表（LinkedList）remove较难实现，这里暂时使用Vec代替
     data: Vec<Vec<i32>>,
 }
 
-const BASE: i32 = 769;
 /// 705. 设计哈希集合 https://leetcode-cn.com/problems/design-hashset/
 impl MyHashSet {
+    const BASE: i32 = 811;
+
     fn new() -> Self {
-        let data = vec![Vec::<i32>::new(); BASE as usize];
-        return MyHashSet { data };
+        MyHashSet {
+            data: vec![vec![]; MyHashSet::BASE as usize],
+        }
     }
 
-    #[inline(always)]
     fn hash(key: i32) -> usize {
-        (key % 769) as usize
+        (key % MyHashSet::BASE) as usize
     }
 
     fn add(&mut self, key: i32) {
         let h = MyHashSet::hash(key);
-        let mut iter = self.data[h].iter();
-        while let Some(item) = iter.next() {
-            if *item == key {
-                return;
+        match self.data[h].binary_search(&key) {
+            Err(idx) => {
+                self.data[h].insert(idx, key);
             }
+            _ => {}
         }
-        self.data[h].push(key);
     }
 
     fn remove(&mut self, key: i32) {
         let h = MyHashSet::hash(key);
-        let mut iter = self.data[h].iter_mut();
-        while let Some(item) = iter.next() {
-            if *item == key {
-                //FIXME 题目中提示: 0 <= key <= 10^6，这里相当于逻辑删除。
-                *item = i32::MIN;
-                return;
+        match self.data[h].binary_search(&key) {
+            Ok(idx) => {
+                self.data[h].remove(idx);
             }
+            _ => {}
         }
     }
 
     fn contains(&self, key: i32) -> bool {
-        let h = MyHashSet::hash(key);
-        let mut iter = self.data[h].iter();
-        while let Some(item) = iter.next() {
-            if *item == key {
-                return true;
-            }
-        }
-        false
+        self.data[MyHashSet::hash(key)].binary_search(&key).is_ok()
     }
 }
 
