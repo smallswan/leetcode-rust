@@ -1,3 +1,79 @@
+/// 29. 两数相除 https://leetcode-cn.com/problems/divide-two-integers/
+pub fn divide(dividend: i32, divisor: i32) -> i32 {
+    if dividend == i32::MIN {
+        if divisor == 1 {
+            return i32::MIN;
+        }
+
+        if divisor == -1 {
+            //溢出返回
+            return i32::MAX;
+        }
+    }
+
+    if divisor == i32::MIN {
+        if dividend == i32::MIN {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    let mut dividend = dividend;
+    let mut rev = false;
+    if dividend > 0 {
+        dividend = -dividend;
+        rev = !rev;
+    }
+    let mut divisor = divisor;
+    if divisor > 0 {
+        divisor = -divisor;
+        rev = !rev;
+    }
+    let (mut left, mut right, mut ans) = (1, i32::MAX, 0);
+    while left <= right {
+        let mid = left + ((right - left) >> 1);
+        let check = quick_add(divisor, mid, dividend);
+        if check {
+            ans = mid;
+            if mid == i32::MAX {
+                break;
+            }
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    if rev {
+        -ans
+    } else {
+        ans
+    }
+}
+
+fn quick_add(y: i32, z: i32, x: i32) -> bool {
+    let mut result = 0;
+    let mut add = y;
+    let mut z = z;
+    while z != 0 {
+        if (z & 1) != 0 {
+            if result < x - add {
+                return false;
+            }
+            result += add;
+        }
+        if z != 1 {
+            if add < x - add {
+                return false;
+            }
+            add += add;
+        }
+        z >>= 1;
+    }
+    true
+}
+
 /// 力扣（50. Pow(x, n)） https://leetcode-cn.com/problems/powx-n/
 pub fn my_pow(x: f64, n: i32) -> f64 {
     x.powi(n)
