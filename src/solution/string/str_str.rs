@@ -108,7 +108,8 @@ pub fn str_str_v3(haystack: String, needle: String) -> i32 {
     -1
 }
 
-/// TODO 30. 串联所有单词的子串 https://leetcode-cn.com/problems/substring-with-concatenation-of-all-words/
+/// 30. 串联所有单词的子串 https://leetcode-cn.com/problems/substring-with-concatenation-of-all-words/
+/// 方法1：滑动窗口
 pub fn find_substring(s: String, words: Vec<String>) -> Vec<i32> {
     use std::collections::HashMap;
     let mut bytes = s.chars().collect::<Vec<char>>();
@@ -117,54 +118,47 @@ pub fn find_substring(s: String, words: Vec<String>) -> Vec<i32> {
         return result;
     }
 
-    let mut map: HashMap<&str, i32> = HashMap::new();
+    let mut map: HashMap<String, i32> = HashMap::new();
     let one_word = words[0].len();
     let words_len = words.len();
-    let all_len = one_word * words_len;
 
-    for word in &words {
-        let counter = map.entry(&word).or_insert(0);
+    for word in words {
+        let counter = map.entry(word).or_insert(0);
         *counter += 1;
     }
 
     for i in 0..one_word {
         let (mut left, mut right, mut count) = (i, i, 0);
-        let mut tmp_map: HashMap<&str, i32> = HashMap::new();
-        // while right + one_word <= s.len() {
-        //     let w:String = bytes.iter().skip(right).take(one_word).collect();
-        //     right += one_word;
-        //     let w_str = w.as_str();
-        //     if !map.contains_key(w_str){
-        //         count = 0;
-        //         left = right;
-        //         tmp_map.clear();
-        //     }else{
-        //         // if let Some(count) = tmp_map.get_mut(&w.as_str()){
-        //         //     *count += 1;
-        //         // }
-        //         let mut counter = tmp_map.entry(w_str).or_insert(0);
-        //         *counter += 1;
+        let mut tmp_map: HashMap<String, i32> = HashMap::new();
+        while right + one_word <= s.len() {
+            let w: String = bytes.iter().skip(right).take(one_word).collect();
+            right += one_word;
 
-        //         count +=1;
+            if !map.contains_key(&w.clone()) {
+                count = 0;
+                left = right;
+                tmp_map.clear();
+            } else {
+                let w_str = w.clone();
+                let mut counter = tmp_map.entry(w_str).or_insert(0);
+                *counter += 1;
 
-        //         while &tmp_map.get(&w.as_str()).unwrap_or(&0) > &map.get(&w.as_str()).unwrap_or(&0) {
-        //             // let t_cc = &bytes[left..(left + one_word)];
-        //             // let t_w = String::from_utf8(t_cc.to_owned()).unwrap();
-        //             let t_w:String = bytes.iter().skip(left).take(one_word).collect();
-        //             count -=1;
+                count += 1;
 
-        //             let mut counter = tmp_map.entry(&t_w).or_insert(0);
-        //             *counter -= 1;
+                while &tmp_map.get(&w.clone()).unwrap_or(&0) > &map.get(&w.clone()).unwrap_or(&0) {
+                    let t_w: String = bytes.iter().skip(left).take(one_word).collect();
+                    count -= 1;
+                    let t_w_str = t_w.clone();
+                    let mut counter = tmp_map.entry(t_w_str).or_insert(0);
+                    *counter -= 1;
 
-        //             left += one_word;
-        //         }
-        //         if count == one_word {
-        //             result.push(left as i32);
-        //         }
-        //     }
-
-        //     println!("key:{}",w);
-        // }
+                    left += one_word;
+                }
+                if count == words_len {
+                    result.push(left as i32);
+                }
+            }
+        }
     }
 
     result
