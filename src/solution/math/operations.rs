@@ -407,6 +407,51 @@ pub fn print_numbers(n: i32) -> Vec<i32> {
     result
 }
 
+/// 剑指 Offer 17. 打印从1到最大的n位数
+pub fn print_numbers_v2(n: i32) -> Vec<i32> {
+    let max = (10i32.pow(n as u32) - 1);
+    let mut result = Vec::<i32>::with_capacity(max as usize);
+    const NUMBERS: [char; 10] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    fn dfs(
+        result: &mut Vec<i32>,
+        num: &mut [char],
+        idx: usize,
+        len: usize,
+        start: &mut usize,
+        nine: &mut usize,
+    ) {
+        if idx == len {
+            let number: String = num.iter().skip(*start).collect();
+            if ("0" != number) {
+                result.push(number.parse().unwrap());
+            }
+
+            if len - (*start) == (*nine) {
+                if (*start > 0) {
+                    *start -= 1;
+                }
+            }
+            return;
+        }
+        for i in NUMBERS {
+            if i == '9' {
+                *nine += 1;
+            }
+            num[idx] = i;
+            dfs(result, num, idx + 1, len, start, nine);
+        }
+        *nine -= 1;
+    }
+
+    let mut num: Vec<char> = vec!['0'; n as usize];
+    let mut start = (n - 1) as usize;
+    let mut nine = 0;
+    dfs(&mut result, &mut num, 0, n as usize, &mut start, &mut nine);
+
+    result
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -452,5 +497,10 @@ mod tests {
         dbg!(is_power_of_three(81 * 3));
 
         dbg!(construct_rectangle(10_000_000));
+    }
+
+    #[test]
+    fn lcof() {
+        dbg!(print_numbers_v2(2));
     }
 }
