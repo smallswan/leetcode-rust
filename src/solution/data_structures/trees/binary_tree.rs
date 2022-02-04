@@ -323,6 +323,43 @@ pub fn print_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<String>> {
     ans
 }
 
+/// 剑指 Offer 27. 二叉树的镜像  https://leetcode-cn.com/problems/er-cha-shu-de-jing-xiang-lcof/
+pub fn mirror_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<TreeNode>>> {
+    match root.clone() {
+        None => None,
+        Some(node) => {
+            let mut tmp_node = node.borrow_mut();
+            if tmp_node.left.is_none() && tmp_node.right.is_none() {
+                return Some(node.clone());
+            }
+            let node1 = tmp_node.left.clone();
+            tmp_node.left = tmp_node.right.clone();
+            tmp_node.right = node1;
+
+            if tmp_node.left.is_some() {
+                mirror_tree(tmp_node.left.clone());
+            }
+            if tmp_node.right.is_some() {
+                mirror_tree(tmp_node.right.clone());
+            }
+            return Some(node.clone());
+        }
+    }
+}
+
+/// 剑指 Offer 27. 二叉树的镜像
+pub fn mirror_tree_v2(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<TreeNode>>> {
+    if root.is_none() {
+        return root;
+    }
+    let mut root = root.unwrap();
+    let mut left = root.borrow_mut().left.take();
+    let mut right = root.borrow_mut().right.take();
+    root.borrow_mut().left = mirror_tree_v2(right);
+    root.borrow_mut().right = mirror_tree_v2(left);
+    Some(root)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
