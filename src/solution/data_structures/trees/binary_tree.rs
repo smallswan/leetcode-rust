@@ -217,6 +217,23 @@ fn bst_helper(nums: &[i32]) -> Option<Rc<RefCell<TreeNode>>> {
     })))
 }
 
+fn build_tree_helper(preorder: &[i32], inorder: &[i32]) -> Option<Rc<RefCell<TreeNode>>> {
+    if preorder.is_empty() {
+        return None;
+    }
+    let root_idx = inorder.iter().position(|&v| v == preorder[0]).unwrap();
+    Some(Rc::new(RefCell::new(TreeNode {
+        val: preorder[0],
+        left: build_tree_helper(&preorder[1..root_idx + 1], &inorder[0..root_idx]),
+        right: build_tree_helper(&preorder[root_idx + 1..], &inorder[root_idx + 1..]),
+    })))
+}
+
+/// 105. 从前序与中序遍历序列构造二叉树  https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+pub fn build_tree(preorder: Vec<i32>, inorder: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
+    build_tree_helper(&preorder[..], &inorder[..])
+}
+
 /// 108. 将有序数组转换为二叉搜索树  https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/
 pub fn sorted_array_to_bst(nums: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
     bst_helper(&nums[..])
