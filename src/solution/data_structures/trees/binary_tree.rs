@@ -205,6 +205,21 @@ pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     return max_depth;
 }
 
+/// 108. 将有序数组转换为二叉搜索树  https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/
+pub fn sorted_array_to_bst(nums: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
+    fn bst_helper(nums: &[i32]) -> Option<Rc<RefCell<TreeNode>>> {
+        if nums.is_empty() {
+            return None;
+        }
+        Some(Rc::new(RefCell::new(TreeNode {
+            val: nums[nums.len() / 2],
+            left: bst_helper(&nums[0..(nums.len() / 2)]),
+            right: bst_helper(&nums[(nums.len() / 2 + 1)..]),
+        })))
+    }
+    bst_helper(&nums[..])
+}
+
 /// 144. 二叉树的前序遍历 https://leetcode-cn.com/problems/binary-tree-preorder-traversal/
 pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     let mut ans = vec![];
@@ -417,5 +432,8 @@ mod tests {
         dbg!(preorder_traversal(Some(root.clone())));
         dbg!(inorder_traversal(Some(root.clone())));
         dbg!(postorder_traversal(Some(root.clone())));
+
+        let nums = vec![-10, -3, 0, 5, 9];
+        sorted_array_to_bst(nums);
     }
 }
