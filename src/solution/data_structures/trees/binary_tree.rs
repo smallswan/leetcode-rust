@@ -114,6 +114,7 @@ fn symmetric(l: Option<Rc<RefCell<TreeNode>>>, r: Option<Rc<RefCell<TreeNode>>>)
 }
 
 /// 力扣（101. 对称二叉树)  https://leetcode-cn.com/problems/symmetric-tree/
+/// 注意：本题与主站 101 题相同：https://leetcode-cn.com/problems/symmetric-tree/
 pub fn is_symmetric(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
     if root.is_none() {
         return true;

@@ -671,6 +671,73 @@ pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
     result
 }
 
+/// 剑指 Offer 29. 顺时针打印矩阵 https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/
+/// 注意：本题与主站 54 题相同：https://leetcode-cn.com/problems/spiral-matrix/
+pub fn spiral_order_v2(matrix: Vec<Vec<i32>>) -> Vec<i32> {
+    let rows = matrix.len();
+    if rows == 0 {
+        return vec![];
+    }
+    let columns = matrix[0].len();
+    let mut result = Vec::<i32>::with_capacity(rows * columns);
+    let mut start = 0usize;
+    while rows > start * 2 && columns > start * 2 {
+        clockwise(&matrix, &mut result, rows, columns, start);
+        start += 1;
+    }
+
+    fn clockwise(
+        matrix: &Vec<Vec<i32>>,
+        result: &mut Vec<i32>,
+        rows: usize,
+        columns: usize,
+        start: usize,
+    ) {
+        let end_x = columns - 1 - start;
+        let end_y = rows - 1 - start;
+        // 从左往右
+        for i in start..=end_x {
+            result.push(matrix[start][i]);
+        }
+        // 从上往下
+        if start < end_y {
+            for i in start + 1..=end_y {
+                result.push(matrix[i][end_x]);
+            }
+        }
+        // 从右往左
+        if start < end_x && start < end_y {
+            let mut i = end_x - 1;
+            while i >= start {
+                result.push(matrix[end_y][i]);
+                if i > 0 {
+                    i -= 1;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        // 从下往上
+        if end_y < 1 {
+            return;
+        }
+        if start < end_x && start < end_y - 1 {
+            let mut i = end_y - 1;
+            while i >= start + 1 {
+                result.push(matrix[i][start]);
+                if i > 0 {
+                    i -= 1;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    result
+}
+
 /// 力扣（73.矩阵置零) https://leetcode-cn.com/problems/set-matrix-zeroes/
 pub fn set_zeroes(matrix: &mut Vec<Vec<i32>>) {
     let m = matrix.len();
@@ -1059,6 +1126,12 @@ mod tests {
         //    dbg!("{:?}",find_diagonal_order(matrix));
 
         dbg!("spiral_order: {:?}", spiral_order(matrix));
+
+        let mut matrix = Vec::<Vec<i32>>::new();
+        matrix.push(vec![1, 2, 3]);
+        matrix.push(vec![4, 5, 6]);
+        matrix.push(vec![7, 8, 9]);
+        dbg!(spiral_order_v2(matrix));
 
         let s = 7;
         let nums = vec![1, 2, 3, 4, 3, 7, 2, 2];
