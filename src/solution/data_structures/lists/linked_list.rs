@@ -47,6 +47,18 @@ pub fn vec_to_list_v2(v: &[i32]) -> Option<Box<ListNode>> {
     dummy_head.next
 }
 
+/// 将链表转为数组
+pub fn list_to_vec(list: Option<Box<ListNode>>) -> Vec<i32> {
+    let mut vec = Vec::new();
+    let mut head = &list;
+    while head.is_some() {
+        vec.push(head.as_ref().unwrap().val);
+        head = &(head.as_ref().unwrap().next);
+    }
+
+    vec
+}
+
 /// 打印链表的值
 pub fn display(l: Option<Box<ListNode>>) {
     let mut head = &l;

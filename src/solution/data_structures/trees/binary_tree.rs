@@ -205,18 +205,29 @@ pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     return max_depth;
 }
 
+/// 将有序数组转为二叉搜索树
+fn bst_helper(nums: &[i32]) -> Option<Rc<RefCell<TreeNode>>> {
+    if nums.is_empty() {
+        return None;
+    }
+    Some(Rc::new(RefCell::new(TreeNode {
+        val: nums[nums.len() / 2],
+        left: bst_helper(&nums[0..(nums.len() / 2)]),
+        right: bst_helper(&nums[(nums.len() / 2 + 1)..]),
+    })))
+}
+
 /// 108. 将有序数组转换为二叉搜索树  https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/
 pub fn sorted_array_to_bst(nums: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
-    fn bst_helper(nums: &[i32]) -> Option<Rc<RefCell<TreeNode>>> {
-        if nums.is_empty() {
-            return None;
-        }
-        Some(Rc::new(RefCell::new(TreeNode {
-            val: nums[nums.len() / 2],
-            left: bst_helper(&nums[0..(nums.len() / 2)]),
-            right: bst_helper(&nums[(nums.len() / 2 + 1)..]),
-        })))
-    }
+    bst_helper(&nums[..])
+}
+
+use crate::solution::data_structures::lists::list_to_vec;
+use crate::solution::data_structures::lists::ListNode;
+
+/// 109. 有序链表转换二叉搜索树 https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/
+pub fn sorted_list_to_bst(head: Option<Box<ListNode>>) -> Option<Rc<RefCell<TreeNode>>> {
+    let nums: Vec<i32> = list_to_vec(head);
     bst_helper(&nums[..])
 }
 
