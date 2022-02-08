@@ -85,6 +85,41 @@ pub fn find_repeat_number_v3(nums: Vec<i32>) -> i32 {
     -1
 }
 
+/// 剑指 Offer 04. 二维数组中的查找 https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/
+pub fn find_number_in2_d_array(matrix: Vec<Vec<i32>>, target: i32) -> bool {
+    if matrix.len() == 0 || matrix[0].len() == 0 {
+        return false;
+    }
+    let (m, n) = (matrix.len(), matrix[0].len());
+    let mut row = 0;
+    let mut col = n - 1;
+    let mut max_in_row = matrix[row][col];
+
+    while row <= m - 1 {
+        match max_in_row.cmp(&target) {
+            Ordering::Equal => return true,
+            Ordering::Greater => {
+                if col > 0 {
+                    col -= 1;
+                } else {
+                    break;
+                }
+                max_in_row = matrix[row][col];
+            }
+            Ordering::Less => {
+                if row < m - 1 {
+                    row += 1;
+                } else {
+                    break;
+                }
+                max_in_row = matrix[row][col];
+            }
+        }
+    }
+
+    false
+}
+
 /// 剑指 Offer 05. 替换空格 https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/
 pub fn replace_space(s: String) -> String {
     let original_len = s.len();
