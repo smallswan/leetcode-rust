@@ -166,3 +166,18 @@ pub fn num_ways(n: i32) -> i32 {
 
     dp[n as usize]
 }
+
+/// 剑指 Offer 10- II. 青蛙跳台阶问题
+/// 动态规划，使用更少的内存
+pub fn num_ways_v2(n: i32) -> i32 {
+    let mut a = 1;
+    let mut b = 1;
+    let mut i = 0;
+    while i < n {
+        let sum = (a + b) % 1000000007;
+        a = b;
+        b = sum;
+        i += 1;
+    }
+    a
+}
