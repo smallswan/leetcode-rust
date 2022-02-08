@@ -259,6 +259,35 @@ pub fn build_tree_106(inorder: Vec<i32>, postorder: Vec<i32>) -> Option<Rc<RefCe
     build_tree_helper(&postorder[..], &inorder[..])
 }
 
+/// 107. 二叉树的层序遍历 II  https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/
+pub fn level_order_bottom(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+    let mut res = Vec::new();
+    let mut current_level = 0;
+    if root.is_none() {
+        return res;
+    }
+    let mut deq = VecDeque::new();
+    deq.push_back((0, root.clone()));
+    let mut vec = Vec::new();
+    while !deq.is_empty() {
+        if let Some((level, Some(node))) = deq.pop_front() {
+            deq.push_back((level + 1, node.borrow().left.clone()));
+            deq.push_back((level + 1, node.borrow().right.clone()));
+            if level > current_level {
+                res.push(vec);
+                vec = Vec::new();
+                current_level = level;
+            }
+            vec.push(node.borrow().val);
+        }
+    }
+    if !vec.is_empty() {
+        res.push(vec)
+    }
+    res.reverse();
+    res
+}
+
 /// 108. 将有序数组转换为二叉搜索树  https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/
 pub fn sorted_array_to_bst(nums: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
     bst_helper(&nums[..])
