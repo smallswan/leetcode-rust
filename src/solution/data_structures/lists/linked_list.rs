@@ -447,6 +447,7 @@ pub fn remove_elements_v3(head: Option<Box<ListNode>>, val: i32) -> Option<Box<L
 
 /// 力扣（206. 反转链表） https://leetcode-cn.com/problems/reverse-linked-list/
 /// 假设：head 对应的链表为：1 -> 2 -> 3 -> 4 -> 5 -> None
+/// 本题与剑指 Offer 24. 反转链表  题相同： https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/
 pub fn reverse_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
     let mut head = head;
     let mut tail = None;

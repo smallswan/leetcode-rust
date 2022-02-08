@@ -281,7 +281,7 @@ use std::rc::Rc;
 /// 力扣（70. 爬楼梯） https://leetcode-cn.com/problems/climbing-stairs/
 /// 方法1：动态规划
 pub fn climb_stairs(n: i32) -> i32 {
-    if n == 1 {
+    if n <= 1 {
         return 1;
     } else if n == 2 {
         return 2;

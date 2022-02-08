@@ -147,3 +147,22 @@ pub fn single_numbers(nums: Vec<i32>) -> Vec<i32> {
     }
     vec![a, b]
 }
+
+/// 剑指 Offer 10- II. 青蛙跳台阶问题  https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/
+/// 注意：本题与主站 70 题相同：https://leetcode-cn.com/problems/climbing-stairs/ ，不同之处在于需要对结果取模！！
+pub fn num_ways(n: i32) -> i32 {
+    if n <= 1 {
+        return 1;
+    } else if n == 2 {
+        return 2;
+    }
+
+    let mut dp = vec![0; (n + 1) as usize];
+    dp[1] = 1;
+    dp[2] = 2;
+    for i in 3..=n as usize {
+        dp[i] = (dp[i - 1] + dp[i - 2]) % 1000000007;
+    }
+
+    dp[n as usize]
+}
