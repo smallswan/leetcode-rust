@@ -19,6 +19,7 @@ impl TreeNode {
         }
     }
 
+    /// 树的深度：也称为树的高度，树中所有结点的层次最大值称为树的深度
     pub fn get_height(root: &Option<Rc<RefCell<TreeNode>>>) -> i32 {
         fn dfs(root: &Option<Rc<RefCell<TreeNode>>>) -> i32 {
             match root {
@@ -34,6 +35,7 @@ impl TreeNode {
 }
 
 /// 94. 二叉树的中序遍历  https://leetcode-cn.com/problems/binary-tree-inorder-traversal/
+/// 中序遍历：左中右
 pub fn inorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     fn traverse(root: Option<Rc<RefCell<TreeNode>>>, counter: &mut Vec<i32>) {
         if let Some(node) = root {
@@ -234,6 +236,29 @@ pub fn build_tree(preorder: Vec<i32>, inorder: Vec<i32>) -> Option<Rc<RefCell<Tr
     build_tree_helper(&preorder[..], &inorder[..])
 }
 
+/// 106. 从中序与后序遍历序列构造二叉树 https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+pub fn build_tree_106(inorder: Vec<i32>, postorder: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
+    fn build_tree_helper(postorder: &[i32], inorder: &[i32]) -> Option<Rc<RefCell<TreeNode>>> {
+        if postorder.is_empty() {
+            return None;
+        }
+        let root_idx = inorder
+            .iter()
+            .position(|v| v == postorder.last().unwrap())
+            .unwrap();
+        Some(Rc::new(RefCell::new(TreeNode {
+            val: *postorder.last().unwrap(),
+            left: build_tree_helper(&postorder[0..root_idx], &inorder[0..root_idx]),
+            right: build_tree_helper(
+                &postorder[root_idx..postorder.len() - 1],
+                &inorder[root_idx + 1..],
+            ),
+        })))
+    }
+
+    build_tree_helper(&postorder[..], &inorder[..])
+}
+
 /// 108. 将有序数组转换为二叉搜索树  https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/
 pub fn sorted_array_to_bst(nums: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
     bst_helper(&nums[..])
@@ -249,6 +274,7 @@ pub fn sorted_list_to_bst(head: Option<Box<ListNode>>) -> Option<Rc<RefCell<Tree
 }
 
 /// 144. 二叉树的前序遍历 https://leetcode-cn.com/problems/binary-tree-preorder-traversal/
+/// 前序遍历：中左右
 pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     let mut ans = vec![];
 
@@ -277,6 +303,7 @@ pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
 }
 
 /// 145. 二叉树的后序遍历 https://leetcode-cn.com/problems/binary-tree-postorder-traversal/
+/// 后序遍历：左右中
 pub fn postorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     fn traverse(root: Option<Rc<RefCell<TreeNode>>>, counter: &mut Vec<i32>) {
         if let Some(node) = root {
@@ -417,7 +444,7 @@ mod tests {
         let root = Rc::new(RefCell::new(node));
 
         let vec = inorder_traversal(Some(root));
-        println!("{:?}", vec);
+        assert_eq!(vec, vec![110, 119, 120]);
 
         let node = TreeNode {
             val: 119,
@@ -427,7 +454,8 @@ mod tests {
         let root = Rc::new(RefCell::new(node));
 
         let vec = preorder_traversal(Some(root));
-        println!("{:?}", vec);
+        assert_eq!(vec, vec![119, 110, 120]);
+
         let node = TreeNode {
             val: 119,
             left: Some(Rc::new(RefCell::new(TreeNode::new(110)))),
@@ -436,7 +464,22 @@ mod tests {
         let root = Rc::new(RefCell::new(node));
 
         let vec = postorder_traversal(Some(root));
-        println!("{:?}", vec);
+        assert_eq!(vec, vec![110, 120, 119]);
+
+        let twenty = TreeNode {
+            val: 20,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(15)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(7)))),
+        };
+
+        let three = TreeNode {
+            val: 3,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(9)))),
+            right: Some(Rc::new(RefCell::new(twenty))),
+        };
+
+        let tree = level_order(Some(Rc::new(RefCell::new(three))));
+        assert_eq!(tree, vec![vec![3], vec![9, 20], vec![15, 7]]);
 
         let four = TreeNode {
             val: 4,

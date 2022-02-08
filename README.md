@@ -101,6 +101,8 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 - 
 
 ### 二叉树
+二叉树的遍历：前序遍历、中序遍历、后序遍历、层序遍历
+
 - [94. 二叉树的中序遍历 ](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/ )
 - [98. 验证二叉搜索树 ](https://leetcode-cn.com/problems/validate-binary-search-tree/)
 - [100. 相同的树](https://leetcode-cn.com/problems/same-tree/ )
@@ -108,6 +110,8 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 - [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/ )
 - [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/ )
 - [104. 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/ )
+- [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/ )
+- [108. 将有序数组转换为二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/ )
 - [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/ )
 - [145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/ )
 - [222. 完全二叉树的节点个数](https://leetcode-cn.com/problems/count-complete-tree-nodes/ )
