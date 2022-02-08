@@ -181,3 +181,26 @@ pub fn num_ways_v2(n: i32) -> i32 {
     }
     a
 }
+
+use std::cmp::Ordering;
+/// 剑指 Offer 11. 旋转数组的最小数字 https://leetcode-cn.com/problems/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-lcof/
+pub fn min_array(numbers: Vec<i32>) -> i32 {
+    let mut left = 0;
+    let mut right = numbers.len() - 1;
+    while left < right {
+        let middle = left + (right - left) / 2;
+        match numbers[middle].cmp(&numbers[right]) {
+            Ordering::Greater => {
+                left = middle + 1;
+            }
+            Ordering::Equal => {
+                return *numbers.iter().min().unwrap();
+            }
+            Ordering::Less => {
+                right = middle;
+            }
+        }
+    }
+
+    numbers[left]
+}
