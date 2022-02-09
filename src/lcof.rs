@@ -159,30 +159,6 @@ pub fn replace_space(s: String) -> String {
     String::from_utf8(new_bytes).unwrap()
 }
 
-/// 剑指 Offer 56 - I. 数组中数字出现的次数 https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/
-/// 方法1：分组异或
-pub fn single_numbers(nums: Vec<i32>) -> Vec<i32> {
-    // ret 为 a,b两个数异或的结果
-    let mut ret = 0;
-    for &num in &nums {
-        ret ^= num;
-    }
-    // div 为 a,b 二进制位上不相同时，最低的位
-    let mut div = 1;
-    while div & ret == 0 {
-        div <<= 1;
-    }
-    let (mut a, mut b) = (0, 0);
-    for &num in &nums {
-        if div & num != 0 {
-            a ^= num;
-        } else {
-            b ^= num;
-        }
-    }
-    vec![a, b]
-}
-
 /// 剑指 Offer 10- II. 青蛙跳台阶问题  https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/
 /// 注意：本题与主站 70 题相同：https://leetcode-cn.com/problems/climbing-stairs/ ，不同之处在于需要对结果取模！！
 pub fn num_ways(n: i32) -> i32 {
@@ -238,4 +214,49 @@ pub fn min_array(numbers: Vec<i32>) -> i32 {
     }
 
     numbers[left]
+}
+
+/// 剑指 Offer 21. 调整数组顺序使奇数位于偶数前面 https://leetcode-cn.com/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/
+pub fn exchange(nums: Vec<i32>) -> Vec<i32> {
+    if nums.len() <= 1 {
+        return nums;
+    }
+    let mut nums = nums;
+    let mut i = 0;
+    let mut j = nums.len() - 1;
+    while i < j {
+        while (i < j) && (nums[i] & 1) == 1 {
+            i += 1;
+        }
+        while (i < j) && (nums[j] & 1) == 0 {
+            j -= 1;
+        }
+        nums.swap(i, j);
+    }
+
+    nums
+}
+
+/// 剑指 Offer 56 - I. 数组中数字出现的次数 https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/
+/// 方法1：分组异或
+pub fn single_numbers(nums: Vec<i32>) -> Vec<i32> {
+    // ret 为 a,b两个数异或的结果
+    let mut ret = 0;
+    for &num in &nums {
+        ret ^= num;
+    }
+    // div 为 a,b 二进制位上不相同时，最低的位
+    let mut div = 1;
+    while div & ret == 0 {
+        div <<= 1;
+    }
+    let (mut a, mut b) = (0, 0);
+    for &num in &nums {
+        if div & num != 0 {
+            a ^= num;
+        } else {
+            b ^= num;
+        }
+    }
+    vec![a, b]
 }

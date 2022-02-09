@@ -148,6 +148,7 @@ pub fn remove_nth_from_end(head: Option<Box<ListNode>>, n: i32) -> Option<Box<Li
 }
 
 /// 力扣（21. 合并两个有序链表) https://leetcode-cn.com/problems/merge-two-sorted-lists/
+/// 剑指 Offer 25. 合并两个排序的链表 https://leetcode-cn.com/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/
 pub fn merge_two_lists(
     l1: Option<Box<ListNode>>,
     l2: Option<Box<ListNode>>,
