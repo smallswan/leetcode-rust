@@ -216,6 +216,39 @@ pub fn min_array(numbers: Vec<i32>) -> i32 {
     numbers[left]
 }
 
+use crate::solution::data_structures::lists::ListNode;
+/// 剑指 Offer 18. 删除链表的节点 https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/
+pub fn delete_node(head: Option<Box<ListNode>>, val: i32) -> Option<Box<ListNode>> {
+    let mut dummy_head = Some(Box::new(ListNode {
+        val: 0i32,
+        next: head,
+    }));
+
+    let mut current = dummy_head.as_mut();
+    while current.is_some() {
+        if current.as_mut().unwrap().next.is_none()
+            || current.as_mut().unwrap().next.as_mut().unwrap().val == val
+        {
+            break;
+        }
+        current = current.unwrap().next.as_mut();
+    }
+
+    if current.as_mut().unwrap().next.is_some() {
+        let next = current
+            .as_mut()
+            .unwrap()
+            .next
+            .as_mut()
+            .unwrap()
+            .next
+            .clone();
+        current.as_mut().unwrap().next = next;
+    }
+
+    dummy_head.unwrap().next
+}
+
 /// 剑指 Offer 21. 调整数组顺序使奇数位于偶数前面 https://leetcode-cn.com/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/
 pub fn exchange(nums: Vec<i32>) -> Vec<i32> {
     if nums.len() <= 1 {
