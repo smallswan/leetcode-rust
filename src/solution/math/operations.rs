@@ -74,6 +74,58 @@ fn quick_add(y: i32, z: i32, x: i32) -> bool {
     true
 }
 
+/// 41. 缺失的第一个正数 https://leetcode-cn.com/problems/first-missing-positive/
+pub fn first_missing_positive(nums: Vec<i32>) -> i32 {
+    let mut nums = nums;
+    let len = nums.len();
+    let mut i = 0;
+    let mut c = 0;
+    while i < len {
+        let num = nums[i];
+        if num > 0 && num - 1 < (len as i32) {
+            c += 1;
+            nums.swap((num - 1) as usize, i);
+            if (num - 1) > (i as i32) && (num != nums[i]) {
+                continue;
+            }
+        }
+        i += 1;
+    }
+
+    for (i, &num) in nums.iter().enumerate() {
+        if num != ((i + 1) as i32) {
+            return (i + 1) as i32;
+        }
+    }
+    return (len + 1) as i32;
+}
+
+/// 41. 缺失的第一个正数
+pub fn first_missing_positive_v2(nums: Vec<i32>) -> i32 {
+    let mut nums = nums;
+    for i in &mut nums {
+        if *i <= 0 {
+            *i = i32::MAX;
+        }
+    }
+    let len = nums.len();
+    for i in 0..len {
+        if nums[i].abs() <= len as i32 {
+            let idx = nums[i].abs() as usize - 1;
+            if nums[idx] > 0 {
+                nums[idx] = -nums[idx];
+            }
+        }
+    }
+
+    for (i, x) in nums.iter().enumerate() {
+        if *x >= 0 {
+            return i as i32 + 1;
+        }
+    }
+    len as i32 + 1
+}
+
 /// 力扣（50. Pow(x, n)） https://leetcode-cn.com/problems/powx-n/
 pub fn my_pow(x: f64, n: i32) -> f64 {
     x.powi(n)
