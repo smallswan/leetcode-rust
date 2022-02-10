@@ -249,6 +249,20 @@ pub fn delete_node(head: Option<Box<ListNode>>, val: i32) -> Option<Box<ListNode
     dummy_head.unwrap().next
 }
 
+/// 剑指 Offer 18. 删除链表的节点
+pub fn delete_node_v2(head: Option<Box<ListNode>>, val: i32) -> Option<Box<ListNode>> {
+    let mut root = head;
+    let mut head = &mut root;
+    while let Some(node) = head {
+        if node.val == val {
+            *head = node.next.take();
+            break;
+        }
+        head = &mut head.as_mut().unwrap().next;
+    }
+    root
+}
+
 /// 剑指 Offer 21. 调整数组顺序使奇数位于偶数前面 https://leetcode-cn.com/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/
 pub fn exchange(nums: Vec<i32>) -> Vec<i32> {
     if nums.len() <= 1 {
