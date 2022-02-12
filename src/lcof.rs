@@ -23,6 +23,13 @@ mod tests {
 
         let nums = vec![2, 3, 1, 0, 2, 5, 3];
         dbg!(get_least_numbers(nums, 4));
+
+        let mut obj = MedianFinder::new();
+        obj.add_num(1);
+        obj.add_num(2);
+        dbg!(obj.find_median());
+        obj.add_num(3);
+        dbg!(obj.find_median());
     }
 
     #[test]
@@ -347,6 +354,68 @@ pub fn get_least_numbers_v2(arr: Vec<i32>, k: i32) -> Vec<i32> {
     }
     nums
 }
+
+/// 剑指 Offer 41. 数据流中的中位数  https://leetcode-cn.com/problems/shu-ju-liu-zhong-de-zhong-wei-shu-lcof/
+struct MedianFinder {
+    //max_heap来存储数据流中较小一半的值
+    max_heap: BinaryHeap<i32>,
+    //min_heap来存储数据流中较大一半的值
+    min_heap: BinaryHeap<Reverse<i32>>,
+}
+
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl MedianFinder {
+    /** initialize your data structure here. */
+    fn new() -> Self {
+        MedianFinder {
+            max_heap: BinaryHeap::new(),
+            min_heap: BinaryHeap::<Reverse<i32>>::new(),
+        }
+    }
+
+    fn add_num(&mut self, num: i32) {
+        if self.max_heap.len() != self.min_heap.len() {
+            self.min_heap.push(Reverse(num));
+            if let Some(Reverse(peek)) = self.min_heap.pop() {
+                self.max_heap.push(peek);
+            }
+        } else {
+            self.max_heap.push(num);
+            if let Some(peek) = self.max_heap.pop() {
+                self.min_heap.push(Reverse(peek));
+            }
+        }
+    }
+
+    fn find_median(&self) -> f64 {
+        if self.max_heap.len() != self.min_heap.len() {
+            if let Some(Reverse(peek)) = self.min_heap.peek() {
+                return *peek as f64;
+            } else {
+                return 0f64;
+            }
+        } else {
+            match (self.max_heap.peek(), self.min_heap.peek()) {
+                (Some(peek1), Some(Reverse(peek2))) => {
+                    return (peek1 + (*peek2)) as f64 / 2.0f64;
+                }
+                (_, _) => {
+                    return 0f64;
+                }
+            };
+        }
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * let obj = MedianFinder::new();
+ * obj.add_num(num);
+ * let ret_2: f64 = obj.find_median();
+ */
 
 /// 剑指 Offer 56 - I. 数组中数字出现的次数 https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/
 /// 方法1：分组异或
