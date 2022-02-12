@@ -290,6 +290,7 @@ pub fn exchange(nums: Vec<i32>) -> Vec<i32> {
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 /// 剑指 Offer 40. 最小的k个数  https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/comments/
+/// 方法1：小顶堆（大顶堆 + Reverse）
 pub fn get_least_numbers(arr: Vec<i32>, k: i32) -> Vec<i32> {
     let len = arr.len();
     if len == 0 || (len as i32) == k {
@@ -311,6 +312,39 @@ pub fn get_least_numbers(arr: Vec<i32>, k: i32) -> Vec<i32> {
         }
     }
 
+    nums
+}
+
+/// 剑指 Offer 40. 最小的k个数
+/// 方法2：大顶堆
+pub fn get_least_numbers_v2(arr: Vec<i32>, k: i32) -> Vec<i32> {
+    let len = arr.len();
+    if len == 0 || (len as i32) == k {
+        return arr;
+    }
+    if k == 0 {
+        return vec![];
+    }
+    let mut heap = BinaryHeap::new();
+    for i in 0..k as usize {
+        heap.push(arr[i]);
+    }
+
+    for i in k as usize..len {
+        if let Some(&top) = heap.peek() {
+            if top > arr[i] {
+                heap.pop();
+                heap.push(arr[i]);
+            }
+        }
+    }
+
+    let mut nums = Vec::with_capacity(k as usize);
+    for _ in 0..k {
+        if let Some(val) = heap.pop() {
+            nums.push(val);
+        }
+    }
     nums
 }
 
