@@ -20,6 +20,9 @@ mod tests {
         let nums = vec![2, 3, 1, 0, 2, 5, 3];
         let find_repeat_number_v3_result = find_repeat_number_v3(nums);
         dbg!(find_repeat_number_v3_result);
+
+        let nums = vec![2, 3, 1, 0, 2, 5, 3];
+        dbg!(get_least_numbers(nums, 4));
     }
 
     #[test]
@@ -279,6 +282,33 @@ pub fn exchange(nums: Vec<i32>) -> Vec<i32> {
             j -= 1;
         }
         nums.swap(i, j);
+    }
+
+    nums
+}
+
+use std::cmp::Reverse;
+use std::collections::BinaryHeap;
+/// 剑指 Offer 40. 最小的k个数  https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/comments/
+pub fn get_least_numbers(arr: Vec<i32>, k: i32) -> Vec<i32> {
+    let len = arr.len();
+    if len == 0 || (len as i32) == k {
+        return arr;
+    }
+    if k == 0 {
+        return vec![];
+    }
+
+    let mut nums = Vec::with_capacity(k as usize);
+    let mut heap = BinaryHeap::new();
+    for num in arr {
+        heap.push(Reverse(num));
+    }
+
+    for _ in 0..k {
+        if let Some(Reverse(curr)) = heap.pop() {
+            nums.push(curr);
+        }
     }
 
     nums
