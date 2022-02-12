@@ -331,6 +331,31 @@ pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     ans
 }
 
+/// 110. 平衡二叉树 https://leetcode-cn.com/problems/balanced-binary-tree/
+pub fn is_balanced(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
+    fn balanced_helper(root: Option<&Rc<RefCell<TreeNode>>>) -> Option<i32> {
+        if let Some(node) = root {
+            let pair = (
+                balanced_helper(node.borrow().left.as_ref()),
+                balanced_helper(node.borrow().right.as_ref()),
+            );
+            match pair {
+                (Some(left), Some(right)) => {
+                    if i32::abs(left - right) < 2 {
+                        return Some(i32::max(left, right) + 1);
+                    } else {
+                        return None;
+                    }
+                }
+                _ => return None,
+            }
+        } else {
+            Some(0)
+        }
+    }
+    balanced_helper(root.as_ref()).is_some()
+}
+
 /// 145. 二叉树的后序遍历 https://leetcode-cn.com/problems/binary-tree-postorder-traversal/
 /// 后序遍历：左右中
 pub fn postorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
