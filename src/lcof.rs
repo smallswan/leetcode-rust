@@ -410,6 +410,19 @@ impl MedianFinder {
     }
 }
 
+/// 剑指 Offer 45. 把数组排成最小的数 https://leetcode-cn.com/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof/
+pub fn min_number(nums: Vec<i32>) -> String {
+    let mut nums_str: Vec<String> = nums.iter().map(|&num| format!("{}", num)).collect();
+    nums_str.sort_by(|x, y| {
+        let xy = format!("{}{}", x, y).parse::<u64>().unwrap();
+        let yx = format!("{}{}", y, x).parse::<u64>().unwrap();
+
+        xy.cmp(&yx)
+    });
+
+    nums_str.iter().fold("".to_string(), |acc, num| acc + num)
+}
+
 /**
  * Your MedianFinder object will be instantiated and called as such:
  * let obj = MedianFinder::new();
