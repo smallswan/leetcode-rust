@@ -30,6 +30,8 @@ mod tests {
         dbg!(obj.find_median());
         obj.add_num(3);
         dbg!(obj.find_median());
+
+        dbg!(reverse_words("a good   example".to_string()));
     }
 
     #[test]
@@ -452,4 +454,23 @@ pub fn single_numbers(nums: Vec<i32>) -> Vec<i32> {
         }
     }
     vec![a, b]
+}
+
+/// 剑指 Offer 58 - I. 翻转单词顺序 https://leetcode-cn.com/problems/fan-zhuan-dan-ci-shun-xu-lcof/
+pub fn reverse_words(s: String) -> String {
+    let mut words: Vec<&str> = s.split(" ").collect();
+    let mut result = String::new();
+    words.reverse();
+    for word in words {
+        // 注意：按照" "分割，结果中空字符串为""而不是" "
+        if word != "" {
+            result = format!("{} {}", result, word);
+        }
+    }
+    result.trim().to_string()
+}
+
+/// 剑指 Offer 58 - I. 翻转单词顺序
+pub fn reverse_words_v2(s: String) -> String {
+    s.split_whitespace().rev().collect::<Vec<_>>().join(" ")
 }
