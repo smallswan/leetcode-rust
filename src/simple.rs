@@ -236,14 +236,37 @@ pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
 }
 
 /// 力扣（53. 最大子序和） https://leetcode-cn.com/problems/maximum-subarray/
-/// 动态规划转移方程： f(i)=max{f(i−1)+nums[i],nums[i]}  
+/// 剑指 Offer 42. 连续子数组的最大和 https://leetcode-cn.com/problems/lian-xu-zi-shu-zu-de-zui-da-he-lcof/
+/// 动态规划转移方程： f(i) = max{f(i−1)+nums[i],nums[i]}  
 ///  f(i) 代表以第 i 个数结尾的「连续子数组的最大和」
 pub fn max_sub_array(nums: Vec<i32>) -> i32 {
     let mut prev = 0;
     let mut max_ans = nums[0];
     for x in nums {
-        prev = max(prev + x, x);
-        max_ans = max(max_ans, prev);
+        if prev > 0 {
+            prev += x;
+        } else {
+            prev = x;
+        }
+        if prev > max_ans {
+            max_ans = prev;
+        }
+    }
+    max_ans
+}
+
+/// 力扣（53. 最大子序和）
+pub fn max_sub_array_v2(nums: Vec<i32>) -> i32 {
+    let len = nums.len();
+
+    //dp[i] 表示以第 i 个元素结尾的最大子数组的和
+    let mut dp = vec![0; len];
+    dp[0] = nums[0];
+
+    let mut max_ans = nums[0];
+    for i in 1..len {
+        dp[i] = max(dp[i - 1], nums[i]);
+        max_ans = max(max_ans, dp[i]);
     }
     max_ans
 }

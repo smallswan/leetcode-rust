@@ -187,6 +187,7 @@ pub fn zigzag_level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> 
 }
 
 /// 104. 二叉树的最大深度 https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/
+/// 剑指 Offer 55 - I. 二叉树的深度 https://leetcode-cn.com/problems/er-cha-shu-de-shen-du-lcof/
 pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     let mut max_depth = 0;
     fn traverse(n: Option<Rc<RefCell<TreeNode>>>, max_depth: &mut i32, parent_depth: i32) {
@@ -332,6 +333,7 @@ pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
 }
 
 /// 110. 平衡二叉树 https://leetcode-cn.com/problems/balanced-binary-tree/
+/// 剑指 Offer 55 - II. 平衡二叉树 https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/
 pub fn is_balanced(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
     fn balanced_helper(root: Option<&Rc<RefCell<TreeNode>>>) -> Option<i32> {
         if let Some(node) = root {
@@ -534,6 +536,25 @@ mod tests {
 
         let tree = level_order(Some(Rc::new(RefCell::new(three))));
         assert_eq!(tree, vec![vec![3], vec![9, 20], vec![15, 7]]);
+
+        let twenty = TreeNode {
+            val: 20,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(15)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(7)))),
+        };
+
+        let three = TreeNode {
+            val: 3,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(9)))),
+            right: Some(Rc::new(RefCell::new(twenty))),
+        };
+
+        let demo_tree = Some(Rc::new(RefCell::new(three)));
+        let is_balanced = is_balanced(demo_tree.clone());
+        println!(
+            "is_balanced : {is_balanced}, height:{}",
+            TreeNode::get_height((&demo_tree))
+        );
 
         let four = TreeNode {
             val: 4,
