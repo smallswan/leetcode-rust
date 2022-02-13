@@ -8,6 +8,7 @@
  */
 
 /// 155. 最小栈 https://leetcode-cn.com/problems/min-stack/
+/// 剑指 Offer 30. 包含min函数的栈 https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/
 struct MinStack {
     data: Vec<i32>,
     min: Vec<i32>,
@@ -27,14 +28,14 @@ impl MinStack {
 
     fn push(&mut self, val: i32) {
         self.data.push(val);
-        if self.min.is_empty() || val <= self.get_min() {
+        if self.min.is_empty() || val <= self.min() {
             self.min.push(val);
         }
     }
 
     fn pop(&mut self) {
         if let Some(v) = self.data.last() {
-            if *v == self.get_min() {
+            if *v == self.min() {
                 self.min.pop();
             }
         }
@@ -48,7 +49,7 @@ impl MinStack {
         return 0;
     }
 
-    fn get_min(&self) -> i32 {
+    fn min(&self) -> i32 {
         if let Some(v) = self.min.last() {
             return *v;
         }
@@ -67,10 +68,10 @@ mod tests {
         stack.push(i32::MAX);
         stack.push(142857);
 
-        dbg!(stack.get_min());
+        dbg!(stack.min());
         dbg!(stack.top());
         stack.pop();
-        dbg!(stack.get_min());
+        dbg!(stack.min());
         dbg!(stack.top());
     }
 }

@@ -29,4 +29,9 @@ fn main() {
     let rand = unsafe { rand() };
 
     println!("{}", rand);
+
+    // rust 58 新特性：捕获格式字符串中的标识符
+    let x: f32 = 2.0;
+    let y = x.sin();
+    println!("sin(2) is {y}");
 }

@@ -1,4 +1,5 @@
+mod hash_table;
 mod heaps;
-mod lists;
+pub mod lists;
 mod stacks;
 mod trees;

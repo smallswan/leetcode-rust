@@ -466,32 +466,6 @@ pub fn four_sum(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
     result
 }
 
-/// 22. 括号生成 https://leetcode-cn.com/problems/generate-parentheses/
-pub fn generate_parenthesis(n: i32) -> Vec<String> {
-    if n < 1 {
-        return vec![];
-    }
-    fn dfs(n: i32, left: i32, right: i32, result: &mut Vec<String>, mut path: String) {
-        if left == n && right == n {
-            result.push(path);
-            return;
-        }
-        if left < n {
-            let mut new_path = path.clone();
-            new_path.push('(');
-            dfs(n, left + 1, right, result, new_path);
-        }
-        if right < left {
-            // reuse path to avoid clone overhead
-            path.push(')');
-            dfs(n, left, right + 1, result, path);
-        }
-    }
-    let mut result = Vec::new();
-    dfs(n, 0, 0, &mut result, String::new());
-    result
-}
-
 /// 31. 下一个排列 https://leetcode-cn.com/problems/next-permutation/
 pub fn next_permutation(nums: &mut Vec<i32>) {
     let n = nums.len();
@@ -581,39 +555,6 @@ pub fn count_and_say(n: i32) -> String {
     s
 }
 
-/// 39. 组合总和  https://leetcode-cn.com/problems/combination-sum/
-pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
-    let mut res: Vec<Vec<i32>> = Vec::with_capacity(150);
-    let mut v: Vec<i32> = Vec::with_capacity(150);
-    // println!("\ncandidates: {:?} target: {}", candidates, target);
-    combination_sum_backtrace(&candidates, 0, target, &mut res, &mut v);
-    res
-}
-
-fn combination_sum_backtrace(
-    candidates: &[i32],
-    i: usize,
-    target: i32,
-    res: &mut Vec<Vec<i32>>,
-    v: &mut Vec<i32>,
-) {
-    if i == candidates.len() {
-        return;
-    }
-    if target == 0 {
-        res.push(v.clone());
-        return;
-    }
-    combination_sum_backtrace(candidates, i + 1, target, res, v);
-    let d = candidates[i];
-    if target >= d {
-        v.push(d);
-
-        combination_sum_backtrace(candidates, i, target - d, res, v);
-        v.pop();
-    }
-}
-
 /// 力扣（49. 字母异位词分组） https://leetcode-cn.com/problems/group-anagrams/
 pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
     let mut result: Vec<Vec<String>> = vec![];
@@ -649,46 +590,6 @@ pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
     }
 
     result
-}
-
-/// 力扣（46. 全排列） https://leetcode-cn.com/problems/permutations/
-pub fn permute(nums: Vec<i32>) -> Vec<Vec<i32>> {
-    let len = nums.len();
-    let mut result: Vec<Vec<i32>> = Vec::new();
-    if len == 0 {
-        return result;
-    }
-    let mut used_vec = vec![false; len];
-    let mut path = Vec::<i32>::new();
-    dfs(&nums, len, 0, &mut path, &mut used_vec, &mut result);
-    result
-}
-
-// use std::collections::VecDeque;
-fn dfs(
-    nums: &Vec<i32>,
-    len: usize,
-    dept: usize,
-    path: &mut Vec<i32>,
-    used_vec: &mut Vec<bool>,
-    result: &mut Vec<Vec<i32>>,
-) {
-    if dept == len {
-        let full_path: Vec<i32> = path.into_iter().map(|&mut num| num).collect();
-        result.push(full_path);
-        return;
-    }
-
-    for i in 0..len {
-        if used_vec[i] {
-            continue;
-        }
-        path.push(nums[i]);
-        used_vec[i] = true;
-        dfs(&nums, len, dept + 1, path, used_vec, result);
-        path.pop();
-        used_vec[i] = false;
-    }
 }
 
 /// 力扣（54. 螺旋矩阵） https://leetcode-cn.com/problems/spiral-matrix/
@@ -767,6 +668,73 @@ pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
             }
         }
     }
+    result
+}
+
+/// 剑指 Offer 29. 顺时针打印矩阵 https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/
+/// 注意：本题与主站 54 题相同：https://leetcode-cn.com/problems/spiral-matrix/
+pub fn spiral_order_v2(matrix: Vec<Vec<i32>>) -> Vec<i32> {
+    let rows = matrix.len();
+    if rows == 0 {
+        return vec![];
+    }
+    let columns = matrix[0].len();
+    let mut result = Vec::<i32>::with_capacity(rows * columns);
+    let mut start = 0usize;
+    while rows > start * 2 && columns > start * 2 {
+        clockwise(&matrix, &mut result, rows, columns, start);
+        start += 1;
+    }
+
+    fn clockwise(
+        matrix: &Vec<Vec<i32>>,
+        result: &mut Vec<i32>,
+        rows: usize,
+        columns: usize,
+        start: usize,
+    ) {
+        let end_x = columns - 1 - start;
+        let end_y = rows - 1 - start;
+        // 从左往右
+        for i in start..=end_x {
+            result.push(matrix[start][i]);
+        }
+        // 从上往下
+        if start < end_y {
+            for i in start + 1..=end_y {
+                result.push(matrix[i][end_x]);
+            }
+        }
+        // 从右往左
+        if start < end_x && start < end_y {
+            let mut i = end_x - 1;
+            while i >= start {
+                result.push(matrix[end_y][i]);
+                if i > 0 {
+                    i -= 1;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        // 从下往上
+        if end_y < 1 {
+            return;
+        }
+        if start < end_x && start < end_y - 1 {
+            let mut i = end_y - 1;
+            while i >= start + 1 {
+                result.push(matrix[i][start]);
+                if i > 0 {
+                    i -= 1;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
     result
 }
 
@@ -1159,6 +1127,12 @@ mod tests {
 
         dbg!("spiral_order: {:?}", spiral_order(matrix));
 
+        let mut matrix = Vec::<Vec<i32>>::new();
+        matrix.push(vec![1, 2, 3]);
+        matrix.push(vec![4, 5, 6]);
+        matrix.push(vec![7, 8, 9]);
+        dbg!(spiral_order_v2(matrix));
+
         let s = 7;
         let nums = vec![1, 2, 3, 4, 3, 7, 2, 2];
         let min_len = min_sub_array_len(s, nums);
@@ -1265,8 +1239,6 @@ mod tests {
 
         let four_sum_result = four_sum(nums, target);
         dbg!("{:?}", four_sum_result);
-
-        dbg!(permute(vec![1, 2, 3]));
     }
 
     fn test_equal_substring() {

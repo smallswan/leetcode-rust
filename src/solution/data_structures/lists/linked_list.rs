@@ -47,6 +47,18 @@ pub fn vec_to_list_v2(v: &[i32]) -> Option<Box<ListNode>> {
     dummy_head.next
 }
 
+/// 将链表转为数组
+pub fn list_to_vec(list: Option<Box<ListNode>>) -> Vec<i32> {
+    let mut vec = Vec::new();
+    let mut head = &list;
+    while head.is_some() {
+        vec.push(head.as_ref().unwrap().val);
+        head = &(head.as_ref().unwrap().next);
+    }
+
+    vec
+}
+
 /// 打印链表的值
 pub fn display(l: Option<Box<ListNode>>) {
     let mut head = &l;
@@ -136,6 +148,7 @@ pub fn remove_nth_from_end(head: Option<Box<ListNode>>, n: i32) -> Option<Box<Li
 }
 
 /// 力扣（21. 合并两个有序链表) https://leetcode-cn.com/problems/merge-two-sorted-lists/
+/// 剑指 Offer 25. 合并两个排序的链表 https://leetcode-cn.com/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/
 pub fn merge_two_lists(
     l1: Option<Box<ListNode>>,
     l2: Option<Box<ListNode>>,
@@ -255,6 +268,48 @@ pub fn swap_pairs(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
     }
 
     dummy_head.next
+}
+
+/// 25. K 个一组翻转链表 https://leetcode-cn.com/problems/reverse-nodes-in-k-group/
+pub fn reverse_k_group(head: Option<Box<ListNode>>, k: i32) -> Option<Box<ListNode>> {
+    let mut dummy_head = Some(Box::new(ListNode { val: 0, next: head }));
+    let mut head = dummy_head.as_mut();
+    'outer: loop {
+        let mut start = head.as_mut().unwrap().next.take();
+        if start.is_none() {
+            break 'outer;
+        }
+        let mut end = start.as_mut();
+        for _ in 0..(k - 1) {
+            end = end.unwrap().next.as_mut();
+            if end.is_none() {
+                head.as_mut().unwrap().next = start;
+                break 'outer;
+            }
+        }
+        let mut tail = end.as_mut().unwrap().next.take();
+        // BEFORE: head -> start -> 123456... -> end   -> tail
+        // AFTER:  head -> end   -> ...654321 -> start -> tail
+        let end = reverse(start, tail);
+        head.as_mut().unwrap().next = end;
+        for _ in 0..k {
+            head = head.unwrap().next.as_mut()
+        }
+    }
+    dummy_head.unwrap().next
+}
+
+#[inline(always)]
+fn reverse(mut head: Option<Box<ListNode>>, tail: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+    let mut prev = tail;
+    let mut current = head;
+    while let Some(mut current_node_inner) = current {
+        let mut next = current_node_inner.next.take();
+        current_node_inner.next = prev.take();
+        prev = Some(current_node_inner);
+        current = next;
+    }
+    prev
 }
 
 /// 力扣（83. 删除排序链表中的重复元素) https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/
@@ -393,6 +448,7 @@ pub fn remove_elements_v3(head: Option<Box<ListNode>>, val: i32) -> Option<Box<L
 
 /// 力扣（206. 反转链表） https://leetcode-cn.com/problems/reverse-linked-list/
 /// 假设：head 对应的链表为：1 -> 2 -> 3 -> 4 -> 5 -> None
+/// 本题与剑指 Offer 24. 反转链表  题相同： https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/
 pub fn reverse_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
     let mut head = head;
     let mut tail = None;
@@ -765,5 +821,12 @@ mod tests {
         let head = vec_to_list(&vec![1, 1, 2, 3, 3]);
         let unique_nodes = delete_duplicates(head);
         display(unique_nodes);
+    }
+
+    #[test]
+    fn reverse() {
+        let head = vec_to_list(&vec![1, 2, 3, 4, 5]);
+        let reverse_head = reverse_k_group(head, 3);
+        display(reverse_head);
     }
 }

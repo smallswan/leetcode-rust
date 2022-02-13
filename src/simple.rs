@@ -178,48 +178,6 @@ pub fn longest_common_prefix_v2(strs: Vec<String>) -> String {
     prefix.to_owned()
 }
 
-/// 力扣（20. 有效的括号）https://leetcode-cn.com/problems/valid-parentheses/
-fn is_valid(s: String) -> bool {
-    let len = s.len();
-    if len == 0 {
-        return false;
-    }
-    let chars: Vec<char> = s.chars().collect();
-    //使用 Vec模拟Stack
-    let mut stack = Vec::<char>::with_capacity(len);
-
-    for char in chars {
-        if char == ')' || char == '}' || char == ']' {
-            let prev_ch = stack.pop();
-            match prev_ch {
-                Some(ch) => {
-                    let m = is_match_brackets(ch, char);
-                    if !m {
-                        return false;
-                    }
-                }
-                None => {
-                    return false;
-                }
-            };
-        } else {
-            stack.push(char);
-        }
-    }
-
-    stack.is_empty()
-}
-
-/// 判断括号是否匹配
-fn is_match_brackets(left: char, right: char) -> bool {
-    match left {
-        '(' => right == ')',
-        '{' => right == '}',
-        '[' => right == ']',
-        _ => false,
-    }
-}
-
 /// 力扣（26. 删除有序数组中的重复项) https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
 pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
     let len = nums.len();
@@ -278,14 +236,37 @@ pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
 }
 
 /// 力扣（53. 最大子序和） https://leetcode-cn.com/problems/maximum-subarray/
-/// 动态规划转移方程： f(i)=max{f(i−1)+nums[i],nums[i]}  
+/// 剑指 Offer 42. 连续子数组的最大和 https://leetcode-cn.com/problems/lian-xu-zi-shu-zu-de-zui-da-he-lcof/
+/// 动态规划转移方程： f(i) = max{f(i−1)+nums[i],nums[i]}  
 ///  f(i) 代表以第 i 个数结尾的「连续子数组的最大和」
 pub fn max_sub_array(nums: Vec<i32>) -> i32 {
     let mut prev = 0;
     let mut max_ans = nums[0];
     for x in nums {
-        prev = max(prev + x, x);
-        max_ans = max(max_ans, prev);
+        if prev > 0 {
+            prev += x;
+        } else {
+            prev = x;
+        }
+        if prev > max_ans {
+            max_ans = prev;
+        }
+    }
+    max_ans
+}
+
+/// 力扣（53. 最大子序和）
+pub fn max_sub_array_v2(nums: Vec<i32>) -> i32 {
+    let len = nums.len();
+
+    //dp[i] 表示以第 i 个元素结尾的最大子数组的和
+    let mut dp = vec![0; len];
+    dp[0] = nums[0];
+
+    let mut max_ans = nums[0];
+    for i in 1..len {
+        dp[i] = max(dp[i - 1], nums[i]);
+        max_ans = max(max_ans, dp[i]);
     }
     max_ans
 }
@@ -323,7 +304,7 @@ use std::rc::Rc;
 /// 力扣（70. 爬楼梯） https://leetcode-cn.com/problems/climbing-stairs/
 /// 方法1：动态规划
 pub fn climb_stairs(n: i32) -> i32 {
-    if n == 1 {
+    if n <= 1 {
         return 1;
     } else if n == 2 {
         return 2;
@@ -1813,9 +1794,6 @@ mod tests {
         let nums = vec![2, 7, 2, 11];
         let result = two_sum(nums, 9);
         dbg!(result);
-
-        let valid_string = String::from("(){{}");
-        dbg!(is_valid(valid_string));
 
         dbg!(reverse(132));
         dbg!(reverse(-1999999999));

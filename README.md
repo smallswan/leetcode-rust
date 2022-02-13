@@ -21,9 +21,9 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
           |--数据结构：字符串、数组、向量、双端队列、哈希集合、哈希表、二叉堆、链表、  
           |--算法：KMP(Knuth-Morris-Pratt)算法、Rabin-Karp算法、排序算法（归并排序）、查询算法（二分查找、深度优先搜索、广度优先搜索）、动态规划、分治算法、递归算法、回溯法、位运算（Brian Kernighan 算法、SWAR算法）、摩尔投票法、滑动窗口、旋转（rotate）、快慢指针、  		  
    |--数学方面
-          |--概念：质数、合数、快乐数、不快乐数、丑数、完全平方数
-          |--公式：阶乘、幂运算和对数运算、算术平方根 
-          |--定理： 
+          |--概念：质数、合数、快乐数、不快乐数、丑数、完全平方数、完美数、梅森数
+          |--公式：阶乘、幂运算和对数运算、算术平方根、一元二次方程、 
+          |--定理：欧几里得-欧拉定理 
 	   |--方法：数学归纳法、牛顿迭代法、厄拉多塞筛法（埃氏筛）、快速乘（俄罗斯农夫乘法）、快速幂、
 ```
 2. 八仙过海各显神通
@@ -101,6 +101,8 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 - 
 
 ### 二叉树
+二叉树的遍历：前序遍历、中序遍历、后序遍历、层序遍历
+
 - [94. 二叉树的中序遍历 ](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/ )
 - [98. 验证二叉搜索树 ](https://leetcode-cn.com/problems/validate-binary-search-tree/)
 - [100. 相同的树](https://leetcode-cn.com/problems/same-tree/ )
@@ -108,6 +110,11 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 - [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/ )
 - [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/ )
 - [104. 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/ )
+- [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/ )
+- [106. 从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/ )
+- [107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/ )
+- [108. 将有序数组转换为二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/ )
+- [109. 有序链表转换二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/)
 - [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/ )
 - [145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/ )
 - [222. 完全二叉树的节点个数](https://leetcode-cn.com/problems/count-complete-tree-nodes/ )

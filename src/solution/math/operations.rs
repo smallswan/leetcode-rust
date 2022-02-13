@@ -1,3 +1,131 @@
+/// 29. 两数相除 https://leetcode-cn.com/problems/divide-two-integers/
+pub fn divide(dividend: i32, divisor: i32) -> i32 {
+    if dividend == i32::MIN {
+        if divisor == 1 {
+            return i32::MIN;
+        }
+
+        if divisor == -1 {
+            //溢出返回
+            return i32::MAX;
+        }
+    }
+
+    if divisor == i32::MIN {
+        if dividend == i32::MIN {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    let mut dividend = dividend;
+    let mut rev = false;
+    if dividend > 0 {
+        dividend = -dividend;
+        rev = !rev;
+    }
+    let mut divisor = divisor;
+    if divisor > 0 {
+        divisor = -divisor;
+        rev = !rev;
+    }
+    let (mut left, mut right, mut ans) = (1, i32::MAX, 0);
+    while left <= right {
+        let mid = left + ((right - left) >> 1);
+        let check = quick_add(divisor, mid, dividend);
+        if check {
+            ans = mid;
+            if mid == i32::MAX {
+                break;
+            }
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    if rev {
+        -ans
+    } else {
+        ans
+    }
+}
+
+fn quick_add(y: i32, z: i32, x: i32) -> bool {
+    let mut result = 0;
+    let mut add = y;
+    let mut z = z;
+    while z != 0 {
+        if (z & 1) != 0 {
+            if result < x - add {
+                return false;
+            }
+            result += add;
+        }
+        if z != 1 {
+            if add < x - add {
+                return false;
+            }
+            add += add;
+        }
+        z >>= 1;
+    }
+    true
+}
+
+/// 41. 缺失的第一个正数 https://leetcode-cn.com/problems/first-missing-positive/
+pub fn first_missing_positive(nums: Vec<i32>) -> i32 {
+    let mut nums = nums;
+    let len = nums.len();
+    let mut i = 0;
+    let mut c = 0;
+    while i < len {
+        let num = nums[i];
+        if num > 0 && num - 1 < (len as i32) {
+            c += 1;
+            nums.swap((num - 1) as usize, i);
+            if (num - 1) > (i as i32) && (num != nums[i]) {
+                continue;
+            }
+        }
+        i += 1;
+    }
+
+    for (i, &num) in nums.iter().enumerate() {
+        if num != ((i + 1) as i32) {
+            return (i + 1) as i32;
+        }
+    }
+    return (len + 1) as i32;
+}
+
+/// 41. 缺失的第一个正数
+pub fn first_missing_positive_v2(nums: Vec<i32>) -> i32 {
+    let mut nums = nums;
+    for i in &mut nums {
+        if *i <= 0 {
+            *i = i32::MAX;
+        }
+    }
+    let len = nums.len();
+    for i in 0..len {
+        if nums[i].abs() <= len as i32 {
+            let idx = nums[i].abs() as usize - 1;
+            if nums[idx] > 0 {
+                nums[idx] = -nums[idx];
+            }
+        }
+    }
+
+    for (i, x) in nums.iter().enumerate() {
+        if *x >= 0 {
+            return i as i32 + 1;
+        }
+    }
+    len as i32 + 1
+}
+
 /// 力扣（50. Pow(x, n)） https://leetcode-cn.com/problems/powx-n/
 pub fn my_pow(x: f64, n: i32) -> f64 {
     x.powi(n)
@@ -307,6 +435,75 @@ pub fn is_power_of_four(n: i32) -> bool {
     n > 0 && (n & (n - 1)) == 0 && (n & 0x2aaaaaaa == 0)
 }
 
+/// 441. 排列硬币 https://leetcode-cn.com/problems/arranging-coins/
+pub fn arrange_coins(n: i32) -> i32 {
+    (((1.0f64 + 8.0f64 * n as f64).sqrt() - 1.0f64) / 2.0).floor() as i32
+}
+
+/// 492. 构造矩形 https://leetcode-cn.com/problems/construct-the-rectangle/
+pub fn construct_rectangle(area: i32) -> Vec<i32> {
+    let mut w = (area as f32).sqrt() as i32;
+    while area % w != 0 {
+        w -= 1;
+    }
+    vec![area / w, w]
+}
+
+/// 剑指 Offer 17. 打印从1到最大的n位数 https://leetcode-cn.com/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/
+pub fn print_numbers(n: i32) -> Vec<i32> {
+    let max = (10i32.pow(n as u32) - 1);
+    let mut result = Vec::<i32>::with_capacity(max as usize);
+    for num in 1..=max {
+        result.push(num);
+    }
+    result
+}
+
+/// 剑指 Offer 17. 打印从1到最大的n位数
+pub fn print_numbers_v2(n: i32) -> Vec<i32> {
+    let max = (10i32.pow(n as u32) - 1);
+    let mut result = Vec::<i32>::with_capacity(max as usize);
+    const NUMBERS: [char; 10] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    fn dfs(
+        result: &mut Vec<i32>,
+        num: &mut [char],
+        idx: usize,
+        len: usize,
+        start: &mut usize,
+        nine: &mut usize,
+    ) {
+        if idx == len {
+            let number: String = num.iter().skip(*start).collect();
+            if ("0" != number) {
+                result.push(number.parse().unwrap());
+            }
+
+            if len - (*start) == (*nine) {
+                if (*start > 0) {
+                    *start -= 1;
+                }
+            }
+            return;
+        }
+        for i in NUMBERS {
+            if i == '9' {
+                *nine += 1;
+            }
+            num[idx] = i;
+            dfs(result, num, idx + 1, len, start, nine);
+        }
+        *nine -= 1;
+    }
+
+    let mut num: Vec<char> = vec!['0'; n as usize];
+    let mut start = (n - 1) as usize;
+    let mut nine = 0;
+    dfs(&mut result, &mut num, 0, n as usize, &mut start, &mut nine);
+
+    result
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -350,5 +547,12 @@ mod tests {
         }
 
         dbg!(is_power_of_three(81 * 3));
+
+        dbg!(construct_rectangle(10_000_000));
+    }
+
+    #[test]
+    fn lcof() {
+        dbg!(print_numbers_v2(2));
     }
 }

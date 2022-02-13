@@ -564,6 +564,38 @@ pub fn to_hex(num: i32) -> String {
     }
 }
 
+/// 507. 完美数 https://leetcode-cn.com/problems/perfect-number/
+/// 对于一个 正整数，如果它和除了它自身以外的所有 正因子 之和相等，我们称它为 「完美数」。
+pub fn check_perfect_number(num: i32) -> bool {
+    num == 6 || num == 28 || num == 496 || num == 8128 || num == 33550336
+}
+
+/// 507. 完美数
+pub fn check_perfect_number_v2(num: i32) -> bool {
+    if num == 1 {
+        return false;
+    }
+
+    let mut sum = 1;
+    let mut factor = 2i32;
+    while let Some(product) = factor.checked_mul(factor) {
+        if num % factor == 0 {
+            sum += factor;
+            if product < num {
+                sum += num / factor;
+            }
+        }
+        factor += 1;
+
+        if let Some(p) = factor.checked_mul(factor) {
+            if p > num {
+                break;
+            }
+        }
+    }
+    sum == num
+}
+
 /// 剑指 Offer 10- I. 斐波那契数列   https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/
 /// 方法1：动态规划
 pub fn fib(n: i32) -> i32 {

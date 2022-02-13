@@ -19,6 +19,7 @@ impl TreeNode {
         }
     }
 
+    /// 树的深度：也称为树的高度，树中所有结点的层次最大值称为树的深度
     pub fn get_height(root: &Option<Rc<RefCell<TreeNode>>>) -> i32 {
         fn dfs(root: &Option<Rc<RefCell<TreeNode>>>) -> i32 {
             match root {
@@ -34,6 +35,7 @@ impl TreeNode {
 }
 
 /// 94. 二叉树的中序遍历  https://leetcode-cn.com/problems/binary-tree-inorder-traversal/
+/// 中序遍历：左中右
 pub fn inorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     fn traverse(root: Option<Rc<RefCell<TreeNode>>>, counter: &mut Vec<i32>) {
         if let Some(node) = root {
@@ -114,6 +116,7 @@ fn symmetric(l: Option<Rc<RefCell<TreeNode>>>, r: Option<Rc<RefCell<TreeNode>>>)
 }
 
 /// 力扣（101. 对称二叉树)  https://leetcode-cn.com/problems/symmetric-tree/
+/// 注意：本题与主站 101 题相同：https://leetcode-cn.com/problems/symmetric-tree/
 pub fn is_symmetric(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
     if root.is_none() {
         return true;
@@ -184,6 +187,7 @@ pub fn zigzag_level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> 
 }
 
 /// 104. 二叉树的最大深度 https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/
+/// 剑指 Offer 55 - I. 二叉树的深度 https://leetcode-cn.com/problems/er-cha-shu-de-shen-du-lcof/
 pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     let mut max_depth = 0;
     fn traverse(n: Option<Rc<RefCell<TreeNode>>>, max_depth: &mut i32, parent_depth: i32) {
@@ -204,7 +208,103 @@ pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     return max_depth;
 }
 
+/// 将有序数组转为二叉搜索树
+fn bst_helper(nums: &[i32]) -> Option<Rc<RefCell<TreeNode>>> {
+    if nums.is_empty() {
+        return None;
+    }
+    Some(Rc::new(RefCell::new(TreeNode {
+        val: nums[nums.len() / 2],
+        left: bst_helper(&nums[0..(nums.len() / 2)]),
+        right: bst_helper(&nums[(nums.len() / 2 + 1)..]),
+    })))
+}
+
+fn build_tree_helper(preorder: &[i32], inorder: &[i32]) -> Option<Rc<RefCell<TreeNode>>> {
+    if preorder.is_empty() {
+        return None;
+    }
+    let root_idx = inorder.iter().position(|&v| v == preorder[0]).unwrap();
+    Some(Rc::new(RefCell::new(TreeNode {
+        val: preorder[0],
+        left: build_tree_helper(&preorder[1..root_idx + 1], &inorder[0..root_idx]),
+        right: build_tree_helper(&preorder[root_idx + 1..], &inorder[root_idx + 1..]),
+    })))
+}
+
+/// 105. 从前序与中序遍历序列构造二叉树  https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+pub fn build_tree(preorder: Vec<i32>, inorder: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
+    build_tree_helper(&preorder[..], &inorder[..])
+}
+
+/// 106. 从中序与后序遍历序列构造二叉树 https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+pub fn build_tree_106(inorder: Vec<i32>, postorder: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
+    fn build_tree_helper(postorder: &[i32], inorder: &[i32]) -> Option<Rc<RefCell<TreeNode>>> {
+        if postorder.is_empty() {
+            return None;
+        }
+        let root_idx = inorder
+            .iter()
+            .position(|v| v == postorder.last().unwrap())
+            .unwrap();
+        Some(Rc::new(RefCell::new(TreeNode {
+            val: *postorder.last().unwrap(),
+            left: build_tree_helper(&postorder[0..root_idx], &inorder[0..root_idx]),
+            right: build_tree_helper(
+                &postorder[root_idx..postorder.len() - 1],
+                &inorder[root_idx + 1..],
+            ),
+        })))
+    }
+
+    build_tree_helper(&postorder[..], &inorder[..])
+}
+
+/// 107. 二叉树的层序遍历 II  https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/
+pub fn level_order_bottom(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+    let mut res = Vec::new();
+    let mut current_level = 0;
+    if root.is_none() {
+        return res;
+    }
+    let mut deq = VecDeque::new();
+    deq.push_back((0, root.clone()));
+    let mut vec = Vec::new();
+    while !deq.is_empty() {
+        if let Some((level, Some(node))) = deq.pop_front() {
+            deq.push_back((level + 1, node.borrow().left.clone()));
+            deq.push_back((level + 1, node.borrow().right.clone()));
+            if level > current_level {
+                res.push(vec);
+                vec = Vec::new();
+                current_level = level;
+            }
+            vec.push(node.borrow().val);
+        }
+    }
+    if !vec.is_empty() {
+        res.push(vec)
+    }
+    res.reverse();
+    res
+}
+
+/// 108. 将有序数组转换为二叉搜索树  https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/
+pub fn sorted_array_to_bst(nums: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
+    bst_helper(&nums[..])
+}
+
+use crate::solution::data_structures::lists::list_to_vec;
+use crate::solution::data_structures::lists::ListNode;
+
+/// 109. 有序链表转换二叉搜索树 https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/
+pub fn sorted_list_to_bst(head: Option<Box<ListNode>>) -> Option<Rc<RefCell<TreeNode>>> {
+    let nums: Vec<i32> = list_to_vec(head);
+    bst_helper(&nums[..])
+}
+
 /// 144. 二叉树的前序遍历 https://leetcode-cn.com/problems/binary-tree-preorder-traversal/
+/// 前序遍历：中左右
 pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     let mut ans = vec![];
 
@@ -232,7 +332,34 @@ pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     ans
 }
 
+/// 110. 平衡二叉树 https://leetcode-cn.com/problems/balanced-binary-tree/
+/// 剑指 Offer 55 - II. 平衡二叉树 https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/
+pub fn is_balanced(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
+    fn balanced_helper(root: Option<&Rc<RefCell<TreeNode>>>) -> Option<i32> {
+        if let Some(node) = root {
+            let pair = (
+                balanced_helper(node.borrow().left.as_ref()),
+                balanced_helper(node.borrow().right.as_ref()),
+            );
+            match pair {
+                (Some(left), Some(right)) => {
+                    if i32::abs(left - right) < 2 {
+                        return Some(i32::max(left, right) + 1);
+                    } else {
+                        return None;
+                    }
+                }
+                _ => return None,
+            }
+        } else {
+            Some(0)
+        }
+    }
+    balanced_helper(root.as_ref()).is_some()
+}
+
 /// 145. 二叉树的后序遍历 https://leetcode-cn.com/problems/binary-tree-postorder-traversal/
+/// 后序遍历：左右中
 pub fn postorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     fn traverse(root: Option<Rc<RefCell<TreeNode>>>, counter: &mut Vec<i32>) {
         if let Some(node) = root {
@@ -323,6 +450,43 @@ pub fn print_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<String>> {
     ans
 }
 
+/// 剑指 Offer 27. 二叉树的镜像  https://leetcode-cn.com/problems/er-cha-shu-de-jing-xiang-lcof/
+pub fn mirror_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<TreeNode>>> {
+    match root.clone() {
+        None => None,
+        Some(node) => {
+            let mut tmp_node = node.borrow_mut();
+            if tmp_node.left.is_none() && tmp_node.right.is_none() {
+                return Some(node.clone());
+            }
+            let node1 = tmp_node.left.clone();
+            tmp_node.left = tmp_node.right.clone();
+            tmp_node.right = node1;
+
+            if tmp_node.left.is_some() {
+                mirror_tree(tmp_node.left.clone());
+            }
+            if tmp_node.right.is_some() {
+                mirror_tree(tmp_node.right.clone());
+            }
+            return Some(node.clone());
+        }
+    }
+}
+
+/// 剑指 Offer 27. 二叉树的镜像
+pub fn mirror_tree_v2(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<TreeNode>>> {
+    if root.is_none() {
+        return root;
+    }
+    let mut root = root.unwrap();
+    let mut left = root.borrow_mut().left.take();
+    let mut right = root.borrow_mut().right.take();
+    root.borrow_mut().left = mirror_tree_v2(right);
+    root.borrow_mut().right = mirror_tree_v2(left);
+    Some(root)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -336,7 +500,7 @@ mod tests {
         let root = Rc::new(RefCell::new(node));
 
         let vec = inorder_traversal(Some(root));
-        println!("{:?}", vec);
+        assert_eq!(vec, vec![110, 119, 120]);
 
         let node = TreeNode {
             val: 119,
@@ -346,7 +510,8 @@ mod tests {
         let root = Rc::new(RefCell::new(node));
 
         let vec = preorder_traversal(Some(root));
-        println!("{:?}", vec);
+        assert_eq!(vec, vec![119, 110, 120]);
+
         let node = TreeNode {
             val: 119,
             left: Some(Rc::new(RefCell::new(TreeNode::new(110)))),
@@ -355,7 +520,41 @@ mod tests {
         let root = Rc::new(RefCell::new(node));
 
         let vec = postorder_traversal(Some(root));
-        println!("{:?}", vec);
+        assert_eq!(vec, vec![110, 120, 119]);
+
+        let twenty = TreeNode {
+            val: 20,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(15)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(7)))),
+        };
+
+        let three = TreeNode {
+            val: 3,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(9)))),
+            right: Some(Rc::new(RefCell::new(twenty))),
+        };
+
+        let tree = level_order(Some(Rc::new(RefCell::new(three))));
+        assert_eq!(tree, vec![vec![3], vec![9, 20], vec![15, 7]]);
+
+        let twenty = TreeNode {
+            val: 20,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(15)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(7)))),
+        };
+
+        let three = TreeNode {
+            val: 3,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(9)))),
+            right: Some(Rc::new(RefCell::new(twenty))),
+        };
+
+        let demo_tree = Some(Rc::new(RefCell::new(three)));
+        let is_balanced = is_balanced(demo_tree.clone());
+        println!(
+            "is_balanced : {is_balanced}, height:{}",
+            TreeNode::get_height((&demo_tree))
+        );
 
         let four = TreeNode {
             val: 4,
@@ -379,5 +578,8 @@ mod tests {
         dbg!(preorder_traversal(Some(root.clone())));
         dbg!(inorder_traversal(Some(root.clone())));
         dbg!(postorder_traversal(Some(root.clone())));
+
+        let nums = vec![-10, -3, 0, 5, 9];
+        sorted_array_to_bst(nums);
     }
 }
