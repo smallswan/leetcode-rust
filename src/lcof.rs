@@ -478,6 +478,33 @@ pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
     result
 }
 
+/// 剑指 Offer 57 - II. 和为s的连续正数序列 https://leetcode-cn.com/problems/he-wei-sde-lian-xu-zheng-shu-xu-lie-lcof/
+/// 方法1：数学公式法，算法来源：https://leetcode-cn.com/problems/he-wei-sde-lian-xu-zheng-shu-xu-lie-lcof/solution/shu-ju-jie-gou-he-suan-fa-hua-dong-chuan-74eb/
+/// start,start+1,start+2,...,start+(n-1) = n * start + n*(n-1)/2 = target
+/// 令 n*start = total，则 total = target - n * (n - 1) / 2
+pub fn find_continuous_sequence(target: i32) -> Vec<Vec<i32>> {
+    let mut result = vec![];
+    let mut n = 2;
+    loop {
+        let total = target - n * (n - 1) / 2;
+        if total <= 0 {
+            break;
+        }
+        if total % n == 0 {
+            let mut arr = vec![];
+            let start = total / n;
+            for i in 0..n {
+                arr.push(start + i);
+            }
+            result.push(arr);
+        }
+        n += 1;
+    }
+
+    result.reverse();
+    result
+}
+
 /// 剑指 Offer 58 - I. 翻转单词顺序 https://leetcode-cn.com/problems/fan-zhuan-dan-ci-shun-xu-lcof/
 pub fn reverse_words(s: String) -> String {
     let mut words: Vec<&str> = s.split(" ").collect();
