@@ -456,6 +456,28 @@ pub fn single_numbers(nums: Vec<i32>) -> Vec<i32> {
     vec![a, b]
 }
 
+/// 剑指 Offer 57. 和为s的两个数字  https://leetcode-cn.com/problems/he-wei-sde-liang-ge-shu-zi-lcof/
+pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
+    let mut result = vec![];
+    let (mut i, mut j) = (0, nums.len() - 1);
+    while i < j {
+        match (nums[i] + nums[j]).cmp(&target) {
+            Ordering::Equal => {
+                result.push(nums[i]);
+                result.push(nums[j]);
+                break;
+            }
+            Ordering::Greater => {
+                j -= 1;
+            }
+            Ordering::Less => {
+                i += 1;
+            }
+        }
+    }
+    result
+}
+
 /// 剑指 Offer 58 - I. 翻转单词顺序 https://leetcode-cn.com/problems/fan-zhuan-dan-ci-shun-xu-lcof/
 pub fn reverse_words(s: String) -> String {
     let mut words: Vec<&str> = s.split(" ").collect();

@@ -541,6 +541,7 @@ pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
 }
 
 /// 力扣（169. 多数元素） https://leetcode-cn.com/problems/majority-element/
+/// 剑指 Offer 39. 数组中出现次数超过一半的数字 https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/
 /// Boyer-Moore 投票算法
 pub fn majority_element(nums: Vec<i32>) -> i32 {
     let mut count = 0;
