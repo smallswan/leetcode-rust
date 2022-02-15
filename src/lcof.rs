@@ -431,6 +431,50 @@ pub fn min_number(nums: Vec<i32>) -> String {
  * obj.add_num(num);
  * let ret_2: f64 = obj.find_median();
  */
+use std::collections::HashMap;
+/// 剑指 Offer 50. 第一个只出现一次的字符  https://leetcode-cn.com/problems/di-yi-ge-zhi-chu-xian-yi-ci-de-zi-fu-lcof/
+pub fn first_uniq_char(s: String) -> char {
+    let mut map: HashMap<char, i32> = HashMap::new();
+    for c in s.chars() {
+        if let Some(count) = map.get_mut(&c) {
+            *count += 1;
+        } else {
+            map.insert(c, 1);
+        }
+    }
+    for c in s.chars() {
+        if let Some(count) = map.get(&c) {
+            if *count == 1 {
+                return c;
+            }
+        };
+    }
+
+    ' '
+}
+
+/// 剑指 Offer 50. 第一个只出现一次的字符
+pub fn first_uniq_char_v2(s: String) -> char {
+    let mut map: HashMap<char, i32> = HashMap::new();
+    for (i, c) in s.chars().enumerate() {
+        if map.contains_key(&c) {
+            map.insert(c, -1);
+        } else {
+            map.insert(c, i as i32);
+        }
+    }
+    let mut first = s.len() as i32;
+    for (key, &val) in map.iter() {
+        if val != -1 && val < first {
+            first = val;
+        }
+    }
+    if first == s.len() as i32 {
+        ' '
+    } else {
+        s.chars().skip(first as usize).take(1).next().unwrap()
+    }
+}
 
 /// 剑指 Offer 56 - I. 数组中数字出现的次数 https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/
 /// 方法1：分组异或
