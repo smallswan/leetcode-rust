@@ -476,6 +476,57 @@ pub fn first_uniq_char_v2(s: String) -> char {
     }
 }
 
+/// 剑指 Offer 53 - I. 在排序数组中查找数字 I https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/
+/// 注意：本题与主站 34 题相同（仅返回值不同）：https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+pub fn search(nums: Vec<i32>, target: i32) -> i32 {
+    use std::cmp::Ordering;
+    let mut range = vec![-1, -1];
+    let mut left = 0;
+    let mut right = nums.len();
+    while left < right {
+        let mut middle = (left + right) / 2;
+        match nums[middle].cmp(&target) {
+            Ordering::Greater => {
+                right = middle;
+            }
+            Ordering::Less => {
+                left = middle + 1;
+            }
+            Ordering::Equal => {
+                // 找到target的第一个位置后则向左右两边拓展查找
+                range[0] = middle as i32;
+                range[1] = middle as i32;
+                let mut l = middle;
+                let mut r = middle;
+                while r < right - 1 {
+                    if nums[r + 1] == target {
+                        r += 1;
+                    } else {
+                        break;
+                    }
+                }
+
+                while l > 0 {
+                    if nums[l - 1] == target {
+                        l -= 1;
+                    } else {
+                        break;
+                    }
+                }
+
+                range[0] = l as i32;
+                range[1] = r as i32;
+                break;
+            }
+        }
+    }
+    if range[0] < 0 {
+        0
+    } else {
+        range[1] - range[0] + 1
+    }
+}
+
 /// 剑指 Offer 56 - I. 数组中数字出现的次数 https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/
 /// 方法1：分组异或
 pub fn single_numbers(nums: Vec<i32>) -> Vec<i32> {
