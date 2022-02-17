@@ -32,6 +32,9 @@ mod tests {
         dbg!(obj.find_median());
 
         dbg!(reverse_words("a good   example".to_string()));
+
+        let nums = vec![1, 2];
+        missing_number_v2(nums);
     }
 
     #[test]
@@ -525,6 +528,38 @@ pub fn search(nums: Vec<i32>, target: i32) -> i32 {
     } else {
         range[1] - range[0] + 1
     }
+}
+
+/// 剑指 Offer 53 - II. 0～n-1中缺失的数字 https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof/
+/// 方法1：逐个遍历
+pub fn missing_number(nums: Vec<i32>) -> i32 {
+    for (idx, val) in nums.iter().enumerate() {
+        if (idx as i32) != (*val) {
+            return idx as i32;
+        }
+    }
+    nums.len() as i32
+}
+
+/// 剑指 Offer 53 - II. 0～n-1中缺失的数字
+/// 方法2：二分查找
+pub fn missing_number_v2(nums: Vec<i32>) -> i32 {
+    let (mut i, mut j) = (0, nums.len() - 1);
+    while i <= j {
+        let middle = (i + j) / 2;
+
+        if nums[middle] == (middle as i32) {
+            i = middle + 1;
+        } else {
+            if middle > 0 {
+                j = middle - 1;
+            } else {
+                break;
+            }
+        }
+    }
+
+    i as i32
 }
 
 /// 剑指 Offer 56 - I. 数组中数字出现的次数 https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/
