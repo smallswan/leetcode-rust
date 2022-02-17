@@ -653,3 +653,10 @@ pub fn reverse_words(s: String) -> String {
 pub fn reverse_words_v2(s: String) -> String {
     s.split_whitespace().rev().collect::<Vec<_>>().join(" ")
 }
+
+/// 剑指 Offer 58 - II. 左旋转字符串 https://leetcode-cn.com/problems/zuo-xuan-zhuan-zi-fu-chuan-lcof/
+pub fn reverse_left_words(s: String, n: i32) -> String {
+    let mut chars: Vec<char> = s.chars().collect();
+    chars.rotate_left(n as usize);
+    chars.iter().collect()
+}
