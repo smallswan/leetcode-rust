@@ -504,6 +504,20 @@ pub fn print_numbers_v2(n: i32) -> Vec<i32> {
     result
 }
 
+/// 剑指 Offer 65. 不用加减乘除做加法 https://leetcode-cn.com/problems/bu-yong-jia-jian-cheng-chu-zuo-jia-fa-lcof/
+pub fn add(a: i32, b: i32) -> i32 {
+    let (mut a, mut b) = (a, b);
+
+    while b != 0 {
+        // c 进位
+        let c = (a & b) << 1;
+        // a 非进位和
+        a ^= b;
+        b = c;
+    }
+    a
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
