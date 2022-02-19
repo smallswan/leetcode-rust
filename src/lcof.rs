@@ -690,3 +690,15 @@ pub fn is_straight(nums: Vec<i32>) -> bool {
 
     max - min < 5
 }
+
+/// 剑指 Offer 62. 圆圈中最后剩下的数字  https://leetcode-cn.com/problems/yuan-quan-zhong-zui-hou-sheng-xia-de-shu-zi-lcof/
+/// 约瑟夫环问题
+pub fn last_remaining(n: i32, m: i32) -> i32 {
+    let mut f = 0;
+    let mut i = 2;
+    while i != n + 1 {
+        f = (m + f) % i;
+        i += 1;
+    }
+    f
+}
