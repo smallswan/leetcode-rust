@@ -488,6 +488,36 @@ pub fn mirror_tree_v2(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<
     Some(root)
 }
 
+/// 剑指 Offer 54. 二叉搜索树的第k大节点 https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/
+pub fn kth_largest(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
+    fn dfs(root: Option<Rc<RefCell<TreeNode>>>, result: &mut i32, over: &mut bool, k: &mut i32) {
+        if *over {
+            return;
+        }
+
+        if let Some(node) = root {
+            dfs(node.borrow_mut().right.take(), result, over, k);
+
+            *k -= 1;
+            if *k == 0 {
+                *result = node.borrow_mut().val;
+                *over = true;
+                return;
+            }
+
+            dfs(node.borrow_mut().left.take(), result, over, k);
+        } else {
+            return;
+        }
+    }
+
+    let mut result = 0;
+    let mut over = false;
+    let mut k = k;
+    dfs(root, &mut result, &mut over, &mut k);
+    result
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
