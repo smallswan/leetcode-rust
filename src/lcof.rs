@@ -660,3 +660,33 @@ pub fn reverse_left_words(s: String, n: i32) -> String {
     chars.rotate_left(n as usize);
     chars.iter().collect()
 }
+
+use std::collections::HashSet;
+/// 剑指 Offer 61. 扑克牌中的顺子 https://leetcode-cn.com/problems/bu-ke-pai-zhong-de-shun-zi-lcof/
+/// 1.除大小王外，所有牌 无重复 ；
+/// 2.设此 5 张牌中最大的牌为 max ，最小的牌为 min （大小王除外），则需满足：
+pub fn is_straight(nums: Vec<i32>) -> bool {
+    let mut reapt = HashSet::new();
+    let (mut min, mut max) = (14, 0);
+    for num in nums {
+        if num == 0 {
+            continue;
+        }
+
+        if reapt.contains(&num) {
+            return false;
+        } else {
+            reapt.insert(num);
+        }
+
+        if num > max {
+            max = num;
+        }
+
+        if num < min {
+            min = num;
+        }
+    }
+
+    max - min < 5
+}
