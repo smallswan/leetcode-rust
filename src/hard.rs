@@ -170,87 +170,6 @@ pub fn is_match(s: String, p: String) -> bool {
     matrix[patterns.len() - 1][s.len() - 1]
 }
 
-/// 力扣（10. 正则表达式匹配）  
-/// 动态规划
-pub fn is_match_v2(s: String, p: String) -> bool {
-    let chars: Vec<char> = p.chars().collect();
-    let s_len = s.len();
-    let p_len = p.len();
-    let mut dp = Vec::<Vec<bool>>::with_capacity(s_len + 1);
-    for i in 0..=s_len {
-        dp.push(vec![false; p_len + 1]);
-    }
-    dp[0][0] = true;
-
-    for i in 0..=s_len {
-        for j in 1..=p_len {
-            if chars[j - 1] == '*' {
-                dp[i][j] = dp[i][j - 2];
-                if matches(&s, &p, i, j - 1) {
-                    dp[i][j] = dp[i][j] || dp[i - 1][j];
-                }
-            } else if matches(&s, &p, i, j) {
-                dp[i][j] = dp[i - 1][j - 1];
-            }
-        }
-    }
-
-    dp[s_len][p_len]
-}
-
-fn matches(s: &str, p: &str, i: usize, j: usize) -> bool {
-    if i == 0 {
-        return false;
-    }
-    let p_chars: Vec<char> = p.chars().collect();
-    if p_chars[j - 1] == '.' {
-        return true;
-    }
-
-    let s_chars: Vec<char> = s.chars().collect();
-    s_chars[i - 1] == p_chars[j - 1]
-}
-
-/// 力扣（10. 正则表达式匹配）  
-/// 动态规划
-pub fn is_match_v3(s: String, p: String) -> bool {
-    let chars: Vec<char> = p.chars().collect();
-    let s_len = s.len();
-    let p_len = p.len();
-    let mut dp = Vec::<Vec<bool>>::with_capacity(s_len + 1);
-    for i in 0..=s_len {
-        dp.push(vec![false; p_len + 1]);
-    }
-    dp[0][0] = true;
-
-    let s_chars: Vec<char> = s.chars().collect();
-    for i in 0..=s_len {
-        for j in 1..=p_len {
-            if chars[j - 1] == '*' {
-                dp[i][j] = dp[i][j - 2];
-                if matches_v2(&s_chars, &chars, i, j - 1) {
-                    dp[i][j] = dp[i][j] || dp[i - 1][j];
-                }
-            } else if matches_v2(&s_chars, &chars, i, j) {
-                dp[i][j] = dp[i - 1][j - 1];
-            }
-        }
-    }
-
-    dp[s_len][p_len]
-}
-
-fn matches_v2(s_chars: &[char], p_chars: &[char], i: usize, j: usize) -> bool {
-    if i == 0 {
-        return false;
-    }
-
-    if p_chars[j - 1] == '.' {
-        return true;
-    }
-    s_chars[i - 1] == p_chars[j - 1]
-}
-
 /// 力扣（37. 解数独） https://leetcode-cn.com/problems/sudoku-solver/
 pub fn solve_sudoku(board: &mut Vec<Vec<char>>) {
     let mut line = Vec::<Vec<bool>>::with_capacity(9);
@@ -368,21 +287,5 @@ mod tests {
         dbg!(is_match("aab".to_string(), "c*a*b".to_string()));
         dbg!(is_match("ab".to_string(), ".*".to_string()));
         dbg!(is_match("a".to_string(), "ab*a".to_string()));
-
-        dbg!(
-            "{}",
-            is_match_v2("mississippi".to_string(), "mis*is*p*.".to_string())
-        );
-        dbg!(is_match_v2("aab".to_string(), "c*a*b".to_string()));
-        dbg!(is_match_v2("ab".to_string(), ".*".to_string()));
-        dbg!(is_match_v2("a".to_string(), "ab*a".to_string()));
-
-        dbg!(
-            "{}",
-            is_match_v3("mississippi".to_string(), "mis*is*p*.".to_string())
-        );
-        dbg!(is_match_v3("aab".to_string(), "c*a*b".to_string()));
-        dbg!(is_match_v3("ab".to_string(), ".*".to_string()));
-        dbg!(is_match_v3("a".to_string(), "ab*a".to_string()));
     }
 }

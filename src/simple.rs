@@ -429,6 +429,7 @@ pub fn max_profit(prices: Vec<i32>) -> i32 {
 }
 
 /// 力扣（121. 买卖股票的最佳时机）
+/// 剑指 Offer 63. 股票的最大利润  https://leetcode-cn.com/problems/gu-piao-de-zui-da-li-run-lcof/
 /// 最低价格、最大利润
 pub fn max_profit_v2(prices: Vec<i32>) -> i32 {
     let len = prices.len();

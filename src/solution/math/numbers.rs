@@ -446,6 +446,7 @@ use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 static UGLY_NUMBER_FACTORS: [i64; 3] = [2, 3, 5];
 /// 力扣（264. 丑数 II） https://leetcode-cn.com/problems/ugly-number-ii/
+/// 剑指 Offer 49. 丑数  https://leetcode-cn.com/problems/chou-shu-lcof/
 /// 1 通常被视为丑数。
 /// 方法一：最小堆
 pub fn nth_ugly_number(n: i32) -> i32 {
@@ -467,33 +468,6 @@ pub fn nth_ugly_number(n: i32) -> i32 {
         };
     }
     ugly as i32
-}
-
-use std::cmp::min;
-/// 力扣（264. 丑数 II）
-/// 方法二：动态规划
-pub fn nth_ugly_number_v2(n: i32) -> i32 {
-    let n = n as usize;
-    let mut dp = vec![0; n + 1];
-    dp[1] = 1;
-
-    let (mut p2, mut p3, mut p5) = (1, 1, 1);
-
-    for i in 2..=n {
-        let (num2, num3, num5) = (dp[p2] * 2, dp[p3] * 3, dp[p5] * 5);
-        dp[i] = min(min(num2, num3), num5);
-        if dp[i] == num2 {
-            p2 += 1;
-        }
-        if dp[i] == num3 {
-            p3 += 1;
-        }
-        if dp[i] == num5 {
-            p5 += 1;
-        }
-    }
-
-    dp[n]
 }
 
 /// 力扣（367. 有效的完全平方数) https://leetcode-cn.com/problems/valid-perfect-square/
@@ -670,7 +644,6 @@ mod tests {
         dbg!(ans);
 
         dbg!("nth_ugly_number    {}", nth_ugly_number(1690));
-        dbg!("nth_ugly_number_v2 {}", nth_ugly_number_v2(1690));
 
         dbg!(is_perfect_square_v2(256));
         dbg!(is_perfect_square_v2(142857));

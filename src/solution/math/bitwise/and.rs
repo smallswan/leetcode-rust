@@ -70,34 +70,6 @@ pub fn count_bits_v2(n: i32) -> Vec<i32> {
     result
 }
 
-/// 力扣（338. 比特位计数）
-/// 动态规划
-pub fn count_bits_v3(n: i32) -> Vec<i32> {
-    let n = n as usize;
-    let mut result = vec![0; n + 1];
-    let mut high_bit = 0;
-    for num in 1..=n {
-        if num & (num - 1) == 0 {
-            high_bit = num;
-        }
-        result[num] = result[num - high_bit] + 1;
-    }
-
-    result
-}
-
-/// 力扣（338. 比特位计数）
-/// 动态规划——最低有效位
-pub fn count_bits_v4(n: i32) -> Vec<i32> {
-    let n = n as usize;
-    let mut result = vec![0i32; n + 1];
-    for num in 1..=n {
-        result[num] = result[num >> 1] + ((num as i32) & 1);
-    }
-
-    result
-}
-
 /// 力扣（476. 数字的补数） https://leetcode-cn.com/problems/number-complement/
 /// 方法1：左移求出最高位所需移动的次数，然后构建与之匹配的掩码
 pub fn find_complement(num: i32) -> i32 {
