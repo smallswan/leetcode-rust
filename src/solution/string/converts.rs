@@ -39,6 +39,8 @@ enum State {
     Number(i32),
 }
 /// 力扣（8. 字符串转整数（atoi）） https://leetcode-cn.com/problems/string-to-integer-atoi/
+/// 方法1：DFA（Deterministic Finite Automaton，即确定有穷自动机）
+/// 注意：剑指 Offer 67. 把字符串转换成整数 https://leetcode-cn.com/problems/ba-zi-fu-chuan-zhuan-huan-cheng-zheng-shu-lcof/
 pub fn my_atoi(s: String) -> i32 {
     let mut state = State::Init;
     let mut neg = 1;

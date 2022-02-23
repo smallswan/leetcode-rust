@@ -104,3 +104,9 @@ reverse(mid,len);
 ```
 ### 相关问题
 [189. 旋转数组](https://leetcode-cn.com/problems/rotate-array/) 
+
+## DFA算法
+
+### 相关问题
+[8. 字符串转整数（atoi）](https://leetcode-cn.com/problems/string-to-integer-atoi/ )
+[敏感词过滤——DFA算法(rust)](https://github.com/smallswan/rust-by-example/blob/master/src/dfa.rs )
