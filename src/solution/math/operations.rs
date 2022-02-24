@@ -126,6 +126,96 @@ pub fn first_missing_positive_v2(nums: Vec<i32>) -> i32 {
     len as i32 + 1
 }
 
+/// 43. 字符串相乘  https://leetcode-cn.com/problems/multiply-strings/
+use std::collections::VecDeque;
+pub fn multiply(num1: String, num2: String) -> String {
+    if &num1 == "0" || &num2 == "0" {
+        return "0".to_string();
+    }
+    //计算num1和num2有多少个后缀0，并把后缀0去掉
+    let (num1, num2, zero_cnt) = zero_tail(num1, num2);
+
+    let n1: Vec<u8> = num1.into_bytes().into_iter().map(|c| c - 48).collect();
+    let mut n1 = VecDeque::from(n1);
+    n1.insert(0, 0);
+
+    let n2: Vec<u8> = num2.into_bytes().into_iter().map(|c| c - 48).collect();
+    //克隆第一个字符串，分别保存在9个双端列表中
+    let mut vn: Vec<VecDeque<u8>> = vec![n1.clone(); 9];
+
+    //把1到9和第一个字符串相乘的结果保存到每个双端列表中
+    for i in 1..9 {
+        multi_1_9(&mut vn, i);
+    }
+    let len2 = n2.len();
+    let mut ans = vn[(n2[len2 - 1] - 1) as usize].clone();
+
+    let mut cnt = 1;
+    //遍历第二个字符串，每个字符对应前面1到9的双端列表，移位相加
+    for i in (0..len2 - 1).rev() {
+        ans.insert(0, 0);
+        ans.insert(0, 0);
+        if n2[i] > 0 {
+            let tmp = &vn[(n2[i] - 1) as usize];
+            let mut index_b = tmp.len();
+            let mut flag = 0;
+            for j in (0..ans.len() - cnt).rev() {
+                let a = ans[j] + flag;
+                let b = if index_b > 0 {
+                    index_b -= 1;
+                    tmp[index_b]
+                } else {
+                    0
+                };
+                ans[j] = (a + b) % 10;
+                flag = if a + b > 9 { 1 } else { 0 };
+            }
+        }
+        cnt += 1;
+    }
+    //追加后缀0
+    for _ in 0..zero_cnt {
+        ans.push_back(0);
+    }
+    //去掉前缀0
+    while ans[0] == 0 {
+        ans.pop_front();
+    }
+    let ans: Vec<u8> = ans.into_iter().map(|a| a + 48).collect();
+    String::from_utf8(ans).unwrap()
+}
+//计算后缀0个数，并去掉后缀0
+fn zero_tail(s1: String, s2: String) -> (String, String, usize) {
+    let mut zero_cnt = 0;
+    let mut v = vec![s1, s2];
+    for s in v.iter_mut() {
+        let mut tmp = 0;
+        for i in (0..s.len()).rev() {
+            if &s[i..i + 1] == "0" {
+                tmp += 1;
+            } else {
+                break;
+            }
+        }
+        if tmp > 0 {
+            zero_cnt += tmp;
+            *s = format!("{}", &s[..s.len() - tmp]);
+        }
+    }
+    (v[0].clone(), v[1].clone(), zero_cnt)
+}
+
+//1到9和第一个字符串相乘的结果保存到双端列表中
+fn multi_1_9(vn: &mut Vec<VecDeque<u8>>, index: usize) {
+    let mut flag = 0;
+    let len = vn[0].len();
+    for i in (0..len).rev() {
+        let sum = vn[index - 1][i] + vn[index][i] + flag;
+        vn[index][i] = sum % 10;
+        flag = if sum > 9 { 1 } else { 0 };
+    }
+}
+
 /// 力扣（50. Pow(x, n)） https://leetcode-cn.com/problems/powx-n/
 pub fn my_pow(x: f64, n: i32) -> f64 {
     x.powi(n)
