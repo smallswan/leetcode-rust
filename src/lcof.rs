@@ -37,6 +37,8 @@ mod tests {
 
         let nums = vec![1, 2];
         missing_number_v2(nums);
+
+        dbg!(find_nth_digit(1000000000));
     }
 
     #[test]
@@ -415,6 +417,22 @@ impl MedianFinder {
             };
         }
     }
+}
+
+/// 剑指 Offer 44. 数字序列中某一位的数字 https://leetcode-cn.com/problems/shu-zi-xu-lie-zhong-mou-yi-wei-de-shu-zi-lcof/
+pub fn find_nth_digit(n: i32) -> i32 {
+    let (mut digit, mut start, mut count) = (1, 1_i64, 9_i64);
+    let mut n = n as i64;
+    while n > count {
+        n -= count;
+        digit += 1;
+        start *= 10;
+        count = digit * start * 9;
+    }
+    let num = start + (n - 1) / digit;
+    let num = format!("{}", num);
+    let index = ((n - 1) % digit) as usize;
+    (num.chars().nth(index).unwrap() as i32) - ('0' as i32)
 }
 
 /// 剑指 Offer 45. 把数组排成最小的数 https://leetcode-cn.com/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof/
