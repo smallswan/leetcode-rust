@@ -115,6 +115,8 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 - [107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/ )
 - [108. 将有序数组转换为二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/ )
 - [109. 有序链表转换二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/)
+- [110. 平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree/ )
+- [111. 二叉树的最小深度](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/ )
 - [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/ )
 - [145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/ )
 - [222. 完全二叉树的节点个数](https://leetcode-cn.com/problems/count-complete-tree-nodes/ )

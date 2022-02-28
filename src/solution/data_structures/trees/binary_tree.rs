@@ -304,6 +304,54 @@ pub fn sorted_list_to_bst(head: Option<Box<ListNode>>) -> Option<Rc<RefCell<Tree
     bst_helper(&nums[..])
 }
 
+/// 110. 平衡二叉树 https://leetcode-cn.com/problems/balanced-binary-tree/
+/// 剑指 Offer 55 - II. 平衡二叉树 https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/
+pub fn is_balanced(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
+    fn balanced_helper(root: Option<&Rc<RefCell<TreeNode>>>) -> Option<i32> {
+        if let Some(node) = root {
+            let pair = (
+                balanced_helper(node.borrow().left.as_ref()),
+                balanced_helper(node.borrow().right.as_ref()),
+            );
+            match pair {
+                (Some(left), Some(right)) => {
+                    if i32::abs(left - right) < 2 {
+                        return Some(i32::max(left, right) + 1);
+                    } else {
+                        return None;
+                    }
+                }
+                _ => return None,
+            }
+        } else {
+            Some(0)
+        }
+    }
+    balanced_helper(root.as_ref()).is_some()
+}
+
+/// 111. 二叉树的最小深度 https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/
+pub fn min_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    match root {
+        None => 0,
+        Some(mut node) => {
+            let ll = node.borrow_mut().left.take();
+            let rr = node.borrow_mut().right.take();
+            match (ll, rr) {
+                (None, None) => 1,
+                (Some(l), Some(r)) => {
+                    let lc = min_depth(Some(l));
+                    let rc = min_depth(Some(r));
+                    let min = if lc < rc { lc } else { rc };
+                    min + 1
+                }
+                (Some(l), None) => 1 + min_depth(Some(l)),
+                (_, Some(r)) => 1 + min_depth(Some(r)),
+            }
+        }
+    }
+}
+
 /// 144. 二叉树的前序遍历 https://leetcode-cn.com/problems/binary-tree-preorder-traversal/
 /// 前序遍历：中左右
 pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
@@ -331,32 +379,6 @@ pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
         }
     }
     ans
-}
-
-/// 110. 平衡二叉树 https://leetcode-cn.com/problems/balanced-binary-tree/
-/// 剑指 Offer 55 - II. 平衡二叉树 https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/
-pub fn is_balanced(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
-    fn balanced_helper(root: Option<&Rc<RefCell<TreeNode>>>) -> Option<i32> {
-        if let Some(node) = root {
-            let pair = (
-                balanced_helper(node.borrow().left.as_ref()),
-                balanced_helper(node.borrow().right.as_ref()),
-            );
-            match pair {
-                (Some(left), Some(right)) => {
-                    if i32::abs(left - right) < 2 {
-                        return Some(i32::max(left, right) + 1);
-                    } else {
-                        return None;
-                    }
-                }
-                _ => return None,
-            }
-        } else {
-            Some(0)
-        }
-    }
-    balanced_helper(root.as_ref()).is_some()
 }
 
 /// 145. 二叉树的后序遍历 https://leetcode-cn.com/problems/binary-tree-postorder-traversal/
