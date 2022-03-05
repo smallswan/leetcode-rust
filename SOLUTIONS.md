@@ -1,7 +1,14 @@
 ## 问题及解决方案
 |     | 问题（problems）  |  解决方案（solutions）  |
 |  ----  | ----  | ----  |
-| 链表  | - [2. 两数相加](https://leetcode-cn.com/problems/add-two-numbers/ )  | [链表解决方案](https://github.com/smallswan/leetcode-rust/blob/main/src/solution/data_structures/lists/linked_list.rs ) |
+|  栈  | - [20. 有效的括号](https://leetcode-cn.com/problems/valid-parentheses/)  | [栈](src/solution/data_structures/stacks/stack.rs)  |
+|    | - [32. 最长有效括号](https://leetcode-cn.com/problems/longest-valid-parentheses/)  | [最小栈](src/solution/data_structures/stacks/min_stack.rs)  |
+|    | - [42. 接雨水](https://leetcode-cn.com/problems/trapping-rain-water/)  | [单调栈](src/solution/data_structures/stacks/monotonic_stack.rs)  |
+|    | - [155. 最小栈](https://leetcode-cn.com/problems/min-stack/)  |   |
+|    | - [496. 下一个更大元素 I](https://leetcode-cn.com/problems/next-greater-element-i/ )  |   |
+|    | - [844. 比较含退格的字符串](https://leetcode-cn.com/problems/backspace-string-compare/ )  |  |
+|  ----  | ----  | ----  |
+| 链表  | - [2. 两数相加](https://leetcode-cn.com/problems/add-two-numbers/ )  | [链表解决方案](src/solution/data_structures/lists/linked_list.rs ) |
 |       | - [19. 删除链表的倒数第 N 个结点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/ )  |  |
 |       | - [21. 合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/ )  |  |
 |       | - [23. 合并K个升序链表](https://leetcode-cn.com/problems/merge-k-sorted-lists/ )  |  |
@@ -34,7 +41,7 @@
 |       | - [226. 翻转二叉树 ](https://leetcode-cn.com/problems/invert-binary-tree/ ) |  | 
 |       | - [655. 输出二叉树](https://leetcode-cn.com/problems/print-binary-tree/) |  |
 |  ----  | ----  | ----  |
-| 位运算|  | [位运算解决方案](https://github.com/smallswan/leetcode-rust/tree/main/src/solution/math/bitwise) |
+| 位运算|  | [位运算解决方案](src/solution/math/bitwise) |
 |       | - [136. 只出现一次的数字]( https://leetcode-cn.com/problems/single-number/)  |  |
 |       | - [137. 只出现一次的数字 II]( https://leetcode-cn.com/problems/single-number-ii/)  |  |
 |       | - [190. 颠倒二进制位](https://leetcode-cn.com/problems/reverse-bits/ )    |  |

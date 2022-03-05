@@ -7,9 +7,10 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 - 一题多解，广泛吸取其他开源库的优秀代码，不断精益求精
 
 ## 开发进度（Development progress）
-[开发进度](SOLUTIONS.md)
-[经典问题](PROBLEMS.md)
-[经典算法](ALGORITHMS.md)
+相关代码及文档，请查看如下文档：
+- [开发进度](SOLUTIONS.md)
+- [经典问题](PROBLEMS.md)
+- [经典算法](ALGORITHMS.md)
 
 ## leetcode实战总结 
 1. 条条大路通罗马
@@ -28,7 +29,7 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
    |--计算机方面  
           |--编程语言  
           |--设计模式：状态模式
-          |--数据结构：字符串、数组、向量、双端队列、哈希集合、哈希表、二叉堆、链表、  
+          |--数据结构：字符串、数组、向量、双端队列、哈希集合、哈希表、二叉堆、链表、栈（最小栈、单调栈）
           |--算法：KMP(Knuth-Morris-Pratt)算法、Rabin-Karp算法、排序算法（归并排序）、查询算法（二分查找、深度优先搜索、广度优先搜索）、动态规划、分治算法、递归算法、回溯法、位运算（Brian Kernighan 算法、SWAR算法）、摩尔投票法、滑动窗口、旋转（rotate）、快慢指针、DFA算法  		  
    |--数学方面
           |--概念：质数、合数、快乐数、不快乐数、丑数、完全平方数、完美数、梅森数

@@ -1383,77 +1383,6 @@ pub fn find_max_consecutive_ones_v2(nums: Vec<i32>) -> i32 {
     ones_group.map(|ones| ones.len()).max().unwrap_or(0) as i32
 }
 
-/// 力扣（496. 下一个更大元素 I） https://leetcode-cn.com/problems/next-greater-element-i/
-pub fn next_greater_element(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
-    use std::collections::HashMap;
-    use std::collections::VecDeque;
-    let mut map = HashMap::new();
-    // VecDeque模拟单调栈（栈底最大，栈顶最小），front 栈底，back 栈顶
-    let mut stack = VecDeque::new();
-    for num in nums2.iter().rev() {
-        while let Some(top) = stack.back() {
-            if num > top {
-                stack.pop_back();
-            } else {
-                break;
-            }
-        }
-
-        let next_element = if stack.is_empty() {
-            -1
-        } else {
-            *stack.back().unwrap()
-        };
-
-        map.insert(num, next_element);
-        stack.push_back(*num);
-    }
-
-    let mut res = Vec::with_capacity(nums1.len());
-    for num in nums1 {
-        if let Some(&next_element) = map.get(&num) {
-            res.push(next_element);
-        }
-    }
-
-    res
-}
-
-/// 力扣（496. 下一个更大元素 I）
-pub fn next_greater_element_v2(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
-    use std::collections::HashMap;
-    let mut map = HashMap::new();
-    // Vec模拟单调栈（栈底最大，栈顶最小），first 栈底，last 栈顶
-    let mut stack = Vec::new();
-    for num in nums2.iter().rev() {
-        while let Some(top) = stack.last() {
-            if num > top {
-                stack.pop();
-            } else {
-                break;
-            }
-        }
-
-        let next_element = if stack.is_empty() {
-            -1
-        } else {
-            *stack.last().unwrap()
-        };
-
-        map.insert(num, next_element);
-        stack.push(*num);
-    }
-
-    let mut res = Vec::with_capacity(nums1.len());
-    for num in nums1 {
-        if let Some(&next_element) = map.get(&num) {
-            res.push(next_element);
-        }
-    }
-
-    res
-}
-
 /// TODO: 500
 
 /// 520. 检测大写字母 https://leetcode-cn.com/problems/detect-capital/
@@ -1555,76 +1484,6 @@ pub fn dominant_index(nums: Vec<i32>) -> i32 {
         return idx as i32;
     }
     -1
-}
-
-/// 重构字符串
-fn build(s: String) -> String {
-    let mut chars_vec = Vec::new();
-    for ch in s.chars() {
-        if ch != '#' {
-            chars_vec.push(ch);
-        } else if !chars_vec.is_empty() {
-            chars_vec.pop();
-        }
-    }
-    chars_vec.into_iter().collect()
-}
-
-/// TODO 800
-
-/// 力扣（844. 比较含退格的字符串)  https://leetcode-cn.com/problems/backspace-string-compare/
-/// 方法一：重构字符串
-pub fn backspace_compare(s: String, t: String) -> bool {
-    build(s) == (build(t))
-}
-
-/// 力扣（844. 比较含退格的字符串)
-/// 方法二：双指针
-pub fn backspace_compare_v2(s: String, t: String) -> bool {
-    let mut i = s.len() as i32 - 1;
-    let mut j = t.len() as i32 - 1;
-    let mut skip_s = 0;
-    let mut skip_t = 0;
-    let s_chars: Vec<char> = s.chars().into_iter().collect();
-    let t_chars: Vec<char> = t.chars().into_iter().collect();
-
-    while i >= 0 || j >= 0 {
-        while i >= 0 {
-            if s_chars[i as usize] == '#' {
-                skip_s += 1;
-                i -= 1;
-            } else if skip_s > 0 {
-                skip_s -= 1;
-                i -= 1;
-            } else {
-                break;
-            }
-        }
-
-        while j >= 0 {
-            if t_chars[j as usize] == '#' {
-                skip_t += 1;
-                j -= 1;
-            } else if skip_t > 0 {
-                skip_t -= 1;
-                j -= 1;
-            } else {
-                break;
-            }
-        }
-
-        if i >= 0 && j >= 0 {
-            if s_chars[i as usize] != t_chars[j as usize] {
-                return false;
-            }
-        } else if i >= 0 || j >= 0 {
-            return false;
-        }
-
-        i -= 1;
-        j -= 1;
-    }
-    true
 }
 
 /// 力扣（867. 转置矩阵) https://leetcode-cn.com/problems/transpose-matrix/
@@ -1941,11 +1800,6 @@ mod tests {
 
         dbg!(remove_duplicates_v2(&mut nums));
 
-        let s = String::from("ab#c");
-        let t = String::from("ad#c");
-
-        dbg!(backspace_compare(s, t));
-
         let mut version0 = 0;
         for version in 0..100 {
             if (VERSIONS[version]) {
@@ -1988,8 +1842,6 @@ mod tests {
 
     #[test]
     fn test_200_plus() {
-        dbg!(next_greater_element(vec![4, 1, 2], vec![1, 3, 4, 2]));
-
         dbg!(add_strings("11".to_string(), "123".to_string()));
 
         dbg!(read_binary_watch(7));

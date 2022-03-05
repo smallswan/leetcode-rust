@@ -763,41 +763,6 @@ pub fn set_zeroes(matrix: &mut Vec<Vec<i32>>) {
     }
 }
 
-/// 力扣（150. 逆波兰表达式求值） https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/
-/// 方法二：数组模拟栈
-pub fn eval_rpn(tokens: Vec<String>) -> i32 {
-    let len = (tokens.len() + 1) / 2;
-    let mut stack = vec![0; len];
-    let mut index = -1;
-    for token in &tokens {
-        match (token.as_str()) {
-            "+" => {
-                index -= 1;
-                stack[index as usize] += stack[(index + 1) as usize];
-            }
-            "-" => {
-                index -= 1;
-                stack[index as usize] -= stack[(index + 1) as usize];
-            }
-            "*" => {
-                index -= 1;
-                stack[index as usize] *= stack[(index + 1) as usize];
-            }
-            "/" => {
-                index -= 1;
-                stack[index as usize] /= stack[(index + 1) as usize];
-            }
-
-            _ => {
-                index += 1;
-                stack[index as usize] = token.parse::<i32>().unwrap();
-            }
-        };
-    }
-
-    stack[index as usize]
-}
-
 /// 力扣（189. 旋转数组） https://leetcode-cn.com/problems/rotate-array/
 pub fn rotate(nums: &mut Vec<i32>, k: i32) {
     let len = nums.len();
@@ -1169,31 +1134,6 @@ mod tests {
 
         let heights = vec![4, 3, 2, 1, 4];
         dbg!("max area : {}", max_area(heights));
-
-        // let tokens = vec![
-        //     "2".to_string(),
-        //     "1".to_string(),
-        //     "+".to_string(),
-        //     "3".to_string(),
-        //     "*".to_string(),
-        // ];
-        let tokens = vec![
-            "10".to_string(),
-            "6".to_string(),
-            "9".to_string(),
-            "3".to_string(),
-            "+".to_string(),
-            "-11".to_string(),
-            "*".to_string(),
-            "/".to_string(),
-            "*".to_string(),
-            "17".to_string(),
-            "+".to_string(),
-            "5".to_string(),
-            "+".to_string(),
-        ];
-
-        dbg!("rpn {}", eval_rpn(tokens));
 
         let nums = vec![3, 2];
         let result = majority_element(nums);
