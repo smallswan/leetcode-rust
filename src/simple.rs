@@ -1085,36 +1085,6 @@ pub fn dominant_index(nums: Vec<i32>) -> i32 {
     -1
 }
 
-/// 力扣（867. 转置矩阵) https://leetcode-cn.com/problems/transpose-matrix/
-/// matrixT[i][j] = matrix[j][i]
-pub fn transpose(matrix: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
-    let (m, n) = (matrix.len(), matrix[0].len());
-    let mut transposed = Vec::<Vec<i32>>::with_capacity(n);
-    for i in 0..n {
-        transposed.push(vec![0; m]);
-    }
-
-    for (i, item) in matrix.iter().enumerate().take(m) {
-        for (j, trans) in transposed.iter_mut().enumerate().take(n) {
-            trans[i] = item[j];
-        }
-    }
-    transposed
-}
-/// 力扣（867. 转置矩阵)
-pub fn transpose_v2(matrix: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
-    let (m, n) = (matrix.len(), matrix[0].len());
-    let mut transposed = Vec::with_capacity(n);
-    for j in 0..n {
-        let mut row = Vec::with_capacity(m);
-        for item in matrix.iter().take(m) {
-            row.push(item[j]);
-        }
-        transposed.push(row);
-    }
-    transposed
-}
-
 /// TODO 900
 
 /// 力扣（977. 有序数组的平方）https://leetcode-cn.com/problems/squares-of-a-sorted-array/
@@ -1325,22 +1295,6 @@ mod tests {
         dbg!("1e-7 is very small");
 
         assert_eq!(hamming_weight(15), hamming_weight(15));
-
-        let mut matrix = Vec::<Vec<i32>>::new();
-        matrix.push(vec![1, 2, 3]);
-        matrix.push(vec![4, 5, 6]);
-        // matrix.push(vec![7, 8, 9]);
-
-        let new_matrix = transpose(matrix);
-        dbg!(new_matrix);
-
-        let mut matrix2 = Vec::<Vec<i32>>::new();
-        matrix2.push(vec![1, 2, 3]);
-        matrix2.push(vec![4, 5, 6]);
-        // matrix.push(vec![7, 8, 9]);
-
-        let new_matrix2 = transpose_v2(matrix2);
-        dbg!(new_matrix2);
 
         let mut nums = vec![0, 1, 0, 3, 0, 12, 14];
         move_zeroes(&mut nums);
