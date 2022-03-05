@@ -1041,24 +1041,6 @@ pub fn detect_capital_use(word: String) -> bool {
     }
 }
 
-/// 力扣（561. 数组拆分 I） https://leetcode-cn.com/problems/array-partition-i/
-pub fn array_pair_sum(nums: Vec<i32>) -> i32 {
-    let len = nums.len();
-    if len % 2 != 0 {
-        panic!("数组长度必须为偶数");
-    }
-
-    let mut nums_sort = nums;
-    nums_sort.sort_unstable();
-
-    let mut sum = 0;
-    for i in 0..len / 2 {
-        sum += nums_sort[2 * i];
-    }
-
-    sum
-}
-
 /// 力扣（724. 寻找数组的中心索引） https://leetcode-cn.com/problems/find-pivot-index/
 pub fn pivot_index(nums: Vec<i32>) -> i32 {
     let mut sum = 0;
@@ -1300,13 +1282,6 @@ mod tests {
 
         let nums = vec![1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1];
         dbg!(find_max_consecutive_ones(nums));
-
-        let mut nums = Vec::<i32>::new();
-        nums.push(1);
-        nums.push(4);
-        nums.push(3);
-        nums.push(2);
-        dbg!(array_pair_sum(nums));
 
         dbg!(pivot_index(vec![1, 7, 3, 6, 5, 6]));
 
