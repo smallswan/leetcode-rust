@@ -365,6 +365,7 @@ pub fn get_least_numbers_v2(arr: Vec<i32>, k: i32) -> Vec<i32> {
 }
 
 /// 剑指 Offer 41. 数据流中的中位数  https://leetcode-cn.com/problems/shu-ju-liu-zhong-de-zhong-wei-shu-lcof/
+/// 注意：本题与主站 295 题相同：https://leetcode-cn.com/problems/find-median-from-data-stream/
 struct MedianFinder {
     //max_heap来存储数据流中较小一半的值
     max_heap: BinaryHeap<i32>,

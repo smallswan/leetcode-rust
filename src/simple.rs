@@ -25,21 +25,6 @@ lazy_static! {
     };
 }
 
-/// 力扣（1. 两数之和） https://leetcode-cn.com/problems/two-sum
-pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
-    let mut nums_map = HashMap::<i32, i32>::new();
-    for (idx, num) in nums.into_iter().enumerate() {
-        let complement = target - num;
-
-        let j = idx as i32;
-        if let Some(idx) = nums_map.get(&complement) {
-            return vec![*idx, j];
-        }
-        nums_map.insert(num, j);
-    }
-    vec![]
-}
-
 /// 力扣（3. 无重复的字符串的最长子串）https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/submissions/
 /// 方法一：滑动窗口
 pub fn length_of_longest_substring(s: String) -> i32 {
@@ -81,44 +66,6 @@ pub fn length_of_longest_substring(s: String) -> i32 {
     }
 
     ret
-}
-
-use std::i32::{MAX, MIN};
-/// 力扣（7. 整数反转） ， https://leetcode-cn.com/problems/reverse-integer/
-/// 关键是防止转换后的数据溢出（overflow）
-pub fn reverse(x: i32) -> i32 {
-    //MIN:-2147483648,MAX:2147483647
-    println!("MIN:{},MAX:{}", MIN, MAX);
-    let mut ret = 0;
-    let mut y = x;
-    while y != 0 {
-        let pop = y % 10;
-        y /= 10;
-        if ret > MAX / 10 || (ret == MAX / 10 && pop > 7) {
-            return 0;
-        }
-
-        if ret < MIN / 10 || (ret == MIN / 10 && pop < -8) {
-            return 0;
-        }
-        ret = ret * 10 + pop;
-    }
-    ret
-}
-
-/// 力扣（7. 整数反转）
-/// 参考： 吴翱翔 https://zhuanlan.zhihu.com/p/340649000
-pub fn reverse2(x: i32) -> i32 {
-    || -> Option<i32> {
-        let mut ret = 0i32;
-        let mut y = x;
-        while y.abs() != 0 {
-            ret = ret.checked_mul(10)?.checked_add(y % 10)?;
-            y /= 10;
-        }
-        Some(ret)
-    }()
-    .unwrap_or(0)
 }
 
 /// 力扣（14. 最长公共前缀） https://leetcode-cn.com/problems/longest-common-prefix/
@@ -176,51 +123,6 @@ pub fn longest_common_prefix_v2(strs: Vec<String>) -> String {
     }
 
     prefix.to_owned()
-}
-
-/// 力扣（26. 删除有序数组中的重复项) https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
-pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
-    let len = nums.len();
-    if len <= 1 {
-        return len as i32;
-    }
-    let mut slow_index = 0;
-    let mut fast_index = 1;
-    while fast_index < len {
-        if nums[slow_index] != nums[fast_index] {
-            nums[slow_index + 1] = nums[fast_index];
-            slow_index += 1;
-        }
-        fast_index += 1;
-    }
-
-    (slow_index + 1) as i32
-}
-
-/// 力扣（26. 删除有序数组中的重复项)
-pub fn remove_duplicates_v2(nums: &mut Vec<i32>) -> i32 {
-    let len = nums.len();
-    if len == 0 {
-        return 0;
-    }
-    let mut slow_index = 1;
-    let mut fast_index = 1;
-    while fast_index < len {
-        if nums[fast_index] != nums[fast_index - 1] {
-            nums[slow_index] = nums[fast_index];
-            slow_index += 1;
-        }
-
-        fast_index += 1;
-    }
-
-    slow_index as i32
-}
-
-/// 力扣（26. 删除有序数组中的重复项)
-pub fn remove_duplicates_v3(nums: &mut Vec<i32>) -> i32 {
-    nums.dedup();
-    nums.len() as i32
 }
 
 ///  力扣（27. 移除元素）https://leetcode-cn.com/problems/remove-element/
@@ -320,15 +222,6 @@ pub fn climb_stairs(n: i32) -> i32 {
     dp[n as usize]
 }
 
-/// 力扣（70. 爬楼梯）
-/// 方法2：通用公式
-pub fn climb_stairs_v2(n: i32) -> i32 {
-    let sqrt5 = 5.0_f64.sqrt();
-    let fibn = ((1.0 + sqrt5) / 2.0).powi(n as i32 + 1) + ((1.0 - sqrt5) / 2.0).powi(n as i32 + 1);
-
-    (fibn / sqrt5).round() as i32
-}
-
 pub fn climb_stairs_memo(n: i32, memo: Rc<RefCell<Vec<i32>>>) -> i32 {
     if n == 1 {
         memo.borrow_mut()[n as usize] = 1;
@@ -341,45 +234,6 @@ pub fn climb_stairs_memo(n: i32, memo: Rc<RefCell<Vec<i32>>>) -> i32 {
     }
 
     memo.borrow_mut()[n as usize]
-}
-
-/// 力扣（88. 合并两个有序数组） https://leetcode-cn.com/problems/merge-sorted-array/
-pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
-    let mut m = m;
-    let mut index: usize = 0;
-    for &item in nums2.iter().take(n as usize) {
-        while (index < m as usize) && nums1[index] <= item {
-            index += 1;
-        }
-
-        if index < (m as usize) {
-            for j in (index + 1..nums1.len()).rev() {
-                nums1[j] = nums1[j - 1];
-            }
-            m += 1;
-        }
-        nums1[index] = item;
-        index += 1;
-    }
-}
-
-/// 力扣（88. 合并两个有序数组）
-/// 双指针/从后往前
-pub fn merge_v2(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
-    let mut p1 = m - 1;
-    let mut p2 = n - 1;
-    let mut p = m + n - 1;
-    while p1 >= 0 && p2 >= 0 {
-        if nums1[p1 as usize] < nums2[p2 as usize] {
-            nums1[p as usize] = nums2[p2 as usize];
-            p2 -= 1;
-        } else {
-            nums1[p as usize] = nums1[p1 as usize];
-            p1 -= 1;
-        }
-        p -= 1;
-    }
-    nums1[..((p2 + 1) as usize)].clone_from_slice(&nums2[..((p2 + 1) as usize)]);
 }
 
 /// 力扣（118. 杨辉三角） https://leetcode-cn.com/problems/pascals-triangle/
@@ -466,81 +320,6 @@ pub fn get_row(row_index: i32) -> Vec<i32> {
     }
 }
 
-/// 力扣（125. 验证回文串)  https://leetcode-cn.com/problems/valid-palindrome/
-pub fn is_palindrome_125(s: String) -> bool {
-    let chars: Vec<char> = s.chars().collect();
-    let mut left = 0;
-    let mut right = chars.len() - 1;
-    while left < right {
-        if !chars[left].is_alphanumeric() {
-            left += 1;
-            continue;
-        }
-        if !chars[right].is_alphanumeric() {
-            right -= 1;
-            continue;
-        }
-        if chars[left].eq_ignore_ascii_case(&chars[right]) {
-            left += 1;
-            right -= 1;
-            continue;
-        } else {
-            break;
-        }
-    }
-    left >= right
-}
-
-/// 力扣（125. 验证回文串)
-pub fn is_palindrome_125_v2(s: String) -> bool {
-    let chars: Vec<char> = s.chars().filter(|c| c.is_alphanumeric()).collect();
-    let len = chars.len();
-    if len == 0 {
-        return true;
-    }
-
-    let mut left = 0;
-    let mut right = len - 1;
-    while left < right {
-        if chars[left].eq_ignore_ascii_case(&chars[right]) {
-            left += 1;
-            right -= 1;
-            continue;
-        } else {
-            break;
-        }
-    }
-    left >= right
-}
-
-/// 力扣（167. 两数之和 II - 输入有序数组）https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
-pub fn two_sum2(numbers: Vec<i32>, target: i32) -> Vec<i32> {
-    let mut result = Vec::<i32>::with_capacity(2);
-
-    let mut index1 = 0;
-    let mut index2 = numbers.len() - 1;
-    while index2 >= 1 {
-        let sum = numbers[index1] + numbers[index2];
-        match sum.cmp(&target) {
-            Ordering::Less => {
-                index1 += 1;
-                continue;
-            }
-            Ordering::Greater => {
-                index2 -= 1;
-                continue;
-            }
-            Ordering::Equal => {
-                result.push((index1 + 1) as i32);
-                result.push((index2 + 1) as i32);
-                break;
-            }
-        }
-    }
-
-    result
-}
-
 /// 力扣（169. 多数元素） https://leetcode-cn.com/problems/majority-element/
 /// 剑指 Offer 39. 数组中出现次数超过一半的数字 https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/
 /// Boyer-Moore 投票算法
@@ -559,20 +338,6 @@ pub fn majority_element(nums: Vec<i32>) -> i32 {
     }
 
     candidate
-}
-
-/// 力扣（168. Excel表列名称） https://leetcode-cn.com/problems/excel-sheet-column-title/
-pub fn convert_to_title(column_number: i32) -> String {
-    let mut ret = String::new();
-    let mut column_number = column_number;
-    while column_number > 0 {
-        let a0 = (column_number - 1) % 26 + 1;
-        let ch = b'A' + (a0 - 1) as u8;
-        ret.push(ch as char);
-        column_number = (column_number - a0) / 26;
-    }
-
-    ret.chars().rev().collect()
 }
 
 /// 力扣（169. 多数元素）
@@ -606,18 +371,6 @@ pub fn majority_element_v2(nums: Vec<i32>) -> i32 {
         }
     }
     major_entry.0
-}
-
-/// 力扣（171. Excel 表列序号） https://leetcode-cn.com/problems/excel-sheet-column-number/submissions/
-pub fn title_to_number(column_title: String) -> i32 {
-    let mut sum = 0;
-    let mut hex_base = 1;
-    for ch in column_title.chars().rev() {
-        sum += (hex_base * (ch as u8 - b'A' + 1) as i32);
-        hex_base *= 26;
-    }
-
-    sum
 }
 
 /// 力扣（191. 位1的个数) https://leetcode-cn.com/problems/number-of-1-bits/
@@ -752,11 +505,6 @@ pub fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
         }
     }
     false
-}
-
-/// 力扣（258. 各位相加） https://leetcode-cn.com/problems/add-digits/
-pub fn add_digits(num: i32) -> i32 {
-    (num - 1) % 9 + 1
 }
 
 fn bad_version(n: usize, version: usize) -> Vec<bool> {
@@ -894,11 +642,6 @@ pub fn word_pattern(pattern: String, s: String) -> bool {
     true
 }
 
-/// 力扣（292. Nim 游戏） https://leetcode-cn.com/problems/nim-game/
-pub fn can_win_nim(n: i32) -> bool {
-    n % 4 != 0
-}
-
 /// 力扣（345. 反转字符串中的元音字母） https://leetcode-cn.com/problems/reverse-vowels-of-a-string/
 pub fn reverse_vowels(s: String) -> String {
     const VOWELS: [char; 10] = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
@@ -977,60 +720,6 @@ fn is_vowel(ch: u8) -> bool {
         b'a' | b'e' | b'i' | b'o' | b'u' | b'A' | b'E' | b'I' | b'O' | b'U' => true,
         _ => false,
     }
-}
-
-/// 力扣（350. 两个数组的交集 II） https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/
-/// 方法1： 排序 + 双指针
-pub fn intersect(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
-    let len1 = nums1.len();
-    let len2 = nums2.len();
-
-    let mut less_sorted_nums: Vec<i32> = Vec::new();
-    let mut greater_sorted_nums: Vec<i32> = Vec::new();
-    let mut greater_len = 0;
-    let mut less_len = 0;
-    match len1.cmp(&len2) {
-        Ordering::Greater => {
-            greater_len = len1;
-            less_len = len2;
-            less_sorted_nums = nums2;
-            less_sorted_nums.sort_unstable();
-            greater_sorted_nums = nums1;
-            greater_sorted_nums.sort_unstable();
-        }
-        Ordering::Equal | Ordering::Less => {
-            greater_len = len2;
-            less_len = len1;
-            less_sorted_nums = nums1;
-            less_sorted_nums.sort_unstable();
-            greater_sorted_nums = nums2;
-            greater_sorted_nums.sort_unstable();
-        }
-    }
-    let mut intersect_vec = Vec::new();
-    let mut i = 0;
-    let mut j = 0;
-    loop {
-        if (j >= less_len || i >= greater_len) {
-            break;
-        }
-
-        match greater_sorted_nums[i].cmp(&less_sorted_nums[j]) {
-            Ordering::Equal => {
-                intersect_vec.push(greater_sorted_nums[i]);
-                i += 1;
-                j += 1;
-            }
-            Ordering::Greater => {
-                j += 1;
-            }
-            Ordering::Less => {
-                i += 1;
-            }
-        }
-    }
-
-    intersect_vec
 }
 
 /// 力扣（349. 两个数组的交集） https://leetcode-cn.com/problems/intersection-of-two-arrays/
@@ -1254,78 +943,6 @@ pub fn read_binary_watch(turned_on: i32) -> Vec<String> {
     }
 
     result
-}
-
-/// 力扣（412. Fizz Buzz） https://leetcode-cn.com/problems/fizz-buzz/
-pub fn fizz_buzz(n: i32) -> Vec<String> {
-    let len = n as usize;
-    let mut result = Vec::<String>::with_capacity(len);
-    for i in 1..=len {
-        let divisible_by_3 = i % 3 == 0;
-        let divisible_by_5 = i % 5 == 0;
-        if divisible_by_3 && divisible_by_5 {
-            result.push("FizzBuzz".to_string());
-        } else if divisible_by_3 {
-            result.push("Fizz".to_string());
-        } else if divisible_by_5 {
-            result.push("Buzz".to_string());
-        } else {
-            result.push(i.to_string());
-        }
-    }
-
-    result
-}
-
-/// 力扣（412. Fizz Buzz）
-pub fn fizz_buzz_v2(n: i32) -> Vec<String> {
-    let len = n as usize;
-    let mut result = Vec::<String>::with_capacity(len);
-    for i in 1..=len {
-        if i % 3 == 0 {
-            if i % 5 == 0 {
-                result.push("FizzBuzz".to_string());
-            } else {
-                result.push("Fizz".to_string());
-            }
-        } else if i % 5 == 0 {
-            result.push("Buzz".to_string());
-        } else {
-            result.push(i.to_string());
-        }
-    }
-
-    result
-}
-
-/// 力扣（415. 字符串相加） https://leetcode-cn.com/problems/add-strings/
-pub fn add_strings(num1: String, num2: String) -> String {
-    let mut i = (num1.len() - 1) as i32;
-    let mut j = (num2.len() - 1) as i32;
-    let mut add = 0;
-    let mut ans = Vec::<u8>::new();
-    let num1_chars = num1.into_bytes();
-    let num2_chars = num2.into_bytes();
-
-    while i >= 0 || j >= 0 || add != 0 {
-        let x = if i >= 0 {
-            num1_chars[i as usize] - b'0'
-        } else {
-            0
-        };
-        let y = if j >= 0 {
-            num2_chars[j as usize] - b'0'
-        } else {
-            0
-        };
-        let result = x + y + add;
-        ans.push((result % 10 + b'0') as u8);
-        add = result / 10;
-        i -= 1;
-        j -= 1;
-    }
-    ans.reverse();
-    String::from_utf8(ans).unwrap()
 }
 
 /// 力扣（448. 找到所有数组中消失的数字） https://leetcode-cn.com/problems/find-all-numbers-disappeared-in-an-array/
@@ -1652,13 +1269,6 @@ mod tests {
 
     #[test]
     fn simple_test() {
-        let nums = vec![2, 7, 2, 11];
-        let result = two_sum(nums, 9);
-        dbg!(result);
-
-        dbg!(reverse(132));
-        dbg!(reverse(-1999999999));
-
         let mut nums = vec![3, 2, 2, 3];
         let val = 3;
 
@@ -1687,11 +1297,6 @@ mod tests {
         dbg!(generate(10));
 
         dbg!(get_row(33));
-
-        let numbers = vec![2, 7, 11, 15];
-        let target = 18;
-
-        dbg!(two_sum2(numbers, target));
 
         let nums = vec![1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1];
         dbg!(find_max_consecutive_ones(nums));
@@ -1731,16 +1336,6 @@ mod tests {
         // for ch in '0'..='z'{
         //     dbg!("{} {}",ch, ch as u8);
         // }
-
-        let mut nums1: Vec<i32> = vec![1, 2, 3, 0, 0, 0];
-        let mut nums2: Vec<i32> = vec![2, 5, 6];
-        merge(&mut nums1, 3, &mut nums2, 3);
-        dbg!(nums1);
-
-        let mut nums3: Vec<i32> = vec![7, 8, 9, 0, 0, 0];
-        let mut nums4: Vec<i32> = vec![2, 5, 6];
-        merge_v2(&mut nums3, 3, &mut nums4, 3);
-        dbg!(nums3);
 
         // let res = longest_palindrome(String::from("banana"));
         // dbg!("longest_palindrome res:{}",res);
@@ -1792,14 +1387,6 @@ mod tests {
         let major2 = majority_element_v2(nums2);
         dbg!(major2);
 
-        let mut nums = vec![1, 3, 3, 3, 5, 5, 9, 9, 9, 9];
-
-        dbg!(remove_duplicates(&mut nums));
-
-        let mut nums = vec![1, 3, 3, 3, 5, 5, 9, 9, 9, 9];
-
-        dbg!(remove_duplicates_v2(&mut nums));
-
         let mut version0 = 0;
         for version in 0..100 {
             if (VERSIONS[version]) {
@@ -1831,19 +1418,12 @@ mod tests {
 
         let nums1 = vec![4, 9, 5, 1];
         let nums2 = vec![9, 2, 4, 10, 5];
-        let intersect_result = intersect(nums1, nums2);
-        dbg!(intersect_result);
-
-        let nums1 = vec![4, 9, 5, 1];
-        let nums2 = vec![9, 2, 4, 10, 5];
         let intersect_v2_result = intersect_v2(nums1, nums2);
         dbg!(intersect_v2_result);
     }
 
     #[test]
     fn test_200_plus() {
-        dbg!(add_strings("11".to_string(), "123".to_string()));
-
         dbg!(read_binary_watch(7));
     }
 

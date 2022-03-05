@@ -1,3 +1,41 @@
+use std::i32::{MAX, MIN};
+/// 力扣（7. 整数反转） ， https://leetcode-cn.com/problems/reverse-integer/
+/// 关键是防止转换后的数据溢出（overflow）
+pub fn reverse(x: i32) -> i32 {
+    //MIN:-2147483648,MAX:2147483647
+    println!("MIN:{},MAX:{}", MIN, MAX);
+    let mut ret = 0;
+    let mut y = x;
+    while y != 0 {
+        let pop = y % 10;
+        y /= 10;
+        if ret > MAX / 10 || (ret == MAX / 10 && pop > 7) {
+            return 0;
+        }
+
+        if ret < MIN / 10 || (ret == MIN / 10 && pop < -8) {
+            return 0;
+        }
+        ret = ret * 10 + pop;
+    }
+    ret
+}
+
+/// 力扣（7. 整数反转）
+/// 参考： 吴翱翔 https://zhuanlan.zhihu.com/p/340649000
+pub fn reverse2(x: i32) -> i32 {
+    || -> Option<i32> {
+        let mut ret = 0i32;
+        let mut y = x;
+        while y.abs() != 0 {
+            ret = ret.checked_mul(10)?.checked_add(y % 10)?;
+            y /= 10;
+        }
+        Some(ret)
+    }()
+    .unwrap_or(0)
+}
+
 /// 29. 两数相除 https://leetcode-cn.com/problems/divide-two-integers/
 pub fn divide(dividend: i32, divisor: i32) -> i32 {
     if dividend == i32::MIN {
@@ -427,6 +465,41 @@ pub fn my_sqrt_v4(x: i32) -> i32 {
     x0 as i32
 }
 
+/// 力扣（70. 爬楼梯）
+/// 方法2：通用公式
+pub fn climb_stairs_v2(n: i32) -> i32 {
+    let sqrt5 = 5.0_f64.sqrt();
+    let fibn = ((1.0 + sqrt5) / 2.0).powi(n as i32 + 1) + ((1.0 - sqrt5) / 2.0).powi(n as i32 + 1);
+
+    (fibn / sqrt5).round() as i32
+}
+
+/// 力扣（168. Excel表列名称） https://leetcode-cn.com/problems/excel-sheet-column-title/
+pub fn convert_to_title(column_number: i32) -> String {
+    let mut ret = String::new();
+    let mut column_number = column_number;
+    while column_number > 0 {
+        let a0 = (column_number - 1) % 26 + 1;
+        let ch = b'A' + (a0 - 1) as u8;
+        ret.push(ch as char);
+        column_number = (column_number - a0) / 26;
+    }
+
+    ret.chars().rev().collect()
+}
+
+/// 力扣（171. Excel 表列序号） https://leetcode-cn.com/problems/excel-sheet-column-number/submissions/
+pub fn title_to_number(column_title: String) -> i32 {
+    let mut sum = 0;
+    let mut hex_base = 1;
+    for ch in column_title.chars().rev() {
+        sum += (hex_base * (ch as u8 - b'A' + 1) as i32);
+        hex_base *= 26;
+    }
+
+    sum
+}
+
 /// 力扣（172. 阶乘后的零） https://leetcode-cn.com/problems/factorial-trailing-zeroes/
 pub fn trailing_zeroes(n: i32) -> i32 {
     let mut count_fives = 0;
@@ -488,6 +561,16 @@ pub fn is_power_of_two_v2(n: i32) -> bool {
     n & (n - 1) == 0
 }
 
+/// 力扣（258. 各位相加） https://leetcode-cn.com/problems/add-digits/
+pub fn add_digits(num: i32) -> i32 {
+    (num - 1) % 9 + 1
+}
+
+/// 力扣（292. Nim 游戏） https://leetcode-cn.com/problems/nim-game/
+pub fn can_win_nim(n: i32) -> bool {
+    n % 4 != 0
+}
+
 /// 力扣（326. 3的幂) https://leetcode-cn.com/problems/power-of-three/
 pub fn is_power_of_three(n: i32) -> bool {
     n > 0 && 1162261467 % n == 0
@@ -528,6 +611,78 @@ pub fn is_power_of_four(n: i32) -> bool {
 /// 441. 排列硬币 https://leetcode-cn.com/problems/arranging-coins/
 pub fn arrange_coins(n: i32) -> i32 {
     (((1.0f64 + 8.0f64 * n as f64).sqrt() - 1.0f64) / 2.0).floor() as i32
+}
+
+/// 力扣（412. Fizz Buzz） https://leetcode-cn.com/problems/fizz-buzz/
+pub fn fizz_buzz(n: i32) -> Vec<String> {
+    let len = n as usize;
+    let mut result = Vec::<String>::with_capacity(len);
+    for i in 1..=len {
+        let divisible_by_3 = i % 3 == 0;
+        let divisible_by_5 = i % 5 == 0;
+        if divisible_by_3 && divisible_by_5 {
+            result.push("FizzBuzz".to_string());
+        } else if divisible_by_3 {
+            result.push("Fizz".to_string());
+        } else if divisible_by_5 {
+            result.push("Buzz".to_string());
+        } else {
+            result.push(i.to_string());
+        }
+    }
+
+    result
+}
+
+/// 力扣（412. Fizz Buzz）
+pub fn fizz_buzz_v2(n: i32) -> Vec<String> {
+    let len = n as usize;
+    let mut result = Vec::<String>::with_capacity(len);
+    for i in 1..=len {
+        if i % 3 == 0 {
+            if i % 5 == 0 {
+                result.push("FizzBuzz".to_string());
+            } else {
+                result.push("Fizz".to_string());
+            }
+        } else if i % 5 == 0 {
+            result.push("Buzz".to_string());
+        } else {
+            result.push(i.to_string());
+        }
+    }
+
+    result
+}
+
+/// 力扣（415. 字符串相加） https://leetcode-cn.com/problems/add-strings/
+pub fn add_strings(num1: String, num2: String) -> String {
+    let mut i = (num1.len() - 1) as i32;
+    let mut j = (num2.len() - 1) as i32;
+    let mut add = 0;
+    let mut ans = Vec::<u8>::new();
+    let num1_chars = num1.into_bytes();
+    let num2_chars = num2.into_bytes();
+
+    while i >= 0 || j >= 0 || add != 0 {
+        let x = if i >= 0 {
+            num1_chars[i as usize] - b'0'
+        } else {
+            0
+        };
+        let y = if j >= 0 {
+            num2_chars[j as usize] - b'0'
+        } else {
+            0
+        };
+        let result = x + y + add;
+        ans.push((result % 10 + b'0') as u8);
+        add = result / 10;
+        i -= 1;
+        j -= 1;
+    }
+    ans.reverse();
+    String::from_utf8(ans).unwrap()
 }
 
 /// 492. 构造矩形 https://leetcode-cn.com/problems/construct-the-rectangle/
@@ -611,12 +766,21 @@ pub fn add(a: i32, b: i32) -> i32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_reverse() {
+        dbg!(reverse(132));
+        dbg!(reverse(-1999999999));
+    }
+
     #[test]
     fn add_sub_mul_div() {
         dbg!(plus_one(vec![9, 1, 9]));
         let a = String::from("0");
         let b = String::from("0");
         dbg!(add_binary(a, b));
+
+        dbg!(add_strings("11".to_string(), "123".to_string()));
     }
 
     #[test]

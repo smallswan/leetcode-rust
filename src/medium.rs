@@ -106,72 +106,6 @@ pub fn longest_palindrome_v2(s: String) -> String {
     String::from_utf8(res_bytes).unwrap()
 }
 
-/// 力扣（11. 盛最多水的容器） https://leetcode-cn.com/problems/container-with-most-water/
-pub fn max_area(height: Vec<i32>) -> i32 {
-    use std::cmp::max;
-    let mut max_area = 0;
-    let mut left = 0;
-    let mut right = height.len() - 1;
-    while left < right {
-        if height[left] < height[right] {
-            let area = height[left] * ((right - left) as i32);
-            max_area = max(max_area, area);
-            left += 1;
-        } else {
-            let area = height[right] * ((right - left) as i32);
-            max_area = max(max_area, area);
-            right -= 1;
-        }
-    }
-
-    max_area
-}
-
-/// 力扣（11. 盛最多水的容器）
-pub fn max_area_v2(height: Vec<i32>) -> i32 {
-    use std::cmp::{max, min};
-    let mut max_area = 0;
-    let mut left = 0;
-    let mut right = height.len() - 1;
-    while left < right {
-        let area = min(height[left], height[right]) * ((right - left) as i32);
-        max_area = max(max_area, area);
-
-        if height[left] <= height[right] {
-            left += 1;
-        } else {
-            right -= 1;
-        }
-    }
-
-    max_area
-}
-
-/// 力扣（11. 盛最多水的容器）
-pub fn max_area_v3(height: Vec<i32>) -> i32 {
-    use std::cmp::{max, min};
-    let mut max_area = 0;
-    let mut left = 0;
-    let mut right = height.len() - 1;
-    let mut min_height = 0;
-    while left < right {
-        let current_min_height = min(height[left], height[right]);
-        if current_min_height > min_height {
-            let area = current_min_height * ((right - left) as i32);
-            max_area = max(max_area, area);
-            min_height = current_min_height;
-        }
-
-        if height[left] <= height[right] {
-            left += 1;
-        } else {
-            right -= 1;
-        }
-    }
-
-    max_area
-}
-
 use std::collections::HashMap;
 fn backtrace(
     combinations: &mut Vec<String>,
@@ -229,97 +163,6 @@ fn backtrace_v2(
             }
         }
     }
-}
-
-/// 力扣（15. 三数之和） https://leetcode-cn.com/problems/3sum/
-/// 方法1：排序 + 双指针
-pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
-    let mut result = Vec::<Vec<i32>>::new();
-    let len = nums.len();
-    let mut new_nums = nums;
-    new_nums.sort_unstable();
-    // 枚举 a
-    for (first, &a) in new_nums.iter().enumerate() {
-        // 需要和上一次枚举的数不相同
-        if first > 0 && a == new_nums[first - 1] {
-            continue;
-        }
-        let mut third = len - 1;
-        let target = -a;
-        let mut second = first + 1;
-        while second < len {
-            // 需要和上一次枚举的数不相同
-            if second > first + 1 && new_nums[second] == new_nums[second - 1] {
-                second += 1;
-                continue;
-            }
-
-            // 需要保证 b 的指针在 c 的指针的左侧
-            while second < third && new_nums[second] + new_nums[third] > target {
-                third -= 1;
-            }
-
-            // 如果指针重合，随着 b 后续的增加
-            // 就不会有满足 a+b+c=0 并且 b<c 的 c 了，可以退出循环
-            if second == third {
-                break;
-            }
-
-            if new_nums[second] + new_nums[third] == target {
-                result.push(vec![a, new_nums[second], new_nums[third]]);
-            }
-
-            second += 1;
-        }
-    }
-
-    result
-}
-
-/// 力扣（16. 最接近的三数之和） https://leetcode-cn.com/problems/3sum-closest/
-/// 方法1：排序 + 双指针
-pub fn three_sum_closest(nums: Vec<i32>, target: i32) -> i32 {
-    let len = nums.len();
-    let mut new_nums = nums;
-    new_nums.sort_unstable();
-    // -10^4 <= target <= 10^4
-    let mut best = 10000;
-    // 枚举 a
-    for (first, &a) in new_nums.iter().enumerate() {
-        // 需要和上一次枚举的数不相同
-        if first > 0 && a == new_nums[first - 1] {
-            continue;
-        }
-        let mut second = first + 1;
-        let mut third = len - 1;
-        while second < third {
-            let sum = a + new_nums[second] + new_nums[third];
-            if sum == target {
-                return target;
-            }
-
-            if (sum - target).abs() < (best - target).abs() {
-                best = sum;
-            }
-
-            if sum > target {
-                let mut third0 = third - 1;
-                while second < third0 && new_nums[third0] == new_nums[third] {
-                    third0 -= 1;
-                }
-
-                third = third0;
-            } else {
-                let mut second0 = second + 1;
-                while second0 < third && new_nums[second0] == new_nums[second] {
-                    second0 += 1;
-                }
-                second = second0;
-            }
-        }
-    }
-
-    best
 }
 
 const PHONE_LETTER: [(char, &[char]); 8] = [
@@ -385,103 +228,6 @@ pub fn letter_combinations_v2(digits: String) -> Vec<String> {
         &mut combination,
     );
     combinations
-}
-
-/// 力扣（18. 四数之和) https://leetcode-cn.com/problems/4sum/
-/// 方法1：排序 + 双指针
-pub fn four_sum(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
-    use std::cmp::Ordering;
-
-    let mut result = Vec::<Vec<i32>>::new();
-    let len = nums.len();
-
-    if len < 4 {
-        return result;
-    }
-    let mut new_nums = nums;
-    new_nums.sort_unstable();
-
-    // 枚举 a
-    for (first, &a) in new_nums.iter().take(len - 3).enumerate() {
-        // 需要和上一次枚举的数不相同
-        if first > 0 && a == new_nums[first - 1] {
-            continue;
-        }
-        let min_fours = a + new_nums[first + 1] + new_nums[first + 2] + new_nums[first + 3];
-        if min_fours > target {
-            break;
-        }
-        let max_fours = a + new_nums[len - 3] + new_nums[len - 2] + new_nums[len - 1];
-        if max_fours < target {
-            continue;
-        }
-
-        let mut second = first + 1;
-
-        while second < len - 2 {
-            if second > first + 1 && new_nums[second] == new_nums[second - 1] {
-                second += 1;
-                continue;
-            }
-
-            if a + new_nums[second] + new_nums[second + 1] + new_nums[second + 2] > target {
-                break;
-            }
-
-            if a + new_nums[second] + new_nums[len - 2] + new_nums[len - 1] < target {
-                second += 1;
-                continue;
-            }
-            let mut third = second + 1;
-            let mut fourth = len - 1;
-            while third < fourth {
-                let sum = a + new_nums[second] + new_nums[third] + new_nums[fourth];
-
-                match sum.cmp(&target) {
-                    Ordering::Equal => {
-                        result.push(vec![a, new_nums[second], new_nums[third], new_nums[fourth]]);
-                        // 相等的情況下，不能break;還需要继续遍历
-                        while third < fourth && new_nums[third + 1] == new_nums[third] {
-                            third += 1;
-                        }
-                        third += 1;
-                        while third < fourth && new_nums[fourth - 1] == new_nums[fourth] {
-                            fourth -= 1
-                        }
-                        fourth -= 1;
-                    }
-                    Ordering::Greater => {
-                        fourth -= 1;
-                    }
-                    Ordering::Less => {
-                        third += 1;
-                    }
-                }
-            }
-
-            second += 1;
-        }
-    }
-
-    result
-}
-
-/// 31. 下一个排列 https://leetcode-cn.com/problems/next-permutation/
-pub fn next_permutation(nums: &mut Vec<i32>) {
-    let n = nums.len();
-    let mut i = n - 1;
-    while i > 0 && nums[i - 1] >= nums[i] {
-        i -= 1;
-    }
-    if i > 0 {
-        let mut j = n - 1;
-        while nums[i - 1] >= nums[j] {
-            j -= 1;
-        }
-        // 较小数nums[i-i]与较大数nums[j]交换位置
-        nums.swap(i - 1, j);
-    }
-    nums[i..].reverse();
 }
 
 /// 36. 有效的数独 https://leetcode-cn.com/problems/valid-sudoku/
@@ -1129,12 +875,6 @@ mod tests {
         dbg!(longest_palindrome("babad".to_string()));
         // Fixed dbg!("{}",longest_palindrome_v2("babad".to_string()));
 
-        let heights = vec![1, 8, 6, 2, 5, 4, 8, 3, 7];
-        dbg!("max area : {}", max_area(heights));
-
-        let heights = vec![4, 3, 2, 1, 4];
-        dbg!("max area : {}", max_area(heights));
-
         let nums = vec![3, 2];
         let result = majority_element(nums);
         dbg!("majority_element: {:?}", result);
@@ -1146,10 +886,6 @@ mod tests {
         let digits = String::from("234");
         let combination = letter_combinations_v2(digits);
         dbg!("combination2: {:?}", combination);
-
-        let mut nums = vec![4, 5, 2, 6, 3, 1];
-        next_permutation(&mut nums);
-        println!("nums: {:?}", nums);
     }
 
     #[test]
@@ -1164,21 +900,6 @@ mod tests {
         ];
         let anagrams = group_anagrams(strs);
         dbg!("anagrams: {:?}", anagrams);
-
-        let nums = vec![-1, 0, 1, 2, -1, -4];
-        let three_sum_result = three_sum(nums);
-        dbg!(three_sum_result);
-
-        let nums = vec![-1, 2, 1, -4];
-        let target = 1;
-        let three_sum_closest_result = three_sum_closest(nums, target);
-        dbg!(three_sum_closest_result);
-
-        let nums = vec![-3, -2, -1, 0, 0, 1, 2, 3];
-        let target = 0;
-
-        let four_sum_result = four_sum(nums, target);
-        dbg!("{:?}", four_sum_result);
     }
 
     fn test_equal_substring() {
