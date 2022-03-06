@@ -101,3 +101,8 @@
 | | - [125. 验证回文串](  https://leetcode-cn.com/problems/valid-palindrome/ ) |  |
 | | - []( ) |  |
 | | - [350. 两个数组的交集 II](https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/ ) |  |
+| 贪心算法|  | [解决方案](src/solution/algorithms/greedy/greedy.rs) |
+| | - [45. 跳跃游戏 II]( https://leetcode-cn.com/problems/jump-game-ii/ ) |  |
+| | - [561. 数组拆分 I]( https://leetcode-cn.com/problems/array-partition-i/ ) |  |
+| | - []( ) |  |
+
