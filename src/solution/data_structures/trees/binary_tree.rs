@@ -352,6 +352,47 @@ pub fn min_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     }
 }
 
+/// 112. 路径总和 https://leetcode-cn.com/problems/path-sum/
+pub fn has_path_sum(root: Option<Rc<RefCell<TreeNode>>>, target_sum: i32) -> bool {
+    if let Some(mut node) = root {
+        let mut sum = target_sum;
+        let mut stack = Vec::new();
+
+        loop {
+            let (val, left, right) = {
+                let node_ref = node.borrow();
+
+                (node_ref.val, node_ref.left.clone(), node_ref.right.clone())
+            };
+
+            match (left, right) {
+                (None, None) => {
+                    if val == sum {
+                        return true;
+                    } else if let Some((next_node, next_sum)) = stack.pop() {
+                        node = next_node;
+                        sum = next_sum;
+                    } else {
+                        break;
+                    }
+                }
+                (None, Some(child)) | (Some(child), None) => {
+                    node = child;
+                    sum -= val;
+                }
+                (Some(left), Some(right)) => {
+                    node = left;
+                    sum -= val;
+
+                    stack.push((right, sum));
+                }
+            }
+        }
+    }
+
+    false
+}
+
 /// 144. 二叉树的前序遍历 https://leetcode-cn.com/problems/binary-tree-preorder-traversal/
 /// 前序遍历：中左右
 pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
