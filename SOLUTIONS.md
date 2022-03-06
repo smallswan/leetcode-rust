@@ -41,6 +41,16 @@
 |       | - [226. 翻转二叉树 ](https://leetcode-cn.com/problems/invert-binary-tree/ ) |  | 
 |       | - [655. 输出二叉树](https://leetcode-cn.com/problems/print-binary-tree/) |  |
 |  ----  | ----  | ----  |
+| 矩阵|  | [解决方案](src/solution/data_structures/matrix/matrix.rs) |
+| | - [36. 有效的数独]( https://leetcode-cn.com/problems/valid-sudoku/ ) |  |
+| | - [37. 解数独]( https://leetcode-cn.com/problems/sudoku-solver/ ) |  |
+| | - [48. 旋转图像]( https://leetcode-cn.com/problems/rotate-image/ ) |  |
+| | - [54. 螺旋矩阵](  https://leetcode-cn.com/problems/spiral-matrix/ ) |  |
+| | - [59. 螺旋矩阵]( II https://leetcode-cn.com/problems/spiral-matrix-ii/ ) |  |
+| | - [73.矩阵置零]( https://leetcode-cn.com/problems/set-matrix-zeroes/ ) |  |
+| | - [498. 对角线遍历](  https://leetcode-cn.com/problems/diagonal-traverse/ ) |  |
+| | - [867. 转置矩阵]( https://leetcode-cn.com/problems/transpose-matrix/ ) |  |
+|  ----  | ----  | ----  |
 | 数学|  | [数学解决方案](src/solution/math) |
 | | - [7. 整数反转]( https://leetcode-cn.com/problems/reverse-integer/) |  |
 | | - [9. 回文数]( https://leetcode-cn.com/problems/palindrome-number/) |  |
@@ -103,6 +113,7 @@
 | | - [350. 两个数组的交集 II](https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/ ) |  |
 | 贪心算法|  | [解决方案](src/solution/algorithms/greedy/greedy.rs) |
 | | - [45. 跳跃游戏 II]( https://leetcode-cn.com/problems/jump-game-ii/ ) |  |
+| | - [55. 跳跃游戏]( https://leetcode-cn.com/problems/jump-game/ ) |  |
 | | - [561. 数组拆分 I]( https://leetcode-cn.com/problems/array-partition-i/ ) |  |
-| | - []( ) |  |
+
 

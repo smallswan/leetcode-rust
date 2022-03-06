@@ -141,6 +141,191 @@ pub fn rotate(matrix: &mut Vec<Vec<i32>>) {
     }
 }
 
+/// 54. 螺旋矩阵 https://leetcode-cn.com/problems/spiral-matrix/
+pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
+    let m = matrix.len();
+    if m == 0 {
+        return vec![];
+    }
+    let n = matrix[0].len();
+
+    let mut result = Vec::<i32>::with_capacity(m * n);
+
+    let mut i = 0;
+    let mut j = 0;
+    let mut x = m - 1; //i的最大值
+    let mut y = n - 1; //j的最大值
+    let mut s = 0; //i的最小值
+    let mut t = 0; //j的最小值
+    let mut direct = 0;
+
+    let mut push_times = 1;
+    result.push(matrix[0][0]);
+
+    while push_times < m * n {
+        match direct % 4 {
+            0 => {
+                //右
+                if j < y {
+                    j += 1;
+                    result.push(matrix[i][j]);
+                    push_times += 1;
+                    continue;
+                } else {
+                    s += 1;
+                    direct += 1;
+                }
+            }
+            1 => {
+                //下
+                if i < x {
+                    i += 1;
+                    result.push(matrix[i][j]);
+                    push_times += 1;
+                    continue;
+                } else {
+                    y -= 1;
+                    direct += 1;
+                }
+            }
+            2 => {
+                //左
+                if j > t {
+                    j -= 1;
+                    result.push(matrix[i][j]);
+                    push_times += 1;
+                    continue;
+                } else {
+                    x -= 1;
+                    direct += 1;
+                }
+            }
+            3 => {
+                //上
+                if i > s {
+                    i -= 1;
+                    result.push(matrix[i][j]);
+                    push_times += 1;
+                    continue;
+                } else {
+                    t += 1;
+                    direct += 1;
+                }
+            }
+            _ => {
+                println!("不可能发生这种情况");
+            }
+        }
+    }
+    result
+}
+
+/// 剑指 Offer 29. 顺时针打印矩阵 https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/
+/// 注意：本题与主站 54 题相同：https://leetcode-cn.com/problems/spiral-matrix/
+pub fn spiral_order_v2(matrix: Vec<Vec<i32>>) -> Vec<i32> {
+    let rows = matrix.len();
+    if rows == 0 {
+        return vec![];
+    }
+    let columns = matrix[0].len();
+    let mut result = Vec::<i32>::with_capacity(rows * columns);
+    let mut start = 0usize;
+    while rows > start * 2 && columns > start * 2 {
+        clockwise(&matrix, &mut result, rows, columns, start);
+        start += 1;
+    }
+
+    fn clockwise(
+        matrix: &Vec<Vec<i32>>,
+        result: &mut Vec<i32>,
+        rows: usize,
+        columns: usize,
+        start: usize,
+    ) {
+        let end_x = columns - 1 - start;
+        let end_y = rows - 1 - start;
+        // 从左往右
+        for i in start..=end_x {
+            result.push(matrix[start][i]);
+        }
+        // 从上往下
+        if start < end_y {
+            for i in start + 1..=end_y {
+                result.push(matrix[i][end_x]);
+            }
+        }
+        // 从右往左
+        if start < end_x && start < end_y {
+            let mut i = end_x - 1;
+            while i >= start {
+                result.push(matrix[end_y][i]);
+                if i > 0 {
+                    i -= 1;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        // 从下往上
+        if end_y < 1 {
+            return;
+        }
+        if start < end_x && start < end_y - 1 {
+            let mut i = end_y - 1;
+            while i >= start + 1 {
+                result.push(matrix[i][start]);
+                if i > 0 {
+                    i -= 1;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    result
+}
+
+/// 59. 螺旋矩阵 II https://leetcode-cn.com/problems/spiral-matrix-ii/
+pub fn generate_matrix(n: i32) -> Vec<Vec<i32>> {
+    let n = n as usize;
+    let mut result = vec![vec![0; n]; n];
+    let mut previous_value = 0;
+
+    let mut next_value = move || {
+        previous_value += 1;
+
+        previous_value
+    };
+
+    for i in 0..n / 2 {
+        // Right.
+        result[i][i..n - i].fill_with(&mut next_value);
+
+        // Down.
+        for row in &mut result[i + 1..n - i - 1] {
+            row[n - i - 1] = next_value();
+        }
+
+        // Left.
+        for target in result[n - i - 1][i..n - i].iter_mut().rev() {
+            *target = next_value();
+        }
+
+        // Up.
+        for row in result[i + 1..n - i - 1].iter_mut().rev() {
+            row[i] = next_value();
+        }
+    }
+
+    if n % 2 == 1 {
+        result[n / 2][n / 2] = next_value();
+    }
+
+    result
+}
+
 /// 力扣（73.矩阵置零) https://leetcode-cn.com/problems/set-matrix-zeroes/
 pub fn set_zeroes(matrix: &mut Vec<Vec<i32>>) {
     let m = matrix.len();
@@ -261,6 +446,22 @@ mod tests {
 
     #[test]
     fn test_matrix() {
+        let mut matrix = Vec::<Vec<i32>>::new();
+        matrix.push(vec![1, 2, 3, 4]);
+        matrix.push(vec![5, 6, 7, 8]);
+        matrix.push(vec![9, 10, 11, 12]);
+
+        println!("{:?}", matrix);
+        //    dbg!("{:?}",find_diagonal_order(matrix));
+
+        dbg!("spiral_order: {:?}", spiral_order(matrix));
+
+        let mut matrix = Vec::<Vec<i32>>::new();
+        matrix.push(vec![1, 2, 3]);
+        matrix.push(vec![4, 5, 6]);
+        matrix.push(vec![7, 8, 9]);
+        dbg!(spiral_order_v2(matrix));
+
         let mut matrix = Vec::<Vec<i32>>::new();
         matrix.push(vec![1, 2, 3]);
         matrix.push(vec![4, 5, 6]);
