@@ -570,6 +570,26 @@ pub fn check_perfect_number_v2(num: i32) -> bool {
     sum == num
 }
 
+/// 504. 七进制数 https://leetcode-cn.com/problems/base-7/
+pub fn convert_to_base7(num: i32) -> String {
+    if num == 0 {
+        return "0".to_owned();
+    }
+
+    let negative = num < 0;
+    let mut num = num.abs();
+    let mut digits = String::new();
+    while num > 0 {
+        digits.push_str(&format!("{}", num % 7));
+        num /= 7;
+    }
+
+    if negative {
+        digits.push_str("-");
+    }
+    digits.chars().rev().collect()
+}
+
 /// 剑指 Offer 10- I. 斐波那契数列   https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/
 /// 方法1：动态规划
 pub fn fib(n: i32) -> i32 {
