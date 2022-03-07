@@ -1,6 +1,5 @@
 #![allow(unused)]
 mod dp;
-mod hard;
 mod medium;
 mod simple;
 

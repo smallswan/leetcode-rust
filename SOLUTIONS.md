@@ -83,6 +83,7 @@
 | | - [441. 排列硬币]( https://leetcode-cn.com/problems/arranging-coins/ ) |  |
 | | - [453. 最小操作次数使数组元素相等]( https://leetcode-cn.com/problems/minimum-moves-to-equal-array-elements/ ) |  |
 | | - [492. 构造矩形]( https://leetcode-cn.com/problems/construct-the-rectangle/ ) |  |
+| | - [504. 七进制数]( https://leetcode-cn.com/problems/base-7/)  |  |
 | | - [507. 完美数]( https://leetcode-cn.com/problems/perfect-number/ ) |  |
 | | - [1486. 数组异或操作](https://leetcode-cn.com/problems/xor-operation-in-an-array/ ) |  |
 | | - [1863. 找出所有子集的异或总和再求和](https://leetcode-cn.com/problems/sum-of-all-subset-xor-totals/ ) |  |
@@ -115,5 +116,10 @@
 | | - [45. 跳跃游戏 II]( https://leetcode-cn.com/problems/jump-game-ii/ ) |  |
 | | - [55. 跳跃游戏]( https://leetcode-cn.com/problems/jump-game/ ) |  |
 | | - [561. 数组拆分 I]( https://leetcode-cn.com/problems/array-partition-i/ ) |  |
-
-
+|  ----  | ----  | ----  |
+| 动态规划|  | [解决方案](src/solution/algorithms/dp/dynamic_programming.rs) |
+| | - [10. 正则表达式匹配](  https://leetcode-cn.com/problems/regular-expression-matching/ ) |  |
+| | - [264. 丑数 II ]( https://leetcode-cn.com/problems/ugly-number-ii/ ) |  |
+| | - [338. 比特位计数](https://leetcode-cn.com/problems/counting-bits/) | | 
+| | - [2100. 适合打劫银行的日子](https://leetcode-cn.com/problems/find-good-days-to-rob-the-bank/ ) |  |
+| | - []( ) |  |
