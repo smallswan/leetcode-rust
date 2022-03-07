@@ -438,6 +438,43 @@ pub fn postorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     counter
 }
 
+/// 173. 二叉搜索树迭代器 https://leetcode-cn.com/problems/binary-search-tree-iterator/
+pub struct BSTIterator {
+    stack: Vec<Rc<RefCell<TreeNode>>>,
+}
+
+impl BSTIterator {
+    fn new(mut root: Option<Rc<RefCell<TreeNode>>>) -> Self {
+        let mut stack = Vec::new();
+
+        while let Some(node) = root {
+            root = node.borrow().left.clone();
+
+            stack.push(node);
+        }
+
+        Self { stack }
+    }
+
+    fn next(&mut self) -> i32 {
+        let node = self.stack.pop().unwrap();
+        let node_ref = node.borrow();
+        let mut root = node_ref.right.clone();
+
+        while let Some(node) = root {
+            root = node.borrow().left.clone();
+
+            self.stack.push(node);
+        }
+
+        node_ref.val
+    }
+
+    fn has_next(&self) -> bool {
+        !self.stack.is_empty()
+    }
+}
+
 /// 222. 完全二叉树的节点个数 https://leetcode-cn.com/problems/count-complete-tree-nodes/
 pub fn count_nodes(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     if root.is_none() {
