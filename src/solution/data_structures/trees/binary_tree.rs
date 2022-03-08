@@ -431,6 +431,32 @@ pub fn invert_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<Tre
     root
 }
 
+/// 404. 左叶子之和 https://leetcode-cn.com/problems/sum-of-left-leaves/
+pub fn sum_of_left_leaves(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    fn helper_left(node: &TreeNode) -> i32 {
+        match (node.left.as_deref(), node.right.as_deref()) {
+            (None, None) => node.val,
+            (None, Some(right)) => helper_right(&right.borrow()),
+            (Some(left), None) => helper_left(&left.borrow()),
+            (Some(left), Some(right)) => {
+                helper_left(&left.borrow()) + helper_right(&right.borrow())
+            }
+        }
+    }
+
+    fn helper_right(node: &TreeNode) -> i32 {
+        match (node.left.as_deref(), node.right.as_deref()) {
+            (None, None) => 0,
+            (None, Some(right)) => helper_right(&right.borrow()),
+            (Some(left), None) => helper_left(&left.borrow()),
+            (Some(left), Some(right)) => {
+                helper_left(&left.borrow()) + helper_right(&right.borrow())
+            }
+        }
+    }
+    root.map_or(0, |node| helper_right(&node.borrow()))
+}
+
 /// 655. 输出二叉树 https://leetcode-cn.com/problems/print-binary-tree/
 pub fn print_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<String>> {
     // 二叉树高度
