@@ -22,7 +22,7 @@
 |       | - [剑指 Offer 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/submissions/ )   |  |
 |  ----  | ----  | ----  |
 | 二叉树| - [94. 二叉树的中序遍历 ](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/ ) | [二叉树解决方案](src/solution/data_structures/trees/binary_tree.rs ) |
-|       | - [98. 验证二叉搜索树 ](https://leetcode-cn.com/problems/validate-binary-search-tree/) |  |
+|       | - [98. 验证二叉搜索树 ](https://leetcode-cn.com/problems/validate-binary-search-tree/) | [二叉搜索树](src/solution/data_structures/trees/binary_search_tree.rs ) |
 |       | - [100. 相同的树](https://leetcode-cn.com/problems/same-tree/ ) |  |
 |       | - [101. 对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/ ) |  |
 |       | - [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/ ) |  |
