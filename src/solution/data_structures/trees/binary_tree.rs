@@ -195,6 +195,7 @@ fn build_tree_helper(preorder: &[i32], inorder: &[i32]) -> Option<Rc<RefCell<Tre
 }
 
 /// 105. 从前序与中序遍历序列构造二叉树  https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+/// 注意：剑指 Offer 07. 重建二叉树 https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/
 pub fn build_tree(preorder: Vec<i32>, inorder: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
     build_tree_helper(&preorder[..], &inorder[..])
 }

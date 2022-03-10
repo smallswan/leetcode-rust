@@ -75,6 +75,43 @@ impl Solution {
             used_vec[i] = false;
         }
     }
+
+    /// 剑指 Offer 38. 字符串的排列 https://leetcode-cn.com/problems/zi-fu-chuan-de-pai-lie-lcof/
+    pub fn permutation(s: String) -> Vec<String> {
+        let mut arr = s.chars().collect::<Vec<char>>();
+        arr.sort_unstable();
+
+        let mut result = Vec::<String>::new();
+        let first: String = arr.iter().collect();
+        result.push(first);
+
+        fn next_permutation(nums: &mut Vec<char>) -> bool {
+            let n = nums.len();
+            let mut i = n - 1;
+            while i > 0 && nums[i - 1] >= nums[i] {
+                i -= 1;
+            }
+            if i == 0 {
+                return false;
+            }
+            if i > 0 {
+                let mut j = n - 1;
+                while nums[i - 1] >= nums[j] {
+                    j -= 1;
+                }
+                // 较小数nums[i-i]与较大数nums[j]交换位置
+                nums.swap(i - 1, j);
+            }
+            nums[i..].reverse();
+            true
+        }
+
+        while next_permutation(&mut arr) {
+            result.push(arr.iter().collect());
+        }
+
+        result
+    }
 }
 
 #[cfg(test)]
@@ -87,5 +124,8 @@ mod tests {
 
         let nums = vec![1, 1, 2];
         dbg!(Solution::permute_unique(nums));
+
+        let abc = String::from("abc");
+        dbg!(Solution::permutation(abc));
     }
 }
