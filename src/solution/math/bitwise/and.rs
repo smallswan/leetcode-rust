@@ -147,6 +147,46 @@ pub fn bitwise_complement_v2(n: i32) -> i32 {
     n ^ mark
 }
 
+/// 393. UTF-8 编码验证 https://leetcode-cn.com/problems/utf-8-validation/
+/// TODO
+pub fn valid_utf8(data: Vec<i32>) -> bool {
+    let len = data.len();
+    match len {
+        1 => {
+            //0xxxxxxx
+            data[0] <= 0x7f
+        }
+        2 => {
+            // 110xxxxx 10xxxxxx
+            (data[0] >= 0xb0 && data[0] <= 0xdf) && (data[1] >= 0x80 && data[1] <= 0xbf)
+        }
+        3 => {
+            // 1110xxxx 10xxxxxx 10xxxxxx
+            (data[0] >= 0xd0 && data[0] <= 0xef)
+                && (data[1] >= 0x80 && data[1] <= 0xbf)
+                && (data[2] >= 0x80 && data[2] <= 0xbf)
+        }
+        4 => {
+            // 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+            (data[0] >= 0xf0 && data[0] <= 0xf7)
+                && (data[1] >= 0x80 && data[1] <= 0xbf)
+                && (data[2] >= 0x80 && data[2] <= 0xbf)
+                && (data[3] >= 0x80 && data[3] <= 0xbf)
+        }
+        _ => false,
+    }
+}
+
+pub fn valid_utf8_v2(data: Vec<i32>) -> bool {
+    let bytes: Vec<u8> = data.into_iter().map(|b| b as u8).collect();
+    if let Ok(utf8_str) = String::from_utf8(bytes) {
+        dbg!(utf8_str);
+        return true;
+    } else {
+        return false;
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -163,5 +203,15 @@ mod tests {
         dbg!(bitwise_complement_v2(i32::MAX));
         dbg!(i32::MAX);
         println!("{:b}", i32::MAX);
+
+        let data = vec![
+            194, 155, 231, 184, 185, 246, 176, 131, 161, 222, 174, 227, 162, 134, 241, 154, 168,
+            185, 218, 178, 229, 187, 139, 246, 178, 187, 139, 204, 146, 225, 148, 179, 245, 139,
+            172, 134, 193, 156, 233, 131, 154, 240, 166, 188, 190, 216, 150, 230, 145, 144, 240,
+            167, 140, 163, 221, 190, 238, 168, 139, 241, 154, 159, 164, 199, 170, 224, 173, 140,
+            244, 182, 143, 134, 206, 181, 227, 172, 141, 241, 146, 159, 170, 202, 134, 230, 142,
+            163, 244, 172, 140, 191,
+        ];
+        dbg!(valid_utf8_v2(data));
     }
 }

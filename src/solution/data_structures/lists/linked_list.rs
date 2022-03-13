@@ -649,6 +649,46 @@ pub fn get_kth_from_end(head: Option<Box<ListNode>>, k: i32) -> Option<Box<ListN
     }
 }
 
+///  银联-01. 回文链表 https://leetcode-cn.com/contest/cnunionpay-2022spring/problems/D7rekZ/
+///  暴力解法，竞赛时超时了
+pub fn is_palindrome(head: Option<Box<ListNode>>) -> bool {
+    let mut vec = Vec::new();
+    let mut head = &head;
+    while head.is_some() {
+        vec.push(head.as_ref().unwrap().val);
+        head = &(head.as_ref().unwrap().next);
+    }
+
+    let len = vec.len();
+    for i in 0..len {
+        let mut new_vec = Vec::with_capacity(len - 1);
+        for j in 0..len {
+            if j != i {
+                new_vec.push(vec[j]);
+            }
+        }
+
+        if is_palindrome_vec(&new_vec) {
+            return true;
+        }
+    }
+    //
+    fn is_palindrome_vec(data: &Vec<i32>) -> bool {
+        let (mut i, mut j) = (0, data.len() - 1);
+        while i < j {
+            if data[i] == data[j] {
+                i += 1;
+                j -= 1;
+            } else {
+                return false;
+            }
+        }
+        true
+    }
+
+    false
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -828,5 +868,11 @@ mod tests {
         let head = vec_to_list(&vec![1, 2, 3, 4, 5]);
         let reverse_head = reverse_k_group(head, 3);
         display(reverse_head);
+    }
+
+    #[test]
+    fn unionpay() {
+        let head = vec_to_list(&vec![1, 2, 3, 1]);
+        dbg!(is_palindrome(head));
     }
 }
