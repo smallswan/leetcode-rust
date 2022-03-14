@@ -112,6 +112,44 @@ impl Solution {
 
         result
     }
+
+    /// 60. 排列序列 https://leetcode-cn.com/problems/permutation-sequence/
+    pub fn get_permutation(n: i32, k: i32) -> String {
+        let mut chars: Vec<char> = Vec::with_capacity(n as usize);
+        for i in 1..=n {
+            chars.push((b'0' + (i as u8)) as char);
+        }
+
+        if k == 1 {
+            return chars.iter().collect();
+        }
+
+        fn next_permutation(nums: &mut Vec<char>) -> bool {
+            let n = nums.len();
+            let mut i = n - 1;
+            while i > 0 && nums[i - 1] >= nums[i] {
+                i -= 1;
+            }
+            if i == 0 {
+                return false;
+            }
+            if i > 0 {
+                let mut j = n - 1;
+                while nums[i - 1] >= nums[j] {
+                    j -= 1;
+                }
+                // 较小数nums[i-i]与较大数nums[j]交换位置
+                nums.swap(i - 1, j);
+            }
+            nums[i..].reverse();
+            true
+        }
+        for i in 1..k {
+            next_permutation(&mut chars);
+        }
+
+        chars.iter().collect()
+    }
 }
 
 #[cfg(test)]
