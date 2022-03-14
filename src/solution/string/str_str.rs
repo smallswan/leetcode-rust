@@ -241,6 +241,27 @@ fn hash(mut s: String) -> u16 {
     (res + last_char as u16) % prime
 }
 
+/// 392. 判断子序列  https://leetcode-cn.com/problems/is-subsequence/
+pub fn is_subsequence(s: String, t: String) -> bool {
+    let mut s_chars: Vec<char> = s.chars().collect::<Vec<char>>();
+    let mut t_chars: Vec<char> = t.chars().collect::<Vec<char>>();
+    let (s_len, t_len) = (s_chars.len(), t_chars.len());
+    if s_len > t_len {
+        return false;
+    } else if s_len == t_len {
+        return s == t;
+    }
+
+    let (mut i, mut j) = (0, 0);
+    while i < s_len && j < t_len {
+        if s_chars[i] == t_chars[j] {
+            i += 1;
+        }
+        j += 1;
+    }
+    i == s_len
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -253,6 +274,8 @@ mod tests {
 
         let index = knuth_morris_pratt("Rust is a programming language empowering everyone to build reliable and efficient software".to_string(),"everyone".to_string());
         println!("{:?}", index);
+
+        dbg!(is_subsequence("acb".to_string(), "ahbgdc".to_string()));
     }
 
     mod kmp {
