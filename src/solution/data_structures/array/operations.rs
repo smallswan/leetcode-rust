@@ -14,6 +14,30 @@ pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
     vec![]
 }
 
+/// 56. 合并区间 https://leetcode-cn.com/problems/merge-intervals/
+pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+    let mut intervals = intervals;
+
+    intervals.sort_unstable_by_key(|interval| interval[0]);
+
+    let mut result = Vec::new();
+    let mut iter = intervals.into_iter();
+
+    result.push(iter.next().unwrap());
+
+    for interval in iter {
+        let previous_end = result.last_mut().unwrap().last_mut().unwrap();
+
+        if interval[0] <= *previous_end {
+            *previous_end = (*previous_end).max(interval[1]);
+        } else {
+            result.push(interval);
+        }
+    }
+
+    result
+}
+
 /// 189. 轮转数组 https://leetcode-cn.com/problems/rotate-array/
 pub fn rotate(nums: &mut Vec<i32>, k: i32) {
     let len = nums.len();
