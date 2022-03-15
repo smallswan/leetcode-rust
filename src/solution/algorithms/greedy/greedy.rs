@@ -99,6 +99,7 @@ pub fn max_profit_v2(prices: Vec<i32>) -> i32 {
 }
 
 /// 122. 买卖股票的最佳时机 II https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/
+/// 方法：贪心算法
 pub fn max_profit_ii(prices: Vec<i32>) -> i32 {
     let mut buy = i32::MIN;
     let mut sell = 0;
@@ -109,6 +110,22 @@ pub fn max_profit_ii(prices: Vec<i32>) -> i32 {
     }
 
     sell
+}
+
+/// 122. 买卖股票的最佳时机 II
+/// 方法：动态规划
+pub fn max_profit_ii_v2(prices: Vec<i32>) -> i32 {
+    let len = prices.len();
+    let mut dp = Vec::with_capacity(len);
+    // (profit1,profit2) = (第 i 天交易完后手里没有股票的最大利润,表示第 i 天交易完后手里持有一支股票的最大利润)
+    dp.push((0, -prices[0]));
+    for i in 1..len {
+        let profit1 = max(dp[i - 1].0, dp[i - 1].1 + prices[i]);
+        let profit2 = max(dp[i - 1].1, dp[i - 1].0 - prices[i]);
+        dp.push((profit1, profit2));
+    }
+
+    dp[len - 1].0
 }
 
 /// 力扣（561. 数组拆分 I） https://leetcode-cn.com/problems/array-partition-i/
@@ -150,5 +167,8 @@ mod tests {
         dbg!(max_profit(prices));
 
         dbg!(max_profit_v2(vec![7, 1, 5, 3, 6, 4]));
+
+        dbg!(max_profit_ii(vec![7, 1, 5, 3, 6, 4]));
+        dbg!(max_profit_ii_v2(vec![7, 1, 5, 3, 6, 4]));
     }
 }
