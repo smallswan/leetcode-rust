@@ -199,6 +199,35 @@ pub fn can_place_flowers_v2(flowerbed: Vec<i32>, n: i32) -> bool {
     n == 0
 }
 
+/// 680. 验证回文字符串 Ⅱ https://leetcode-cn.com/problems/valid-palindrome-ii/
+/// 注：相同的题目有： 银联-01. 回文链表 https://leetcode-cn.com/contest/cnunionpay-2022spring/problems/D7rekZ/
+pub fn valid_palindrome(s: String) -> bool {
+    fn is_palindrome(mut iter: impl DoubleEndedIterator<Item = impl Eq>) -> bool {
+        while let (Some(left), Some(right)) = (iter.next(), iter.next_back()) {
+            if left != right {
+                return false;
+            }
+        }
+
+        true
+    }
+    let mut iter = s.bytes();
+    while let (Some(left), Some(right)) = (iter.next(), iter.next_back()) {
+        if left != right {
+            let mut iter_2 = iter.clone();
+
+            if let Some(left_2) = iter.next() {
+                return (left_2 == right && is_palindrome(iter))
+                    || (iter_2.next_back() == Some(left) && is_palindrome(iter_2));
+            }
+
+            break;
+        }
+    }
+
+    true
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

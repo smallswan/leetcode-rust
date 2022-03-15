@@ -689,6 +689,43 @@ pub fn is_palindrome(head: Option<Box<ListNode>>) -> bool {
     false
 }
 
+fn is_palindrome_iter(mut iter: impl DoubleEndedIterator<Item = impl Eq>) -> bool {
+    while let (Some(left), Some(right)) = (iter.next(), iter.next_back()) {
+        if left != right {
+            return false;
+        }
+    }
+
+    true
+}
+
+/// 银联-01. 回文链表
+/// 贪心算法
+pub fn is_palindrome_v2(head: Option<Box<ListNode>>) -> bool {
+    let mut vec = Vec::new();
+    let mut head = &head;
+    while head.is_some() {
+        vec.push(head.as_ref().unwrap().val);
+        head = &(head.as_ref().unwrap().next);
+    }
+
+    let mut iter = vec.iter();
+    while let (Some(left), Some(right)) = (iter.next(), iter.next_back()) {
+        if left != right {
+            let mut iter_2 = iter.clone();
+
+            if let Some(left_2) = iter.next() {
+                return (left_2 == right && is_palindrome_iter(iter))
+                    || (iter_2.next_back() == Some(left) && is_palindrome_iter(iter_2));
+            }
+
+            break;
+        }
+    }
+
+    true
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -874,5 +911,8 @@ mod tests {
     fn unionpay() {
         let head = vec_to_list(&vec![1, 2, 3, 1]);
         dbg!(is_palindrome(head));
+
+        let head = vec_to_list(&vec![1, 2, 3, 1]);
+        dbg!(is_palindrome_v2(head));
     }
 }
