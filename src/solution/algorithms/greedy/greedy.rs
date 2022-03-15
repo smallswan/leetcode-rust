@@ -128,6 +128,32 @@ pub fn max_profit_ii_v2(prices: Vec<i32>) -> i32 {
     dp[len - 1].0
 }
 
+/// 134. 加油站 https://leetcode-cn.com/problems/gas-station/
+pub fn can_complete_circuit(gas: Vec<i32>, cost: Vec<i32>) -> i32 {
+    let len = gas.len();
+    let mut i = 0;
+    while i < len {
+        let (mut sum_of_gas, mut sum_of_cost) = (0, 0);
+        let mut count = 0;
+        while count < len {
+            let j = (i + count) % len;
+            sum_of_gas += gas[j];
+            sum_of_cost += cost[j];
+            if sum_of_cost > sum_of_gas {
+                break;
+            }
+            count += 1;
+        }
+
+        if count == len {
+            return i as i32;
+        } else {
+            i += count + 1;
+        }
+    }
+
+    -1
+}
 /// 力扣（561. 数组拆分 I） https://leetcode-cn.com/problems/array-partition-i/
 pub fn array_pair_sum(nums: Vec<i32>) -> i32 {
     let len = nums.len();
