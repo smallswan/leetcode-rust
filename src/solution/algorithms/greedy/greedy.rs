@@ -55,6 +55,62 @@ pub fn can_jump(nums: Vec<i32>) -> bool {
     false
 }
 
+/// 力扣（121. 买卖股票的最佳时机）  https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/
+/// 暴力解法，容易超时
+pub fn max_profit(prices: Vec<i32>) -> i32 {
+    let len = prices.len();
+    if len <= 1 {
+        return 0;
+    }
+    let mut buy_day = 0;
+    let mut sale_day = 1;
+    let mut max_profit = 0;
+    while buy_day < len - 1 {
+        while sale_day < len {
+            let profit = prices[sale_day] - prices[buy_day];
+            if profit > 0 {
+                max_profit = max(max_profit, profit);
+            }
+            sale_day += 1;
+        }
+        buy_day += 1;
+        sale_day = buy_day + 1;
+    }
+
+    max_profit
+}
+
+/// 力扣（121. 买卖股票的最佳时机）
+/// 剑指 Offer 63. 股票的最大利润  https://leetcode-cn.com/problems/gu-piao-de-zui-da-li-run-lcof/
+/// 最低价格、最大利润
+pub fn max_profit_v2(prices: Vec<i32>) -> i32 {
+    let len = prices.len();
+    let mut min_prince = i32::MAX;
+    let mut max_profit = 0;
+    for price in prices {
+        if price < min_prince {
+            min_prince = price;
+        } else if price - min_prince > max_profit {
+            max_profit = price - min_prince;
+        }
+    }
+
+    max_profit
+}
+
+/// 122. 买卖股票的最佳时机 II https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/
+pub fn max_profit_ii(prices: Vec<i32>) -> i32 {
+    let mut buy = i32::MIN;
+    let mut sell = 0;
+
+    for price in prices {
+        buy = buy.max(sell - price);
+        sell = sell.max(buy + price);
+    }
+
+    sell
+}
+
 /// 力扣（561. 数组拆分 I） https://leetcode-cn.com/problems/array-partition-i/
 pub fn array_pair_sum(nums: Vec<i32>) -> i32 {
     let len = nums.len();
@@ -85,5 +141,14 @@ mod tests {
         nums.push(3);
         nums.push(2);
         dbg!(array_pair_sum(nums));
+    }
+
+    #[test]
+    fn test_stock() {
+        let prices = vec![7, 1, 5, 3, 6, 4];
+
+        dbg!(max_profit(prices));
+
+        dbg!(max_profit_v2(vec![7, 1, 5, 3, 6, 4]));
     }
 }
