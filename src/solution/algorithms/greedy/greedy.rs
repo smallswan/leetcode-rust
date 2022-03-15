@@ -146,6 +146,59 @@ pub fn array_pair_sum(nums: Vec<i32>) -> i32 {
     sum
 }
 
+/// 605. 种花问题 https://leetcode-cn.com/problems/can-place-flowers/
+pub fn can_place_flowers(flowerbed: Vec<i32>, n: i32) -> bool {
+    if n == 0 {
+        true
+    } else {
+        let mut n = n;
+        let (&first, rest) = flowerbed.split_first().unwrap();
+        let mut prev = (0, first);
+
+        for &num in rest {
+            if (prev, num) == ((0, 0), 0) {
+                if n == 1 {
+                    return true;
+                }
+
+                n -= 1;
+
+                prev = (1, 0);
+            } else {
+                prev = (prev.1, num);
+            }
+        }
+
+        prev == (0, 0) && n == 1
+    }
+}
+
+/// 605. 种花问题
+/// 方法：“跳格子” https://leetcode-cn.com/problems/can-place-flowers/solution/fei-chang-jian-dan-de-tiao-ge-zi-jie-fa-nhzwc/
+pub fn can_place_flowers_v2(flowerbed: Vec<i32>, n: i32) -> bool {
+    let len = flowerbed.len();
+    let mut i = 0;
+    let mut n = n;
+    while i < len && n > 0 {
+        if flowerbed[i] == 1 {
+            //当前位置有花，下一个可能种植花的地方为i+2
+            i += 2;
+        } else if i == len - 1 || flowerbed[i + 1] == 0 {
+            // 走到这里，说明flowerbed[i]=0，如果当前位置是最后一个位置或者下一个位置也无花，则可以种植
+            n -= 1;
+            if n == 0 {
+                return true;
+            }
+            i += 2;
+        } else {
+            // 当前位置无花，但是由于下一个位置有花，所以不能种花，二下一个可能种花的地方就是i+3
+            i += 3;
+        }
+    }
+
+    n == 0
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
