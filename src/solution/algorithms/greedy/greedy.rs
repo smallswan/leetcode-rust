@@ -293,6 +293,21 @@ pub fn lemonade_change(bills: Vec<i32>) -> bool {
 
     true
 }
+
+/// 976. 三角形的最大周长 https://leetcode-cn.com/problems/largest-perimeter-triangle/
+/// 我们假设三角形的边长 a,b,c 满足 a≤b≤c，那么这三条边组成面积不为零的三角形的充分必要条件为 a+b>c
+pub fn largest_perimeter(nums: Vec<i32>) -> i32 {
+    let mut nums = nums;
+    nums.sort_unstable();
+    let mut i = nums.len() - 1;
+    while i >= 2 {
+        if nums[i - 2] + nums[i - 1] > nums[i] {
+            return nums[i - 2] + nums[i - 1] + nums[i];
+        }
+        i -= 1;
+    }
+    0
+}
 #[cfg(test)]
 mod tests {
     use super::*;
