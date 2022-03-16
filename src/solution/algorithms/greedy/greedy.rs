@@ -254,6 +254,45 @@ pub fn valid_palindrome(s: String) -> bool {
     true
 }
 
+/// 860. 柠檬水找零 https://leetcode-cn.com/problems/lemonade-change/
+pub fn lemonade_change(bills: Vec<i32>) -> bool {
+    let mut changes: Vec<(i32, i32)> = vec![(5, 0), (10, 0), (20, 0)];
+    let len = bills.len();
+    for i in 0..len {
+        match bills[i] {
+            5 => {
+                changes[0].1 += 1;
+            }
+            10 => {
+                if changes[0].1 > 0 {
+                    changes[0].1 -= 1;
+                } else {
+                    return false;
+                }
+                changes[1].1 += 1;
+            }
+            20 => {
+                // 找15元零钱: 10+5; 5+5+5
+                let mut change = 15;
+                if (5 * changes[0].1 + 10 * changes[1].1) >= 15 {
+                    if changes[1].1 > 0 && changes[0].1 > 0 {
+                        changes[0].1 -= 1;
+                        changes[1].1 -= 1;
+                    } else if changes[0].1 >= 3 {
+                        changes[0].1 -= 3;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+            _ => (),
+        }
+    }
+
+    true
+}
 #[cfg(test)]
 mod tests {
     use super::*;
