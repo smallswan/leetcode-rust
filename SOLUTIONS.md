@@ -7,6 +7,7 @@
 |    | - [155. 最小栈](https://leetcode-cn.com/problems/min-stack/)  |   |
 |    | - [496. 下一个更大元素 I](https://leetcode-cn.com/problems/next-greater-element-i/ )  |   |
 |    | - [844. 比较含退格的字符串](https://leetcode-cn.com/problems/backspace-string-compare/ )  |  |
+| | - []( ) |  |
 |  ----  | ----  | ----  |
 | 链表  | - [2. 两数相加](https://leetcode-cn.com/problems/add-two-numbers/ )  | [链表解决方案](src/solution/data_structures/lists/linked_list.rs ) |
 |       | - [19. 删除链表的倒数第 N 个结点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/ )  |  |
@@ -50,6 +51,7 @@
 | | - [73.矩阵置零]( https://leetcode-cn.com/problems/set-matrix-zeroes/ ) |  |
 | | - [498. 对角线遍历](  https://leetcode-cn.com/problems/diagonal-traverse/ ) |  |
 | | - [867. 转置矩阵]( https://leetcode-cn.com/problems/transpose-matrix/ ) |  |
+| | - []( ) |  |
 |  ----  | ----  | ----  |
 | 数学|  | [数学解决方案](src/solution/math) |
 | | - [7. 整数反转]( https://leetcode-cn.com/problems/reverse-integer/) |  |
@@ -100,6 +102,7 @@
 |       | - [461. 汉明距离](https://leetcode-cn.com/problems/hamming-distance/ ) |  |
 |       | - [476. 数字的补数](https://leetcode-cn.com/problems/number-complement/ )   |  |
 |       | - [1009.十进制整数的反码]( https://leetcode-cn.com/problems/complement-of-base-10-integer/ )   |  |
+| | - []( ) |  |
 | 双指针|  | [解决方案](src/solution/algorithms/two_pointers/two_pointers.rs) |
 | | - [11. 盛最多水的容器]( https://leetcode-cn.com/problems/container-with-most-water/ ) |  |
 | | - [15. 三数之和](https://leetcode-cn.com/problems/3sum/ ) |  |
@@ -115,7 +118,14 @@
 | 贪心算法|  | [解决方案](src/solution/algorithms/greedy/greedy.rs) |
 | | - [45. 跳跃游戏 II]( https://leetcode-cn.com/problems/jump-game-ii/ ) |  |
 | | - [55. 跳跃游戏]( https://leetcode-cn.com/problems/jump-game/ ) |  |
+| | - [121. 买卖股票的最佳时机](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/ ) |  |
+| | - [122. 买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/ ) |  |
+| | - [134. 加油站](https://leetcode-cn.com/problems/gas-station/ ) |  |
 | | - [561. 数组拆分 I]( https://leetcode-cn.com/problems/array-partition-i/ ) |  |
+| | - [605. 种花问题]( https://leetcode-cn.com/problems/can-place-flowers/ ) |  |
+| | - [680. 验证回文字符串 Ⅱ](https://leetcode-cn.com/problems/valid-palindrome-ii/ ) |  |
+| | - [976. 三角形的最大周长](https://leetcode-cn.com/problems/largest-perimeter-triangle/ ) |  |
+| | - []( ) |  |
 |  ----  | ----  | ----  |
 | 动态规划|  | [解决方案](src/solution/algorithms/dp/dynamic_programming.rs) |
 | | - [10. 正则表达式匹配](  https://leetcode-cn.com/problems/regular-expression-matching/ ) |  |
