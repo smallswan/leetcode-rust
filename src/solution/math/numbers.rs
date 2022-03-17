@@ -590,6 +590,29 @@ pub fn convert_to_base7(num: i32) -> String {
     digits.chars().rev().collect()
 }
 
+/// 728. 自除数 https://leetcode-cn.com/problems/self-dividing-numbers/
+pub fn self_dividing_numbers(left: i32, right: i32) -> Vec<i32> {
+    let mut result: Vec<i32> = vec![];
+    fn is_self_dividing_number(num: i32) -> bool {
+        let mut mut_num = num;
+        while mut_num > 0 {
+            let rem = mut_num % 10;
+            if rem == 0 || num % rem != 0 {
+                return false;
+            }
+            mut_num /= 10;
+        }
+        true
+    }
+
+    for num in left..=right {
+        if is_self_dividing_number(num) {
+            result.push(num);
+        }
+    }
+    result
+}
+
 /// 剑指 Offer 10- I. 斐波那契数列   https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/
 /// 方法1：动态规划
 pub fn fib(n: i32) -> i32 {
