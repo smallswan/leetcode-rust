@@ -136,6 +136,40 @@ pub fn eval_rpn(tokens: Vec<String>) -> i32 {
     stack[index as usize]
 }
 
+/// 225. 用队列实现栈 https://leetcode-cn.com/problems/implement-stack-using-queues/
+use std::collections::VecDeque;
+pub struct MyStack {
+    q: VecDeque<i32>,
+}
+
+impl MyStack {
+    fn new() -> Self {
+        Self { q: VecDeque::new() }
+    }
+
+    fn push(&mut self, x: i32) {
+        self.q.push_back(x);
+
+        for _ in 1..self.q.len() {
+            let value = self.q.pop_front().unwrap();
+
+            self.q.push_back(value);
+        }
+    }
+
+    fn pop(&mut self) -> i32 {
+        self.q.pop_front().unwrap()
+    }
+
+    fn top(&self) -> i32 {
+        *self.q.front().unwrap()
+    }
+
+    fn empty(&self) -> bool {
+        self.q.is_empty()
+    }
+}
+
 /// 重构字符串
 fn build(s: String) -> String {
     let mut chars_vec = Vec::new();

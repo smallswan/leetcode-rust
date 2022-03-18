@@ -154,6 +154,62 @@ pub fn can_complete_circuit(gas: Vec<i32>, cost: Vec<i32>) -> i32 {
 
     -1
 }
+
+use std::cmp::Ordering;
+fn triangular(x: i32) -> i32 {
+    x * (x + 1) / 2
+}
+
+fn triangular_2(x: i32, y: i32) -> i32 {
+    (x * (x + 1) + y * (y + 1)) / 2
+}
+
+fn going_down(first: i32, rest: &[i32], up_length: i32, down_length: i32, result: &mut i32) {
+    if let Some((&second, rest)) = rest.split_first() {
+        match second.cmp(&first) {
+            Ordering::Less => going_down(second, rest, up_length, down_length + 1, result),
+            Ordering::Equal => {
+                *result += triangular_2(up_length, down_length) + up_length.max(down_length) + 1;
+
+                going_up(second, rest, 0, result);
+            }
+            Ordering::Greater => {
+                *result += triangular_2(up_length, down_length) + up_length.max(down_length);
+
+                going_up(second, rest, 1, result);
+            }
+        }
+    } else {
+        *result += triangular_2(up_length, down_length) + up_length.max(down_length) + 1;
+    }
+}
+
+fn going_up(first: i32, rest: &[i32], up_length: i32, result: &mut i32) {
+    if let Some((&second, rest)) = rest.split_first() {
+        match second.cmp(&first) {
+            Ordering::Less => going_down(second, rest, up_length, 1, result),
+            Ordering::Equal => {
+                *result += triangular(up_length) + up_length + 1;
+
+                going_up(second, rest, 0, result);
+            }
+            Ordering::Greater => going_up(second, rest, up_length + 1, result),
+        }
+    } else {
+        *result += triangular(up_length) + up_length + 1;
+    }
+}
+
+/// 135. 分发糖果 https://leetcode-cn.com/problems/candy/
+pub fn candy(ratings: Vec<i32>) -> i32 {
+    let mut result = 0;
+    let (&first, rest) = ratings.split_first().unwrap();
+
+    going_up(first, rest, 0, &mut result);
+
+    result
+}
+
 /// 力扣（561. 数组拆分 I） https://leetcode-cn.com/problems/array-partition-i/
 pub fn array_pair_sum(nums: Vec<i32>) -> i32 {
     let len = nums.len();
@@ -320,6 +376,9 @@ mod tests {
         nums.push(3);
         nums.push(2);
         dbg!(array_pair_sum(nums));
+
+        let ratings = vec![1, 2, 2];
+        dbg!(candy(ratings));
     }
 
     #[test]
