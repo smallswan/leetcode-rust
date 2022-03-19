@@ -730,6 +730,33 @@ pub fn maximum_product(nums: Vec<i32>) -> i32 {
     )
 }
 
+/// 812. 最大三角形面积 https://leetcode-cn.com/problems/largest-triangle-area/
+pub fn largest_triangle_area(points: Vec<Vec<i32>>) -> f64 {
+    //鞋带公式
+    fn area(x1: f64, y1: f64, x2: f64, y2: f64, x3: f64, y3: f64) -> f64 {
+        0.5f64 * (x1 * y2 + x2 * y3 + x3 * y1 - y1 * x2 - y2 * x3 - y3 * x1).abs()
+    }
+    let mut ans = 0f64;
+    let len = points.len();
+    for i in 0..len {
+        for j in i + 1..len {
+            for k in j + 1..len {
+                let temp = area(
+                    points[i][0] as f64,
+                    points[i][1] as f64,
+                    points[j][0] as f64,
+                    points[j][1] as f64,
+                    points[k][0] as f64,
+                    points[k][1] as f64,
+                );
+                ans = if temp > ans { temp } else { ans }
+            }
+        }
+    }
+
+    ans
+}
+
 /// 剑指 Offer 17. 打印从1到最大的n位数
 pub fn print_numbers_v2(n: i32) -> Vec<i32> {
     let max = (10i32.pow(n as u32) - 1);
