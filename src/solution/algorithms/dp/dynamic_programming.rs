@@ -146,6 +146,30 @@ fn matches_v2(s_chars: &[char], p_chars: &[char], i: usize, j: usize) -> bool {
     s_chars[i - 1] == p_chars[j - 1]
 }
 
+/// 62. 不同路径 https://leetcode-cn.com/problems/unique-paths/
+pub fn unique_paths(m: i32, n: i32) -> i32 {
+    let mut current = vec![1; n as usize];
+    for i in 1..m as usize {
+        for j in 1..n as usize {
+            current[j] += current[j - 1]
+        }
+    }
+    current[(n - 1) as usize]
+}
+
+/// 62. 不同路径
+pub fn unique_paths_v2(m: i32, n: i32) -> i32 {
+    let mut ans = 1_i64;
+    let (mut x, mut y) = (n as i64, 1_i64);
+    while y < m as i64 {
+        ans = ans * x / y;
+        x += 1_i64;
+        y += 1_i64;
+    }
+
+    ans as i32
+}
+
 use std::cmp::min;
 /// 力扣（264. 丑数 II） https://leetcode-cn.com/problems/ugly-number-ii/
 /// 方法二：动态规划
@@ -258,5 +282,8 @@ mod tests {
         dbg!(is_match_v3("a".to_string(), "ab*a".to_string()));
 
         dbg!("nth_ugly_number {}", nth_ugly_number(1690));
+
+        dbg!(unique_paths(3, 3));
+        dbg!(unique_paths_v2(3, 3));
     }
 }

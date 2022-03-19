@@ -694,6 +694,19 @@ pub fn construct_rectangle(area: i32) -> Vec<i32> {
     vec![area / w, w]
 }
 
+use std::cmp::min;
+/// 598. 范围求和 II https://leetcode-cn.com/problems/range-addition-ii/
+pub fn max_count(m: i32, n: i32, ops: Vec<Vec<i32>>) -> i32 {
+    let (mut min_a, mut min_b) = (m, n);
+
+    for op in ops.iter() {
+        min_a = min(op[0], min_a);
+        min_b = min(op[1], min_b);
+    }
+
+    min_a * min_b
+}
+
 /// 剑指 Offer 17. 打印从1到最大的n位数 https://leetcode-cn.com/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/
 pub fn print_numbers(n: i32) -> Vec<i32> {
     let max = (10i32.pow(n as u32) - 1);
@@ -702,6 +715,19 @@ pub fn print_numbers(n: i32) -> Vec<i32> {
         result.push(num);
     }
     result
+}
+
+use std::cmp::max;
+/// 628. 三个数的最大乘积 https://leetcode-cn.com/problems/maximum-product-of-three-numbers/
+pub fn maximum_product(nums: Vec<i32>) -> i32 {
+    let mut nums = nums;
+    nums.sort_unstable();
+    let len = nums.len();
+
+    max(
+        nums[0] * nums[1] * nums[len - 1],
+        nums[len - 3] * nums[len - 2] * nums[len - 1],
+    )
 }
 
 /// 剑指 Offer 17. 打印从1到最大的n位数
