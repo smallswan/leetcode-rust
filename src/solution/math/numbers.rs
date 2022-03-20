@@ -337,6 +337,16 @@ fn bit_square_sum(number: i32) -> i32 {
     total_sum
 }
 
+/// 89. 格雷编码  https://leetcode-cn.com/problems/gray-code/
+pub fn gray_code(n: i32) -> Vec<i32> {
+    let total: i32 = 1 << n;
+    let mut result = Vec::with_capacity(total as usize);
+    for i in 0..total {
+        result.push((i >> 1) ^ i)
+    }
+    result
+}
+
 use std::collections::HashSet;
 // const cycle_number:HashSet<i32> = [4, 16, 37,58,89,145,42,20].iter().cloned().collect();
 /// 力扣（202. 快乐数) https://leetcode-cn.com/problems/happy-number/

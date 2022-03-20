@@ -665,6 +665,94 @@ pub fn is_power_of_four(n: i32) -> bool {
     n > 0 && (n & (n - 1)) == 0 && (n & 0x2aaaaaaa == 0)
 }
 
+fn less_than_thousand(num: i32, result: &mut String) {
+    const SINGLES: [&str; 19] = [
+        "One",
+        "Two",
+        "Three",
+        "Four",
+        "Five",
+        "Six",
+        "Seven",
+        "Eight",
+        "Nine",
+        "Ten",
+        "Eleven",
+        "Twelve",
+        "Thirteen",
+        "Fourteen",
+        "Fifteen",
+        "Sixteen",
+        "Seventeen",
+        "Eighteen",
+        "Nineteen",
+    ];
+
+    const TENS: [&str; 8] = [
+        "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety",
+    ];
+    match num {
+        1..=19 => result.push_str(SINGLES[(num - 1) as usize]),
+        20..=99 => {
+            result.push_str(TENS[(num / 10 - 2) as usize]);
+
+            let remainder = num % 10;
+
+            if remainder != 0 {
+                result.push(' ');
+                less_than_thousand(remainder, result);
+            }
+        }
+        _ => {
+            less_than_thousand(num / 100, result);
+
+            result.push_str(" Hundred");
+
+            let remainder = num % 100;
+
+            if remainder != 0 {
+                result.push(' ');
+                less_than_thousand(remainder, result);
+            }
+        }
+    }
+}
+
+/// 273. 整数转换英文表示 https://leetcode-cn.com/problems/integer-to-english-words/
+pub fn number_to_words(num: i32) -> String {
+    let mut result = String::new();
+
+    if num == 0 {
+        result.push_str("Zero");
+    } else {
+        let mut num = num;
+
+        for (name, base) in [
+            ("Billion", 1_000_000_000),
+            ("Million", 1_000_000),
+            ("Thousand", 1_000),
+        ] {
+            if num >= base {
+                less_than_thousand(num / base, &mut result);
+                result.push(' ');
+                result.push_str(name);
+
+                num %= base;
+
+                if num == 0 {
+                    return result;
+                }
+
+                result.push(' ');
+            }
+        }
+
+        less_than_thousand(num, &mut result);
+    }
+
+    result
+}
+
 /// 441. 排列硬币 https://leetcode-cn.com/problems/arranging-coins/
 pub fn arrange_coins(n: i32) -> i32 {
     (((1.0f64 + 8.0f64 * n as f64).sqrt() - 1.0f64) / 2.0).floor() as i32
