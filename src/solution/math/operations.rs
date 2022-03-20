@@ -787,6 +787,20 @@ pub fn maximum_product(nums: Vec<i32>) -> i32 {
     )
 }
 
+/// 762. 二进制表示中质数个计算置位 https://leetcode-cn.com/problems/prime-number-of-set-bits-in-binary-representation/
+pub fn count_prime_set_bits(left: i32, right: i32) -> i32 {
+    let mut count = 0;
+    for num in left..=right {
+        match num.count_ones() {
+            2 | 3 | 5 | 7 | 11 | 13 | 17 | 19 | 23 | 29 | 31 => {
+                count += 1;
+            }
+            _ => (),
+        }
+    }
+    count
+}
+
 /// 812. 最大三角形面积 https://leetcode-cn.com/problems/largest-triangle-area/
 pub fn largest_triangle_area(points: Vec<Vec<i32>>) -> f64 {
     //鞋带公式
@@ -812,6 +826,11 @@ pub fn largest_triangle_area(points: Vec<Vec<i32>>) -> f64 {
     }
 
     ans
+}
+
+/// 836. 矩形重叠 https://leetcode-cn.com/problems/rectangle-overlap/
+pub fn is_rectangle_overlap(rec1: Vec<i32>, rec2: Vec<i32>) -> bool {
+    (min(rec1[2], rec2[2]) > max(rec1[0], rec2[0]) && min(rec1[3], rec2[3]) > max(rec1[1], rec2[1]))
 }
 
 /// 剑指 Offer 17. 打印从1到最大的n位数
