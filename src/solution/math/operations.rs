@@ -921,6 +921,20 @@ pub fn is_rectangle_overlap(rec1: Vec<i32>, rec2: Vec<i32>) -> bool {
     (min(rec1[2], rec2[2]) > max(rec1[0], rec2[0]) && min(rec1[3], rec2[3]) > max(rec1[1], rec2[1]))
 }
 
+/// 868. 二进制间距 https://leetcode-cn.com/problems/binary-gap/
+pub fn binary_gap(n: i32) -> i32 {
+    let (mut last, mut ans) = (-1, 0);
+    for i in 0..32 {
+        if ((n >> i) & 1) > 0 {
+            if last >= 0 {
+                ans = max(ans, i - last);
+            }
+            last = i;
+        }
+    }
+
+    ans
+}
 /// 剑指 Offer 17. 打印从1到最大的n位数
 pub fn print_numbers_v2(n: i32) -> Vec<i32> {
     let max = (10i32.pow(n as u32) - 1);
