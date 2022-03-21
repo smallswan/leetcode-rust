@@ -585,6 +585,26 @@ pub fn trailing_zeroes_v2(n: i32) -> i32 {
     count_fives
 }
 
+/// 223. 矩形面积 https://leetcode-cn.com/problems/rectangle-area/
+pub fn compute_area(
+    ax1: i32,
+    ay1: i32,
+    ax2: i32,
+    ay2: i32,
+    bx1: i32,
+    by1: i32,
+    bx2: i32,
+    by2: i32,
+) -> i32 {
+    //
+    let (area1, area2) = ((ax2 - ax1) * (ay2 - ay1), (bx2 - bx1) * (by2 - by1));
+    let overlap_width = min(ax2, bx2) - max(ax1, bx1);
+    let overlap_height = min(ay2, by2) - max(ay1, by1);
+    let overlap_area = max(overlap_width, 0) * max(overlap_height, 0);
+
+    area1 + area2 - overlap_area
+}
+
 /// 力扣（231. 2的幂） https://leetcode-cn.com/problems/power-of-two/
 pub fn is_power_of_two(n: i32) -> bool {
     if n <= 0 {
@@ -935,6 +955,54 @@ pub fn binary_gap(n: i32) -> i32 {
 
     ans
 }
+
+/// 883. 三维形体投影面积 https://leetcode-cn.com/problems/projection-area-of-3d-shapes/
+pub fn projection_area(grid: Vec<Vec<i32>>) -> i32 {
+    let len = grid.len();
+    let mut ans = 0;
+    for i in 0..len {
+        let (mut best_row, mut best_col) = (0, 0);
+        for j in 0..len {
+            if grid[i][j] > 0 {
+                ans += 1;
+            }
+            best_row = max(best_row, grid[i][j]);
+            best_col = max(best_col, grid[j][i]);
+        }
+        ans += best_row + best_col;
+    }
+
+    ans
+}
+
+/// 892. 三维形体的表面积 https://leetcode-cn.com/problems/surface-area-of-3d-shapes/
+pub fn surface_area(grid: Vec<Vec<i32>>) -> i32 {
+    let dr = vec![0, 1, 0, -1];
+    let dc = vec![1, 0, -1, 0];
+    let len = grid.len();
+    let mut ans = 0;
+    for r in 0..len {
+        for c in 0..len {
+            if grid[r][c] > 0 {
+                ans += 2;
+                for k in 0..4 {
+                    let nr = (r as i32 + dr[k]) as usize;
+                    let nc = (c as i32 + dc[k]) as usize;
+
+                    let mut nv = 0;
+                    if nr < len && nc < len {
+                        nv = grid[nr][nc];
+                    }
+
+                    ans += max(grid[r][c] - nv, 0);
+                }
+            }
+        }
+    }
+
+    ans
+}
+
 /// 剑指 Offer 17. 打印从1到最大的n位数
 pub fn print_numbers_v2(n: i32) -> Vec<i32> {
     let max = (10i32.pow(n as u32) - 1);
@@ -1053,5 +1121,11 @@ mod tests {
     #[test]
     fn lcof() {
         dbg!(print_numbers_v2(2));
+    }
+
+    #[test]
+    fn test_area() {
+        let (ax1, ay1, ax2, ay2, bx1, by1, bx2, by2) = (-3, 0, 3, 4, 0, -1, 9, 2);
+        dbg!(compute_area(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2));
     }
 }
