@@ -605,6 +605,46 @@ pub fn compute_area(
     area1 + area2 - overlap_area
 }
 
+/// 224. 基本计算器 https://leetcode-cn.com/problems/basic-calculator/
+pub fn calculate(s: String) -> i32 {
+    let mut stack = Vec::new();
+    let mut lhs = 0;
+    let mut rhs = 0;
+    let mut sign = 1;
+
+    for c in s.bytes() {
+        match c {
+            b'+' => {
+                lhs += rhs * sign;
+                rhs = 0;
+                sign = 1;
+            }
+            b'-' => {
+                lhs += rhs * sign;
+                rhs = 0;
+                sign = -1;
+            }
+            b'(' => {
+                stack.push((lhs, sign));
+                lhs = 0;
+                sign = 1;
+            }
+            b')' => {
+                rhs = lhs + rhs * sign;
+
+                let (saved_lhs, saved_sign) = stack.pop().unwrap();
+
+                lhs = saved_lhs;
+                sign = saved_sign;
+            }
+            b'0'..=b'9' => rhs = rhs * 10 + i32::from(c - b'0'),
+            _ => {}
+        }
+    }
+
+    lhs + rhs * sign
+}
+
 /// 力扣（231. 2的幂） https://leetcode-cn.com/problems/power-of-two/
 pub fn is_power_of_two(n: i32) -> bool {
     if n <= 0 {
@@ -1001,6 +1041,16 @@ pub fn surface_area(grid: Vec<Vec<i32>>) -> i32 {
     }
 
     ans
+}
+
+/// 908. 最小差值 I  https://leetcode-cn.com/problems/smallest-range-i/
+pub fn smallest_range_i(nums: Vec<i32>, k: i32) -> i32 {
+    let (mut min, mut max) = (nums[0], nums[0]);
+    for x in nums {
+        min = std::cmp::min(min, x);
+        max = std::cmp::max(max, x);
+    }
+    std::cmp::max(0, max - min - 2 * k)
 }
 
 /// 剑指 Offer 17. 打印从1到最大的n位数
