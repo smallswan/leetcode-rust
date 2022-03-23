@@ -678,6 +678,32 @@ pub fn is_power_of_two_v2(n: i32) -> bool {
     n & (n - 1) == 0
 }
 
+/// 233. 数字 1 的个数 https://leetcode-cn.com/problems/number-of-digit-one/
+pub fn count_digit_one(n: i32) -> i32 {
+    let mut n = i64::from(n);
+    let mut result = 0;
+    let mut ten_to_the_power = 1;
+    let mut base = 0;
+    let mut processed = 0;
+
+    while n > 0 {
+        let digit = n % 10;
+
+        match digit {
+            0 => {}
+            1 => result += base + processed + 1,
+            _ => result += base * digit + ten_to_the_power,
+        }
+
+        processed += ten_to_the_power * digit;
+        base = ten_to_the_power + base * 10;
+        ten_to_the_power *= 10;
+        n /= 10;
+    }
+
+    result as _
+}
+
 /// 力扣（258. 各位相加） https://leetcode-cn.com/problems/add-digits/
 pub fn add_digits(num: i32) -> i32 {
     (num - 1) % 9 + 1
@@ -890,6 +916,35 @@ pub fn add_strings(num1: String, num2: String) -> String {
     String::from_utf8(ans).unwrap()
 }
 
+/// 463. 岛屿的周长 https://leetcode-cn.com/problems/island-perimeter/
+pub fn island_perimeter(grid: Vec<Vec<i32>>) -> i32 {
+    let mut result = 0;
+
+    for (i, row) in grid.iter().enumerate() {
+        for (j, &cell) in row.iter().enumerate() {
+            if cell != 0 {
+                if grid.get(i.wrapping_sub(1)).map_or(true, |r| r[j] == 0) {
+                    result += 1;
+                }
+
+                if row.get(j.wrapping_sub(1)).map_or(true, |&c| c == 0) {
+                    result += 1;
+                }
+
+                if row.get(j + 1).map_or(true, |&c| c == 0) {
+                    result += 1;
+                }
+
+                if grid.get(i + 1).map_or(true, |r| r[j] == 0) {
+                    result += 1;
+                }
+            }
+        }
+    }
+
+    result
+}
+
 /// 492. 构造矩形 https://leetcode-cn.com/problems/construct-the-rectangle/
 pub fn construct_rectangle(area: i32) -> Vec<i32> {
     let mut w = (area as f32).sqrt() as i32;
@@ -1051,6 +1106,11 @@ pub fn smallest_range_i(nums: Vec<i32>, k: i32) -> i32 {
         max = std::cmp::max(max, x);
     }
     std::cmp::max(0, max - min - 2 * k)
+}
+
+/// 1025. 除数博弈 https://leetcode-cn.com/problems/divisor-game/
+pub fn divisor_game(n: i32) -> bool {
+    n % 2 == 0
 }
 
 /// 剑指 Offer 17. 打印从1到最大的n位数
