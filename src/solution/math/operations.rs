@@ -531,6 +531,56 @@ pub fn max_points(points: Vec<Vec<i32>>) -> i32 {
     result
 }
 
+/// 166. 分数到小数 https://leetcode-cn.com/problems/fraction-to-recurring-decimal/
+pub fn fraction_to_decimal(numerator: i32, denominator: i32) -> String {
+    let numerator = i64::from(numerator);
+    let denominator = i64::from(denominator);
+    let integer_part = numerator / denominator;
+    let mut remainder = numerator % denominator;
+
+    let mut result = if integer_part == 0
+        && if denominator < 0 {
+            numerator > 0
+        } else {
+            numerator < 0
+        } {
+        String::from("-0")
+    } else {
+        integer_part.to_string()
+    };
+
+    if remainder != 0 {
+        let denominator = denominator.abs();
+        let mut remainder_to_index = HashMap::new();
+
+        result.push('.');
+        remainder = remainder.abs();
+        loop {
+            match remainder_to_index.entry(remainder) {
+                Entry::Occupied(entry) => {
+                    result.insert(*entry.into_mut(), '(');
+                    result.push(')');
+
+                    break;
+                }
+                Entry::Vacant(entry) => {
+                    let temp = remainder * 10;
+
+                    entry.insert(result.len());
+                    result.push(char::from(b'0' + (temp / denominator) as u8));
+                    remainder = temp % denominator;
+                }
+            }
+
+            if remainder == 0 {
+                break;
+            }
+        }
+    }
+
+    result
+}
+
 /// 力扣（168. Excel表列名称） https://leetcode-cn.com/problems/excel-sheet-column-title/
 pub fn convert_to_title(column_number: i32) -> String {
     let mut ret = String::new();
