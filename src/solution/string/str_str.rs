@@ -262,6 +262,16 @@ pub fn is_subsequence(s: String, t: String) -> bool {
     i == s_len
 }
 
+/// 459. 重复的子字符串 https://leetcode-cn.com/problems/repeated-substring-pattern/
+pub fn repeated_substring_pattern(s: String) -> bool {
+    let mut t = String::with_capacity(s.len() * 2 - 2);
+
+    t.push_str(&s[1..]);
+    t.push_str(&s[..s.len() - 1]);
+
+    t.contains(&s)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
