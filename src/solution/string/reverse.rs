@@ -1,3 +1,10 @@
+/// 541. 反转字符串 II https://leetcode-cn.com/problems/reverse-string-ii/
+pub fn reverse_str(s: String, k: i32) -> String {
+    let mut s = s.into_bytes();
+    s.chunks_mut(k as usize).step_by(2).for_each(<[_]>::reverse);
+    String::from_utf8(s).unwrap()
+}
+
 /// 557. 反转字符串中的单词 III https://leetcode-cn.com/problems/reverse-words-in-a-string-iii/
 pub fn reverse_words(s: String) -> String {
     let mut chars: Vec<char> = s.chars().collect();
