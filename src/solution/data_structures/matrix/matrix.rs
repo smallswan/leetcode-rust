@@ -220,6 +220,32 @@ pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
     result
 }
 
+/// 64. 最小路径和 https://leetcode-cn.com/problems/minimum-path-sum/
+/// 动态规划
+pub fn min_path_sum(grid: Vec<Vec<i32>>) -> i32 {
+    let mut cache = grid.last().unwrap().clone();
+
+    {
+        let mut prev = 0;
+
+        for cache_item in cache.iter_mut().rev() {
+            *cache_item += prev;
+            prev = *cache_item;
+        }
+    }
+
+    for row in grid.into_iter().rev().skip(1) {
+        let mut prev = i32::MAX;
+
+        for (cell, cache_item) in row.into_iter().zip(cache.iter_mut()).rev() {
+            *cache_item = cell + (*cache_item).min(prev);
+            prev = *cache_item;
+        }
+    }
+
+    cache[0]
+}
+
 /// 剑指 Offer 29. 顺时针打印矩阵 https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/
 /// 注意：本题与主站 54 题相同：https://leetcode-cn.com/problems/spiral-matrix/
 pub fn spiral_order_v2(matrix: Vec<Vec<i32>>) -> Vec<i32> {
@@ -349,6 +375,62 @@ pub fn set_zeroes(matrix: &mut Vec<Vec<i32>>) {
             }
         }
     }
+}
+
+fn largest_rectangle_area(stack_base: &mut Vec<(i32, i32)>, heights: &[i32]) -> i32 {
+    let mut result = 0;
+    let mut stack_top = (-1, 0);
+
+    for item in (0..).zip(heights.iter().copied()) {
+        loop {
+            if item.1 <= stack_top.1 {
+                if let Some(new_top) = stack_base.pop() {
+                    result = result.max((item.0 - new_top.0 - 1) * stack_top.1);
+                    stack_top = new_top;
+                } else {
+                    result = result.max(item.0 * stack_top.1);
+                    stack_top = item;
+
+                    break;
+                }
+            } else {
+                stack_base.push(stack_top);
+                stack_top = item;
+
+                break;
+            }
+        }
+    }
+
+    let right = stack_top.0;
+
+    while let Some(new_top) = stack_base.pop() {
+        result = result.max((right - new_top.0) * stack_top.1);
+        stack_top = new_top;
+    }
+
+    result
+}
+
+/// 85. 最大矩形 https://leetcode-cn.com/problems/maximal-rectangle/
+pub fn maximal_rectangle(matrix: Vec<Vec<char>>) -> i32 {
+    let mut result = 0;
+    let mut heights = vec![0; matrix.first().map_or(0, Vec::len)];
+    let mut stack_base = Vec::new();
+
+    for row in matrix {
+        for (height, row) in heights.iter_mut().zip(row) {
+            if row == '0' {
+                *height = 0;
+            } else {
+                *height += 1;
+            }
+        }
+
+        result = result.max(largest_rectangle_area(&mut stack_base, &heights));
+    }
+
+    result
 }
 
 /// 498. 对角线遍历  https://leetcode-cn.com/problems/diagonal-traverse/
@@ -493,5 +575,20 @@ mod tests {
 
         let new_matrix2 = transpose_v2(matrix2);
         dbg!(new_matrix2);
+
+        let mut grid: Vec<Vec<i32>> = Vec::new();
+        grid.push(vec![1, 3, 1]);
+        grid.push(vec![1, 5, 1]);
+        grid.push(vec![4, 2, 1]);
+
+        dbg!(min_path_sum(grid));
+
+        let mut matrix: Vec<Vec<char>> = Vec::new();
+        matrix.push(vec!['1', '0', '1', '0', '0']);
+        matrix.push(vec!['1', '0', '1', '1', '1']);
+        matrix.push(vec!['1', '1', '1', '1', '1']);
+        matrix.push(vec!['1', '0', '0', '1', '0']);
+
+        dbg!(maximal_rectangle(matrix));
     }
 }

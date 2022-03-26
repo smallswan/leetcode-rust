@@ -3,9 +3,9 @@ mod dp;
 mod medium;
 mod simple;
 
+mod contest;
 mod lcof;
 mod solution;
-mod spring2020;
 
 #[macro_use]
 extern crate lazy_static;
