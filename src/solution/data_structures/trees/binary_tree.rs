@@ -486,6 +486,32 @@ pub fn diameter_of_binary_tree(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     root.map_or(0, |root| diameter_of_binary_tree_helper(&root.borrow()).0)
 }
 
+/// 617. 合并二叉树 https://leetcode-cn.com/problems/merge-two-binary-trees/
+pub fn merge_trees(
+    mut root1: Option<Rc<RefCell<TreeNode>>>,
+    root2: Option<Rc<RefCell<TreeNode>>>,
+) -> Option<Rc<RefCell<TreeNode>>> {
+    fn merge_to(target: &mut Option<Rc<RefCell<TreeNode>>>, tree: Option<Rc<RefCell<TreeNode>>>) {
+        if let Some(tree) = tree {
+            if let Some(target) = target {
+                let mut target = target.borrow_mut();
+                let mut tree = tree.borrow_mut();
+
+                target.val += tree.val;
+
+                merge_to(&mut target.left, tree.left.take());
+                merge_to(&mut target.right, tree.right.take());
+            } else {
+                *target = Some(tree);
+            }
+        }
+    }
+
+    merge_to(&mut root1, root2);
+
+    root1
+}
+
 /// 655. 输出二叉树 https://leetcode-cn.com/problems/print-binary-tree/
 pub fn print_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<String>> {
     // 二叉树高度
