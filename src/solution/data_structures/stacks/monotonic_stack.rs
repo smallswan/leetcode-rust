@@ -25,6 +25,42 @@ pub fn trap(height: Vec<i32>) -> i32 {
     result
 }
 
+/// 84. 柱状图中最大的矩形 https://leetcode-cn.com/problems/largest-rectangle-in-histogram/
+pub fn largest_rectangle_area(heights: Vec<i32>) -> i32 {
+    let mut result = 0;
+    let mut stack_base = Vec::<(i32, i32)>::new();
+    let mut stack_top = (-1, 0);
+
+    for item in (0..).zip(heights) {
+        loop {
+            if item.1 <= stack_top.1 {
+                if let Some(new_top) = stack_base.pop() {
+                    result = result.max((item.0 - new_top.0 - 1) * stack_top.1);
+                    stack_top = new_top;
+                } else {
+                    result = result.max(item.0 * stack_top.1);
+                    stack_top = item;
+
+                    break;
+                }
+            } else {
+                stack_base.push(stack_top);
+                stack_top = item;
+
+                break;
+            }
+        }
+    }
+
+    let right = stack_top.0;
+    while let Some(new_top) = stack_base.pop() {
+        result = result.max((right - new_top.0) * stack_top.1);
+        stack_top = new_top;
+    }
+
+    result
+}
+
 /// 496. 下一个更大元素 I https://leetcode-cn.com/problems/next-greater-element-i/
 pub fn next_greater_element(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
     use std::collections::HashMap;

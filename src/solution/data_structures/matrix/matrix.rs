@@ -391,6 +391,22 @@ pub fn find_diagonal_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
     result
 }
 
+/// 566. 重塑矩阵 https://leetcode-cn.com/problems/reshape-the-matrix/
+pub fn matrix_reshape(mat: Vec<Vec<i32>>, r: i32, c: i32) -> Vec<Vec<i32>> {
+    let r = r as usize;
+    let c = c as usize;
+    let old_rows = mat.len();
+    let old_columns = mat.first().map_or(0, Vec::len);
+
+    if old_rows * old_columns == r * c && old_rows != r {
+        let mut iter = mat.into_iter().flatten();
+
+        (0..r).map(|_| iter.by_ref().take(c).collect()).collect()
+    } else {
+        mat
+    }
+}
+
 /// 力扣（867. 转置矩阵) https://leetcode-cn.com/problems/transpose-matrix/
 /// matrixT[i][j] = matrix[j][i]
 pub fn transpose(matrix: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
