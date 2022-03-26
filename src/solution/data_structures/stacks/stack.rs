@@ -185,7 +185,7 @@ fn build(s: String) -> String {
 
 /// 682. 棒球比赛 https://leetcode-cn.com/problems/baseball-game/
 pub fn cal_points(ops: Vec<String>) -> i32 {
-    let mut stack = Vec::with_capacity(ops.len());
+    let mut stack: Vec<i32> = Vec::with_capacity(ops.len());
 
     for op in ops {
         match op.parse().map_err(|_| op.as_str()) {
@@ -194,7 +194,10 @@ pub fn cal_points(ops: Vec<String>) -> i32 {
                 stack.pop();
             }
             Err("D") => stack.push(stack.last().unwrap() * 2),
-            Err(_) => stack.push(stack[stack.len() - 2] + stack.last().unwrap()),
+            Err(_) => {
+                let len = stack.len();
+                stack.push(stack[len - 2] + stack[len - 1]);
+            }
         }
     }
 
@@ -288,6 +291,12 @@ mod tests {
         let s = String::from("ab#c");
         let t = String::from("ad#c");
         dbg!(backspace_compare(s, t));
+
+        let ops = ["5", "-2", "4", "C", "D", "9", "+", "+"]
+            .iter()
+            .map(|str| str.to_string())
+            .collect();
+        dbg!("{}", cal_points(ops));
     }
 
     #[test]

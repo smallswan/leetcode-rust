@@ -610,8 +610,8 @@ pub fn title_to_number(column_title: String) -> i32 {
 /// 力扣（172. 阶乘后的零） https://leetcode-cn.com/problems/factorial-trailing-zeroes/
 pub fn trailing_zeroes(n: i32) -> i32 {
     let mut count_fives = 0;
-    let mut steps: Vec<i32> = (5..=n).into_iter().filter(|x| *x % 5 == 0).collect();
-    // println!("{:?}",steps);
+    // let mut steps: Vec<i32> = (5..=n).into_iter().filter(|x| *x % 5 == 0).collect();
+    let mut steps: Vec<i32> = (5..=n).into_iter().step_by(5).collect();
     for step in steps {
         let mut remaining = step;
         while remaining % 5 == 0 {

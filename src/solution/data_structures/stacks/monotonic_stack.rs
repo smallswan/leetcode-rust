@@ -7,9 +7,11 @@ use std::collections::VecDeque;
 pub fn trap(height: Vec<i32>) -> i32 {
     let mut result = 0;
     let mut n = height.len();
+    // 维护一个单调栈，单调栈存储的是下标，满足从栈底到栈顶的下标对应的数组 height 中的元素递减。
     let mut stack: VecDeque<usize> = VecDeque::new();
     for i in 0..n {
         while !stack.is_empty() && height[i] > height[*stack.back().unwrap()] {
+            // stack单调递减，则height[top]为高度最低的地方，height[left]、height[top]、height[i]构成一个接雨水的区域
             let top = stack.pop_back().unwrap();
             if stack.is_empty() {
                 break;
