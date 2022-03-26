@@ -183,6 +183,24 @@ fn build(s: String) -> String {
     chars_vec.into_iter().collect()
 }
 
+/// 682. 棒球比赛 https://leetcode-cn.com/problems/baseball-game/
+pub fn cal_points(ops: Vec<String>) -> i32 {
+    let mut stack = Vec::with_capacity(ops.len());
+
+    for op in ops {
+        match op.parse().map_err(|_| op.as_str()) {
+            Ok(value) => stack.push(value),
+            Err("C") => {
+                stack.pop();
+            }
+            Err("D") => stack.push(stack.last().unwrap() * 2),
+            Err(_) => stack.push(stack[stack.len() - 2] + stack.last().unwrap()),
+        }
+    }
+
+    stack.iter().sum()
+}
+
 /// 力扣（844. 比较含退格的字符串)  https://leetcode-cn.com/problems/backspace-string-compare/
 /// 方法一：重构字符串
 pub fn backspace_compare(s: String, t: String) -> bool {

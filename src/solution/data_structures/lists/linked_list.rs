@@ -312,6 +312,48 @@ fn reverse(mut head: Option<Box<ListNode>>, tail: Option<Box<ListNode>>) -> Opti
     prev
 }
 
+/// 61. 旋转链表 https://leetcode-cn.com/problems/rotate-list/
+use std::iter;
+pub fn rotate_right(head: Option<Box<ListNode>>, k: i32) -> Option<Box<ListNode>> {
+    let mut head = head;
+    let length = iter::successors(head.as_deref(), |node| node.next.as_deref()).count();
+    let k = (k as usize).checked_rem(length).unwrap_or(0);
+
+    let mut rest = {
+        let mut maybe_node = &mut head;
+
+        for _ in 0..(length - k) {
+            maybe_node = &mut maybe_node.as_deref_mut().unwrap().next;
+        }
+
+        maybe_node.take()
+    };
+
+    let rest_tail = {
+        let mut maybe_node = &mut rest;
+
+        while let Some(node) = maybe_node {
+            maybe_node = &mut node.next;
+        }
+
+        maybe_node
+    };
+
+    let rest_tail = {
+        let mut maybe_node = &mut rest;
+
+        while let Some(node) = maybe_node {
+            maybe_node = &mut node.next;
+        }
+
+        maybe_node
+    };
+
+    *rest_tail = head;
+
+    rest
+}
+
 /// 力扣（83. 删除排序链表中的重复元素) https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/
 pub fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
     let mut dummy_head = Box::new(ListNode::new(0));

@@ -458,6 +458,34 @@ pub fn sum_of_left_leaves(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     root.map_or(0, |node| helper_right(&node.borrow()))
 }
 
+/// 543. 二叉树的直径 https://leetcode-cn.com/problems/diameter-of-binary-tree/
+pub fn diameter_of_binary_tree(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    fn diameter_of_binary_tree_helper(root: &TreeNode) -> (i32, i32) {
+        match (root.left.clone(), root.right.clone()) {
+            (None, None) => (0, 1),
+            (None, Some(child)) | (Some(child), None) => {
+                let (diameter, height) = diameter_of_binary_tree_helper(&child.borrow());
+
+                (diameter.max(height), height + 1)
+            }
+            (Some(left), Some(right)) => {
+                let (left_diameter, left_height) = diameter_of_binary_tree_helper(&left.borrow());
+                let (right_diameter, right_height) =
+                    diameter_of_binary_tree_helper(&right.borrow());
+
+                (
+                    left_diameter
+                        .max(right_diameter)
+                        .max(left_height + right_height),
+                    left_height.max(right_height) + 1,
+                )
+            }
+        }
+    }
+
+    root.map_or(0, |root| diameter_of_binary_tree_helper(&root.borrow()).0)
+}
+
 /// 655. 输出二叉树 https://leetcode-cn.com/problems/print-binary-tree/
 pub fn print_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<String>> {
     // 二叉树高度
