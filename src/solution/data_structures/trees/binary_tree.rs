@@ -542,6 +542,44 @@ pub fn print_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<String>> {
     ans
 }
 
+/// 968. 监控二叉树 https://leetcode-cn.com/problems/binary-tree-cameras/
+struct State {
+    directly: u32,
+    indirectly: u32,
+    children_only: u32,
+}
+pub fn min_camera_cover(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    fn helper(node: Option<&RefCell<TreeNode>>) -> State {
+        node.map_or(
+            State {
+                directly: u32::MAX / 2,
+                indirectly: 0,
+                children_only: 0,
+            },
+            |node| {
+                let node = node.borrow();
+                let left_state = helper(node.left.as_deref());
+                let left_monitored = left_state.directly.min(left_state.indirectly);
+                let right_state = helper(node.right.as_deref());
+                let right_monitored = right_state.directly.min(right_state.indirectly);
+
+                State {
+                    directly: left_monitored.min(left_state.children_only)
+                        + right_monitored.min(right_state.children_only)
+                        + 1,
+                    indirectly: (left_state.directly + right_monitored)
+                        .min(right_state.directly + left_monitored),
+                    children_only: (left_state.indirectly + right_state.indirectly),
+                }
+            },
+        )
+    }
+
+    let state = helper(root.as_deref());
+
+    state.directly.min(state.indirectly) as _
+}
+
 /// 剑指 Offer 27. 二叉树的镜像  https://leetcode-cn.com/problems/er-cha-shu-de-jing-xiang-lcof/
 pub fn mirror_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<TreeNode>>> {
     match root.clone() {

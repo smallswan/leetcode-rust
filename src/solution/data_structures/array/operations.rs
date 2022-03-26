@@ -69,6 +69,48 @@ impl NumArray {
     }
 }
 
+use std::cmp::Ordering;
+/// 941. 有效的山脉数组  https://leetcode-cn.com/problems/valid-mountain-array/
+pub fn valid_mountain_array(arr: Vec<i32>) -> bool {
+    // slice pattern
+    if let [first, second, ref rest @ ..] = *arr {
+        if first < second {
+            let mut prev = second;
+            let mut iter = rest.iter().copied();
+
+            loop {
+                if let Some(num) = iter.next() {
+                    match num.cmp(&prev) {
+                        Ordering::Less => {
+                            prev = num;
+
+                            break;
+                        }
+                        Ordering::Equal => return false,
+                        Ordering::Greater => prev = num,
+                    }
+                } else {
+                    return false;
+                }
+            }
+
+            for num in iter {
+                if num < prev {
+                    prev = num;
+                } else {
+                    return false;
+                }
+            }
+
+            true
+        } else {
+            false
+        }
+    } else {
+        false
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
