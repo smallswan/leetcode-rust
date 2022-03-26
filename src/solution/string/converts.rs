@@ -317,6 +317,46 @@ fn valid_ipv6_address_v2(ip: String) -> String {
     String::from("IPv6")
 }
 
+/// 966. 元音拼写检查器 https://leetcode-cn.com/problems/vowel-spellchecker/
+use std::collections::{HashMap, HashSet};
+pub fn spellchecker(wordlist: Vec<String>, queries: Vec<String>) -> Vec<String> {
+    let as_is = wordlist.iter().map(String::as_str).collect::<HashSet<_>>();
+    let mut capitalized = HashMap::with_capacity(wordlist.len());
+    let mut vowels = HashMap::with_capacity(wordlist.len());
+
+    for word in &wordlist {
+        capitalized
+            .entry(word.to_ascii_uppercase())
+            .or_insert(word.as_str());
+
+        vowels
+            .entry(word.to_ascii_uppercase().replace(['E', 'I', 'O', 'U'], "A"))
+            .or_insert(word.as_str());
+    }
+
+    let mut result = queries;
+
+    for word in &mut result {
+        if !as_is.contains(word.as_str()) {
+            word.make_ascii_uppercase();
+
+            if let Some(&original) = capitalized.get(word.as_str()) {
+                word.clear();
+                word.push_str(original);
+            } else if let Some(&original) =
+                vowels.get(word.replace(['E', 'I', 'O', 'U'], "A").as_str())
+            {
+                word.clear();
+                word.push_str(original);
+            } else {
+                word.clear();
+            }
+        }
+    }
+
+    result
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

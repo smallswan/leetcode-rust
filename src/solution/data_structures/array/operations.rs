@@ -69,6 +69,35 @@ impl NumArray {
     }
 }
 
+/// 661. 图片平滑器 https://leetcode-cn.com/problems/image-smoother/
+pub fn image_smoother(img: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+    let rows = img.len();
+    let columns = img.first().map_or(0, Vec::len);
+    let mut result = Vec::with_capacity(rows);
+
+    for y in 0..rows {
+        let mut output_row = Vec::with_capacity(columns);
+
+        for x in 0..columns {
+            let mut sum = 0;
+            let mut count = 0;
+
+            for input_row in &img[y.saturating_sub(1)..(y + 2).min(rows)] {
+                for num in &input_row[x.saturating_sub(1)..(x + 2).min(columns)] {
+                    sum += num;
+                    count += 1;
+                }
+            }
+
+            output_row.push(sum / count);
+        }
+
+        result.push(output_row);
+    }
+
+    result
+}
+
 use std::cmp::Ordering;
 /// 941. 有效的山脉数组  https://leetcode-cn.com/problems/valid-mountain-array/
 pub fn valid_mountain_array(arr: Vec<i32>) -> bool {
@@ -108,6 +137,21 @@ pub fn valid_mountain_array(arr: Vec<i32>) -> bool {
         }
     } else {
         false
+    }
+}
+
+/// 961. 在长度 2N 的数组中找出重复 N 次的元素 https://leetcode-cn.com/problems/n-repeated-element-in-size-2n-array/
+pub fn repeated_n_times(nums: Vec<i32>) -> i32 {
+    let mut iter = nums.iter().copied().enumerate();
+
+    loop {
+        let (i, num) = iter.next().unwrap();
+
+        for &prev in &nums[i.saturating_sub(3)..i] {
+            if num == prev {
+                return num;
+            }
+        }
     }
 }
 

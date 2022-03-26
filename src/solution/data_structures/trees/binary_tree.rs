@@ -542,6 +542,25 @@ pub fn print_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<String>> {
     ans
 }
 
+/// 965. 单值二叉树 https://leetcode-cn.com/problems/univalued-binary-tree/
+pub fn is_unival_tree(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
+    fn helper(node: Option<&RefCell<TreeNode>>, expected: i32) -> bool {
+        node.map_or(true, |node| {
+            let node = node.borrow();
+
+            node.val == expected
+                && helper(node.left.as_deref(), expected)
+                && helper(node.right.as_deref(), expected)
+        })
+    }
+
+    root.map_or(true, |root| {
+        let root = root.borrow();
+
+        helper(root.left.as_deref(), root.val) && helper(root.right.as_deref(), root.val)
+    })
+}
+
 /// 968. 监控二叉树 https://leetcode-cn.com/problems/binary-tree-cameras/
 struct State {
     directly: u32,
