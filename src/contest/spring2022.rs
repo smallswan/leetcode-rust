@@ -81,17 +81,13 @@ pub fn is_palindrome_v2(head: Option<Box<ListNode>>) -> bool {
     true
 }
 
+/// 银联-02. 优惠活动系统 https://leetcode-cn.com/contest/cnunionpay-2022spring/problems/kDPV0f/
 use std::collections::HashMap;
 struct DiscountSystem {
     activities: HashMap<i32, Activity>,
 }
 
-enum ActivityState {
-    Normal,
-    Finished,
-}
 struct Activity {
-    state: ActivityState,
     consume_records: Vec<i32>,
     act_id: i32,
     price_limit: i32,
@@ -119,8 +115,8 @@ impl DiscountSystem {
         user_limit: i32,
     ) {
         let activity = Activity {
-            state: ActivityState::Normal,
-            consume_records: vec![],
+            //consume_records[user_id]记录参加活动的次数
+            consume_records: vec![0; 1001],
             act_id,
             price_limit,
             discount,
@@ -138,35 +134,51 @@ impl DiscountSystem {
         if self.activities.is_empty() {
             cost
         } else {
-            // let mut available_activities: Vec<i32> = vec![];
             let mut max_discount = 0;
             let mut min_act_id = i32::MAX;
 
-            for (key, value) in self.activities.iter() {
-                if cost >= value.price_limit && value.consume_records.len() < value.number as usize
-                {
-                    let user_limit = value
-                        .consume_records
-                        .iter()
-                        .filter(|&&id| id == user_id)
-                        .count();
-                    if user_limit < value.user_limit as usize {
-                        println!("available_activitie act_id :{}", *key);
-                        // available_activities.push(*key);
-
-                        max_discount = max_discount.max(value.discount);
-                        if max_discount == value.discount {
-                            println!("act_id:{}, discount:{}", value.act_id, value.discount);
+            self.activities.values().for_each(|value| {
+                let sum = value.consume_records.iter().sum::<i32>();
+                if cost >= value.price_limit && sum < value.number {
+                    if value.consume_records[(user_id as usize)] < value.user_limit {
+                        if value.discount > max_discount {
+                            // 若同时满足多个优惠活动时，则优先参加优惠减免最大的活动
+                            max_discount = value.discount;
                             min_act_id = value.act_id;
-                            println!("min_act_id  :{}", min_act_id);
+                        } else if value.discount == max_discount {
+                            // 相同折扣优先使用act_id小的
+                            if value.act_id < min_act_id {
+                                min_act_id = value.act_id;
+                            }
                         }
                     }
                 }
-            }
+            });
+
+            // for value in self.activities.values() {
+            //     let sum = value.consume_records.iter().sum::<i32>();
+            //     if cost >= value.price_limit &&  sum < value.number
+            //     {
+            //         if value.consume_records[(user_id as usize)] < value.user_limit {
+            //             println!("available_activitie act_id :{}", value.act_id);
+
+            //             if value.discount  >=  max_discount {
+            //                 println!("act_id:{}, discount:{}", value.act_id, value.discount);
+            //                 max_discount = value.discount;
+
+            //                 if value.act_id < min_act_id{
+            //                     min_act_id = value.act_id;
+            //                 }
+
+            //                 println!("min_act_id  :{}", min_act_id);
+            //             }
+            //         }
+            //     }
+            // }
 
             if min_act_id < i32::MAX {
                 if let Some(value) = self.activities.get_mut(&min_act_id) {
-                    value.consume_records.push(user_id);
+                    value.consume_records[(user_id as usize)] += 1;
 
                     return cost - value.discount;
                 }
