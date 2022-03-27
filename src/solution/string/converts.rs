@@ -317,6 +317,37 @@ fn valid_ipv6_address_v2(ip: String) -> String {
     String::from("IPv6")
 }
 
+/// 482. 密钥格式化 https://leetcode-cn.com/problems/license-key-formatting/
+pub fn license_key_formatting(s: String, k: i32) -> String {
+    let k = k as usize;
+    let letters = s.bytes().filter(|&x| x != b'-').count();
+
+    let mut iter = s.bytes().filter_map(|x| {
+        if x == b'-' {
+            None
+        } else {
+            Some(x.to_ascii_uppercase())
+        }
+    });
+
+    let (first_group_size, rest_groups) = if letters % k == 0 {
+        (k, (letters / k).saturating_sub(1))
+    } else {
+        (letters % k, letters / k)
+    };
+
+    let mut result = Vec::with_capacity(letters + rest_groups);
+
+    result.extend(iter.by_ref().take(first_group_size));
+
+    for _ in 0..rest_groups {
+        result.push(b'-');
+        result.extend(iter.by_ref().take(k));
+    }
+
+    String::from_utf8(result).unwrap()
+}
+
 /// 966. 元音拼写检查器 https://leetcode-cn.com/problems/vowel-spellchecker/
 use std::collections::{HashMap, HashSet};
 pub fn spellchecker(wordlist: Vec<String>, queries: Vec<String>) -> Vec<String> {
@@ -377,5 +408,9 @@ mod tests {
 
         let ip = String::from("2001:0db8:85a3:0:0:8A2E:0370:7334");
         dbg!(valid_ip_address2(ip));
+
+        let license_key = String::from("5F3Z-2e-9-w");
+
+        dbg!(license_key_formatting(license_key, 4));
     }
 }

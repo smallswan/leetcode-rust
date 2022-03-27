@@ -69,6 +69,24 @@ impl NumArray {
     }
 }
 
+/// 495. 提莫攻击 https://leetcode-cn.com/problems/teemo-attacking/
+pub fn find_poisoned_duration(time_series: Vec<i32>, duration: i32) -> i32 {
+    let mut result = 0;
+    let mut poisoned = i32::MIN;
+    let mut healed = i32::MIN;
+
+    for time_point in time_series {
+        if time_point > healed {
+            result += healed - poisoned;
+            poisoned = time_point;
+        }
+
+        healed = time_point + duration;
+    }
+
+    result + healed - poisoned
+}
+
 /// 661. 图片平滑器 https://leetcode-cn.com/problems/image-smoother/
 pub fn image_smoother(img: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     let rows = img.len();
@@ -176,5 +194,9 @@ mod tests {
     fn test_array() {
         let array = NumArray::new(vec![1, 2, 3, 4, 5, 6, 7]);
         dbg!(array.sum_range(2, 5));
+
+        let time_series: Vec<i32> = vec![1, 4];
+        let duration: i32 = 2;
+        dbg!(find_poisoned_duration(time_series, duration));
     }
 }
