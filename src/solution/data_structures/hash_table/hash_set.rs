@@ -1,3 +1,28 @@
+pub struct Solution;
+use std::collections::HashSet;
+
+impl Solution {
+    /// 128. 最长连续序列 https://leetcode-cn.com/problems/longest-consecutive-sequence/
+    pub fn longest_consecutive(nums: Vec<i32>) -> i32 {
+        let nums = nums.into_iter().collect::<HashSet<_>>();
+        let mut result = 0;
+
+        for num in nums.iter().copied() {
+            if !nums.contains(&(num - 1)) {
+                let mut end = num + 1;
+
+                while nums.contains(&end) {
+                    end += 1;
+                }
+
+                result = result.max(end - num);
+            }
+        }
+
+        result
+    }
+}
+
 struct MyHashSet {
     data: Vec<Vec<i32>>,
 }
@@ -44,6 +69,12 @@ impl MyHashSet {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_() {
+        let nums = vec![0, 3, 7, 2, 5, 8, 4, 6, 0, 1];
+        dbg!(Solution::longest_consecutive(nums));
+    }
 
     #[test]
     fn operations() {

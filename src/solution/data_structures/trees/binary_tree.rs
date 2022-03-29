@@ -341,6 +341,28 @@ pub fn has_path_sum(root: Option<Rc<RefCell<TreeNode>>>, target_sum: i32) -> boo
     false
 }
 
+fn max_path_sum_helper(root: Option<&RefCell<TreeNode>>, result: &mut i32) -> i32 {
+    root.map(RefCell::borrow)
+        .as_deref()
+        .map_or(i32::MIN, |root| {
+            let line_sum_1 = max_path_sum_helper(root.left.as_deref(), result);
+            let line_sum_2 = max_path_sum_helper(root.right.as_deref(), result);
+
+            *result = (*result).max(root.val + line_sum_1.max(0) + line_sum_2.max(0));
+
+            line_sum_1.max(line_sum_2).max(0) + root.val
+        })
+}
+
+/// 124. 二叉树中的最大路径和 https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/
+pub fn max_path_sum(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    let mut result = i32::MIN;
+
+    max_path_sum_helper(root.as_deref(), &mut result);
+
+    result
+}
+
 /// 144. 二叉树的前序遍历 https://leetcode-cn.com/problems/binary-tree-preorder-traversal/
 /// 前序遍历：中左右
 pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
