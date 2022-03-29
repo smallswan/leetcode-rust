@@ -1,5 +1,5 @@
 pub struct Solution;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 impl Solution {
     /// 128. 最长连续序列 https://leetcode-cn.com/problems/longest-consecutive-sequence/
@@ -20,6 +20,79 @@ impl Solution {
         }
 
         result
+    }
+
+    /// 575. 分糖果 https://leetcode-cn.com/problems/distribute-candies/
+    pub fn distribute_candies(candy_type: Vec<i32>) -> i32 {
+        let half = candy_type.len() / 2;
+        let mut unique_types = HashSet::with_capacity(half);
+
+        for t in candy_type {
+            if unique_types.insert(t) && unique_types.len() == half {
+                break;
+            }
+        }
+
+        unique_types.len() as _
+    }
+
+    /// 594. 最长和谐子序列 https://leetcode-cn.com/problems/longest-harmonious-subsequence/
+    pub fn find_lhs(nums: Vec<i32>) -> i32 {
+        let mut counts = HashMap::with_capacity(nums.len());
+
+        for num in nums {
+            counts
+                .entry(num)
+                .and_modify(|count| *count += 1)
+                .or_insert(1);
+        }
+
+        counts
+            .iter()
+            .filter_map(|(num, low)| counts.get(&(num + 1)).map(|high| low + high))
+            .max()
+            .unwrap_or(0)
+    }
+
+    /// 599. 两个列表的最小索引总和 https://leetcode-cn.com/problems/minimum-index-sum-of-two-lists/
+    pub fn find_restaurant(list1: Vec<String>, list2: Vec<String>) -> Vec<String> {
+        let (list1, mut list2) = if list2.len() < list1.len() {
+            (list2, list1)
+        } else {
+            (list1, list2)
+        };
+
+        let indices = list1
+            .into_iter()
+            .enumerate()
+            .map(|(i, name)| (name, i))
+            .collect::<HashMap<_, _>>();
+
+        let mut min_sum = usize::MAX;
+
+        for (i, name) in list2.iter().enumerate() {
+            if i <= min_sum {
+                if let Some(j) = indices.get(name) {
+                    let sum = i + j;
+
+                    if sum < min_sum {
+                        min_sum = sum;
+                    }
+                }
+            }
+        }
+
+        let mut i = 0;
+
+        list2.retain(|name| {
+            let result = i <= min_sum && indices.get(name).map_or(false, |j| i + j == min_sum);
+
+            i += 1;
+
+            result
+        });
+
+        list2
     }
 }
 
