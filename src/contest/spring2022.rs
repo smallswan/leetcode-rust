@@ -155,27 +155,6 @@ impl DiscountSystem {
                 }
             });
 
-            // for value in self.activities.values() {
-            //     let sum = value.consume_records.iter().sum::<i32>();
-            //     if cost >= value.price_limit &&  sum < value.number
-            //     {
-            //         if value.consume_records[(user_id as usize)] < value.user_limit {
-            //             println!("available_activitie act_id :{}", value.act_id);
-
-            //             if value.discount  >=  max_discount {
-            //                 println!("act_id:{}, discount:{}", value.act_id, value.discount);
-            //                 max_discount = value.discount;
-
-            //                 if value.act_id < min_act_id{
-            //                     min_act_id = value.act_id;
-            //                 }
-
-            //                 println!("min_act_id  :{}", min_act_id);
-            //             }
-            //         }
-            //     }
-            // }
-
             if min_act_id < i32::MAX {
                 if let Some(value) = self.activities.get_mut(&min_act_id) {
                     value.consume_records[(user_id as usize)] += 1;

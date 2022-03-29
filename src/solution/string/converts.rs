@@ -177,6 +177,35 @@ impl Solution {
         ret
     }
 
+    /// 71. 简化路径 https://leetcode-cn.com/problems/simplify-path/
+    pub fn simplify_path(path: String) -> String {
+        let mut stack = Vec::new();
+
+        for component in path.split('/') {
+            match component {
+                "" | "." => {}
+                ".." => {
+                    stack.pop();
+                }
+                component => stack.push(component),
+            }
+        }
+
+        let mut result = String::from("/");
+        let mut iter = stack.into_iter();
+
+        if let Some(first) = iter.next() {
+            result.push_str(first);
+
+            for component in iter {
+                result.push('/');
+                result.push_str(component);
+            }
+        }
+
+        result
+    }
+
     /// 87. 扰乱字符串 https://leetcode-cn.com/problems/scramble-string/
     pub fn is_scramble(s1: String, s2: String) -> bool {
         let s1 = s1.into_bytes();
@@ -450,6 +479,33 @@ impl Solution {
     }
 }
 
+/// 821. 字符的最短距离 https://leetcode-cn.com/problems/shortest-distance-to-a-character/
+pub fn shortest_to_char(s: String, c: char) -> Vec<i32> {
+    let c = c as u8;
+    let mut result = vec![0; s.len()];
+    let mut prev_position = i32::MIN;
+
+    for (i, (distance, x)) in (0..).zip(result.iter_mut().zip(s.bytes())) {
+        if x == c {
+            prev_position = i;
+        } else {
+            *distance = i.saturating_sub(prev_position);
+        }
+    }
+
+    prev_position = i32::MIN;
+
+    for (i, (distance, x)) in (0..).zip(result.iter_mut().zip(s.bytes()).rev()) {
+        if x == c {
+            prev_position = i;
+        } else {
+            *distance = (*distance).min(i.saturating_sub(prev_position));
+        }
+    }
+
+    result
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -474,5 +530,12 @@ mod tests {
         let license_key = String::from("5F3Z-2e-9-w");
 
         dbg!(Solution::license_key_formatting(license_key, 4));
+    }
+
+    #[test]
+    fn distance() {
+        let str = String::from("loveleetcode");
+        let c = 'e';
+        dbg!(shortest_to_char(str, c));
     }
 }

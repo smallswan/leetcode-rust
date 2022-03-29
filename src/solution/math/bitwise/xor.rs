@@ -184,6 +184,12 @@ pub fn hamming_distance_v3(x: i32, y: i32) -> i32 {
     distance
 }
 
+/// 693. 交替位二进制数 https://leetcode-cn.com/problems/binary-number-with-alternating-bits/
+pub fn has_alternating_bits(n: i32) -> bool {
+    let n = n as u32;
+    ((n ^ (n >> 1)) + 1).is_power_of_two()
+}
+
 /// 力扣（1486. 数组异或操作） https://leetcode-cn.com/problems/xor-operation-in-an-array/
 /// 方法一：模拟
 pub fn xor_operation(n: i32, start: i32) -> i32 {

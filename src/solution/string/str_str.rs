@@ -262,6 +262,30 @@ pub fn is_subsequence(s: String, t: String) -> bool {
     i == s_len
 }
 
+use std::mem;
+/// 115. 不同的子序列 https://leetcode-cn.com/problems/distinct-subsequences/
+pub fn num_distinct(s: String, t: String) -> i32 {
+    let mut cache = vec![0; t.len() + 1];
+    let mut temp = vec![0; t.len() + 1];
+
+    cache[0] = 1;
+    temp[0] = 1;
+
+    for c_1 in s.into_bytes() {
+        for (i, c_2) in t.bytes().enumerate() {
+            temp[i + 1] = if c_2 == c_1 {
+                cache[i] + cache[i + 1]
+            } else {
+                cache[i + 1]
+            };
+        }
+
+        mem::swap(&mut cache, &mut temp);
+    }
+
+    cache[t.len()]
+}
+
 /// 459. 重复的子字符串 https://leetcode-cn.com/problems/repeated-substring-pattern/
 pub fn repeated_substring_pattern(s: String) -> bool {
     let mut t = String::with_capacity(s.len() * 2 - 2);
