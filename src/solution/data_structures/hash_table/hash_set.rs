@@ -289,6 +289,25 @@ impl Solution {
 
         result
     }
+
+    /// 884. 两句话中的不常见单词 https://leetcode-cn.com/problems/uncommon-words-from-two-sentences/
+    pub fn uncommon_from_sentences(s1: String, s2: String) -> Vec<String> {
+        let mut states = HashMap::new();
+
+        for s in [s1.as_str(), s2.as_str()] {
+            for word in s.split(' ') {
+                states
+                    .entry(word)
+                    .and_modify(|state| *state = true)
+                    .or_insert(false);
+            }
+        }
+
+        states
+            .into_iter()
+            .filter_map(|(key, value)| if value { None } else { Some(key.to_string()) })
+            .collect()
+    }
 }
 
 struct MyHashSet {
@@ -358,6 +377,12 @@ mod tests {
 
         let nums = vec![0, 3, 7, 2, 5, 8, 4, 6, 0, 1];
         dbg!(Solution::longest_consecutive(nums));
+
+        let s1 = String::from("this apple is sweet");
+        let s2 = String::from("this apple is sour");
+
+        let vec = Solution::uncommon_from_sentences(s1, s2);
+        println!("{:?}", vec);
     }
 
     #[test]

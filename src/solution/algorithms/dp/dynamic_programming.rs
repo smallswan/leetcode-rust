@@ -249,6 +249,24 @@ pub fn count_bits_v4(n: i32) -> Vec<i32> {
     result
 }
 
+/// 1137. 第 N 个泰波那契数 https://leetcode-cn.com/problems/n-th-tribonacci-number/
+pub fn tribonacci(n: i32) -> i32 {
+    match n {
+        0 => 0,
+        1 | 2 => 1,
+        _ => {
+            let (mut t, mut t0, mut t1, mut t2) = (0, 0, 1, 1);
+            for i in 3..=n {
+                t = t0;
+                t0 = t1;
+                t1 = t2;
+                t2 = t + t0 + t1;
+            }
+            t2
+        }
+    }
+}
+
 /// 2100. 适合打劫银行的日子 https://leetcode-cn.com/problems/find-good-days-to-rob-the-bank/
 pub fn good_days_to_rob_bank(security: Vec<i32>, time: i32) -> Vec<i32> {
     let n = security.len();
