@@ -267,6 +267,21 @@ pub fn tribonacci(n: i32) -> i32 {
     }
 }
 
+/// 1646. 获取生成数组中的最大值  https://leetcode-cn.com/problems/get-maximum-in-generated-array/
+pub fn get_maximum_generated(n: i32) -> i32 {
+    if n == 0 {
+        return 0;
+    }
+
+    let mut nums = vec![0; (n + 1) as usize];
+    nums[1] = 1;
+    for i in 2..=n {
+        nums[i as usize] = nums[(i / 2) as usize] + (i % 2) * nums[(i / 2 + 1) as usize];
+    }
+
+    *nums.iter().max().unwrap()
+}
+
 /// 2100. 适合打劫银行的日子 https://leetcode-cn.com/problems/find-good-days-to-rob-the-bank/
 pub fn good_days_to_rob_bank(security: Vec<i32>, time: i32) -> Vec<i32> {
     let n = security.len();
