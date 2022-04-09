@@ -276,7 +276,13 @@ pub fn get_maximum_generated(n: i32) -> i32 {
     let mut nums = vec![0; (n + 1) as usize];
     nums[1] = 1;
     for i in 2..=n {
-        nums[i as usize] = nums[(i / 2) as usize] + (i % 2) * nums[(i / 2 + 1) as usize];
+        let flag = (i % 2);
+        let half = (i / 2) as usize;
+        if flag == 1 {
+            nums[i as usize] = nums[half] + nums[half + 1];
+        } else {
+            nums[i as usize] = nums[half];
+        }
     }
 
     *nums.iter().max().unwrap()

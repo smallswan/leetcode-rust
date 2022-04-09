@@ -8,6 +8,11 @@ enum State {
     Number(i32),
 }
 
+#[derive(Default)]
+struct Node {
+    has_value: bool,
+    children: [Option<Box<Node>>; 26],
+}
 impl Solution {
     /// 力扣（6. Z 字形变换） https://leetcode-cn.com/problems/zigzag-conversion/
     pub fn convert(s: String, num_rows: i32) -> String {
@@ -382,6 +387,66 @@ impl Solution {
         String::from("IPv6")
     }
 
+    fn trie_contains_word(mut root: &Node, word: &[u8]) -> bool {
+        for c in word {
+            if let Some(child) = root.children[usize::from(c - b'a')].as_deref() {
+                root = child;
+            } else {
+                return false;
+            }
+        }
+        root.has_value
+    }
+
+    fn is_concatenated_word(root: &Node, word: &[u8], cache: &mut Vec<bool>) -> bool {
+        if word.len() < 2 {
+            false
+        } else {
+            cache.reserve(word.len() + 1);
+            cache.push(true);
+
+            for end in 1..=word.len() {
+                cache.push(cache[..end].iter().enumerate().any(|(start, &value)| {
+                    value && Self::trie_contains_word(root, &word[start..end])
+                }));
+            }
+
+            let result = *cache.last().unwrap();
+
+            cache.clear();
+
+            result
+        }
+    }
+
+    fn trie_insert(mut root: &mut Node, word: &[u8]) {
+        for c in word {
+            root = root.children[usize::from(c - b'a')].get_or_insert_with(Box::default);
+        }
+
+        root.has_value = true;
+    }
+
+    /// 472. 连接词 https://leetcode-cn.com/problems/concatenated-words/
+    pub fn find_all_concatenated_words_in_a_dict(words: Vec<String>) -> Vec<String> {
+        let mut words = words;
+
+        words.sort_by_key(String::len);
+
+        let mut trie = Node::default();
+        let mut cache = Vec::new();
+
+        words.retain(|word| {
+            let result = Self::is_concatenated_word(&trie, word.as_bytes(), &mut cache);
+
+            Self::trie_insert(&mut trie, word.as_bytes());
+
+            result
+        });
+
+        words
+    }
+
     /// 482. 密钥格式化 https://leetcode-cn.com/problems/license-key-formatting/
     pub fn license_key_formatting(s: String, k: i32) -> String {
         let k = k as usize;
@@ -421,6 +486,63 @@ impl Solution {
             | b'f' | b'g' | b'h' | b'j' | b'k' | b'l' => 2,
             _ => 0,
         }
+    }
+
+    /// 806. 写字符串需要的行数 https://leetcode-cn.com/problems/number-of-lines-to-write-string/
+    pub fn number_of_lines(widths: Vec<i32>, s: String) -> Vec<i32> {
+        let max_width = 100_u8;
+        let mut remaining = max_width;
+        let mut lines = 1;
+
+        for c in s.bytes() {
+            let width = widths[usize::from(c) - usize::from(b'a')] as u8;
+
+            if let Some(new_remaining) = remaining.checked_sub(width) {
+                remaining = new_remaining;
+            } else {
+                lines += 1;
+                remaining = max_width - width;
+            }
+        }
+
+        vec![lines, (max_width - remaining).into()]
+    }
+
+    /// 824. 山羊拉丁文 https://leetcode-cn.com/problems/goat-latin/
+    pub fn to_goat_latin(sentence: String) -> String {
+        let mut result = String::with_capacity(sentence.len() * 2);
+
+        // map<i,word> => 闭包
+        let mut iter = sentence
+            .split_ascii_whitespace()
+            .enumerate()
+            .map(|(i, word)| {
+                move |result: &mut String| {
+                    match word.as_bytes()[0] {
+                        b'A' | b'E' | b'I' | b'O' | b'U' | b'a' | b'e' | b'i' | b'o' | b'u' => {
+                            result.push_str(word)
+                        }
+                        c => {
+                            result.push_str(&word[1..]);
+                            result.push(char::from(c));
+                        }
+                    }
+
+                    result.push_str("maa");
+
+                    for _ in 0..i {
+                        result.push('a');
+                    }
+                }
+            });
+
+        iter.next().unwrap()(&mut result);
+
+        for f in iter {
+            result.push(' ');
+            f(&mut result);
+        }
+        result
     }
 
     /// 500. 键盘行 https://leetcode-cn.com/problems/keyboard-row/
