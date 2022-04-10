@@ -30,3 +30,8 @@
 
 ### 问题：字符串模式匹配(strStr)
 [28. 实现 strStr()](https://leetcode-cn.com/problems/implement-strstr/)
+
+### 问题：“最”X的问题
+[贪心算法](https://baike.baidu.com/item/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/5411800 )
+[最优化原理](https://baike.baidu.com/item/%E6%9C%80%E4%BC%98%E5%8C%96%E5%8E%9F%E7%90%86/797797?fr=aladdin )
+[动态规划](https://baike.baidu.com/item/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/529408?fr=aladdin )
