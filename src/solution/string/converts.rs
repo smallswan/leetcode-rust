@@ -428,11 +428,13 @@ impl Solution {
     }
 
     /// 472. 连接词 https://leetcode-cn.com/problems/concatenated-words/
+    /// 方法一：字典树 + 记忆化搜索
     pub fn find_all_concatenated_words_in_a_dict(words: Vec<String>) -> Vec<String> {
         let mut words = words;
 
         words.sort_by_key(String::len);
 
+        //字典树
         let mut trie = Node::default();
         let mut cache = Vec::new();
 

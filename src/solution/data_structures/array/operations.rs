@@ -116,6 +116,25 @@ pub fn image_smoother(img: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     result
 }
 
+/// 905. 按奇偶排序数组 https://leetcode-cn.com/problems/sort-array-by-parity/
+pub fn sort_array_by_parity(nums: Vec<i32>) -> Vec<i32> {
+    let mut nums = nums;
+    let len = nums.len();
+    let (mut left, mut right) = (0, len - 1);
+    while left < right {
+        if nums[left] % 2 > nums[right] % 2 {
+            nums.swap(left, right);
+        }
+        if nums[left] % 2 == 0 {
+            left += 1;
+        }
+        if nums[right] % 2 == 1 {
+            right -= 1;
+        }
+    }
+    nums
+}
+
 use std::cmp::Ordering;
 /// 941. 有效的山脉数组  https://leetcode-cn.com/problems/valid-mountain-array/
 pub fn valid_mountain_array(arr: Vec<i32>) -> bool {
