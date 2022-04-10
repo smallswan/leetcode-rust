@@ -168,6 +168,48 @@ impl DiscountSystem {
     }
 }
 
+///  招商银行-01. 文本编辑程序设计  https://leetcode-cn.com/contest/cmbchina-2022spring/problems/fWcPGC/
+pub fn delete_text(article: String, index: i32) -> String {
+    let mut bytes: Vec<u8> = article.bytes().collect();
+    let len = bytes.len();
+    let index = index as usize;
+    if bytes[index] != b' ' {
+        let (mut left, mut right) = (index, index);
+        while left > 0 && bytes[left] != b' ' {
+            bytes[left] = b'-';
+            left -= 1;
+        }
+
+        if bytes[left] != b' ' {
+            bytes[left] = b'-';
+        }
+
+        while right < len && bytes[right] != b' ' {
+            bytes[right] = b'-';
+            right += 1;
+        }
+
+        let new_bytes: Vec<u8> = bytes.into_iter().filter(|&c| c != b'-').collect();
+        let new_article = String::from_utf8(new_bytes).unwrap();
+
+        return new_article.split_whitespace().collect::<Vec<_>>().join(" ");
+    }
+
+    article
+}
+
+/// 招商银行-02. 公园规划 https://leetcode-cn.com/contest/cmbchina-2022spring/problems/ReWLAw/
+pub fn num_flowers(roads: Vec<Vec<i32>>) -> i32 {
+    let len = roads.len();
+    let mut edges = vec![0; len + 1];
+    for road in roads {
+        edges[road[0] as usize] += 1;
+        edges[road[1] as usize] += 1;
+    }
+
+    1 + (*edges.iter().max().unwrap())
+}
+
 /**
  * Your DiscountSystem object will be instantiated and called as such:
  * let obj = DiscountSystem::new();
@@ -180,6 +222,11 @@ impl DiscountSystem {
 mod tests {
     use super::*;
     use crate::solution::data_structures::lists;
+
+    #[test]
+    fn cmbchina() {
+        delete_text("Singing dancing in the rain".to_string(), 10);
+    }
     #[test]
     fn unionpay() {
         dbg!(is_palindrome_iter(vec![1, 2, 3, 4, 4, 3, 2, 1].into_iter()));
