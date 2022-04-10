@@ -194,6 +194,27 @@ pub fn unique_paths_with_obstacles(obstacle_grid: Vec<Vec<i32>>) -> i32 {
     cache[0]
 }
 
+/// 120. 三角形最小路径和 https://leetcode-cn.com/problems/triangle/
+pub fn minimum_total(triangle: Vec<Vec<i32>>) -> i32 {
+    let len = triangle.len();
+    let mut dp = vec![0; len];
+    dp[0] = triangle[0][0];
+    for i in 1..len {
+        dp[i] = dp[i - 1] + triangle[i][i];
+        let mut j = i - 1;
+        while j > 0 {
+            dp[j] = dp[j - 1].min(dp[j]) + triangle[i][j];
+            j -= 1;
+        }
+        dp[0] += triangle[i][0];
+    }
+    let mut min_total = dp[0];
+    for i in 1..len {
+        min_total = min_total.min(dp[i]);
+    }
+    min_total
+}
+
 /// 123. 买卖股票的最佳时机 III https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/
 pub fn max_profit(prices: Vec<i32>) -> i32 {
     let len = prices.len();
