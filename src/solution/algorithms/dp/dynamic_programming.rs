@@ -228,6 +228,28 @@ pub fn max_profit(prices: Vec<i32>) -> i32 {
     sell2
 }
 
+/// 256. 粉刷房子 https://leetcode-cn.com/problems/paint-house/
+pub fn min_cost(costs: Vec<Vec<i32>>) -> i32 {
+    let (mut first, mut second, mut third) = (-1, -1, -1);
+    let len = costs.len();
+    for i in 0..len {
+        if first == -1 {
+            first = costs[i][0];
+            second = costs[i][1];
+            third = costs[i][2];
+        } else {
+            let t1 = (costs[i][0] + second).min(costs[i][0] + third);
+            let t2 = (costs[i][1] + first).min(costs[i][1] + third);
+            let t3 = (costs[i][2] + first).min(costs[i][2] + second);
+            first = t1;
+            second = t2;
+            third = t3;
+        }
+    }
+
+    first.min(second.min(third))
+}
+
 use std::cmp::min;
 /// 力扣（264. 丑数 II） https://leetcode-cn.com/problems/ugly-number-ii/
 /// 方法二：动态规划
