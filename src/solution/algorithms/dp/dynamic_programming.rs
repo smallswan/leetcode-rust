@@ -277,6 +277,26 @@ pub fn nth_ugly_number(n: i32) -> i32 {
     dp[n]
 }
 
+/// 322. 零钱兑换 https://leetcode-cn.com/problems/coin-change/
+pub fn coin_change(coins: Vec<i32>, amount: i32) -> i32 {
+    let max = amount + 1;
+    let mut dp = vec![max; max as usize];
+    dp[0] = 0;
+    let len = coins.len();
+    for i in 1..=amount {
+        for j in 0..len {
+            if coins[j] <= i {
+                dp[i as usize] = dp[i as usize].min(dp[(i - coins[j]) as usize] + 1);
+            }
+        }
+    }
+    if dp[amount as usize] > amount {
+        -1
+    } else {
+        dp[amount as usize]
+    }
+}
+
 /// 力扣（338. 比特位计数） https://leetcode-cn.com/problems/counting-bits/
 /// 动态规划
 pub fn count_bits_v3(n: i32) -> Vec<i32> {
