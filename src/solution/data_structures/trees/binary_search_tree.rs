@@ -193,9 +193,51 @@ pub fn kth_largest(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     result
 }
 
+///  3. 二叉搜索树染色 https://leetcode-cn.com/contest/season/2022-spring/problems/QO5KpG/
+pub fn get_number(root: Option<Rc<RefCell<TreeNode>>>, ops: Vec<Vec<i32>>) -> i32 {
+    fn traverse(root: Option<Rc<RefCell<TreeNode>>>, counter: &mut Vec<i32>) {
+        if let Some(node) = root {
+            traverse(node.borrow_mut().left.take(), counter);
+            counter.push(node.borrow_mut().val);
+            traverse(node.borrow_mut().right.take(), counter);
+        }
+    }
+
+    let mut counter = vec![];
+    traverse(root, &mut counter);
+    //println!("{:?}",counter);
+    let len = counter.len();
+    let mut colors = vec![-1; len];
+    let (min, max) = (counter[0], counter[len - 1]);
+    fn color(counter: &Vec<i32>, colors: &mut Vec<i32>, t: i32, x: i32, y: i32) {
+        let begin = counter.partition_point(|&num| num < x);
+        let end = counter.partition_point(|&num| num >= y);
+        println!("{begin} to {end}");
+
+        for i in begin..end {
+            colors[i] = t;
+        }
+    }
+
+    for op in ops {
+        if op[1] > max || op[2] < min {
+            continue;
+        }
+        color(&counter, &mut colors, op[0], op[1], op[2]);
+    }
+
+    colors.iter().filter(|&c| *c == 1).count() as i32
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_spring2022() {
+        //TODO get_number();
+    }
+
     #[test]
     fn trees() {
         let nums = vec![-10, -3, 0, 5, 9];

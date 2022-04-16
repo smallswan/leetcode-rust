@@ -210,6 +210,81 @@ pub fn num_flowers(roads: Vec<Vec<i32>>) -> i32 {
     1 + (*edges.iter().max().unwrap())
 }
 
+/// 1. 宝石补给 https://leetcode-cn.com/contest/season/2022-spring/problems/WHnhjV/
+pub fn give_gem(gem: Vec<i32>, operations: Vec<Vec<i32>>) -> i32 {
+    let mut gem = gem;
+    for operation in operations {
+        let half = gem[operation[0] as usize] / 2;
+        gem[operation[0] as usize] -= half;
+        gem[operation[1] as usize] += half;
+    }
+    let (mut max, mut min) = (-1, 10000);
+    for g in gem {
+        max = max.max(g);
+        min = min.min(g);
+    }
+
+    max - min
+}
+
+/// 2. 烹饪料理 https://leetcode-cn.com/contest/season/2022-spring/problems/UEcfPD/
+pub fn perfect_menu(
+    materials: Vec<i32>,
+    cookbooks: Vec<Vec<i32>>,
+    attribute: Vec<Vec<i32>>,
+    limit: i32,
+) -> i32 {
+    let len = cookbooks.len();
+    let mut n = 2i32.pow(len as u32) - 1;
+    // cook[i]表示使用i菜谱
+    let mut cook = vec![0; len];
+    let mut max_x = 0;
+    while n > 0 {
+        let mut m = n;
+        for c in cook.iter_mut().rev() {
+            *c = (m & 1);
+            m >>= 1;
+        }
+        let (mut sum_x, mut sum_y) = (0, 0);
+        let mut is_enough_cook = true;
+        let mut need_meterials = vec![0; 5];
+        for (i, c) in cook.iter().enumerate() {
+            if *c == 1 {
+                need_meterials[0] += cookbooks[i][0];
+                need_meterials[1] += cookbooks[i][1];
+                need_meterials[2] += cookbooks[i][2];
+                need_meterials[3] += cookbooks[i][3];
+                need_meterials[4] += cookbooks[i][4];
+
+                if need_meterials[0] <= materials[0]
+                    && need_meterials[1] <= materials[1]
+                    && need_meterials[2] <= materials[2]
+                    && need_meterials[3] <= materials[3]
+                    && need_meterials[4] <= materials[4]
+                {
+                    sum_x += attribute[i][0];
+                    sum_y += attribute[i][1];
+                    continue;
+                } else {
+                    is_enough_cook = false;
+                    break;
+                }
+            }
+        }
+
+        if is_enough_cook && sum_y >= limit {
+            max_x = max_x.max(sum_x);
+        }
+
+        n -= 1;
+    }
+
+    if max_x > 0 {
+        return max_x;
+    } else {
+        return -1;
+    }
+}
 /**
  * Your DiscountSystem object will be instantiated and called as such:
  * let obj = DiscountSystem::new();
@@ -222,6 +297,19 @@ pub fn num_flowers(roads: Vec<Vec<i32>>) -> i32 {
 mod tests {
     use super::*;
     use crate::solution::data_structures::lists;
+
+    #[test]
+    fn test_spring() {
+        let materials: Vec<i32> = vec![3, 2, 4, 1, 2];
+        let cookbooks: Vec<Vec<i32>> = vec![
+            vec![1, 1, 0, 1, 2],
+            vec![2, 1, 4, 0, 0],
+            vec![3, 2, 4, 1, 0],
+        ];
+        let attribute: Vec<Vec<i32>> = vec![vec![3, 2], vec![2, 4], vec![7, 6]];
+        let limit: i32 = 5;
+        dbg!(perfect_menu(materials, cookbooks, attribute, limit));
+    }
 
     #[test]
     fn cmbchina() {
