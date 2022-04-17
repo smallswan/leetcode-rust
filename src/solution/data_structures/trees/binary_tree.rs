@@ -408,6 +408,48 @@ pub fn postorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     counter
 }
 
+/// 199. 二叉树的右视图 https://leetcode-cn.com/problems/binary-tree-right-side-view/
+pub fn right_side_view(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+    let mut result = Vec::new();
+
+    if let Some(node) = root {
+        let mut queue = VecDeque::from(vec![node]);
+
+        loop {
+            for _ in 1..queue.len() {
+                let node = queue.pop_front().unwrap();
+                let node = node.borrow();
+
+                if let Some(left) = node.left.clone() {
+                    queue.push_back(left);
+                }
+
+                if let Some(right) = node.right.clone() {
+                    queue.push_back(right);
+                }
+            }
+
+            let node = queue.pop_front().unwrap();
+            let node = node.borrow();
+
+            result.push(node.val);
+
+            if let Some(left) = node.left.clone() {
+                queue.push_back(left);
+            }
+            if let Some(right) = node.right.clone() {
+                queue.push_back(right);
+            }
+
+            if queue.is_empty() {
+                break;
+            }
+        }
+    }
+
+    result
+}
+
 /// 222. 完全二叉树的节点个数 https://leetcode-cn.com/problems/count-complete-tree-nodes/
 pub fn count_nodes(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     if root.is_none() {
