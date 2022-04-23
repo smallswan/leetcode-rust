@@ -478,6 +478,7 @@ use std::collections::hash_map::Entry;
 use std::collections::HashMap;
 use std::convert::TryInto;
 
+// 辗转相除法(欧几里德算法)
 fn gcd(mut x: i32, mut y: i32) -> i32 {
     while y != 0 {
         let next_y = x % y;

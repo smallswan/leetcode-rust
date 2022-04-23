@@ -285,6 +285,47 @@ pub fn perfect_menu(
         return -1;
     }
 }
+
+/// 2022招银网络笔试（第一题）
+pub fn time_sort(times: Vec<String>) -> Vec<String> {
+    let mut result = Vec::<String>::with_capacity(times.len());
+    times.into_iter().for_each(|time| {
+        let hms: Vec<&str> = time.split(":").collect();
+        result.push(format!("{}:{}:{}", hms[2], hms[1], hms[0]));
+    });
+
+    result.sort_unstable();
+
+    result.iter_mut().for_each(|smh| {
+        let hms: Vec<&str> = smh.split(":").collect();
+        *smh = format!("{}:{}:{}", hms[2], hms[1], hms[0]);
+    });
+
+    result
+}
+
+/// 2022招银网络笔试（第二题）
+pub fn count_num(l: i32, r: i32, x: i32) -> i32 {
+    let mut count = 0;
+    fn count_x(num: i32, x: i32) -> i32 {
+        let mut count = 0;
+        let x_byte = (x as u8) + b'0';
+        let num_str = format!("{}", num);
+        let bytes = num_str.into_bytes();
+        for byte in bytes {
+            if byte == x_byte {
+                count += 1;
+            }
+        }
+        count
+    }
+    for i in l..=r {
+        count += count_x(i, x);
+    }
+
+    count
+}
+
 /**
  * Your DiscountSystem object will be instantiated and called as such:
  * let obj = DiscountSystem::new();
@@ -315,6 +356,23 @@ mod tests {
     fn cmbchina() {
         delete_text("Singing dancing in the rain".to_string(), 10);
     }
+
+    #[test]
+    fn cmbnt() {
+        let times = vec![
+            "12:30:10".to_string(),
+            "12:15:10".to_string(),
+            "11:20:14".to_string(),
+        ];
+        dbg!(time_sort(times));
+
+        let (l, r, x) = (2, 22, 2);
+        dbg!(count_num(l, r, x));
+
+        let (l, r, x) = (1, 999999, 9);
+        dbg!(count_num(l, r, x));
+    }
+
     #[test]
     fn unionpay() {
         dbg!(is_palindrome_iter(vec![1, 2, 3, 4, 4, 3, 2, 1].into_iter()));

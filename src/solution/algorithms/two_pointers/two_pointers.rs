@@ -262,7 +262,9 @@ pub fn remove_duplicates_v2(nums: &mut Vec<i32>) -> i32 {
     if len == 0 {
         return 0;
     }
+    //慢指针表示下一个不同元素要填入的下标位置
     let mut slow_index = 1;
+    //快指针表示遍历数组到达的下标位置
     let mut fast_index = 1;
     while fast_index < len {
         if nums[fast_index] != nums[fast_index - 1] {
