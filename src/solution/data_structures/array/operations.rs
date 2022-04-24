@@ -38,10 +38,48 @@ pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     result
 }
 
+/// 163. 缺失的区间 https://leetcode-cn.com/problems/missing-ranges/
+pub fn find_missing_ranges(nums: Vec<i32>, lower: i32, upper: i32) -> Vec<String> {
+    fn find(a: i32, b: i32) -> Option<String> {
+        match b - a {
+            0 | 1 => None,
+            2 => Some((a + 1).to_string()),
+            _ => Some(format!("{}->{}", a + 1, b - 1)),
+        }
+    }
+
+    let mut ans = vec![];
+    //预处理，简化边界判断
+    for window in [vec![lower - 1], nums, vec![upper + 1]].concat().windows(2) {
+        if let Some(s) = find(window[0], window[1]) {
+            ans.push(s);
+        }
+    }
+    ans
+}
+
 /// 189. 轮转数组 https://leetcode-cn.com/problems/rotate-array/
 pub fn rotate(nums: &mut Vec<i32>, k: i32) {
     let len = nums.len();
     nums.rotate_right(k as usize % len)
+}
+
+/// 252. 会议室 https://leetcode-cn.com/problems/meeting-rooms/
+pub fn can_attend_meetings(intervals: Vec<Vec<i32>>) -> bool {
+    let len = intervals.len();
+    if len <= 1 {
+        return true;
+    }
+    let mut intervals = intervals;
+    intervals.sort_by(|a, b| a[0].cmp(&b[0]));
+
+    for i in 0..len - 1 {
+        if intervals[i][1] > intervals[i + 1][0] {
+            return false;
+        }
+    }
+
+    true
 }
 
 /// 256. 粉刷房子 https://leetcode-cn.com/problems/paint-house/
