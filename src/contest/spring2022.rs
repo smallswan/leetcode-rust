@@ -319,8 +319,27 @@ pub fn count_num(l: i32, r: i32, x: i32) -> i32 {
         }
         count
     }
+
+    fn count_x_v2(num: i32, x: i32) -> i32 {
+        if num == 0 && x == 0 {
+            return 1;
+        }
+        let mut count = 0;
+        let mut num = num;
+        while num != 0 {
+            let rem = num % 10;
+            if rem == x {
+                count += 1;
+            }
+            num /= 10;
+        }
+
+        count
+    }
+
     for i in l..=r {
-        count += count_x(i, x);
+        // count += count_x(i, x);
+        count += count_x_v2(i, x);
     }
 
     count
@@ -370,6 +389,9 @@ mod tests {
         dbg!(count_num(l, r, x));
 
         let (l, r, x) = (1, 999999, 9);
+        dbg!(count_num(l, r, x));
+
+        let (l, r, x) = (1, 20, 0);
         dbg!(count_num(l, r, x));
     }
 
