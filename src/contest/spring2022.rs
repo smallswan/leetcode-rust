@@ -345,6 +345,100 @@ pub fn count_num(l: i32, r: i32, x: i32) -> i32 {
     count
 }
 
+use std::collections::HashSet;
+
+/// 6041. 多个数组求交集 https://leetcode-cn.com/problems/intersection-of-multiple-arrays/
+pub fn intersection(nums: Vec<Vec<i32>>) -> Vec<i32> {
+    let len = nums.len();
+    let first = nums[0].clone();
+    let mut set: HashSet<i32> = first.into_iter().map(|num| num).collect();
+    for i in 1..len {
+        set.retain(|num| nums[i].contains(num));
+    }
+
+    let mut result: Vec<i32> = set.into_iter().map(|num| num).collect();
+    result.sort_unstable();
+
+    result
+}
+
+/// 6042. 统计圆内格点数目 https://leetcode-cn.com/problems/count-lattice-points-inside-a-circle/
+pub fn count_lattice_points(circles: Vec<Vec<i32>>) -> i32 {
+    let len = circles.len();
+    let mut count = 0;
+    for x in 0..=200 {
+        for y in 0..=200 {
+            for c in 0..len {
+                //let circle = circles[c].clone();
+                let (a, b, c) = (
+                    (circles[c][0] - x).abs(),
+                    (circles[c][1] - y).abs(),
+                    circles[c][2],
+                );
+                if a * a + b * b <= c * c {
+                    count += 1;
+                }
+            }
+        }
+    }
+
+    count
+}
+
+///  6043. 统计包含每个点的矩形数目 https://leetcode-cn.com/contest/weekly-contest-290/problems/count-number-of-rectangles-containing-each-point/
+pub fn count_rectangles(rectangles: Vec<Vec<i32>>, points: Vec<Vec<i32>>) -> Vec<i32> {
+    let len = points.len();
+    let mut count = vec![0; len];
+    for i in 0..len {
+        //let point = points[i];
+        let mut acc = 0;
+        for rectangle in &rectangles {
+            if rectangle[0] >= points[i][0] && rectangle[1] >= points[i][1] {
+                acc += 1;
+            }
+        }
+        count[i] = acc;
+    }
+
+    count
+}
+
+///  6043. 统计包含每个点的矩形数目  https://leetcode-cn.com/contest/weekly-contest-290/problems/count-number-of-rectangles-containing-each-point/
+pub fn count_rectangles_v2(rectangles: Vec<Vec<i32>>, points: Vec<Vec<i32>>) -> Vec<i32> {
+    let len = points.len();
+    let mut count = vec![0; len];
+    let mut rectangles_groups = vec![vec![]; 101];
+
+    // 按照高度分组（1 <= hi, yj <= 100）
+    for rectangle in &rectangles {
+        let high = rectangle[1];
+        rectangles_groups[high as usize].push(rectangle[0]);
+    }
+
+    // 每个组中又按照长度排序
+    rectangles_groups.iter_mut().for_each(|group| {
+        group.sort_unstable();
+    });
+
+    for i in 0..len {
+        let mut acc = 0;
+        let (x, y) = (points[i][0], points[i][1]);
+        for j in y..=100 {
+            for &l in rectangles_groups[j as usize].iter().rev() {
+                if l >= x {
+                    acc += 1;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        count[i] = acc;
+    }
+
+    count
+}
+
 /**
  * Your DiscountSystem object will be instantiated and called as such:
  * let obj = DiscountSystem::new();
