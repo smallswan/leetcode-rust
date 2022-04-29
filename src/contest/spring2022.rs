@@ -453,6 +453,66 @@ pub fn count_rectangles_v2(rectangles: Vec<Vec<i32>>, points: Vec<Vec<i32>>) -> 
     count
 }
 
+use std::collections::BTreeMap;
+/// 2251. 花期内花的数目 https://leetcode-cn.com/problems/number-of-flowers-in-full-bloom/
+pub fn full_bloom_flowers(flowers: Vec<Vec<i32>>, persons: Vec<i32>) -> Vec<i32> {
+    let n = persons.len();
+    let mut ans = vec![0; n];
+    let mut map = BTreeMap::<i32, i32>::new();
+    for flower in flowers {
+        let (a, b) = (flower[0], flower[1]);
+        if let Some(start) = map.get_mut(&a) {
+            *start += 1;
+        } else {
+            map.insert(a, 1);
+        }
+
+        if let Some(end) = map.get_mut(&(b + 1)) {
+            *end -= 1;
+        } else {
+            map.insert(b + 1, -1);
+        }
+    }
+
+    let mut sum = 0;
+    let mut id = vec![];
+    id.push(0);
+    map.insert(0, 0);
+    for (key, value) in map.iter_mut() {
+        *value += sum;
+        sum = *value;
+        id.push(*key);
+    }
+
+    fn binary_search(a: &Vec<i32>, target: i32) -> usize {
+        let n = a.len();
+        let (mut l, mut r) = (0, n);
+        while l < r {
+            let middle = (l + r) / 2;
+            if target >= a[middle] {
+                l = middle + 1;
+            } else {
+                r = middle;
+            }
+        }
+
+        if l == 0 {
+            l
+        } else {
+            l - 1
+        }
+    }
+
+    for i in 0..n {
+        let k = binary_search(&id, persons[i]);
+        if let Some(&count) = map.get(&(id[k] as i32)) {
+            ans[i] = count;
+        }
+    }
+
+    ans
+}
+
 /**
  * Your DiscountSystem object will be instantiated and called as such:
  * let obj = DiscountSystem::new();
@@ -477,6 +537,10 @@ mod tests {
         let attribute: Vec<Vec<i32>> = vec![vec![3, 2], vec![2, 4], vec![7, 6]];
         let limit: i32 = 5;
         dbg!(perfect_menu(materials, cookbooks, attribute, limit));
+
+        let flowers = vec![vec![1, 10], vec![3, 3]];
+        let persons = vec![3, 3, 2];
+        dbg!(full_bloom_flowers(flowers, persons));
     }
 
     #[test]
