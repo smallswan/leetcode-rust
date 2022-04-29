@@ -1,5 +1,6 @@
 use crate::solution::data_structures::lists::ListNode;
 
+///  中国银联专场竞赛
 ///  银联-01. 回文链表 https://leetcode-cn.com/contest/cnunionpay-2022spring/problems/D7rekZ/
 ///  暴力解法，竞赛时超时了
 pub fn is_palindrome(head: Option<Box<ListNode>>) -> bool {
@@ -210,6 +211,7 @@ pub fn num_flowers(roads: Vec<Vec<i32>>) -> i32 {
     1 + (*edges.iter().max().unwrap())
 }
 
+/// [力扣杯]春季编程大赛 https://leetcode-cn.com/contest/season/2022-spring
 /// 1. 宝石补给 https://leetcode-cn.com/contest/season/2022-spring/problems/WHnhjV/
 pub fn give_gem(gem: Vec<i32>, operations: Vec<Vec<i32>>) -> i32 {
     let mut gem = gem;
@@ -287,39 +289,48 @@ pub fn perfect_menu(
 }
 
 /// 2022招银网络笔试（第一题）
+/// 题目大意：给定一些列购买理财产品的时间（格式为"小时:分钟:秒"）数组times，按照秒、分钟、小时升序排序，
+///          即当秒相同时，分钟小的排在前面，同理当分钟相同时，小时数小的排在前面
 pub fn time_sort(times: Vec<String>) -> Vec<String> {
     let mut result = Vec::<String>::with_capacity(times.len());
     times.into_iter().for_each(|time| {
         let hms: Vec<&str> = time.split(":").collect();
+        //重新构造时间格式为"秒:分钟:小时"，方便后续的排序
         result.push(format!("{}:{}:{}", hms[2], hms[1], hms[0]));
     });
 
     result.sort_unstable();
 
-    result.iter_mut().for_each(|smh| {
-        let hms: Vec<&str> = smh.split(":").collect();
-        *smh = format!("{}:{}:{}", hms[2], hms[1], hms[0]);
+    result.iter_mut().for_each(|time| {
+        let smh: Vec<&str> = time.split(":").collect();
+        //恢复原有的格式
+        *time = format!("{}:{}:{}", smh[2], smh[1], smh[0]);
     });
 
     result
 }
 
 /// 2022招银网络笔试（第二题）
+/// 题目大意：求闭区间[l,r]中，数字x（范围[0,9]）在各个数字中出现的次数的总和
 pub fn count_num(l: i32, r: i32, x: i32) -> i32 {
     let mut count = 0;
+
+    // 将数字num转为字符串，再统计数字x出现的次数
     fn count_x(num: i32, x: i32) -> i32 {
         let mut count = 0;
         let x_byte = (x as u8) + b'0';
         let num_str = format!("{}", num);
         let bytes = num_str.into_bytes();
-        for byte in bytes {
-            if byte == x_byte {
-                count += 1;
-            }
-        }
-        count
+        // for byte in bytes {
+        //     if byte == x_byte {
+        //         count += 1;
+        //     }
+        // }
+        bytes.iter().filter(|&byte| *byte == x_byte).count() as i32
+        //count
     }
 
+    // 采用除10求余的方式得到数字num各个位上的数字，然后进行统计
     fn count_x_v2(num: i32, x: i32) -> i32 {
         if num == 0 && x == 0 {
             return 1;
@@ -346,17 +357,20 @@ pub fn count_num(l: i32, r: i32, x: i32) -> i32 {
 }
 
 use std::collections::HashSet;
-
+use std::iter::FromIterator;
+/// 第 290 场周赛(华为) 6041 6042 6043
 /// 6041. 多个数组求交集 https://leetcode-cn.com/problems/intersection-of-multiple-arrays/
 pub fn intersection(nums: Vec<Vec<i32>>) -> Vec<i32> {
     let len = nums.len();
     let first = nums[0].clone();
-    let mut set: HashSet<i32> = first.into_iter().map(|num| num).collect();
+    let mut set: HashSet<i32> = HashSet::from_iter(first);
     for i in 1..len {
+        //仅保留当前数组中存在的
         set.retain(|num| nums[i].contains(num));
     }
 
-    let mut result: Vec<i32> = set.into_iter().map(|num| num).collect();
+    //排序
+    let mut result: Vec<i32> = set.into_iter().collect();
     result.sort_unstable();
 
     result

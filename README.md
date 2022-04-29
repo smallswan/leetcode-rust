@@ -3,7 +3,7 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 
 ## 特性（Features）
 - 按照数据结构、算法划分模块（而不是常规的每一道题一个模块，大大减少了模块数量），更加便于解题和后期归纳总结；
-- 解题数量达200+，并且还在快速增长；
+- 解题数量达400+，并且还在快速增长；
 - 一题多解，广泛吸取其他开源库的优秀代码，不断精益求精
 
 ## 开发进度（Development progress）
@@ -11,6 +11,7 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 - [开发进度](SOLUTIONS.md)
 - [经典问题](PROBLEMS.md)
 - [经典算法](ALGORITHMS.md)
+- [力扣竞赛](CONTEST.md)
 
 ## leetcode实战总结 
 1. 条条大路通罗马
