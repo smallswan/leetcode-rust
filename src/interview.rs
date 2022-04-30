@@ -29,6 +29,26 @@ pub fn compress_string(s: String) -> String {
     }
 }
 
+/// 面试题 01.07. 旋转矩阵 https://leetcode-cn.com/problems/rotate-matrix-lcci/
+pub fn rotate(matrix: &mut Vec<Vec<i32>>) {
+    let n = matrix.len();
+
+    for first in 0..n / 2 {
+        let last = n - 1 - first;
+
+        for i in first..last {
+            let j = n - 1 - i;
+
+            let temp = matrix[first][i];
+
+            matrix[first][i] = matrix[j][first];
+            matrix[j][first] = matrix[last][j];
+            matrix[last][j] = matrix[i][last];
+            matrix[i][last] = temp;
+        }
+    }
+}
+
 /// 面试题 17.14. 最小K个数 https://leetcode-cn.com/problems/smallest-k-lcci/
 pub fn smallest_k(arr: Vec<i32>, k: i32) -> Vec<i32> {
     let len = arr.len();

@@ -361,6 +361,7 @@ pub fn trap_v2(height: Vec<i32>) -> i32 {
 }
 
 /// 力扣（88. 合并两个有序数组） https://leetcode-cn.com/problems/merge-sorted-array/
+/// 面试题 10.01. 合并排序的数组 https://leetcode-cn.com/problems/sorted-merge-lcci/
 pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
     let mut m = m;
     let mut index: usize = 0;
