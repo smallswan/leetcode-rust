@@ -12,7 +12,7 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 - [经典问题](PROBLEMS.md)
 - [经典算法](ALGORITHMS.md)
 - [力扣竞赛](CONTEST.md)
-- [剑指 Offer](LCOF.md)
+- [剑指Offer](LCOF.md)
 
 ## leetcode实战总结 
 1. 条条大路通罗马

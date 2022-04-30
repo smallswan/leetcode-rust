@@ -2,7 +2,7 @@
 
 |  ----  | 问题（problems）  | 解决方案（solutions）  |
 |  ----  | ----  | ----  |  
-| | - []() |  |
+| | - [解决方案](src/lcof.rs) |  |
 | | - [剑指 Offer 03. 数组中重复的数字](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/) |  |
 | | - [剑指 Offer 04. 二维数组中的查找](https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/) |  |
 | | - [剑指 Offer 05. 替换空格](https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/) |  |
