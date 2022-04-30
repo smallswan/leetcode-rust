@@ -4,6 +4,7 @@ mod medium;
 mod simple;
 
 mod contest;
+mod interview;
 mod lcof;
 mod solution;
 
