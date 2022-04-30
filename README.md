@@ -8,6 +8,9 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 
 ## 开发进度（Development progress）
 相关代码及文档，请查看如下文档：
+- [力扣主页](https://leetcode-cn.com/u/zhiluniao/)
+- [github](https://github.com/smallswan/leetcode-rust)
+- [gitee](https://gitee.com/zhiluniao/leetcode-rust)
 - [开发进度](SOLUTIONS.md)
 - [经典问题](PROBLEMS.md)
 - [经典算法](ALGORITHMS.md)

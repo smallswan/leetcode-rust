@@ -453,6 +453,131 @@ pub fn count_rectangles_v2(rectangles: Vec<Vec<i32>>, points: Vec<Vec<i32>>) -> 
     count
 }
 
+/// 6051. 统计是给定字符串前缀的字符串数目 https://leetcode-cn.com/problems/count-prefixes-of-a-given-string/
+pub fn count_prefixes(words: Vec<String>, s: String) -> i32 {
+    let s_bytes = s.as_bytes();
+    words
+        .iter()
+        .filter(|word| s_bytes.starts_with(word.as_bytes()))
+        .count() as i32
+}
+
+///  6052. 最小平均差  https://leetcode-cn.com/contest/biweekly-contest-77/problems/minimum-average-difference/
+pub fn minimum_average_difference(nums: Vec<i32>) -> i32 {
+    let mut len = 0;
+    if len == 1 {
+        return 0;
+    }
+    let mut sum = 0;
+    for num in &nums {
+        len += 1;
+        sum += num;
+    }
+
+    let mut acc = 0;
+    let mut min_avg_diff = i32::MAX;
+    let mut min_i = i32::MAX;
+    for i in 0..len {
+        acc += nums[i];
+        let avg1 = acc / (i + 1) as i32;
+        let count2 = if i == len - 1 {
+            1 as i32
+        } else {
+            (len - i) as i32 - 1
+        };
+        let avg2 = (sum - acc) / count2;
+
+        let diff = (avg1 - avg2).abs();
+
+        if diff < min_avg_diff {
+            min_avg_diff = diff;
+            min_i = i as i32;
+            if diff == 0 {
+                return i as i32;
+            }
+        }
+    }
+
+    min_i
+}
+
+/// 6053. 统计网格图中没有被保卫的格子数 https://leetcode-cn.com/problems/count-unguarded-cells-in-the-grid/submissions/
+pub fn count_unguarded(m: i32, n: i32, guards: Vec<Vec<i32>>, walls: Vec<Vec<i32>>) -> i32 {
+    let (m, n) = (m as usize, n as usize);
+    let mut grid = vec![vec![b'0'; n]; m];
+    for wall in walls {
+        grid[wall[0] as usize][wall[1] as usize] = b'W';
+    }
+    for guard in &guards {
+        grid[guard[0] as usize][guard[1] as usize] = b'G';
+    }
+
+    let mut guard_cnt = 0;
+    for guard in &guards {
+        //行
+        let row = guard[0] as usize;
+        let col = guard[1] as usize;
+        let (mut row_t, mut col_t) = (row, col);
+
+        while row_t > 0 {
+            row_t -= 1;
+            if grid[row_t][col] == b'0' {
+                grid[row_t][col] = b'1';
+            } else if grid[row_t][col] == b'1' {
+                continue;
+            } else {
+                break;
+            }
+        }
+
+        row_t = row;
+        row_t += 1;
+        while row_t < m {
+            if grid[row_t][col] == b'0' {
+                grid[row_t][col] = b'1';
+                row_t += 1;
+            } else if grid[row_t][col] == b'1' {
+                row_t += 1;
+                continue;
+            } else {
+                break;
+            }
+        }
+
+        //列
+        col_t = col;
+        while col_t > 0 {
+            col_t -= 1;
+            if grid[row][col_t] == b'0' {
+                grid[row][col_t] = b'1';
+            } else if grid[row][col_t] == b'1' {
+                continue;
+            } else {
+                break;
+            }
+        }
+        col_t = col;
+        col_t += 1;
+        while col_t < n {
+            if grid[row][col_t] == b'0' {
+                grid[row][col_t] = b'1';
+                col_t += 1;
+            } else if grid[row][col_t] == b'1' {
+                col_t += 1;
+                continue;
+            } else {
+                break;
+            }
+        }
+    }
+
+    for row in grid {
+        guard_cnt += row.iter().filter(|&byte| *byte == b'0').count() as i32;
+    }
+
+    guard_cnt
+}
+
 use std::collections::BTreeMap;
 /// 2251. 花期内花的数目 https://leetcode-cn.com/problems/number-of-flowers-in-full-bloom/
 pub fn full_bloom_flowers(flowers: Vec<Vec<i32>>, persons: Vec<i32>) -> Vec<i32> {
@@ -610,5 +735,13 @@ mod tests {
         system.add_activity(3, 38, 15, 3, 3);
         dbg!(system.consume(6, 70));
         dbg!(system.consume(8, 49));
+    }
+
+    #[test]
+    fn test_biweekly_contest_77() {
+        let (m, n) = (8, 9);
+        let guards = vec![vec![5, 8], vec![5, 5], vec![4, 6], vec![0, 5], vec![6, 5]];
+        let walls = vec![vec![4, 1]];
+        dbg!(count_unguarded(m, n, guards, walls));
     }
 }
