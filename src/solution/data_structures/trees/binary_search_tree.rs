@@ -184,6 +184,50 @@ pub fn get_all_elements(
     result
 }
 
+/// 1305. 两棵二叉搜索树中的所有元素
+/// 归并算法
+pub fn get_all_elements_v2(
+    root1: Option<Rc<RefCell<TreeNode>>>,
+    root2: Option<Rc<RefCell<TreeNode>>>,
+) -> Vec<i32> {
+    fn traverse(root: Option<Rc<RefCell<TreeNode>>>, counter: &mut Vec<i32>) {
+        if let Some(node) = root {
+            traverse(node.borrow_mut().left.take(), counter);
+            counter.push(node.borrow_mut().val);
+            traverse(node.borrow_mut().right.take(), counter);
+        }
+    }
+
+    let mut result1 = Vec::new();
+    let mut result2 = Vec::new();
+    traverse(root1, &mut result1);
+    traverse(root2, &mut result2);
+
+    let mut merged = Vec::new();
+    let (mut p1, mut p2) = (0, 0);
+    let (len1, len2) = (result1.len(), result2.len());
+    loop {
+        if p1 == len1 {
+            merged.extend_from_slice(&result2[p2..]);
+            break;
+        }
+        if p2 == len2 {
+            merged.extend_from_slice(&result1[p1..]);
+            break;
+        }
+
+        if result1[p1] < result2[p2] {
+            merged.push(result1[p1]);
+            p1 += 1;
+        } else {
+            merged.push(result2[p2]);
+            p2 += 1;
+        }
+    }
+
+    merged
+}
+
 /// 剑指 Offer 54. 二叉搜索树的第k大节点 https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/
 pub fn kth_largest(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     fn dfs(root: Option<Rc<RefCell<TreeNode>>>, result: &mut i32, over: &mut bool, k: &mut i32) {
