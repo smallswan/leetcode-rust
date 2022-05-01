@@ -58,6 +58,23 @@ pub fn find_missing_ranges(nums: Vec<i32>, lower: i32, upper: i32) -> Vec<String
     ans
 }
 
+/// 179. 最大数 https://leetcode-cn.com/problems/largest-number/
+pub fn largest_number(nums: Vec<i32>) -> String {
+    let mut nums_str: Vec<String> = nums.iter().map(|&num| format!("{}", num)).collect();
+    nums_str.sort_by(|x, y| {
+        let xy = format!("{}{}", x, y).parse::<u64>().unwrap();
+        let yx = format!("{}{}", y, x).parse::<u64>().unwrap();
+
+        yx.cmp(&xy)
+    });
+
+    if nums_str[0] == "0" {
+        "0".to_string()
+    } else {
+        nums_str.iter().fold("".to_string(), |acc, num| acc + num)
+    }
+}
+
 /// 189. 轮转数组 https://leetcode-cn.com/problems/rotate-array/
 pub fn rotate(nums: &mut Vec<i32>, k: i32) {
     let len = nums.len();
