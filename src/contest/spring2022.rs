@@ -320,14 +320,11 @@ pub fn count_num(l: i32, r: i32, x: i32) -> i32 {
         let mut count = 0;
         let x_byte = (x as u8) + b'0';
         let num_str = format!("{}", num);
-        let bytes = num_str.into_bytes();
-        // for byte in bytes {
-        //     if byte == x_byte {
-        //         count += 1;
-        //     }
-        // }
-        bytes.iter().filter(|&byte| *byte == x_byte).count() as i32
-        //count
+        num_str
+            .into_bytes()
+            .iter()
+            .filter(|&byte| *byte == x_byte)
+            .count() as i32
     }
 
     // 采用除10求余的方式得到数字num各个位上的数字，然后进行统计

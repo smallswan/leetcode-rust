@@ -163,6 +163,27 @@ impl Solution {
     }
 }
 
+/// 1305. 两棵二叉搜索树中的所有元素 https://leetcode-cn.com/problems/all-elements-in-two-binary-search-trees/
+pub fn get_all_elements(
+    root1: Option<Rc<RefCell<TreeNode>>>,
+    root2: Option<Rc<RefCell<TreeNode>>>,
+) -> Vec<i32> {
+    fn traverse(root: Option<Rc<RefCell<TreeNode>>>, counter: &mut Vec<i32>) {
+        if let Some(node) = root {
+            traverse(node.borrow_mut().left.take(), counter);
+            counter.push(node.borrow_mut().val);
+            traverse(node.borrow_mut().right.take(), counter);
+        }
+    }
+
+    let mut result = Vec::new();
+    traverse(root1, &mut result);
+    traverse(root2, &mut result);
+    result.sort_unstable();
+
+    result
+}
+
 /// 剑指 Offer 54. 二叉搜索树的第k大节点 https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/
 pub fn kth_largest(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     fn dfs(root: Option<Rc<RefCell<TreeNode>>>, result: &mut i32, over: &mut bool, k: &mut i32) {

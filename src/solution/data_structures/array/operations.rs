@@ -59,6 +59,7 @@ pub fn find_missing_ranges(nums: Vec<i32>, lower: i32, upper: i32) -> Vec<String
 }
 
 /// 179. 最大数 https://leetcode-cn.com/problems/largest-number/
+/// 拓展：剑指 Offer 45. 把数组排成最小的数 https://leetcode-cn.com/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof/
 pub fn largest_number(nums: Vec<i32>) -> String {
     let mut nums_str: Vec<String> = nums.iter().map(|&num| format!("{}", num)).collect();
     nums_str.sort_by(|x, y| {
