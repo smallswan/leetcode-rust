@@ -360,6 +360,23 @@ pub fn trap_v2(height: Vec<i32>) -> i32 {
     result
 }
 
+/// 80. 删除有序数组中的重复项 II https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array-ii/
+pub fn remove_duplicates_ii(nums: &mut Vec<i32>) -> i32 {
+    let len = nums.len();
+    if len <= 2 {
+        return len as i32;
+    }
+    let (mut slow, mut fast) = (2, 2);
+    while fast < len {
+        if nums[slow - 2] != nums[fast] {
+            nums[slow] = nums[fast];
+            slow += 1;
+        }
+        fast += 1;
+    }
+    slow as i32
+}
+
 /// 力扣（88. 合并两个有序数组） https://leetcode-cn.com/problems/merge-sorted-array/
 /// 面试题 10.01. 合并排序的数组 https://leetcode-cn.com/problems/sorted-merge-lcci/
 pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
