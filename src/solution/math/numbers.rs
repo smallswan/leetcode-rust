@@ -347,6 +347,35 @@ pub fn gray_code(n: i32) -> Vec<i32> {
     result
 }
 
+use std::mem;
+/// 91. 解码方法 https://leetcode-cn.com/problems/decode-ways/
+/// 动态规划
+pub fn num_decodings(s: String) -> i32 {
+    let s = s.into_bytes();
+
+    if let Some(last) = s.last() {
+        let mut cache_2 = 1;
+        let mut cache_1 = if *last == b'0' { 0 } else { 1 };
+
+        for window in s.windows(2).rev() {
+            cache_2 = match window {
+                //如果包含前导0，则无法转换
+                [b'0', _] => mem::replace(&mut cache_1, 0),
+                [b'1', _] | [b'2', b'0'..=b'6'] => {
+                    let new_cache_1 = cache_1 + cache_2;
+
+                    mem::replace(&mut cache_1, new_cache_1)
+                }
+                _ => cache_1,
+            };
+        }
+
+        cache_1
+    } else {
+        1
+    }
+}
+
 use std::collections::HashSet;
 // const cycle_number:HashSet<i32> = [4, 16, 37,58,89,145,42,20].iter().cloned().collect();
 /// 力扣（202. 快乐数) https://leetcode-cn.com/problems/happy-number/
@@ -701,5 +730,12 @@ mod tests {
         dbg!(is_perfect_square_v2(256));
         dbg!(is_perfect_square_v2(142857));
         dbg!(is_perfect_square_v2(i32::MAX));
+    }
+
+    #[test]
+    fn test_middle_() {
+        num_decodings("226".to_string());
+
+        num_decodings("10".to_string());
     }
 }
