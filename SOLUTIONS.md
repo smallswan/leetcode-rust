@@ -114,8 +114,7 @@
 | | - [42. 接雨水](https://leetcode-cn.com/problems/trapping-rain-water/ ) |  |
 | | - [80. 删除有序数组中的重复项 II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array-ii/ ) |  |
 | | - [88. 合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/ ) |  |
-| | - [125. 验证回文串]( https://leetcode-cn.com/problems/valid-palindrome/ ) |  |
-
+| | - [125. 验证回文串](https://leetcode-cn.com/problems/valid-palindrome/ ) |  |
 | | - [350. 两个数组的交集 II](https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/ ) |  |
 | 贪心算法|  | [解决方案](src/solution/algorithms/greedy/greedy.rs) |
 | | - [45. 跳跃游戏 II](https://leetcode-cn.com/problems/jump-game-ii/ ) |  |
@@ -130,8 +129,13 @@
 | | - []( ) |  |
 |  ----  | ----  | ----  |
 | 动态规划|  | [解决方案](src/solution/algorithms/dp/dynamic_programming.rs) |
-| | - [10. 正则表达式匹配]( https://leetcode-cn.com/problems/regular-expression-matching/ ) |  |
-| | - [264. 丑数 II ](https://leetcode-cn.com/problems/ugly-number-ii/ ) |  |
+| | - [10. 正则表达式匹配](https://leetcode-cn.com/problems/regular-expression-matching/ ) |  |
+| | - [53. 最大子序和](https://leetcode-cn.com/problems/maximum-subarray/ ) |  |
+| | - [64. 最小路径和](https://leetcode-cn.com/problems/minimum-path-sum/ ) |  |
+| | - [72. 编辑距离](https://leetcode-cn.com/problems/edit-distance/) |  |
+| | - [91. 解码方法](https://leetcode-cn.com/problems/decode-ways/ ) |  |
+| | - [122. 买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/ ) |  |
+| | - [264. 丑数 II](https://leetcode-cn.com/problems/ugly-number-ii/ ) |  |
 | | - [338. 比特位计数](https://leetcode-cn.com/problems/counting-bits/) | | 
 | | - [2100. 适合打劫银行的日子](https://leetcode-cn.com/problems/find-good-days-to-rob-the-bank/ ) |  |
 | | - []( ) |  |

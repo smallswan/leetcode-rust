@@ -414,19 +414,21 @@ pub fn count_rectangles(rectangles: Vec<Vec<i32>>, points: Vec<Vec<i32>>) -> Vec
     count
 }
 
-///  6043. 统计包含每个点的矩形数目  https://leetcode-cn.com/contest/weekly-contest-290/problems/count-number-of-rectangles-containing-each-point/
+/// 6043. 统计包含每个点的矩形数目  https://leetcode-cn.com/contest/weekly-contest-290/problems/count-number-of-rectangles-containing-each-point/
+/// 1 <= hi, yj <= 100
 pub fn count_rectangles_v2(rectangles: Vec<Vec<i32>>, points: Vec<Vec<i32>>) -> Vec<i32> {
     let len = points.len();
     let mut count = vec![0; len];
+    // 桶排序
     let mut rectangles_groups = vec![vec![]; 101];
 
-    // 按照高度分组（1 <= hi, yj <= 100）
+    // 按照高度分组（桶）
     for rectangle in &rectangles {
         let high = rectangle[1];
         rectangles_groups[high as usize].push(rectangle[0]);
     }
 
-    // 每个组中又按照长度排序
+    // 每个组（桶）中又按照长度排序
     rectangles_groups.iter_mut().for_each(|group| {
         group.sort_unstable();
     });
