@@ -96,13 +96,13 @@ fn quick_add(y: i32, z: i32, x: i32) -> bool {
     let mut z = z;
     while z != 0 {
         if (z & 1) != 0 {
-            if result < x - add {
+            if result < x.wrapping_sub(add) {
                 return false;
             }
             result += add;
         }
         if z != 1 {
-            if add < x - add {
+            if add < x.wrapping_sub(add) {
                 return false;
             }
             add += add;

@@ -409,13 +409,9 @@ impl MedianFinder {
             }
         } else {
             match (self.max_heap.peek(), self.min_heap.peek()) {
-                (Some(peek1), Some(Reverse(peek2))) => {
-                    return (peek1 + (*peek2)) as f64 / 2.0f64;
-                }
-                (_, _) => {
-                    return 0f64;
-                }
-            };
+                (Some(peek1), Some(Reverse(peek2))) => (peek1 + (*peek2)) as f64 / 2.0f64,
+                (_, _) => 0f64,
+            }
         }
     }
 }

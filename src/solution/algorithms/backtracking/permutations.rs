@@ -51,7 +51,7 @@ impl Solution {
 
     // use std::collections::VecDeque;
     fn dfs(
-        nums: &Vec<i32>,
+        nums: &[i32],
         len: usize,
         dept: usize,
         path: &mut Vec<i32>,
@@ -59,7 +59,7 @@ impl Solution {
         result: &mut Vec<Vec<i32>>,
     ) {
         if dept == len {
-            let full_path: Vec<i32> = path.into_iter().map(|&mut num| num).collect();
+            let full_path: Vec<i32> = path.iter_mut().map(|&mut num| num).collect();
             result.push(full_path);
             return;
         }
@@ -70,7 +70,7 @@ impl Solution {
             }
             path.push(nums[i]);
             used_vec[i] = true;
-            Solution::dfs(&nums, len, dept + 1, path, used_vec, result);
+            Solution::dfs(nums, len, dept + 1, path, used_vec, result);
             path.pop();
             used_vec[i] = false;
         }

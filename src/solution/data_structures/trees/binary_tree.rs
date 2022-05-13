@@ -133,7 +133,7 @@ pub fn zigzag_level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> 
         return res;
     }
     let mut deq = VecDeque::new();
-    deq.push_back((0, root.clone()));
+    deq.push_back((0, root));
     let mut vec = Vec::new();
     while !deq.is_empty() {
         if let Some((level, Some(node))) = deq.pop_front() {
@@ -230,7 +230,7 @@ pub fn level_order_bottom(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> 
         return res;
     }
     let mut deq = VecDeque::new();
-    deq.push_back((0, root.clone()));
+    deq.push_back((0, root));
     let mut vec = Vec::new();
     while !deq.is_empty() {
         if let Some((level, Some(node))) = deq.pop_front() {
@@ -664,7 +664,7 @@ pub fn min_camera_cover(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
 
 /// 剑指 Offer 27. 二叉树的镜像  https://leetcode-cn.com/problems/er-cha-shu-de-jing-xiang-lcof/
 pub fn mirror_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<TreeNode>>> {
-    match root.clone() {
+    match root {
         None => None,
         Some(node) => {
             let mut tmp_node = node.borrow_mut();

@@ -56,7 +56,7 @@ pub fn is_match(s: String, p: String) -> bool {
                 }
             }
             _ => {
-                println!("{}", "error");
+                println!("error");
             }
         }
     }

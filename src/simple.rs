@@ -868,7 +868,7 @@ pub fn first_uniq_char_v3(s: String) -> i32 {
 /// 力扣（401. 二进制手表） https://leetcode-cn.com/problems/binary-watch/
 /// 方法1：空间换时间避免重复计算
 pub fn read_binary_watch(turned_on: i32) -> Vec<String> {
-    if turned_on < 0 || turned_on > 8 {
+    if !(0..=8).contains(&turned_on) {
         return vec![];
     }
     //小时最多亮3盏灯[0,3]
@@ -928,8 +928,8 @@ pub fn find_disappeared_numbers_v2(nums: Vec<i32>) -> Vec<i32> {
         let x = ((nums[i] - 1) as usize) % len;
         nums[x] += (len as i32);
     }
-    for i in 0..len {
-        if nums[i] <= (len as i32) {
+    for (i, item) in nums.iter().enumerate().take(len) {
+        if *item <= (len as i32) {
             result.push(i as i32 + 1);
         }
     }

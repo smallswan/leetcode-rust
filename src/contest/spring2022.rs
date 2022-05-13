@@ -82,6 +82,7 @@ pub fn is_palindrome_v2(head: Option<Box<ListNode>>) -> bool {
     true
 }
 
+use std::cmp::Ordering;
 /// 银联-02. 优惠活动系统 https://leetcode-cn.com/contest/cnunionpay-2022spring/problems/kDPV0f/
 use std::collections::HashMap;
 struct DiscountSystem {
@@ -144,15 +145,18 @@ impl DiscountSystem {
                     && sum < value.number
                     && value.consume_records[(user_id as usize)] < value.user_limit
                 {
-                    if value.discount > max_discount {
-                        // 若同时满足多个优惠活动时，则优先参加优惠减免最大的活动
-                        max_discount = value.discount;
-                        min_act_id = value.act_id;
-                    } else if value.discount == max_discount {
-                        // 相同折扣优先使用act_id小的
-                        if value.act_id < min_act_id {
+                    match value.discount.cmp(&max_discount) {
+                        Ordering::Greater => {
+                            max_discount = value.discount;
                             min_act_id = value.act_id;
                         }
+                        Ordering::Equal => {
+                            // 相同折扣优先使用act_id小的
+                            if value.act_id < min_act_id {
+                                min_act_id = value.act_id;
+                            }
+                        }
+                        Ordering::Less => (),
                     }
                 }
             });
@@ -303,7 +307,7 @@ pub fn time_sort(times: Vec<String>) -> Vec<String> {
     result.sort_unstable();
 
     result.iter_mut().for_each(|time| {
-        let smh: Vec<&str> = time.split(":").collect();
+        let smh: Vec<&str> = time.split(':').collect();
         //恢复原有的格式
         *time = format!("{}:{}:{}", smh[2], smh[1], smh[0]);
     });
@@ -473,8 +477,8 @@ pub fn minimum_average_difference(nums: Vec<i32>) -> i32 {
     let mut acc = 0;
     let mut min_avg_diff = i32::MAX;
     let mut min_i = i32::MAX;
-    for i in 0..len {
-        acc += nums[i];
+    for (i, item) in nums.iter().enumerate().take(len) {
+        acc += (*item);
         let avg1 = acc / (i + 1) as i32;
         let count2 = if i == len - 1 {
             1
