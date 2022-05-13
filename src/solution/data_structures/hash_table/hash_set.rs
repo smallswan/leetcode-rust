@@ -330,21 +330,16 @@ impl MyHashSet {
 
     fn add(&mut self, key: i32) {
         let h = MyHashSet::hash(key);
-        match self.data[h].binary_search(&key) {
-            Err(idx) => {
-                self.data[h].insert(idx, key);
-            }
-            _ => {}
+
+        if let Err(idx) = self.data[h].binary_search(&key) {
+            self.data[h].insert(idx, key);
         }
     }
 
     fn remove(&mut self, key: i32) {
         let h = MyHashSet::hash(key);
-        match self.data[h].binary_search(&key) {
-            Ok(idx) => {
-                self.data[h].remove(idx);
-            }
-            _ => {}
+        if let Ok(idx) = self.data[h].binary_search(&key) {
+            self.data[h].remove(idx);
         }
     }
 

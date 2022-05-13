@@ -183,7 +183,7 @@ pub fn merge_k_lists(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>>
         }
     }
 
-    result.sort();
+    result.sort_unstable();
 
     let mut head = None;
     for i in result.iter().rev() {
@@ -241,9 +241,7 @@ pub fn merge_k_lists_v3(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNod
 
 /// 24. 两两交换链表中的节点 https://leetcode-cn.com/problems/swap-nodes-in-pairs/
 pub fn swap_pairs(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-    if head.is_none() {
-        return None;
-    }
+    head.as_ref()?;
 
     let mut dummy_head = Box::new(ListNode::new(0));
     let mut new_head = &mut dummy_head;

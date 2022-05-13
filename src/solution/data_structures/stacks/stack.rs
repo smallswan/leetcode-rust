@@ -78,7 +78,7 @@ pub fn longest_valid_parentheses(s: String) -> i32 {
     i32::max(forward_max, backward_max)
 }
 
-fn longest(seq: &Vec<char>, plus_char: char) -> i32 {
+fn longest(seq: &[char], plus_char: char) -> i32 {
     let mut stack = 0;
     let mut max_len = 0;
     let (mut i, mut j) = (0_usize, 0_usize);

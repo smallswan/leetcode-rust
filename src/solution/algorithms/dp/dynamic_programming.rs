@@ -219,11 +219,11 @@ pub fn minimum_total(triangle: Vec<Vec<i32>>) -> i32 {
 pub fn max_profit(prices: Vec<i32>) -> i32 {
     let len = prices.len();
     let (mut buy1, mut buy2, mut sell1, mut sell2) = (-prices[0], -prices[0], 0, 0);
-    for i in 0..len {
-        buy1 = buy1.max(-prices[i]);
-        sell1 = sell1.max(buy1 + prices[i]);
-        buy2 = buy2.max(sell1 - prices[i]);
-        sell2 = sell2.max(buy2 + prices[i]);
+    for price in prices.iter().take(len) {
+        buy1 = buy1.max(-price);
+        sell1 = sell1.max(buy1 + price);
+        buy2 = buy2.max(sell1 - price);
+        sell2 = sell2.max(buy2 + price);
     }
     sell2
 }
@@ -232,15 +232,15 @@ pub fn max_profit(prices: Vec<i32>) -> i32 {
 pub fn min_cost(costs: Vec<Vec<i32>>) -> i32 {
     let (mut first, mut second, mut third) = (-1, -1, -1);
     let len = costs.len();
-    for i in 0..len {
+    for cost in costs.iter().take(len) {
         if first == -1 {
-            first = costs[i][0];
-            second = costs[i][1];
-            third = costs[i][2];
+            first = cost[0];
+            second = cost[1];
+            third = cost[2];
         } else {
-            let t1 = (costs[i][0] + second).min(costs[i][0] + third);
-            let t2 = (costs[i][1] + first).min(costs[i][1] + third);
-            let t3 = (costs[i][2] + first).min(costs[i][2] + second);
+            let t1 = (cost[0] + second).min(cost[0] + third);
+            let t2 = (cost[1] + first).min(cost[1] + third);
+            let t3 = (cost[2] + first).min(cost[2] + second);
             first = t1;
             second = t2;
             third = t3;

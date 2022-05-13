@@ -8,17 +8,14 @@ impl Solution {
         let mut columns = vec![vec![0; 9]; 9];
         let mut sub_boxes = vec![vec![vec![0; 9]; 3]; 3];
         for i in 0..9 {
-            for j in 0..9 {
+            for (j, item) in columns.iter_mut().enumerate().take(9) {
                 let c = board[i][j];
                 if c != '.' {
                     let index = (c as u8 - b'0' - 1) as usize;
                     rows[i][index] += 1;
-                    columns[j][index] += 1;
+                    item[index] += 1;
                     sub_boxes[i / 3][j / 3][index] += 1;
-                    if rows[i][index] > 1
-                        || columns[j][index] > 1
-                        || sub_boxes[i / 3][j / 3][index] > 1
-                    {
+                    if rows[i][index] > 1 || item[index] > 1 || sub_boxes[i / 3][j / 3][index] > 1 {
                         return false;
                     }
                 }
@@ -33,11 +30,12 @@ impl Solution {
         let [mut row, mut col, mut block] = [[[0u8; 9]; 9]; 3];
         let exists = |arr: &mut [[u8; 9]; 9], number: usize, idx: usize| -> bool {
             arr[number][idx] += 1;
-            return if arr[number][idx] > 1 { true } else { false };
+            arr[number][idx] > 1
         };
-        for i in 0..9 {
+
+        for (i, item) in board.iter().enumerate().take(9) {
             for j in 0..9 {
-                let ch = board[i][j];
+                let ch = item[j];
                 if ch != '.' {
                     let number = ch as usize - 49; // '1' 转换 u8 为 49
                     if exists(&mut row, number, i)
@@ -269,7 +267,7 @@ impl Solution {
         }
 
         fn clockwise(
-            matrix: &Vec<Vec<i32>>,
+            matrix: &[Vec<i32>],
             result: &mut Vec<i32>,
             rows: usize,
             columns: usize,
@@ -283,8 +281,8 @@ impl Solution {
             }
             // 从上往下
             if start < end_y {
-                for i in start + 1..=end_y {
-                    result.push(matrix[i][end_x]);
+                for item in matrix.iter().take(end_y + 1).skip(start + 1) {
+                    result.push(item[end_x]);
                 }
             }
             // 从右往左

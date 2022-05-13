@@ -20,10 +20,10 @@ struct MinStack {
  */
 impl MinStack {
     fn new() -> Self {
-        return MinStack {
+        MinStack {
             data: Vec::new(),
             min: Vec::new(),
-        };
+        }
     }
 
     fn push(&mut self, val: i32) {
@@ -46,14 +46,14 @@ impl MinStack {
         if let Some(v) = self.data.last() {
             return *v;
         }
-        return 0;
+        0
     }
 
     fn min(&self) -> i32 {
         if let Some(v) = self.min.last() {
             return *v;
         }
-        return 0;
+        0
     }
 }
 

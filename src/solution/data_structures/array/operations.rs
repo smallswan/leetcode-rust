@@ -105,15 +105,15 @@ pub fn can_attend_meetings(intervals: Vec<Vec<i32>>) -> bool {
 pub fn min_cost(costs: Vec<Vec<i32>>) -> i32 {
     let (mut first, mut second, mut third) = (-1, -1, -1);
     let len = costs.len();
-    for i in 0..len {
+    for cost in costs.iter().take(len) {
         if first == -1 {
-            first = costs[i][0];
-            second = costs[i][1];
-            third = costs[i][2];
+            first = cost[0];
+            second = cost[1];
+            third = cost[2];
         } else {
-            let t1 = (costs[i][0] + second).min(costs[i][0] + third);
-            let t2 = (costs[i][1] + first).min(costs[i][1] + third);
-            let t3 = (costs[i][2] + first).min(costs[i][2] + second);
+            let t1 = (cost[0] + second).min(cost[0] + third);
+            let t2 = (cost[1] + first).min(cost[1] + third);
+            let t3 = (cost[2] + first).min(cost[2] + second);
             first = t1;
             second = t2;
             third = t3;

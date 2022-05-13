@@ -7,8 +7,8 @@ pub fn jump(nums: Vec<i32>) -> i32 {
     let mut position = nums.len() - 1;
     let mut steps = 0;
     while position > 0 {
-        for i in 0..position {
-            if i + (nums[i] as usize) >= position {
+        for (i, num) in nums.iter().enumerate().take(position) {
+            if i + (*num as usize) >= position {
                 position = i;
                 steps += 1;
                 break;
@@ -27,8 +27,8 @@ pub fn jump_v2(nums: Vec<i32>) -> i32 {
     let mut end = 0;
     let mut max_position = 0;
     let mut steps = 0;
-    for i in 0..len - 1 {
-        max_position = max(max_position, i + (nums[i] as usize));
+    for (i, num) in nums.iter().enumerate().take(len - 1) {
+        max_position = max_position.max(i + (*num as usize));
         if i == end {
             end = max_position;
             steps += 1;
@@ -43,9 +43,9 @@ pub fn can_jump(nums: Vec<i32>) -> bool {
     let len = nums.len();
     let mut end = 0;
     let mut max_position = 0;
-    for i in 0..len {
+    for (i, num) in nums.iter().enumerate().take(len) {
         if i <= max_position {
-            max_position = max(max_position, i + (nums[i] as usize));
+            max_position = max_position.max(i + (*num as usize));
             if max_position >= len - 1 {
                 return true;
             }
@@ -314,8 +314,8 @@ pub fn valid_palindrome(s: String) -> bool {
 pub fn lemonade_change(bills: Vec<i32>) -> bool {
     let mut changes: Vec<(i32, i32)> = vec![(5, 0), (10, 0), (20, 0)];
     let len = bills.len();
-    for i in 0..len {
-        match bills[i] {
+    for bill in bills.iter().take(len) {
+        match bill {
             5 => {
                 changes[0].1 += 1;
             }
