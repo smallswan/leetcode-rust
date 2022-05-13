@@ -106,7 +106,7 @@ pub fn find_repeat_number_v3(nums: Vec<i32>) -> i32 {
 
 /// 剑指 Offer 04. 二维数组中的查找 https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/
 pub fn find_number_in2_d_array(matrix: Vec<Vec<i32>>, target: i32) -> bool {
-    if matrix.len() == 0 || matrix[0].len() == 0 {
+    if matrix.is_empty() || matrix[0].is_empty() {
         return false;
     }
     let (m, n) = (matrix.len(), matrix[0].len());
@@ -342,15 +342,15 @@ pub fn get_least_numbers_v2(arr: Vec<i32>, k: i32) -> Vec<i32> {
         return vec![];
     }
     let mut heap = BinaryHeap::new();
-    for i in 0..k as usize {
-        heap.push(arr[i]);
+    for item in arr.iter().take(k as usize) {
+        heap.push(*item);
     }
 
-    for i in k as usize..len {
+    for item in arr.iter().take(len).skip(k as usize) {
         if let Some(&top) = heap.peek() {
-            if top > arr[i] {
+            if top > *item {
                 heap.pop();
-                heap.push(arr[i]);
+                heap.push(*item);
             }
         }
     }
@@ -403,9 +403,9 @@ impl MedianFinder {
     fn find_median(&self) -> f64 {
         if self.max_heap.len() != self.min_heap.len() {
             if let Some(Reverse(peek)) = self.min_heap.peek() {
-                return *peek as f64;
+                *peek as f64
             } else {
-                return 0f64;
+                0f64
             }
         } else {
             match (self.max_heap.peek(), self.min_heap.peek()) {
@@ -481,10 +481,13 @@ pub fn first_uniq_char(s: String) -> char {
 pub fn first_uniq_char_v2(s: String) -> char {
     let mut map: HashMap<char, i32> = HashMap::new();
     for (i, c) in s.chars().enumerate() {
-        if map.contains_key(&c) {
-            map.insert(c, -1);
-        } else {
-            map.insert(c, i as i32);
+        match map.entry(c) {
+            std::collections::hash_map::Entry::Occupied(mut e) => {
+                e.insert(-1);
+            }
+            std::collections::hash_map::Entry::Vacant(e) => {
+                e.insert(i as i32);
+            }
         }
     }
     let mut first = s.len() as i32;
@@ -656,12 +659,12 @@ pub fn find_continuous_sequence(target: i32) -> Vec<Vec<i32>> {
 
 /// 剑指 Offer 58 - I. 翻转单词顺序 https://leetcode-cn.com/problems/fan-zhuan-dan-ci-shun-xu-lcof/
 pub fn reverse_words(s: String) -> String {
-    let mut words: Vec<&str> = s.split(" ").collect();
+    let mut words: Vec<&str> = s.split(' ').collect();
     let mut result = String::new();
     words.reverse();
     for word in words {
         // 注意：按照" "分割，结果中空字符串为""而不是" "
-        if word != "" {
+        if !word.is_empty() {
             result = format!("{} {}", result, word);
         }
     }

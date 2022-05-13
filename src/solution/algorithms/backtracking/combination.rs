@@ -45,7 +45,7 @@ impl Solution {
     }
 
     fn backtrack(
-        seq: &Vec<i32>,
+        seq: &[i32],
         target: i32,
         mut curr: Vec<i32>,
         result: &mut Vec<Vec<i32>>,

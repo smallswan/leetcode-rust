@@ -39,7 +39,7 @@ pub fn longest_palindrome(s: String) -> String {
     let s = s.as_bytes();
     // 遍历每个字符，找出以当前字符为中点的最长回文字符串
     for i in 0..s.len() {
-        let r = longest_of(i, &s);
+        let r = longest_of(i, s);
         if r.1 - r.0 > range.1 - range.0 {
             range = r;
         }

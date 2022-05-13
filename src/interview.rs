@@ -8,13 +8,13 @@ pub fn compress_string(s: String) -> String {
     let mut cnt = 1;
     let mut ch = chars[0];
     let mut ans = String::new();
-    for i in 1..len {
-        if ch == chars[i] {
+    for item in chars.iter().take(len).skip(1) {
+        if ch == *item {
             cnt += 1;
         } else {
             ans.push(ch);
             ans.push_str(&format!("{}", cnt));
-            ch = chars[i];
+            ch = *item;
             cnt = 1;
         }
     }

@@ -14,9 +14,9 @@ pub fn is_palindrome(head: Option<Box<ListNode>>) -> bool {
     let len = vec.len();
     for i in 0..len {
         let mut new_vec = Vec::with_capacity(len - 1);
-        for j in 0..len {
+        for (j, item) in vec.iter().enumerate().take(len) {
             if j != i {
-                new_vec.push(vec[j]);
+                new_vec.push(*item);
             }
         }
 
@@ -25,7 +25,7 @@ pub fn is_palindrome(head: Option<Box<ListNode>>) -> bool {
         }
     }
     //
-    fn is_palindrome_vec(data: &Vec<i32>) -> bool {
+    fn is_palindrome_vec(data: &[i32]) -> bool {
         let (mut i, mut j) = (0, data.len() - 1);
         while i < j {
             if data[i] == data[j] {
@@ -283,9 +283,9 @@ pub fn perfect_menu(
     }
 
     if max_x > 0 {
-        return max_x;
+        max_x
     } else {
-        return -1;
+        -1
     }
 }
 
@@ -295,7 +295,7 @@ pub fn perfect_menu(
 pub fn time_sort(times: Vec<String>) -> Vec<String> {
     let mut result = Vec::<String>::with_capacity(times.len());
     times.into_iter().for_each(|time| {
-        let hms: Vec<&str> = time.split(":").collect();
+        let hms: Vec<&str> = time.split(':').collect();
         //重新构造时间格式为"秒:分钟:小时"，方便后续的排序
         result.push(format!("{}:{}:{}", hms[2], hms[1], hms[0]));
     });
@@ -362,9 +362,9 @@ pub fn intersection(nums: Vec<Vec<i32>>) -> Vec<i32> {
     let len = nums.len();
     let first = nums[0].clone();
     let mut set: HashSet<i32> = HashSet::from_iter(first);
-    for i in 1..len {
+    for item in nums.iter().take(len).skip(1) {
         //仅保留当前数组中存在的
-        set.retain(|num| nums[i].contains(num));
+        set.retain(|num| item.contains(num));
     }
 
     //排序
@@ -380,13 +380,9 @@ pub fn count_lattice_points(circles: Vec<Vec<i32>>) -> i32 {
     let mut count = 0;
     for x in 0..=200 {
         for y in 0..=200 {
-            for c in 0..len {
+            for circle in circles.iter().take(len) {
                 //let circle = circles[c].clone();
-                let (a, b, c) = (
-                    (circles[c][0] - x).abs(),
-                    (circles[c][1] - y).abs(),
-                    circles[c][2],
-                );
+                let (a, b, c) = ((circle[0] - x).abs(), (circle[1] - y).abs(), circle[2]);
                 if a * a + b * b <= c * c {
                     count += 1;
                 }
@@ -481,7 +477,7 @@ pub fn minimum_average_difference(nums: Vec<i32>) -> i32 {
         acc += nums[i];
         let avg1 = acc / (i + 1) as i32;
         let count2 = if i == len - 1 {
-            1 as i32
+            1
         } else {
             (len - i) as i32 - 1
         };
@@ -600,8 +596,8 @@ pub fn full_bloom_flowers(flowers: Vec<Vec<i32>>, persons: Vec<i32>) -> Vec<i32>
     }
 
     let mut sum = 0;
-    let mut id = vec![];
-    id.push(0);
+    let mut id = vec![0];
+
     map.insert(0, 0);
     for (key, value) in map.iter_mut() {
         *value += sum;
@@ -609,7 +605,7 @@ pub fn full_bloom_flowers(flowers: Vec<Vec<i32>>, persons: Vec<i32>) -> Vec<i32>
         id.push(*key);
     }
 
-    fn binary_search(a: &Vec<i32>, target: i32) -> usize {
+    fn binary_search(a: &[i32], target: i32) -> usize {
         let n = a.len();
         let (mut l, mut r) = (0, n);
         while l < r {

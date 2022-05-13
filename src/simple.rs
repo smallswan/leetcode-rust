@@ -58,7 +58,7 @@ pub fn length_of_longest_substring(s: String) -> i32 {
     let mut i = 0;
     let len = s.len();
     while i < len - 1 {
-        let (len, next) = get_len(i, &s);
+        let (len, next) = get_len(i, s);
         if len > ret {
             ret = len;
         }
@@ -113,9 +113,9 @@ pub fn longest_common_prefix_v2(strs: Vec<String>) -> String {
     let mut prefix = &strs[0][..];
     let len_of_prefix = prefix.len();
     for i in 0..len_of_prefix {
-        if let Some(ch) = prefix.bytes().nth(i) {
+        if let Some(ch) = prefix.as_bytes().get(i) {
             for item in strs.iter().take(len).skip(1) {
-                if i == item.len() || item.bytes().nth(i) != Some(ch) {
+                if i == item.len() || item.as_bytes().get(i) != Some(ch) {
                     return String::from(prefix.get(0..i).unwrap());
                 }
             }
@@ -507,10 +507,10 @@ pub fn is_anagram(s: String, t: String) -> bool {
     }
 
     for (key, val) in s_map.iter() {
-        if !t_map.contains_key(&key) {
+        if !t_map.contains_key(key) {
             return false;
         }
-        if let Some(val2) = t_map.get(&key) {
+        if let Some(val2) = t_map.get(key) {
             if val != val2 {
                 return false;
             }
@@ -620,9 +620,9 @@ pub fn reverse_vowels(s: String) -> String {
             left += 1;
             right -= 1;
         }
-        return chars.iter().collect();
+        chars.iter().collect()
     } else {
-        return s;
+        s
     }
 }
 
@@ -673,10 +673,10 @@ pub fn reverse_vowels_v3(s: String) -> String {
 }
 
 fn is_vowel(ch: u8) -> bool {
-    match ch {
-        b'a' | b'e' | b'i' | b'o' | b'u' | b'A' | b'E' | b'I' | b'O' | b'U' => true,
-        _ => false,
-    }
+    matches!(
+        ch,
+        b'a' | b'e' | b'i' | b'o' | b'u' | b'A' | b'E' | b'I' | b'O' | b'U'
+    )
 }
 
 /// 力扣（349. 两个数组的交集） https://leetcode-cn.com/problems/intersection-of-two-arrays/
@@ -773,7 +773,7 @@ pub fn first_uniq_char(s: String) -> i32 {
     use std::collections::HashMap;
     let mut counts_map = HashMap::<char, i32>::new();
     for ch in &chars {
-        match counts_map.get_mut(&ch) {
+        match counts_map.get_mut(ch) {
             Some(count) => *count += 1,
             None => {
                 counts_map.insert(*ch, 1);
@@ -888,7 +888,7 @@ pub fn read_binary_watch(turned_on: i32) -> Vec<String> {
     // turned_on = hour + minute;
     for hour in (0i32..=3i32) {
         let mut minute = turned_on - hour;
-        if minute >= 0 && minute <= 5 {
+        if (0..=5).contains(&minute) {
             for h in &hour_turn_on[hour as usize] {
                 for m in &minute_turn_on[minute as usize] {
                     result.push(format!("{}:{}", h, m));
@@ -911,8 +911,8 @@ pub fn find_disappeared_numbers(nums: Vec<i32>) -> Vec<i32> {
         appear[num as usize] = true;
     }
 
-    for i in 1..=len {
-        if !appear[i] {
+    for (i, item) in appear.iter().enumerate().take(len + 1).skip(1) {
+        if !item {
             result.push(i as i32);
         }
     }

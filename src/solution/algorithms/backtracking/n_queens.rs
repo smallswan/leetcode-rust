@@ -20,7 +20,7 @@ impl Solution {
 
     fn schedule_queens_v2(board: &mut Vec<Vec<char>>, num: &mut i32, len: usize, row: usize) {
         for col in 0..len {
-            if !Solution::collision(&board, len, row, col) {
+            if !Solution::collision(board, len, row, col) {
                 board[row][col] = 'Q';
                 if row == len - 1 {
                     *num += 1;
@@ -39,7 +39,7 @@ impl Solution {
         row: usize,
     ) {
         for col in 0..len {
-            if !Solution::collision(&board, len, row, col) {
+            if !Solution::collision(board, len, row, col) {
                 board[row][col] = 'Q';
                 if row == len - 1 {
                     solution.push(board.iter().map(|vec| vec.iter().collect()).collect());
@@ -53,10 +53,10 @@ impl Solution {
 
     /// 判断冲突
     #[inline(always)]
-    fn collision(board: &Vec<Vec<char>>, len: usize, x: usize, y: usize) -> bool {
+    fn collision(board: &[Vec<char>], len: usize, x: usize, y: usize) -> bool {
         // 同一列
-        for i in 0..x {
-            if board[i][y] == 'Q' {
+        for item in board.iter().take(x) {
+            if item[y] == 'Q' {
                 return true;
             }
         }

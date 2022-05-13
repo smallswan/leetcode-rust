@@ -56,7 +56,7 @@ pub fn is_match(s: String, p: String) -> bool {
                 }
             }
             _ => {
-                println!("{}", "error".to_string());
+                println!("{}", "error");
             }
         }
     }
@@ -209,8 +209,8 @@ pub fn minimum_total(triangle: Vec<Vec<i32>>) -> i32 {
         dp[0] += triangle[i][0];
     }
     let mut min_total = dp[0];
-    for i in 1..len {
-        min_total = min_total.min(dp[i]);
+    for item in dp.iter().take(len).skip(1) {
+        min_total = min_total.min(*item);
     }
     min_total
 }

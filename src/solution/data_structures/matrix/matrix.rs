@@ -34,8 +34,8 @@ impl Solution {
         };
 
         for (i, item) in board.iter().enumerate().take(9) {
-            for j in 0..9 {
-                let ch = item[j];
+            for (j, item) in item.iter().enumerate().take(9) {
+                let ch = *item;
                 if ch != '.' {
                     let number = ch as usize - 49; // '1' 转换 u8 为 49
                     if exists(&mut row, number, i)
