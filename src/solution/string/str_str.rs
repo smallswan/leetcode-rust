@@ -62,7 +62,7 @@ pub fn str_str(haystack: String, needle: String) -> i32 {
 pub fn str_str_v2(haystack: String, needle: String) -> i32 {
     match haystack.find(&needle) {
         Some(index) => index as i32,
-        None => return -1,
+        None => -1,
     }
 }
 
@@ -80,11 +80,11 @@ pub fn str_str_v3(haystack: String, needle: String) -> i32 {
     let mut pi = vec![0; m];
     let (mut i, mut j) = (1, 0);
     while i < m {
-        while j > 0 && (&needle_chars[i] != &needle_chars[j]) {
+        while j > 0 && (needle_chars[i] != needle_chars[j]) {
             j = pi[j - 1];
         }
         // 如果 s[i]=s[π(i−1)]，那么 π(i)=π(i−1)+1。
-        if &needle_chars[i] == &needle_chars[j] {
+        if needle_chars[i] == needle_chars[j] {
             j += 1;
         }
         pi[i] = j;
@@ -93,10 +93,10 @@ pub fn str_str_v3(haystack: String, needle: String) -> i32 {
 
     let (mut i, mut j) = (0, 0);
     while i < n {
-        while j > 0 && (&haystack_chars[i] != &needle_chars[j]) {
+        while j > 0 && (haystack_chars[i] != needle_chars[j]) {
             j = pi[j - 1];
         }
-        if &haystack_chars[i] == &needle_chars[j] {
+        if haystack_chars[i] == needle_chars[j] {
             j += 1;
         }
         if (j == m) {
@@ -114,7 +114,7 @@ pub fn find_substring(s: String, words: Vec<String>) -> Vec<i32> {
     use std::collections::HashMap;
     let mut bytes = s.chars().collect::<Vec<char>>();
     let mut result: Vec<i32> = Vec::new();
-    if s.len() == 0 || words.len() == 0 {
+    if s.is_empty() || words.is_empty() {
         return result;
     }
 
@@ -145,7 +145,7 @@ pub fn find_substring(s: String, words: Vec<String>) -> Vec<i32> {
 
                 count += 1;
 
-                while &tmp_map.get(&w.clone()).unwrap_or(&0) > &map.get(&w.clone()).unwrap_or(&0) {
+                while tmp_map.get(&w.clone()).unwrap_or(&0) > map.get(&w.clone()).unwrap_or(&0) {
                     let t_w: String = bytes.iter().skip(left).take(one_word).collect();
                     count -= 1;
                     let t_w_str = t_w.clone();
@@ -242,14 +242,16 @@ fn hash(mut s: String) -> u16 {
 }
 
 /// 392. 判断子序列  https://leetcode-cn.com/problems/is-subsequence/
+use std::cmp::Ordering;
 pub fn is_subsequence(s: String, t: String) -> bool {
     let mut s_chars: Vec<char> = s.chars().collect::<Vec<char>>();
     let mut t_chars: Vec<char> = t.chars().collect::<Vec<char>>();
     let (s_len, t_len) = (s_chars.len(), t_chars.len());
-    if s_len > t_len {
-        return false;
-    } else if s_len == t_len {
-        return s == t;
+
+    match s_len.cmp(&t_len) {
+        Ordering::Greater => return false,
+        Ordering::Equal => return s == t,
+        Ordering::Less => (),
     }
 
     let (mut i, mut j) = (0, 0);

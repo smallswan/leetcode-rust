@@ -140,17 +140,18 @@ impl DiscountSystem {
 
             self.activities.values().for_each(|value| {
                 let sum = value.consume_records.iter().sum::<i32>();
-                if cost >= value.price_limit && sum < value.number {
-                    if value.consume_records[(user_id as usize)] < value.user_limit {
-                        if value.discount > max_discount {
-                            // 若同时满足多个优惠活动时，则优先参加优惠减免最大的活动
-                            max_discount = value.discount;
+                if cost >= value.price_limit
+                    && sum < value.number
+                    && value.consume_records[(user_id as usize)] < value.user_limit
+                {
+                    if value.discount > max_discount {
+                        // 若同时满足多个优惠活动时，则优先参加优惠减免最大的活动
+                        max_discount = value.discount;
+                        min_act_id = value.act_id;
+                    } else if value.discount == max_discount {
+                        // 相同折扣优先使用act_id小的
+                        if value.act_id < min_act_id {
                             min_act_id = value.act_id;
-                        } else if value.discount == max_discount {
-                            // 相同折扣优先使用act_id小的
-                            if value.act_id < min_act_id {
-                                min_act_id = value.act_id;
-                            }
                         }
                     }
                 }

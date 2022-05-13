@@ -114,7 +114,7 @@ pub fn find_number_in2_d_array(matrix: Vec<Vec<i32>>, target: i32) -> bool {
     let mut col = n - 1;
     let mut max_in_row = matrix[row][col];
 
-    while row <= m - 1 {
+    while row < m {
         match max_in_row.cmp(&target) {
             Ordering::Equal => return true,
             Ordering::Greater => {
@@ -571,12 +571,10 @@ pub fn missing_number_v2(nums: Vec<i32>) -> i32 {
 
         if nums[middle] == (middle as i32) {
             i = middle + 1;
+        } else if middle > 0 {
+            j = middle - 1;
         } else {
-            if middle > 0 {
-                j = middle - 1;
-            } else {
-                break;
-            }
+            break;
         }
     }
 

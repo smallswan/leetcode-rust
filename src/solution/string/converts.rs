@@ -1,5 +1,7 @@
 //! 字符串与其他类型之间的想换转换
 
+use std::cmp::Ordering;
+
 pub struct Solution;
 
 enum State {
@@ -243,25 +245,24 @@ impl Solution {
 
     /// 165. 比较版本号 https://leetcode-cn.com/problems/compare-version-numbers/submissions/
     pub fn compare_version(version1: String, version2: String) -> i32 {
-        let v1: Vec<&str> = version1.split(".").collect();
-        let v2: Vec<&str> = version2.split(".").collect();
+        let v1: Vec<&str> = version1.split('.').collect();
+        let v2: Vec<&str> = version2.split('.').collect();
         let (len1, len2) = (v1.len(), v2.len());
         let mut i = 0;
         while i < len1 || i < len2 {
             let (mut x, mut y) = (0, 0);
             if i < len1 {
-                x = i32::from_str_radix(v1[i], 10).unwrap();
+                x = v1[i].parse::<i32>().unwrap();
             }
             if i < len2 {
-                y = i32::from_str_radix(v2[i], 10).unwrap();
-            }
-            if x > y {
-                return 1;
-            } else if x < y {
-                return -1;
+                y = v2[i].parse::<i32>().unwrap();
             }
 
-            i += 1;
+            match x.cmp(&y) {
+                Ordering::Greater => return 1,
+                Ordering::Less => return -1,
+                Ordering::Equal => i += 1,
+            }
         }
 
         0
@@ -598,11 +599,11 @@ impl Solution {
         for word in &wordlist {
             capitalized
                 .entry(word.to_ascii_uppercase())
-                .or_insert(word.as_str());
+                .or_insert_with(|| word.as_str());
 
             vowels
                 .entry(word.to_ascii_uppercase().replace(['E', 'I', 'O', 'U'], "A"))
-                .or_insert(word.as_str());
+                .or_insert_with(|| word.as_str());
         }
 
         let mut result = queries;

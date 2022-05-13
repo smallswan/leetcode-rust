@@ -132,12 +132,10 @@ pub fn search_in_rotated_sorted_array(nums: Vec<i32>, target: i32) -> i32 {
             } else {
                 left = middle + 1;
             }
+        } else if nums[middle] < target && target <= nums[right] {
+            left = middle + 1;
         } else {
-            if nums[middle] < target && target <= nums[right] {
-                left = middle + 1;
-            } else {
-                right = middle - 1;
-            }
+            right = middle - 1;
         }
     }
 

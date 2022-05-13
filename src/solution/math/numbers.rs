@@ -624,7 +624,7 @@ pub fn convert_to_base7(num: i32) -> String {
     }
 
     if negative {
-        digits.push_str("-");
+        digits.push('-');
     }
     digits.chars().rev().collect()
 }

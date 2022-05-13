@@ -135,7 +135,7 @@ pub fn first_missing_positive(nums: Vec<i32>) -> i32 {
             return (i + 1) as i32;
         }
     }
-    return (len + 1) as i32;
+    (len + 1) as i32
 }
 
 /// 41. 缺失的第一个正数
@@ -237,7 +237,7 @@ fn zero_tail(s1: String, s2: String) -> (String, String, usize) {
         }
         if tmp > 0 {
             zero_cnt += tmp;
-            *s = format!("{}", &s[..s.len() - tmp]);
+            *s = (&s[..s.len() - tmp]).to_string();
         }
     }
     (v[0].clone(), v[1].clone(), zero_cnt)
@@ -1184,10 +1184,8 @@ pub fn print_numbers_v2(n: i32) -> Vec<i32> {
                 result.push(number.parse().unwrap());
             }
 
-            if len - (*start) == (*nine) {
-                if (*start > 0) {
-                    *start -= 1;
-                }
+            if len - (*start) == (*nine) && (*start > 0) {
+                *start -= 1;
             }
             return;
         }

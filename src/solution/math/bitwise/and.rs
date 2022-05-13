@@ -181,9 +181,9 @@ pub fn valid_utf8_v2(data: Vec<i32>) -> bool {
     let bytes: Vec<u8> = data.into_iter().map(|b| b as u8).collect();
     if let Ok(utf8_str) = String::from_utf8(bytes) {
         dbg!(utf8_str);
-        return true;
+        true
     } else {
-        return false;
+        false
     }
 }
 

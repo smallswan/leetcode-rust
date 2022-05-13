@@ -231,11 +231,12 @@ pub fn subset_xor_sum_v2(nums: Vec<i32>) -> i32 {
     let two_pow_n = 1 << n;
     for i in 0..two_pow_n {
         let mut temp = 0;
-        for j in 0..n {
+        for (j, item) in nums.iter().enumerate().take(n) {
             if i & (1 << j) != 0 {
-                temp ^= nums[j];
+                temp ^= item;
             }
         }
+
         xor_sum += temp;
     }
     xor_sum

@@ -246,8 +246,6 @@ pub fn kth_largest(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
             }
 
             dfs(node.borrow_mut().left.take(), result, over, k);
-        } else {
-            return;
         }
     }
 
@@ -279,8 +277,8 @@ pub fn get_number(root: Option<Rc<RefCell<TreeNode>>>, ops: Vec<Vec<i32>>) -> i3
         let end = counter.partition_point(|&num| num >= y);
         println!("{begin} to {end}");
 
-        for i in begin..end {
-            colors[i] = t;
+        for item in colors.iter_mut().take(end).skip(begin) {
+            *item = t;
         }
     }
 

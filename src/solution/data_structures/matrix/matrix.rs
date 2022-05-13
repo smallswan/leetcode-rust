@@ -306,7 +306,7 @@ impl Solution {
             }
             if start < end_x && start < end_y - 1 {
                 let mut i = end_y - 1;
-                while i >= start + 1 {
+                while i > start {
                     result.push(matrix[i][start]);
                     if i > 0 {
                         i -= 1;

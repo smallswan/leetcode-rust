@@ -33,7 +33,7 @@ impl TreeNode {
                 }
             }
         }
-        dfs(&root)
+        dfs(root)
     }
 }
 
@@ -63,28 +63,27 @@ pub fn is_same_tree(p: Option<Rc<RefCell<TreeNode>>>, q: Option<Rc<RefCell<TreeN
                 return false;
             }
 
-            return is_same_tree(x_b.left.take(), y_b.left.take())
-                && is_same_tree(x_b.right.take(), y_b.right.take());
+            is_same_tree(x_b.left.take(), y_b.left.take())
+                && is_same_tree(x_b.right.take(), y_b.right.take())
         }
-        (None, None) => return true,
-        (_, _) => return false,
+        (None, None) => true,
+        (_, _) => false,
     }
-    return false;
 }
 
 fn symmetric(l: Option<Rc<RefCell<TreeNode>>>, r: Option<Rc<RefCell<TreeNode>>>) -> bool {
     match (l.as_ref(), r.as_ref()) {
-        (None, None) => return true,
+        (None, None) => true,
         (Some(x), Some(y)) => {
             if x.borrow_mut().val != y.borrow_mut().val {
                 return false;
             }
             let (mut x_b, mut y_b) = (x.borrow_mut(), y.borrow_mut());
             // 左 = 右，右 = 左
-            return symmetric(x_b.left.take(), y_b.right.take())
-                && symmetric(x_b.right.take(), y_b.left.take());
+            symmetric(x_b.left.take(), y_b.right.take())
+                && symmetric(x_b.right.take(), y_b.left.take())
         }
-        (_, _) => return false,
+        (_, _) => false,
     }
 }
 
@@ -97,7 +96,7 @@ pub fn is_symmetric(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
 
     let mut r_b = root.as_ref().unwrap().borrow_mut();
     let (l, r) = (r_b.left.take(), r_b.right.take());
-    return symmetric(l, r);
+    symmetric(l, r)
 }
 
 /// 102. 二叉树的层序遍历 https://leetcode-cn.com/problems/binary-tree-level-order-traversal/
@@ -179,7 +178,7 @@ pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
         traverse(r, max_depth, parent_depth + 1);
     }
     traverse(root, &mut max_depth, 0);
-    return max_depth;
+    max_depth
 }
 
 fn build_tree_helper(preorder: &[i32], inorder: &[i32]) -> Option<Rc<RefCell<TreeNode>>> {
@@ -264,12 +263,12 @@ pub fn is_balanced(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
             match pair {
                 (Some(left), Some(right)) => {
                     if i32::abs(left - right) < 2 {
-                        return Some(i32::max(left, right) + 1);
+                        Some(i32::max(left, right) + 1)
                     } else {
-                        return None;
+                        None
                     }
                 }
-                _ => return None,
+                _ => None,
             }
         } else {
             Some(0)
@@ -457,7 +456,7 @@ pub fn count_nodes(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     }
     let mut r_b = root.as_ref().unwrap().borrow_mut();
     let (mut l, mut r) = (r_b.left.take(), r_b.right.take());
-    return count_nodes(l) + count_nodes(r) + 1;
+    count_nodes(l) + count_nodes(r) + 1
 }
 
 /// 222. 完全二叉树的节点个数
@@ -682,7 +681,7 @@ pub fn mirror_tree(root: Option<Rc<RefCell<TreeNode>>>) -> Option<Rc<RefCell<Tre
             if tmp_node.right.is_some() {
                 mirror_tree(tmp_node.right.clone());
             }
-            return Some(node.clone());
+            Some(node.clone())
         }
     }
 }
