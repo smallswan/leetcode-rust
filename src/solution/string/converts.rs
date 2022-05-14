@@ -426,13 +426,14 @@ impl Solution {
     }
 
     fn is_concatenated_word(root: &Node, word: &[u8], cache: &mut Vec<bool>) -> bool {
-        if word.len() < 2 {
+        let len = word.len();
+        if len < 2 {
             false
         } else {
-            cache.reserve(word.len() + 1);
+            cache.reserve(len + 1);
             cache.push(true);
 
-            for end in 1..=word.len() {
+            for end in 1..=len {
                 cache.push(cache[..end].iter().enumerate().any(|(start, &value)| {
                     value && Self::trie_contains_word(root, &word[start..end])
                 }));

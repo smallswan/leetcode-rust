@@ -88,6 +88,9 @@
 |       | - [222. 完全二叉树的节点个数](https://leetcode-cn.com/problems/count-complete-tree-nodes/ ) |  |
 |       | - [226. 翻转二叉树 ](https://leetcode-cn.com/problems/invert-binary-tree/ ) |  | 
 |       | - [655. 输出二叉树](https://leetcode-cn.com/problems/print-binary-tree/) |  |
+| 字典树|  | |
+|       | - [208. 实现 Trie (前缀树)](https://leetcode.cn/problems/implement-trie-prefix-tree/ ) |  |
+|       | - [472. 连接词](https://leetcode-cn.com/problems/concatenated-words/ ) |  |
 |  ----  | ----  | ----  |
 | 矩阵|  | [解决方案](src/solution/data_structures/matrix/matrix.rs) |
 | | - [36. 有效的数独](https://leetcode-cn.com/problems/valid-sudoku/ ) |  |
