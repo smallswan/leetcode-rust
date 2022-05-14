@@ -298,6 +298,31 @@ pub fn repeated_substring_pattern(s: String) -> bool {
     t.contains(&s)
 }
 
+/// 1371. 每个元音包含偶数次的最长子字符串 https://leetcode.cn/problems/find-the-longest-substring-containing-vowels-in-even-counts/
+pub fn find_the_longest_substring(s: String) -> i32 {
+    let len = s.len();
+    let mut pos = vec![-1; 1 << 5];
+    let (mut ans, mut status) = (0, 0);
+    pos[0] = 0;
+    for (i, ch) in s.as_bytes().iter().enumerate() {
+        match ch {
+            b'a' => status ^= (1 << 0),
+            b'e' => status ^= (1 << 1),
+            b'i' => status ^= (1 << 2),
+            b'o' => status ^= (1 << 3),
+            b'u' => status ^= (1 << 4),
+            _ => (),
+        }
+        if pos[status] >= 0 {
+            ans = ans.max((i as i32) + 1 - pos[status])
+        } else {
+            pos[status] = (i as i32) + 1;
+        }
+    }
+
+    ans
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
