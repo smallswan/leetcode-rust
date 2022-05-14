@@ -350,6 +350,29 @@ pub fn lemonade_change(bills: Vec<i32>) -> bool {
     true
 }
 
+/// 942. 增减字符串匹配 https://leetcode.cn/problems/di-string-match/
+/// 贪心算法
+pub fn di_string_match(s: String) -> Vec<i32> {
+    let len = s.len();
+    let mut result = Vec::with_capacity(len + 1);
+    let mut min = 0;
+    let mut max = len as i32;
+
+    for c in s.bytes() {
+        if c == b'D' {
+            result.push(max);
+            max -= 1;
+        } else {
+            result.push(min);
+            min += 1;
+        }
+    }
+
+    result.push(min);
+
+    result
+}
+
 /// 976. 三角形的最大周长 https://leetcode-cn.com/problems/largest-perimeter-triangle/
 /// 我们假设三角形的边长 a,b,c 满足 a≤b≤c，那么这三条边组成面积不为零的三角形的充分必要条件为 a+b>c
 pub fn largest_perimeter(nums: Vec<i32>) -> i32 {

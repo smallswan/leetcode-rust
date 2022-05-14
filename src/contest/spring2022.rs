@@ -454,6 +454,7 @@ pub fn count_rectangles_v2(rectangles: Vec<Vec<i32>>, points: Vec<Vec<i32>>) -> 
 }
 
 /// 6051. 统计是给定字符串前缀的字符串数目 https://leetcode-cn.com/problems/count-prefixes-of-a-given-string/
+/// 2255. 统计是给定字符串前缀的字符串数目 https://leetcode.cn/problems/count-prefixes-of-a-given-string/
 pub fn count_prefixes(words: Vec<String>, s: String) -> i32 {
     let s_bytes = s.as_bytes();
     words

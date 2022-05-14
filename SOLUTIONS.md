@@ -175,6 +175,7 @@
 | | - [561. 数组拆分 I](https://leetcode-cn.com/problems/array-partition-i/ ) |  |
 | | - [605. 种花问题](https://leetcode-cn.com/problems/can-place-flowers/ ) |  |
 | | - [680. 验证回文字符串 Ⅱ](https://leetcode-cn.com/problems/valid-palindrome-ii/ ) |  |
+| | - [942. 增减字符串匹配](https://leetcode.cn/problems/di-string-match/ ) |  |
 | | - [976. 三角形的最大周长](https://leetcode-cn.com/problems/largest-perimeter-triangle/ ) |  |
 | | - []( ) |  |
 |  ----  | ----  | ----  |
