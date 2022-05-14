@@ -10,7 +10,7 @@
 | 哈希集合 |  |  |
 | 树 |  |  |
 |   |二叉树  |  |
-|   |字典树  |  |
+|   |字典树  | [208. 实现 Trie (前缀树)](src/solution/data_structures/trees/trie.rs) |
 | 堆 |  |  |
 |  | 小顶堆 |  |
 |  | 大顶堆 |  |

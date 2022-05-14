@@ -1,5 +1,5 @@
 # leet-code-rust
-A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved in [Rust](Rust).
+A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved in [Rust](https://www.rust-lang.org/).
 
 ## 特性（Features）
 - 按照数据结构、算法划分模块（而不是常规的每一道题一个模块，大大减少了模块数量），更加便于解题和后期归纳总结；
@@ -64,7 +64,7 @@ A collection of [LeetCode](https://leetcode-cn.com/) problems that I've solved i
 [大一计算机学生如何高效刷力扣？](https://www.zhihu.com/question/392882083/answer/1860538172 )	
 对于刷题，我们都是想用最短的时间把经典题目都做一篇，这样效率才是最高的！
 [leetcode-master](https://github.com/youngyangyang04/leetcode-master )
-
+[RustBook](https://github.com/QMHTMY/RustBook )  Rust数据结构和算法
 
 ## 代码阅读
 - 代码按照数据结构、算法、数学等分成大小不同的模块写在对应的.rs文件中；
