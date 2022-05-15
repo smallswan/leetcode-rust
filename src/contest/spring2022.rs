@@ -639,6 +639,23 @@ pub fn full_bloom_flowers(flowers: Vec<Vec<i32>>, persons: Vec<i32>) -> Vec<i32>
     ans
 }
 
+/// 5234. 移除字母异位词后的结果数组 https://leetcode.cn/problems/find-resultant-array-after-removing-anagrams/
+pub fn remove_anagrams(words: Vec<String>) -> Vec<String> {
+    let mut word_anagram: Vec<(&String, String)> = words
+        .iter()
+        .map(|word| {
+            let mut bytes: Vec<u8> = word.bytes().collect();
+            bytes.sort_unstable();
+            let anagram = String::from_utf8(bytes).unwrap();
+            (word, anagram)
+        })
+        .collect();
+
+    word_anagram.dedup_by_key(|pair| pair.1.to_owned());
+
+    word_anagram.iter().map(|pair| pair.0.to_owned()).collect()
+}
+
 /**
  * Your DiscountSystem object will be instantiated and called as such:
  * let obj = DiscountSystem::new();
