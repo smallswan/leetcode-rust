@@ -190,3 +190,16 @@
 | | - [338. 比特位计数](https://leetcode-cn.com/problems/counting-bits/) | | 
 | | - [2100. 适合打劫银行的日子](https://leetcode-cn.com/problems/find-good-days-to-rob-the-bank/ ) |  |
 | | - []( ) |  |
+|  ----  | ----  | ----  |
+| 回溯|  | [解决方案](src/solution/algorithms/backtracking/mod.rs ) |
+| | - [39. 组合总和](https://leetcode-cn.com/problems/combination-sum/ ) |  |
+| | - [40. 组合总和 II](https://leetcode-cn.com/problems/combination-sum-ii/ ) |  |
+| | - [46. 全排列](https://leetcode-cn.com/problems/permutations/ ) |  |
+| | - [47. 全排列 II](https://leetcode-cn.com/problems/permutations-ii/ ) |  |
+| | - [51. N 皇后](https://leetcode-cn.com/problems/n-queens/ ) |  |
+| | - [52. N皇后 II](https://leetcode-cn.com/problems/n-queens-ii/ ) |  |
+| | - [60. 排列序列](https://leetcode-cn.com/problems/permutation-sequence/ ) |  |
+| | - [77. 组合](https://leetcode-cn.com/problems/combinations/ ) |  |
+| | - []( ) |  |
+| | - []( ) |  |
+| | - [剑指 Offer 38. 字符串的排列](https://leetcode-cn.com/problems/zi-fu-chuan-de-pai-lie-lcof/ ) |  |
