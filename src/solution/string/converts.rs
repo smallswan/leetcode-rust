@@ -459,7 +459,7 @@ impl Solution {
     /// 方法一：字典树 + 记忆化搜索
     pub fn find_all_concatenated_words_in_a_dict(words: Vec<String>) -> Vec<String> {
         let mut words = words;
-
+        //String::len 函数指针
         words.sort_by_key(String::len);
 
         //字典树
@@ -543,6 +543,7 @@ impl Solution {
         let mut result = String::with_capacity(sentence.len() * 2);
 
         // map<i,word> => 闭包
+        // 此处map()以闭包为入参，并且返回闭包 
         let mut iter = sentence
             .split_ascii_whitespace()
             .enumerate()
