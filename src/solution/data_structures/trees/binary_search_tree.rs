@@ -5,8 +5,8 @@ use super::binary_tree::TreeNode;
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use crate::solution::data_structures::lists::list_to_vec;
 use crate::solution::data_structures::lists::ListNode;
+use crate::solution::data_structures::lists::{list_to_vec, vec_to_list};
 
 /// 173. 二叉搜索树迭代器 https://leetcode-cn.com/problems/binary-search-tree-iterator/
 pub struct BSTIterator {
@@ -132,6 +132,21 @@ impl Solution {
     pub fn sorted_list_to_bst(head: Option<Box<ListNode>>) -> Option<Rc<RefCell<TreeNode>>> {
         let nums: Vec<i32> = list_to_vec(head);
         Self::bst_helper(&nums[..])
+    }
+
+    /// 230. 二叉搜索树中第K小的元素 https://leetcode.cn/problems/kth-smallest-element-in-a-bst/
+    pub fn kth_smallest(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
+        fn traverse(root: Option<Rc<RefCell<TreeNode>>>, counter: &mut Vec<i32>) {
+            if let Some(node) = root {
+                traverse(node.borrow_mut().left.take(), counter);
+                counter.push(node.borrow_mut().val);
+                traverse(node.borrow_mut().right.take(), counter);
+            }
+        }
+
+        let mut counter = vec![];
+        traverse(root, &mut counter);
+        counter[(k - 1) as usize]
     }
 
     /// 501. 二叉搜索树中的众数 https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/
@@ -305,5 +320,32 @@ mod tests {
     fn trees() {
         let nums = vec![-10, -3, 0, 5, 9];
         Solution::sorted_array_to_bst(nums);
+
+        let four = TreeNode {
+            val: 4,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(1)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(2)))),
+        };
+
+        let six = TreeNode {
+            val: 6,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(7)))),
+            right: Some(Rc::new(RefCell::new(TreeNode::new(8)))),
+        };
+
+        let five = TreeNode {
+            val: 5,
+            left: Some(Rc::new(RefCell::new(four))),
+            right: Some(Rc::new(RefCell::new(six))),
+        };
+        let root = Rc::new(RefCell::new(five));
+
+        // 有序的数组切片 => 有序链表 => 二叉搜索树
+        // &[i32] => Option<Box<ListNode>> => Option<Rc<RefCell<TreeNode>>>
+        let sorted_nums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let sorted_linked_list = vec_to_list(&sorted_nums);
+
+        let bst = Solution::sorted_list_to_bst(sorted_linked_list);
+        dbg!("{:?}", bst);
     }
 }

@@ -543,7 +543,7 @@ impl Solution {
         let mut result = String::with_capacity(sentence.len() * 2);
 
         // map<i,word> => 闭包
-        // 此处map()以闭包为入参，并且返回闭包 
+        // 此处map()以闭包为入参，并且返回闭包
         let mut iter = sentence
             .split_ascii_whitespace()
             .enumerate()
