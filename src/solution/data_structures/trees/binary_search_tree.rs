@@ -149,6 +149,29 @@ impl Solution {
         counter[(k - 1) as usize]
     }
 
+    /// 230. 二叉搜索树中第K小的元素 https://leetcode.cn/problems/kth-smallest-element-in-a-bst/
+    pub fn kth_smallest_v2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
+        fn helper(root: Option<Rc<RefCell<TreeNode>>>, k: i32, res: &mut i32) -> i32 {
+            if k <= 0 {
+                return 0;
+            }
+            if let Some(node) = root {
+                let left = helper(node.borrow().left.clone(), k, res);
+                if left == 1 {
+                    *res = node.borrow().val;
+                }
+                let right = helper(node.borrow().right.clone(), left - 1, res);
+                right
+            } else {
+                k
+            }
+        }
+
+        let mut res = 0;
+        helper(root, k, &mut res);
+        res
+    }
+
     /// 501. 二叉搜索树中的众数 https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/
     pub fn find_mode(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
         let mut max_length = 0;
@@ -339,6 +362,7 @@ mod tests {
             right: Some(Rc::new(RefCell::new(six))),
         };
         let root = Rc::new(RefCell::new(five));
+        dbg!(Solution::kth_smallest(Some(root), 2));
 
         // 有序的数组切片 => 有序链表 => 二叉搜索树
         // &[i32] => Option<Box<ListNode>> => Option<Rc<RefCell<TreeNode>>>
@@ -346,6 +370,7 @@ mod tests {
         let sorted_linked_list = vec_to_list(&sorted_nums);
 
         let bst = Solution::sorted_list_to_bst(sorted_linked_list);
-        dbg!("{:?}", bst);
+        dbg!("{:?}", &bst);
+        dbg!(Solution::kth_smallest_v2(bst, 7));
     }
 }
