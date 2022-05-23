@@ -50,6 +50,13 @@ mod tests {
 
         dbg!(s_url_encode.replace(" ", "%20"));
     }
+
+    #[test]
+    fn test_hard() {
+        let nums = vec![1, 3, -1, -3, 5, 3, 6, 7];
+        let k = 0;
+        dbg!("{:?}", max_sliding_window(nums, k));
+    }
 }
 
 /// 剑指 Offer 03. 数组中重复的数字 https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/
@@ -677,6 +684,40 @@ pub fn reverse_left_words(s: String, n: i32) -> String {
     let mut chars: Vec<char> = s.chars().collect();
     chars.rotate_left(n as usize);
     chars.iter().collect()
+}
+
+use std::collections::vec_deque::VecDeque;
+/// 剑指 Offer 59 - I 滑动窗口的最大值 https://leetcode.cn/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof/
+pub fn max_sliding_window(nums: Vec<i32>, k: i32) -> Vec<i32> {
+    let mut max_in_window: Vec<i32> = vec![];
+    let len = nums.len();
+    let size = k as usize;
+    if len >= size && size >= 1 {
+        let mut index = VecDeque::<usize>::new();
+        for i in 0..size {
+            while !index.is_empty() && nums[i] >= nums[*index.back().unwrap()] {
+                index.pop_back();
+            }
+
+            index.push_back(i);
+        }
+
+        for i in size..len {
+            max_in_window.push(nums[*index.front().unwrap()]);
+            while !index.is_empty() && nums[i] >= nums[*index.back().unwrap()] {
+                index.pop_back();
+            }
+            if !index.is_empty() && ((*index.front().unwrap()) <= i - size) {
+                index.pop_front();
+            }
+
+            index.push_back(i);
+        }
+
+        max_in_window.push(nums[*index.front().unwrap()]);
+    }
+
+    max_in_window
 }
 
 use std::collections::HashSet;
