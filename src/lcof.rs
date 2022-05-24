@@ -56,6 +56,8 @@ mod tests {
         let nums = vec![1, 3, -1, -3, 5, 3, 6, 7];
         let k = 0;
         dbg!("{:?}", max_sliding_window(nums, k));
+
+        dbg!(last_remaining(5,3));
     }
 }
 
@@ -725,7 +727,7 @@ use std::collections::HashSet;
 /// 1.除大小王外，所有牌 无重复 ；
 /// 2.设此 5 张牌中最大的牌为 max ，最小的牌为 min （大小王除外），则需满足：
 pub fn is_straight(nums: Vec<i32>) -> bool {
-    let mut reapt = HashSet::new();
+    let mut reapt = HashSet::with_capacity(5);
     let (mut min, mut max) = (14, 0);
     for num in nums {
         if num == 0 {
@@ -753,11 +755,12 @@ pub fn is_straight(nums: Vec<i32>) -> bool {
 /// 剑指 Offer 62. 圆圈中最后剩下的数字  https://leetcode-cn.com/problems/yuan-quan-zhong-zui-hou-sheng-xia-de-shu-zi-lcof/
 /// 约瑟夫环问题
 pub fn last_remaining(n: i32, m: i32) -> i32 {
-    let mut f = 0;
+    let mut last = 0;
     let mut i = 2;
     while i != n + 1 {
-        f = (m + f) % i;
+        last = (m + last) % i;
+        println!("{} {}", i, last);
         i += 1;
     }
-    f
+    last
 }

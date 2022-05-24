@@ -21,6 +21,13 @@
 ### 问题：如何检测一个链表是否有环（循环节）
 [弗洛伊德的兔子与乌龟(Floyd's Tortoise and Hare algorithm)](https://zhuanlan.zhihu.com/p/105269431 )，快慢指针法、龟兔赛跑法
 
+### 问题：约瑟夫环问题
+[剑指 Offer 62. 圆圈中最后剩下的数字](https://leetcode-cn.com/problems/yuan-quan-zhong-zui-hou-sheng-xia-de-shu-zi-lcof/ )
+```
+f(n,m)=0 (当n=1)
+f(n,m)= (f(n-1,m) + m) % n (当n>1)
+```
+
 ### 问题：电话号码的字母组合
 [17. 电话号码的字母组合](https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/)
 [回溯法](https://baike.baidu.com/item/%E5%9B%9E%E6%BA%AF%E6%B3%95/86074?fr=aladdin)
