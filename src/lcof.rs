@@ -57,7 +57,7 @@ mod tests {
         let k = 0;
         dbg!("{:?}", max_sliding_window(nums, k));
 
-        dbg!(last_remaining(5,3));
+        dbg!(last_remaining(5, 3));
     }
 }
 

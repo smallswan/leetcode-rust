@@ -259,6 +259,26 @@ pub fn backspace_compare_v2(s: String, t: String) -> bool {
     true
 }
 
+/// 1021. 删除最外层的括号 https://leetcode.cn/problems/remove-outermost-parentheses/
+pub fn remove_outer_parentheses(s: String) -> String {
+    let mut result = String::new();
+    let mut level = 0;
+    s.chars().for_each(|ch| {
+        if ch == ')' {
+            level -= 1;
+        }
+        if level > 0 {
+            result.push(ch);
+        }
+
+        if ch == '(' {
+            level += 1;
+        }
+    });
+
+    result
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -308,5 +328,17 @@ mod tests {
 
         let s = String::from("))()())");
         dbg!(longest_valid_parentheses(s));
+    }
+
+    #[test]
+    fn test_count() {
+        assert_eq!(
+            "()()()()(())".to_string(),
+            remove_outer_parentheses("(()())(())(()(()))".to_string())
+        );
+        assert_eq!(
+            "()()()".to_string(),
+            remove_outer_parentheses("(()())(())".to_string())
+        );
     }
 }
