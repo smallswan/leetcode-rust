@@ -29,6 +29,7 @@ pub fn last_stone_weight(stones: Vec<i32>) -> i32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::cmp::Reverse;
     #[test]
     fn heaps() {
         let nums = vec![3, 2, 3, 1, 2, 4, 5, 5, 6];
@@ -38,5 +39,13 @@ mod tests {
         let nums = vec![3, 2, 1, 5, 6, 4];
         let kth_largest = find_kth_largest(nums, 6);
         dbg!("kth_largest    {}", kth_largest);
+
+        // https://www.nowcoder.com/test/question/done?tid=56933321&qid=348330#summary
+        let vec = vec![0, 2, 1, 4, 3, 9, 5, 8, 6, 7];
+        let mut heap = BinaryHeap::new();
+        vec.into_iter().for_each(|num| heap.push(Reverse(num)));
+
+        heap.pop();
+        dbg!(heap.into_vec());
     }
 }

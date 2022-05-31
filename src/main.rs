@@ -6,6 +6,7 @@ mod simple;
 mod contest;
 mod interview;
 mod lcof;
+mod practice;
 mod solution;
 
 #[macro_use]
