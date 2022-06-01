@@ -17,7 +17,7 @@
 //! }
 //! ```
 //! # Examples
-//! ```
+//! ```rust
 //! use std::io;
 //! pub fn main(){
 //!     let mut input = String::new();
@@ -56,6 +56,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[ignore]
     fn test_huawei() {
         length_of_last_word();
     }
