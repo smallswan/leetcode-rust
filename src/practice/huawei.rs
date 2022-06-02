@@ -33,7 +33,10 @@
 //!     println!("{}", count);
 //! }
 //! ```
-
+//! 注意：
+//! 1. 从终端输入的行包含换行符，需要使用```trim_end()```去掉！！！
+//! 2. 标记单元测试为```#[ignore]```，避免在cargo test时阻塞。
+//! 3. ```read_line(&mut line)```多次运行，line将不断追加字符串，可以使用```line.clear()```清除。
 use std::io;
 
 /// HJ1 字符串最后一个单词的长度  https://www.nowcoder.com/practice/8c949ea5f36f422594b306a2300315da
@@ -68,6 +71,23 @@ pub fn count_chars_insensitive() {
     });
 
     println!("{}", count);
+}
+
+/// HJ3 明明的随机数  https://www.nowcoder.com/practice/3245215fffb84b7b81285493eae92ff0
+use std::collections::BTreeSet;
+pub fn hj3() {
+    let mut line1 = String::new();
+    io::stdin().read_line(&mut line1).expect("expect a line");
+    let num = line1.trim_end().parse::<i32>().unwrap();
+    let mut set = BTreeSet::new();
+    for _ in 0..num {
+        line1.clear();
+        io::stdin().read_line(&mut line1).expect("expect a line");
+
+        set.insert(line1.trim_end().parse::<i32>().unwrap());
+    }
+
+    set.iter().for_each(|n| println!("{}", n));
 }
 
 /// HJ4 字符串分隔  https://www.nowcoder.com/practice/d9162298cb5a437aad722fccccaae8a7
@@ -107,6 +127,7 @@ mod tests {
     fn test_huawei() {
         // length_of_last_word();
         // count_chars_insensitive();
-        hj4_str_split();
+        hj3();
+        // hj4_str_split();
     }
 }
