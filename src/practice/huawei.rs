@@ -126,7 +126,7 @@ pub fn hj5() {
         let num = i32::from_str_radix(&line1.trim_end()[2..], 16).unwrap();
         println!("{}", num);
     } else {
-        let num = i32::from_str_radix(&line1.trim_end(), 16).unwrap();
+        let num = i32::from_str_radix(line1.trim_end(), 16).unwrap();
         println!("{}", num);
     }
 }
@@ -155,18 +155,50 @@ pub fn hj6() {
 pub fn hj7() {
     let mut line1 = String::new();
     io::stdin().read_line(&mut line1).expect("expect a line");
-    let pair: Vec<&str> = line1.trim_end().split(".").collect();
+    let pair: Vec<&str> = line1.trim_end().split('.').collect();
     if pair.len() == 2 {
         let integer = pair[0].parse::<i32>().unwrap();
 
         println!("{}", integer);
-        let result = match pair[1].bytes().nth(0) {
-            Some(num) if num >= b'0' && num <= b'4' => integer,
-            Some(num) if num >= b'5' && num <= b'9' => integer + 1,
+        let result = match pair[1].as_bytes().get(0) {
+            Some(num) if (b'0'..=b'4').contains(num) => integer,
+            Some(num) if (b'5'..=b'9').contains(num) => integer + 1,
             _ => unreachable!(),
         };
 
         println!("{}", result);
+    }
+}
+
+/// HJ8 合并表记录 https://www.nowcoder.com/practice/de044e89123f4a7482bd2b214a685201?tpId=37
+use std::collections::btree_map::Entry;
+use std::collections::BTreeMap;
+pub fn hj8() {
+    let mut line1 = String::new();
+    io::stdin().read_line(&mut line1).expect("expect a line");
+    let num = line1.trim_end().parse::<i32>().unwrap();
+    let mut map = BTreeMap::<i32, i32>::new();
+    for _ in 0..num {
+        line1.clear();
+        io::stdin().read_line(&mut line1).expect("expect a line");
+
+        let pair: Vec<i32> = line1
+            .trim_end()
+            .split(' ')
+            .map(|s| s.parse::<i32>().unwrap())
+            .collect();
+        match map.entry(pair[0]) {
+            Entry::Vacant(entry) => {
+                entry.insert(pair[1]);
+            }
+            Entry::Occupied(entry) => {
+                *entry.into_mut() += pair[1];
+            }
+        }
+    }
+
+    for (key, value) in map.iter() {
+        println!("{} {}", key, value);
     }
 }
 
@@ -183,6 +215,7 @@ mod tests {
         // hj4_str_split();
         // hj5();
         // hj6();
-        hj7();
+        // hj7();
+        hj8();
     }
 }
