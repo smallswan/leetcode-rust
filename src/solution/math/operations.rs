@@ -244,7 +244,7 @@ fn zero_tail(s1: String, s2: String) -> (String, String, usize) {
 }
 
 //1到9和第一个字符串相乘的结果保存到双端列表中
-fn multi_1_9(vn: &mut Vec<VecDeque<u8>>, index: usize) {
+fn multi_1_9(vn: &mut [VecDeque<u8>], index: usize) {
     let mut flag = 0;
     let len = vn[0].len();
     for i in (0..len).rev() {

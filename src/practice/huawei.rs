@@ -1,9 +1,9 @@
 //! 华为机试 https://www.nowcoder.com/exam/oj/ta?tpId=37  
 //! ACM 模式：你的代码需要处理输入输出，请使用如下样例代码读取输入和打印输出：  
 //! ```
-//! use std::io::{self, *};
 //!
-//! fn main() {
+//!
+//!
 //!     let stdin = io::stdin();
 //!     unsafe {
 //!         for line in stdin.lock().lines() {
@@ -14,12 +14,12 @@
 //!             print!("{}\n", a + b);
 //!         }
 //!     }
-//! }
+//!
 //! ```
 //! # Examples
 //! ```rust
-//! use std::io;
-//! pub fn main(){
+//!
+//!
 //!     let mut input = String::new();
 //!     io::stdin().read_line(&mut input).expect("expect a line");
 //!
@@ -31,7 +31,7 @@
 //!         count += 1;
 //!     }
 //!     println!("{}", count);
-//! }
+//!
 //! ```
 //! 注意：
 //! 1. 从终端输入的行包含换行符，需要使用```trim_end()```去掉！！！
@@ -118,6 +118,19 @@ pub fn hj4_str_split() {
     }
 }
 
+/// HJ5 进制转换  https://www.nowcoder.com/practice/8f3df50d2b9043208c5eed283d1d4da6?tpId=37
+pub fn hj5() {
+    let mut line1 = String::new();
+    io::stdin().read_line(&mut line1).expect("expect a line");
+    if line1.starts_with("0x") || line1.starts_with("0X") {
+        let num = i32::from_str_radix(&line1.trim_end()[2..], 16).unwrap();
+        println!("{}", num);
+    } else {
+        let num = i32::from_str_radix(&line1.trim_end(), 16).unwrap();
+        println!("{}", num);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -127,7 +140,8 @@ mod tests {
     fn test_huawei() {
         // length_of_last_word();
         // count_chars_insensitive();
-        hj3();
+        // hj3();
         // hj4_str_split();
+        hj5();
     }
 }

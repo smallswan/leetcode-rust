@@ -1,1 +1,1 @@
-mod two_pointers;
+mod lib;

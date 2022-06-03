@@ -1,4 +1,5 @@
 #![allow(unused)]
+#![warn(clippy::needless_doctest_main)]
 mod dp;
 mod medium;
 mod simple;

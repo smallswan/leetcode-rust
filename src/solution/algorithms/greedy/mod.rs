@@ -1,1 +1,1 @@
-mod greedy;
+mod lib;

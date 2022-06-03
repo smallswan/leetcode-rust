@@ -310,7 +310,7 @@ pub fn get_number(root: Option<Rc<RefCell<TreeNode>>>, ops: Vec<Vec<i32>>) -> i3
     let len = counter.len();
     let mut colors = vec![-1; len];
     let (min, max) = (counter[0], counter[len - 1]);
-    fn color(counter: &[i32], colors: &mut Vec<i32>, t: i32, x: i32, y: i32) {
+    fn color(counter: &[i32], colors: &mut [i32], t: i32, x: i32, y: i32) {
         let begin = counter.partition_point(|&num| num < x);
         let end = counter.partition_point(|&num| num >= y);
         println!("{begin} to {end}");

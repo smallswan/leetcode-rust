@@ -379,7 +379,7 @@ pub fn remove_duplicates_ii(nums: &mut Vec<i32>) -> i32 {
 
 /// 力扣（88. 合并两个有序数组） https://leetcode-cn.com/problems/merge-sorted-array/
 /// 面试题 10.01. 合并排序的数组 https://leetcode-cn.com/problems/sorted-merge-lcci/
-pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
+pub fn merge(nums1: &mut [i32], m: i32, nums2: &mut [i32], n: i32) {
     let mut m = m;
     let mut index: usize = 0;
     for &item in nums2.iter().take(n as usize) {
@@ -400,7 +400,7 @@ pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
 
 /// 力扣（88. 合并两个有序数组）
 /// 双指针/从后往前
-pub fn merge_v2(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
+pub fn merge_v2(nums1: &mut [i32], m: i32, nums2: &mut [i32], n: i32) {
     let mut p1 = m - 1;
     let mut p2 = n - 1;
     let mut p = m + n - 1;
