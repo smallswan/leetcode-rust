@@ -227,18 +227,19 @@ pub fn hj9() {
     );
 }
 
+use std::collections::HashSet;
 /// HJ10 字符个数统计  https://www.nowcoder.com/practice/eb94f6a5b2ba49c6ac72d40b5ce95f50?tpId=37
 pub fn hj10() {
     let mut line1 = String::new();
     io::stdin().read_line(&mut line1).expect("expect a line");
-    let mut chars: Vec<i32> = vec![0; 128];
-    line1
-        .trim_end()
-        .as_bytes()
-        .iter()
-        .for_each(|&ch| chars[ch as usize] += 1);
+    // let mut chars: Vec<i32> = vec![0; 128];
+    let mut set = HashSet::new();
+    line1.trim_end().as_bytes().iter().for_each(|&ch| {
+        set.insert(ch);
+    });
 
-    println!("{}", chars.iter().filter(|&&count| count > 0).count());
+    println!("{}", set.len());
+    // println!("{}", chars.iter().filter(|&&count| count > 0).count());
 }
 
 #[cfg(test)]
