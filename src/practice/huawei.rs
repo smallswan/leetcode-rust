@@ -131,6 +131,26 @@ pub fn hj5() {
     }
 }
 
+/// HJ6 质数因子 https://www.nowcoder.com/practice/196534628ca6490ebce2e336b47b3607?tpId=37
+pub fn hj6() {
+    let mut line1 = String::new();
+    io::stdin().read_line(&mut line1).expect("expect a line");
+    let mut num = line1.trim_end().parse::<i32>().unwrap();
+    let sqrt = (num as f32).sqrt().floor() as i32;
+    for i in 2..=sqrt {
+        while num % i == 0 {
+            println!("{}", i);
+            num /= i;
+        }
+    }
+
+    if num == 1 {
+        println!();
+    } else {
+        println!("{}", num);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -142,6 +162,7 @@ mod tests {
         // count_chars_insensitive();
         // hj3();
         // hj4_str_split();
-        hj5();
+        // hj5();
+        hj6();
     }
 }
