@@ -151,6 +151,25 @@ pub fn hj6() {
     }
 }
 
+/// HJ7 取近似值  https://www.nowcoder.com/practice/3ab09737afb645cc82c35d56a5ce802a?tpId=37
+pub fn hj7() {
+    let mut line1 = String::new();
+    io::stdin().read_line(&mut line1).expect("expect a line");
+    let pair: Vec<&str> = line1.trim_end().split(".").collect();
+    if pair.len() == 2 {
+        let integer = pair[0].parse::<i32>().unwrap();
+
+        println!("{}", integer);
+        let result = match pair[1].bytes().nth(0) {
+            Some(num) if num >= b'0' && num <= b'4' => integer,
+            Some(num) if num >= b'5' && num <= b'9' => integer + 1,
+            _ => unreachable!(),
+        };
+
+        println!("{}", result);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -163,6 +182,7 @@ mod tests {
         // hj3();
         // hj4_str_split();
         // hj5();
-        hj6();
+        // hj6();
+        hj7();
     }
 }
