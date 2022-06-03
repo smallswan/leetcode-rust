@@ -187,19 +187,44 @@ pub fn hj8() {
             .split(' ')
             .map(|s| s.parse::<i32>().unwrap())
             .collect();
-        match map.entry(pair[0]) {
-            Entry::Vacant(entry) => {
-                entry.insert(pair[1]);
-            }
-            Entry::Occupied(entry) => {
-                *entry.into_mut() += pair[1];
-            }
-        }
+        // match map.entry(pair[0]) {
+        //     Entry::Vacant(entry) => {
+        //         entry.insert(pair[1]);
+        //     }
+        //     Entry::Occupied(entry) => {
+        //         *entry.into_mut() += pair[1];
+        //     }
+        // }
+        map.entry(pair[0])
+            .and_modify(|entry| *entry += pair[1])
+            .or_insert(pair[1]);
     }
 
     for (key, value) in map.iter() {
         println!("{} {}", key, value);
     }
+}
+
+/// HJ9 提取不重复的整数 https://www.nowcoder.com/practice/253986e66d114d378ae8de2e6c4577c1?tpId=37
+pub fn hj9() {
+    let mut line1 = String::new();
+    io::stdin().read_line(&mut line1).expect("expect a line");
+    let mut num = line1.trim_end().parse::<i32>().unwrap();
+    let mut nums = vec![];
+    while num != 0 {
+        if !nums.contains(&(num % 10)) {
+            nums.push(num % 10);
+        }
+        num /= 10;
+    }
+
+    println!(
+        "{}",
+        nums.iter()
+            .map(|n| format!("{}", n))
+            .collect::<Vec<_>>()
+            .concat()
+    );
 }
 
 #[cfg(test)]
@@ -216,6 +241,7 @@ mod tests {
         // hj5();
         // hj6();
         // hj7();
-        hj8();
+        // hj8();
+        hj9();
     }
 }
