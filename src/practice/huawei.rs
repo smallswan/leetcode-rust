@@ -259,6 +259,52 @@ pub fn hj11() {
     // println!("{}",new_line);
 }
 
+/// HJ12 字符串反转  https://www.nowcoder.com/practice/e45e078701ab4e4cb49393ae30f1bb04?tpId=37
+pub fn hj12() {
+    let mut line1 = String::new();
+    io::stdin().read_line(&mut line1).expect("expect a line");
+
+    let new_line = line1.trim_end().bytes().rev().collect::<Vec<_>>();
+    println!("{}", String::from_utf8(new_line).unwrap());
+}
+
+/// HJ13 句子逆序  https://www.nowcoder.com/practice/48b3cb4e3c694d9da5526e6255bb73c3?tpId=37
+pub fn hj13() {
+    let mut line1 = String::new();
+    io::stdin().read_line(&mut line1).expect("expect a line");
+
+    for word in line1.trim_end().split(' ').rev() {
+        println!("{}", word);
+    }
+}
+
+/// HJ14 字符串排序  https://www.nowcoder.com/practice/5af18ba2eb45443aa91a11e848aa6723?tpId=37
+pub fn hj14() {
+    let mut line1 = String::new();
+    io::stdin().read_line(&mut line1).expect("expect a line");
+    let mut words = vec![];
+    let mut num = line1.trim_end().parse::<i32>().unwrap();
+    for _ in 0..num {
+        line1.clear();
+        io::stdin().read_line(&mut line1).expect("expect a line");
+        words.push(line1.trim_end().to_owned());
+    }
+
+    words.sort_unstable();
+    for word in words {
+        println!("{}", word);
+    }
+}
+
+/// HJ15 求int型正整数在内存中存储时1的个数 https://www.nowcoder.com/practice/440f16e490a0404786865e99c6ad91c9?tpId=37
+pub fn hj15() {
+    let mut line1 = String::new();
+    io::stdin().read_line(&mut line1).expect("expect a line");
+    let mut num = line1.trim_end().parse::<i32>().unwrap();
+
+    println!("{}", num.count_ones());
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -275,6 +321,8 @@ mod tests {
         // hj7();
         // hj8();
         // hj9();
-        hj10();
+        // hj10();
+        // hj11();
+        hj12();
     }
 }
