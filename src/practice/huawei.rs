@@ -242,6 +242,23 @@ pub fn hj10() {
     // println!("{}", chars.iter().filter(|&&count| count > 0).count());
 }
 
+/// HJ11 数字颠倒  https://www.nowcoder.com/practice/ae809795fca34687a48b172186e3dafe?tpId=37
+pub fn hj11() {
+    let mut line1 = String::new();
+    io::stdin().read_line(&mut line1).expect("expect a line");
+
+    let mut new_line = String::new();
+    line1
+        .trim_end()
+        .chars()
+        .rev()
+        .for_each(|ch| new_line.push(ch));
+    println!("{}", new_line);
+
+    // let new_line: String = String::from_iter(line1.trim_end().chars().rev().collect::<Vec<_>>());
+    // println!("{}",new_line);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
