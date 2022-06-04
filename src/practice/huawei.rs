@@ -305,6 +305,73 @@ pub fn hj15() {
     println!("{}", num.count_ones());
 }
 
+/// HJ46 截取字符串 https://www.nowcoder.com/practice/a30bbc1a0aca4c27b86dd88868de4a4a?tpId=37
+pub fn hj46() {
+    let mut line = String::new();
+    io::stdin().read_line(&mut line).expect("expect a line");
+    let new_line = line.trim_end().to_owned();
+    line.clear();
+    io::stdin().read_line(&mut line).expect("expect a line");
+    let num = line.trim_end().parse::<usize>().unwrap();
+
+    println!("{}", String::from(&new_line[..num]));
+}
+
+/// HJ58 输入n个整数，输出其中最小的k个  https://www.nowcoder.com/practice/69ef2267aafd4d52b250a272fd27052c?tpId=37
+pub fn hj58() {
+    let mut line = String::new();
+    io::stdin().read_line(&mut line).expect("expect a line");
+    let pair: Vec<usize> = line
+        .trim_end()
+        .split(' ')
+        .map(|num| num.parse::<usize>().unwrap())
+        .collect();
+
+    line.clear();
+    io::stdin().read_line(&mut line).expect("expect a line");
+    let mut nums: Vec<i32> = line
+        .trim_end()
+        .split(' ')
+        .map(|num| num.parse::<i32>().unwrap())
+        .collect();
+
+    nums.sort_unstable();
+
+    for i in 0..pair[1] {
+        print!("{} ", nums[i]);
+    }
+}
+
+/// HJ101 输入整型数组和排序标识，对其元素按照升序或降序进行排序 https://www.nowcoder.com/practice/dd0c6b26c9e541f5b935047ff4156309?tpId=37
+pub fn hj101() {
+    let mut line = String::new();
+    io::stdin().read_line(&mut line).expect("expect a line");
+    let count = line.trim_end().parse::<usize>().unwrap();
+
+    line.clear();
+    io::stdin().read_line(&mut line).expect("expect a line");
+    let mut nums: Vec<i32> = line
+        .trim_end()
+        .split(' ')
+        .map(|num| num.parse::<i32>().unwrap())
+        .collect();
+
+    nums.sort_unstable();
+
+    line.clear();
+    io::stdin().read_line(&mut line).expect("expect a line");
+    let asc = line.trim_end().parse::<usize>().unwrap();
+    if asc == 0 {
+        for num in nums {
+            print!("{} ", num);
+        }
+    } else if asc == 1 {
+        for num in nums.iter().rev() {
+            print!("{} ", num);
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
