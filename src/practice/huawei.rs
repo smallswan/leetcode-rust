@@ -435,12 +435,38 @@ fn huawei3() {
         }
 
         let (mut count, mut sum) = (0, 0);
-        stack.iter().rev().for_each(|num| {
+        // stack.iter().rev().for_each(|num| {
+        //     if sum < target {
+        //         sum += num;
+        //         count += 1;
+        //     }
+        // });
+
+        //及时break 1
+        let mut iter = stack.iter().rev();
+        // loop {
+        //     match iter.next() {
+        //         None => break,
+        //         Some(num) => {
+        //             if sum < target {
+        //                 sum += num;
+        //                 count += 1;
+        //             } else {
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
+
+        // 及时break 2
+        while let Some(num) = iter.next() {
             if sum < target {
                 sum += num;
                 count += 1;
+            } else {
+                break;
             }
-        });
+        }
 
         if sum != target {
             stack.push_back(target);
