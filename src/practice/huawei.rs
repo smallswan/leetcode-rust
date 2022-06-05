@@ -305,6 +305,31 @@ pub fn hj15() {
     println!("{}", num.count_ones());
 }
 
+/// HJ21 简单密码  https://www.nowcoder.com/practice/7960b5038a2142a18e27e4c733855dac?tpId=37
+pub fn hj21() {
+    let mut line1 = String::new();
+    io::stdin().read_line(&mut line1).expect("expect a line");
+
+    for byte in line1.trim_end().bytes() {
+        match byte {
+            b'A'..=b'Y' => print!("{}", (b'b' + byte - b'A') as char),
+            b'Z' => print!("a"),
+            b'0' => print!("0"),
+            b'1' => print!("1"),
+            b'a'..=b'c' => print!("2"),
+            b'd'..=b'f' => print!("3"),
+            b'g'..=b'i' => print!("4"),
+            b'j'..=b'l' => print!("5"),
+            b'm'..=b'o' => print!("6"),
+            b'p'..=b's' => print!("7"),
+            b't'..=b'v' => print!("8"),
+            b'w'..=b'z' => print!("9"),
+            _ => print!("{}", (byte as char)),
+        }
+    }
+    println!();
+}
+
 /// HJ46 截取字符串 https://www.nowcoder.com/practice/a30bbc1a0aca4c27b86dd88868de4a4a?tpId=37
 pub fn hj46() {
     let mut line = String::new();
@@ -390,6 +415,8 @@ mod tests {
         // hj9();
         // hj10();
         // hj11();
-        hj12();
+        // hj12();
+
+        hj21();
     }
 }
