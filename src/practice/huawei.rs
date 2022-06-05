@@ -330,6 +330,19 @@ pub fn hj21() {
     println!();
 }
 
+/// HJ22 汽水瓶  https://www.nowcoder.com/practice/fe298c55694f4ed39e256170ff2c205f?tpId=37
+pub fn hj22() {
+    let mut line1 = String::new();
+    io::stdin().read_line(&mut line1).expect("expect a line");
+    let mut bottle = line1.trim_end().parse::<i32>().unwrap();
+    while bottle != 0 {
+        println!("{}", bottle / 2);
+        line1.clear();
+        io::stdin().read_line(&mut line1).expect("expect a line");
+        bottle = line1.trim_end().parse::<i32>().unwrap();
+    }
+}
+
 /// HJ46 截取字符串 https://www.nowcoder.com/practice/a30bbc1a0aca4c27b86dd88868de4a4a?tpId=37
 pub fn hj46() {
     let mut line = String::new();
