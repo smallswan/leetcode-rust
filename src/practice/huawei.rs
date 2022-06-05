@@ -410,6 +410,58 @@ pub fn hj101() {
     }
 }
 
+/// 华为笔试
+/// 题目大意：依次往栈中放入数据n，如果某一时刻栈顶的元素等于其以下连续的几个元素的总和，就需要将栈顶元素连同
+/// 其以下连续的几个元素一同出栈，并将栈顶元素乘以2入栈。例如6,1,2,3。3 = 2 + 1，则需要将1 2 3出栈，将6（=3*2）入栈；
+/// 由于栈顶的6以下的元素和为6，根据上述规则，所有元素都出栈，将12入栈，最终栈中的元素只有12。
+use std::collections::VecDeque;
+fn huawei3() {
+    let stdin = io::stdin();
+    let mut stack = VecDeque::new();
+    let mut line = String::new();
+    stdin.read_line(&mut line).expect("expect a line");
+    let nums: Vec<i32> = line
+        .trim_end()
+        .split(' ')
+        .map(|n| n.parse::<i32>().unwrap())
+        .collect();
+    stack.push_back(nums[0]);
+    let len = nums.len();
+
+    fn try_push(stack: &mut VecDeque<i32>, target: i32) {
+        if stack.is_empty() {
+            stack.push_back(target);
+            return;
+        }
+
+        let (mut count, mut sum) = (0, 0);
+        stack.iter().rev().for_each(|num| {
+            if sum < target {
+                sum += num;
+                count += 1;
+            }
+        });
+
+        if sum != target {
+            stack.push_back(target);
+            return;
+        } else if sum == target {
+            for k in 0..count {
+                stack.pop_back();
+            }
+            let double = 2 * target;
+            try_push(stack, double);
+        }
+    }
+
+    for i in 1..len {
+        try_push(&mut stack, nums[i]);
+    }
+    while let Some(value) = stack.pop_back() {
+        print!("{} ", value);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -430,6 +482,12 @@ mod tests {
         // hj11();
         // hj12();
 
-        hj21();
+        // hj21();
+
+        huawei3();
+
+        // for i in (0..10).rev() {
+        //     print!("{} ", i);
+        // }
     }
 }
