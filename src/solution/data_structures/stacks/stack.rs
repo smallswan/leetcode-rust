@@ -280,6 +280,7 @@ pub fn remove_outer_parentheses(s: String) -> String {
 }
 
 /// 1700. 无法吃午餐的学生数量 https://leetcode.cn/problems/number-of-students-unable-to-eat-lunch/
+/// 双端队列
 pub fn count_students(students: Vec<i32>, sandwiches: Vec<i32>) -> i32 {
     let len = students.len();
     let mut students_stack = VecDeque::with_capacity(len);
@@ -318,6 +319,38 @@ pub fn count_students(students: Vec<i32>, sandwiches: Vec<i32>) -> i32 {
     }
 
     students_stack.len() as i32
+}
+
+/// 1700. 无法吃午餐的学生数量
+/// 计数法
+pub fn count_students_v2(students: Vec<i32>, sandwiches: Vec<i32>) -> i32 {
+    let len = students.len();
+    let mut perferes = (0, 0);
+    students.iter().for_each(|&prefer| {
+        if prefer == 0 {
+            perferes.0 += 1;
+        } else {
+            perferes.1 += 1;
+        }
+    });
+
+    for sandwich in sandwiches {
+        if sandwich == 0 {
+            if perferes.0 > 0 {
+                perferes.0 -= 1;
+            } else {
+                break;
+            }
+        } else {
+            if perferes.1 > 0 {
+                perferes.1 -= 1;
+            } else {
+                break;
+            }
+        }
+    }
+
+    perferes.0 + perferes.1
 }
 
 #[cfg(test)]
