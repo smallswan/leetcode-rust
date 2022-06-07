@@ -271,6 +271,15 @@ pub fn repeated_n_times(nums: Vec<i32>) -> i32 {
     }
 }
 
+/// 1672. 最富有客户的资产总量 https://leetcode.cn/problems/richest-customer-wealth/
+pub fn maximum_wealth(accounts: Vec<Vec<i32>>) -> i32 {
+    accounts
+        .iter()
+        .map(|account| account.iter().sum())
+        .max()
+        .unwrap()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -296,5 +305,9 @@ mod tests {
         let time_series: Vec<i32> = vec![1, 4];
         let duration: i32 = 2;
         dbg!(find_poisoned_duration(time_series, duration));
+
+        let wealth = vec![vec![1, 2, 3], vec![3, 2, 1]];
+
+        assert_eq!(maximum_wealth(wealth), 6)
     }
 }
