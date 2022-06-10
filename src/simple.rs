@@ -10,6 +10,9 @@ use std::{
     str::Chars,
 };
 
+use rand::distributions::{Alphanumeric, Standard, Uniform};
+use rand::{thread_rng, Rng};
+
 lazy_static! {
     static ref VERSIONS: Vec<bool> = {
         let len: usize = 100;
@@ -1300,6 +1303,26 @@ mod tests {
         let nums2 = vec![9, 2, 4, 10, 5];
         let intersect_v2_result = intersect_v2(nums1, nums2);
         dbg!(intersect_v2_result);
+
+        let mut nums3 = [0i32; 20];
+        let mut nums4 = [0i32; 20];
+        thread_rng().fill(&mut nums3);
+        thread_rng().fill(&mut nums4);
+        dbg!(nums3);
+        dbg!(nums4);
+        dbg!(intersect_v2(nums3.to_vec(), nums4.to_vec()));
+
+        let mut rng = thread_rng();
+        // String:
+        let rand_str: String = (&mut rng)
+            .sample_iter(Alphanumeric)
+            .take(26)
+            .map(char::from)
+            .collect();
+
+        println!("{}", rand_str);
+        let first_uniq_char_result = first_uniq_char_v3(rand_str);
+        dbg!("{}", first_uniq_char_result);
     }
 
     #[test]
