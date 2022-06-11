@@ -465,6 +465,39 @@ pub fn count_primes_v2(n: i32) -> i32 {
     ans
 }
 
+/// 279. 完全平方数 https://leetcode.cn/problems/perfect-squares/
+pub fn num_squares(n: i32) -> i32 {
+    fn is_sqrt_num(x: i32) -> bool {
+        let sqrt = (x as f32).sqrt() as i32;
+        sqrt * sqrt == x
+    }
+
+    let is_sqrt_num4 = || {
+        let mut x = n;
+        while x % 4 == 0 {
+            x /= 4;
+        }
+        x % 8 == 7
+    };
+
+    if is_sqrt_num(n) {
+        return 1;
+    }
+    if is_sqrt_num4() {
+        return 4;
+    }
+    let mut i = 1;
+    while i * i <= n {
+        let j = n - i * i;
+        if is_sqrt_num(j) {
+            return 2;
+        }
+        i += 1;
+    }
+
+    3
+}
+
 /// 力扣（263. 丑数）   https://leetcode-cn.com/problems/ugly-number/
 /// 丑数 就是只包含质因数 2、3 和/或 5 的正整数。
 /// 1 通常被视为丑数。

@@ -1327,12 +1327,16 @@ mod tests {
 
     #[test]
     fn test_200_plus() {
-        dbg!(read_binary_watch(7));
+        let mut rng = thread_rng();
+        for _ in 0..10 {
+            let turned_on: i32 = rng.gen_range(0..=10);
+            println!("{} {:?}", turned_on, read_binary_watch(turned_on));
+        }
     }
 
     #[test]
     fn test_list_node() {
-        let x = 43261596u32;
+        let x = rand::random::<u32>();
         // [u8;4]
         dbg!(x.to_be_bytes());
         // 16进制

@@ -126,6 +126,7 @@
 | | - [263. 丑数](https://leetcode-cn.com/problems/ugly-number/ ) |  |
 | | - [264. 丑数 II](https://leetcode-cn.com/problems/ugly-number-ii/ ) |  |
 | | - [268. 丢失的数字](https://leetcode-cn.com/problems/missing-number/ ) |  |
+| | - [279. 完全平方数](https://leetcode.cn/problems/perfect-squares/ ) |  |
 | | - [292. Nim 游戏](https://leetcode-cn.com/problems/nim-game/ ) |  |
 | | - [326. 3的幂](https://leetcode-cn.com/problems/power-of-three/ ) |  |
 | | - [342. 4的幂](https://leetcode-cn.com/problems/power-of-four/ ) |  |
