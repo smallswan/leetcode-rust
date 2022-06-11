@@ -1,7 +1,8 @@
 //! 华为机试 https://www.nowcoder.com/exam/oj/ta?tpId=37  
 //! ACM 模式：你的代码需要处理输入输出，请使用如下样例代码读取输入和打印输出：  
 //! ```
-//!
+//!     use std::io;
+//!     use std::io::BufRead;
 //!
 //!
 //!     let stdin = io::stdin();
@@ -18,7 +19,7 @@
 //! ```
 //! # Examples
 //! ```rust
-//!
+//!     use std::io;
 //!
 //!     let mut input = String::new();
 //!     io::stdin().read_line(&mut input).expect("expect a line");

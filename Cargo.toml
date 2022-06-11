@@ -9,3 +9,11 @@ chrono = "0.4"
 rand = "0.8.5"
 lazy_static = "1.4.0"
 itertools = "0.10.1"
+criterion = "0.3.5"
+
+[dev.dependencies]
+criterion = "0.3.5"
+
+[[bench]]
+name = "str_str"
+hardness = false
