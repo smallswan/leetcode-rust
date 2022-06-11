@@ -465,39 +465,6 @@ pub fn count_primes_v2(n: i32) -> i32 {
     ans
 }
 
-/// 279. 完全平方数 https://leetcode.cn/problems/perfect-squares/
-pub fn num_squares(n: i32) -> i32 {
-    fn is_sqrt_num(x: i32) -> bool {
-        let sqrt = (x as f32).sqrt() as i32;
-        sqrt * sqrt == x
-    }
-
-    let is_sqrt_num4 = || {
-        let mut x = n;
-        while x % 4 == 0 {
-            x /= 4;
-        }
-        x % 8 == 7
-    };
-
-    if is_sqrt_num(n) {
-        return 1;
-    }
-    if is_sqrt_num4() {
-        return 4;
-    }
-    let mut i = 1;
-    while i * i <= n {
-        let j = n - i * i;
-        if is_sqrt_num(j) {
-            return 2;
-        }
-        i += 1;
-    }
-
-    3
-}
-
 /// 力扣（263. 丑数）   https://leetcode-cn.com/problems/ugly-number/
 /// 丑数 就是只包含质因数 2、3 和/或 5 的正整数。
 /// 1 通常被视为丑数。
@@ -540,6 +507,58 @@ pub fn nth_ugly_number(n: i32) -> i32 {
         };
     }
     ugly as i32
+}
+
+/// 279. 完全平方数 https://leetcode.cn/problems/perfect-squares/
+/// 四平方和定理
+pub fn num_squares(n: i32) -> i32 {
+    fn is_sqrt_num(x: i32) -> bool {
+        let sqrt = (x as f32).sqrt() as i32;
+        sqrt * sqrt == x
+    }
+
+    let is_sqrt_num4 = || {
+        let mut x = n;
+        while x % 4 == 0 {
+            x /= 4;
+        }
+        x % 8 == 7
+    };
+
+    if is_sqrt_num(n) {
+        return 1;
+    }
+    if is_sqrt_num4() {
+        return 4;
+    }
+    let mut i = 1;
+    while i * i <= n {
+        let j = n - i * i;
+        if is_sqrt_num(j) {
+            return 2;
+        }
+        i += 1;
+    }
+
+    3
+}
+
+/// 279. 完全平方数 https://leetcode.cn/problems/perfect-squares/
+/// 动态规划
+pub fn num_squares_v2(n: i32) -> i32 {
+    let n = n as usize;
+    let mut dp = vec![0; n + 1];
+    for i in 1..=n {
+        let mut min = i32::MAX;
+        let mut j = 1;
+        while j * j <= i {
+            min = min.min(dp[i - j * j]);
+            j += 1;
+        }
+        dp[i] = min + 1;
+    }
+
+    dp[n]
 }
 
 /// 力扣（367. 有效的完全平方数) https://leetcode-cn.com/problems/valid-perfect-square/
