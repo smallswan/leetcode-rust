@@ -10,7 +10,7 @@ use std::{
     str::Chars,
 };
 
-use rand::distributions::{Alphanumeric, Standard, Uniform};
+use rand::distributions::{Alphanumeric, DistString, Standard, Uniform};
 use rand::{thread_rng, Rng};
 
 lazy_static! {
@@ -1313,7 +1313,7 @@ mod tests {
         dbg!(intersect_v2(nums3.to_vec(), nums4.to_vec()));
 
         let mut rng = thread_rng();
-        // String:
+        // 生成随机字符串方式1
         let rand_str: String = (&mut rng)
             .sample_iter(Alphanumeric)
             .take(26)
@@ -1323,6 +1323,11 @@ mod tests {
         println!("{}", rand_str);
         let first_uniq_char_result = first_uniq_char_v3(rand_str);
         dbg!("{}", first_uniq_char_result);
+
+        // 生成随机字符串方式2
+        let string = Alphanumeric.sample_string(&mut rand::thread_rng(), 16);
+        println!("{}", string);
+        dbg!(first_uniq_char_v2(string));
     }
 
     #[test]

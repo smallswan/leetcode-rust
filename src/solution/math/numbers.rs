@@ -784,10 +784,17 @@ mod tests {
         dbg!(is_perfect_square_v2(i32::MAX));
     }
 
+    use rand::Rng;
+
     #[test]
     fn test_middle_() {
-        num_decodings("226".to_string());
+        let mut rng = rand::thread_rng();
 
-        num_decodings("10".to_string());
+        for i in 1..100 {
+            let num = rng.gen_range(1..=10000);
+            assert_eq!(num_squares(num), num_squares_v2(num));
+
+            num_decodings(num.to_string());
+        }
     }
 }
