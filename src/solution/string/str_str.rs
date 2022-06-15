@@ -323,6 +323,9 @@ pub fn find_the_longest_substring(s: String) -> i32 {
     ans
 }
 
+use rand::distributions::{Alphanumeric, DistString, Standard, Uniform};
+use rand::{thread_rng, Rng};
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -336,7 +339,19 @@ mod tests {
         let index = knuth_morris_pratt("Rust is a programming language empowering everyone to build reliable and efficient software".to_string(),"everyone".to_string());
         println!("{:?}", index);
 
-        dbg!(is_subsequence("acb".to_string(), "ahbgdc".to_string()));
+        dbg!(is_subsequence("bgd".to_string(), "ahbgdc".to_string()));
+
+        let mut rand = rand::thread_rng();
+        let idx = rand.gen_range(1..16);
+        let haystack = Alphanumeric.sample_string(&mut rand, 16);
+        let needle = String::from(&haystack[idx..]);
+        println!("haystack: {haystack},needle: {needle}, idx: {idx}");
+        assert_eq!(
+            str_str(haystack.clone(), needle.clone()),
+            str_str_v2(haystack.clone(), needle.clone())
+        );
+
+        assert_eq!((idx as i32), str_str_v3(haystack.clone(), needle.clone()));
     }
 
     mod kmp {
