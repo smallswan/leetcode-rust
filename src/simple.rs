@@ -1352,4 +1352,49 @@ mod tests {
         let rev_x: String = format!("{:032b}", x).chars().rev().collect();
         dbg!(u32::from_str_radix(&rev_x, 2));
     }
+
+    #[test]
+    fn compare_version() {
+        let version1 = "1.3.9";
+        let version2 = "1.4.9.6";
+        let nums1: Vec<i32> = version1
+            .split('.')
+            .map(|num| num.parse::<i32>().unwrap())
+            .collect();
+        let nums2: Vec<i32> = version2
+            .split('.')
+            .map(|num| num.parse::<i32>().unwrap())
+            .collect();
+
+        let mut iter3 = nums1.iter();
+        let mut iter4 = nums2.iter();
+        loop {
+            match (iter3.next(), iter4.next()) {
+                (Some(left), Some(right)) => {
+                    if left == right {
+                        println!("{left} == {right}");
+                    } else if left > right {
+                        println!("{left} > {right}");
+                        println!("{version1} is higher");
+                        break;
+                    } else {
+                        println!("{left} < {right}");
+                        println!("{version2} is higher");
+                        break;
+                    }
+                }
+                (None, Some(right)) => {
+                    println!("0 ? {right}");
+                    println!("{version2} is higher");
+                    break;
+                }
+                (Some(left), None) => {
+                    println!("{left} ? 0");
+                    println!("{version1} is higher");
+                    break;
+                }
+                _ => break,
+            }
+        }
+    }
 }
