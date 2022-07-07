@@ -268,6 +268,36 @@ impl Solution {
         0
     }
 
+    pub fn compare_version_v2(version1: String, version2: String) -> i32 {
+        let v1: Vec<i32> = version1
+            .split('.')
+            .map(|num| num.parse::<i32>().unwrap())
+            .collect();
+        let v2: Vec<i32> = version2
+            .split('.')
+            .map(|num| num.parse::<i32>().unwrap())
+            .collect();
+        let (len1, len2) = (v1.len(), v2.len());
+        let mut i = 0;
+        while i < len1 || i < len2 {
+            let (mut x, mut y) = (0, 0);
+            if i < len1 {
+                x = v1[i];
+            }
+            if i < len2 {
+                y = v2[i];
+            }
+
+            match x.cmp(&y) {
+                Ordering::Greater => return 1,
+                Ordering::Less => return -1,
+                Ordering::Equal => i += 1,
+            }
+        }
+
+        0
+    }
+
     /// 力扣（468. 验证IP地址）  https://leetcode-cn.com/problems/validate-ip-address/
     /// 使用标准库中的方法
     pub fn valid_ip_address(ip: String) -> String {
